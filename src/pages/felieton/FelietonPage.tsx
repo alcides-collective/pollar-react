@@ -1,8 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import { useFelieton } from '../../hooks/useFelieton';
 import { useEvent } from '../../hooks/useEvent';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
-import { preventWidows, sanitizeAndProcessHtml } from '../../utils/text';
+import { preventWidows, sanitizeAndProcessHtml, prepareOgTitle, prepareOgDescription } from '../../utils/text';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.png';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.png';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.png';
@@ -88,6 +89,17 @@ function FelietonSidebar({ sourceEvents }: { sourceEvents: SourceEvent[] }) {
 export function FelietonPage() {
   const { id } = useParams<{ id: string }>();
   const { felieton, loading, error } = useFelieton(id);
+
+  // SEO meta tags
+  const ogTitle = prepareOgTitle(felieton?.title);
+  const ogDescription = prepareOgDescription(felieton?.lead);
+  useDocumentHead({
+    title: felieton?.title,
+    description: ogDescription,
+    ogTitle,
+    ogDescription,
+    ogType: 'article',
+  });
 
   if (loading) {
     return (

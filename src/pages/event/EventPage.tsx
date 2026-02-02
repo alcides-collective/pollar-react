@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useEvent } from '../../hooks/useEvent';
 import { useEvents } from '../../stores/eventsStore';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
+import { prepareOgTitle, prepareOgDescription } from '../../utils/text';
 import { EventHeader } from './EventHeader';
 import { EventKeyPoints } from './EventKeyPoints';
 import { EventSummary } from './EventSummary';
@@ -12,6 +14,19 @@ export function EventPage() {
   const { id } = useParams<{ id: string }>();
   const { event, loading, error } = useEvent(id);
   const { events: allEvents } = useEvents({ limit: 100, lang: 'pl' });
+
+  // SEO meta tags
+  const ogTitle = prepareOgTitle(event?.metadata?.ultraShortHeadline || event?.title);
+  const ogDescription = prepareOgDescription(
+    event?.metadata?.keyPoints?.[0]?.description || event?.summary
+  );
+  useDocumentHead({
+    title: event?.metadata?.ultraShortHeadline || event?.title,
+    description: ogDescription,
+    ogTitle,
+    ogDescription,
+    ogType: 'article',
+  });
 
   // Find previous and next events
   const { previousEvent, nextEvent } = useMemo(() => {

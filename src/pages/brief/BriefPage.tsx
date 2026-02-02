@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useBrief } from '../../hooks/useBrief';
 import { useActiveSection } from '../../hooks/useActiveSection';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
+import { prepareOgDescription } from '../../utils/text';
 import {
   BriefHero,
   BriefExecutiveSummary,
@@ -15,6 +17,24 @@ export function BriefPage() {
   const { activeItem: activeSection, setSectionRef } = useActiveSection(
     brief?.sections ?? []
   );
+
+  // SEO meta tags
+  const formattedDate = brief?.date
+    ? new Date(brief.date).toLocaleDateString('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+    : '';
+  const ogTitle = brief ? `Daily Brief – ${formattedDate}` : 'Daily Brief';
+  const ogDescription = prepareOgDescription(brief?.lead || brief?.executiveSummary);
+  useDocumentHead({
+    title: ogTitle,
+    description: ogDescription,
+    ogTitle,
+    ogDescription,
+    ogType: 'article',
+  });
 
   if (loading) {
     return (

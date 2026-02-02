@@ -638,6 +638,52 @@ export function sanitizeAndProcessHtml(text: string): string {
 /**
  * Simplified version for inline contexts (no paragraph wrapping)
  */
+// ==========================================
+// SEO utilities for meta tags
+// ==========================================
+
+const OG_TITLE_MAX_LENGTH = 60;
+const OG_DESCRIPTION_MAX_LENGTH = 160;
+
+/**
+ * Truncates text to specified length, breaking at word boundary.
+ * Adds ellipsis if text was truncated.
+ */
+function truncateAtWord(text: string, maxLength: number): string {
+  if (!text || text.length <= maxLength) return text;
+
+  const truncated = text.slice(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(' ');
+
+  // If we found a space and it's not too far back, break there
+  if (lastSpace > maxLength * 0.7) {
+    return truncated.slice(0, lastSpace) + '…';
+  }
+
+  return truncated.slice(0, maxLength - 1) + '…';
+}
+
+/**
+ * Prepares text for og:title - strips HTML, decodes entities, truncates to 60 chars
+ */
+export function prepareOgTitle(text: string | undefined): string {
+  if (!text) return '';
+  const plain = stripHtmlForPlainText(text);
+  return truncateAtWord(plain, OG_TITLE_MAX_LENGTH);
+}
+
+/**
+ * Prepares text for og:description - strips HTML, decodes entities, truncates to 160 chars
+ */
+export function prepareOgDescription(text: string | undefined): string {
+  if (!text) return '';
+  const plain = stripHtmlForPlainText(text);
+  return truncateAtWord(plain, OG_DESCRIPTION_MAX_LENGTH);
+}
+
+/**
+ * Simplified version for inline contexts (no paragraph wrapping)
+ */
 export function sanitizeAndProcessInlineHtml(text: string): string {
   if (!text || typeof text !== 'string') return text ?? '';
 
