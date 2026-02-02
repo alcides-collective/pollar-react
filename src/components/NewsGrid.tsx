@@ -48,7 +48,7 @@ export function NewsGrid() {
   }
 
   return (
-    <section className="max-w-[1400px] mx-auto px-6 py-10">
+    <section className="max-w-[1400px] mx-auto px-6 pb-10">
       <div className="border border-zinc-200">
         {/* Sticky Market Ticker */}
         <div className="sticky top-0 z-10">

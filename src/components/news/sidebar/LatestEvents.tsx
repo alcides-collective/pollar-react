@@ -12,16 +12,15 @@ export function LatestEvents({ events }: LatestEventsProps) {
       <h3 className="text-red-500 font-semibold mb-4">Najnowsze</h3>
       <div className="space-y-5">
         {events.map((event) => (
-          <Link key={event.id} to={`/event/${event.id}`} className="flex gap-4 group">
-            <span className="text-red-500 text-xs shrink-0 w-12">
-              {formatTimeAgo(event.updatedAt)}
-            </span>
-            <div>
-              <span className="text-zinc-400 text-xs block">{event.category}</span>
-              <h4 className="text-sm text-zinc-600 leading-tight group-hover:text-zinc-900 transition-colors">
-                {event.title}
-              </h4>
+          <Link key={event.id} to={`/event/${event.id}`} className="block group">
+            <div className="flex items-center gap-2 text-xs mb-1">
+              <span className="text-red-500">{formatTimeAgo(event.updatedAt)}</span>
+              <span className="text-zinc-300">•</span>
+              <span className="text-zinc-400">{event.category}</span>
             </div>
+            <h4 className="text-sm text-zinc-600 leading-tight group-hover:text-zinc-900 transition-colors">
+              {event.title}
+            </h4>
           </Link>
         ))}
       </div>
