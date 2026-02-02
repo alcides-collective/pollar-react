@@ -3,6 +3,10 @@ import type { Event, EventsParams, EventsResponse } from '../types/events';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'https://pollar.up.railway.app/api';
 
+// Debug
+console.log('[useEvents] VITE_API_BASE:', import.meta.env.VITE_API_BASE);
+console.log('[useEvents] API_BASE:', API_BASE);
+
 function decodeHtmlEntities(text: string): string {
   const entities: Record<string, string> = {
     '&rdquo;': '"',
