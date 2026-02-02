@@ -52,6 +52,10 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
       if (container) {
         const containerWidth = container.offsetWidth;
         const mobile = window.innerWidth < 768;
+        // Re-measure if mobile state changes
+        if (mobile !== isMobile) {
+          setIsMeasuring(true);
+        }
         setIsMobile(mobile);
         const newWidth = mobile ? containerWidth : Math.floor(containerWidth / 4);
         setItemWidth(newWidth);
@@ -60,7 +64,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
     updateWidth();
     window.addEventListener('resize', updateWidth);
     return () => window.removeEventListener('resize', updateWidth);
-  }, []);
+  }, [isMobile]);
 
   // Measure all items in hidden container to find tallest
   useLayoutEffect(() => {
@@ -178,7 +182,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
         ref={scrollRef}
         className="overflow-x-auto scroll-smooth scrollbar-hide"
         style={{
-          height: containerHeight ?? 280,
+          height: containerHeight ?? 200,
           scrollSnapType: isMobile ? 'x mandatory' : undefined,
         }}
       >

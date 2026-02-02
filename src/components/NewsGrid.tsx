@@ -41,7 +41,7 @@ export function NewsGrid() {
   }
 
   return (
-    <section className="max-w-[1400px] mx-auto px-6 pb-10">
+    <section className="max-w-[1400px] mx-auto px-0 lg:px-6 pb-10">
       <div className="border border-zinc-200">
         {/* Market Ticker */}
         <MarketTicker />
