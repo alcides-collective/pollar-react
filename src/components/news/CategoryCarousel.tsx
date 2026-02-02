@@ -43,6 +43,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
   const [itemWidth, setItemWidth] = useState<number | null>(null);
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
   const [isMeasuring, setIsMeasuring] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Calculate item width based on container and screen size
   useLayoutEffect(() => {
@@ -50,8 +51,9 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
       const container = measureRef.current || scrollRef.current;
       if (container) {
         const containerWidth = container.offsetWidth;
-        const isMobile = window.innerWidth < 768;
-        const newWidth = isMobile ? containerWidth : Math.floor(containerWidth / 4);
+        const mobile = window.innerWidth < 768;
+        setIsMobile(mobile);
+        const newWidth = mobile ? containerWidth : Math.floor(containerWidth / 4);
         setItemWidth(newWidth);
       }
     };
@@ -175,7 +177,10 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
       <div
         ref={scrollRef}
         className="overflow-x-auto scroll-smooth scrollbar-hide"
-        style={{ height: containerHeight ?? 280 }}
+        style={{
+          height: containerHeight ?? 280,
+          scrollSnapType: isMobile ? 'x mandatory' : undefined,
+        }}
       >
         <div
           style={{
@@ -197,6 +202,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
                   width: `${itemWidth ?? 300}px`,
                   height: '100%',
                   transform: `translateX(${virtualItem.start}px)`,
+                  scrollSnapAlign: isMobile ? 'start' : undefined,
                 }}
               >
                 <EventCarouselItem event={event} />
