@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Event, EventsResponse } from '../types/events';
 
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://pollar.up.railway.app/api';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // HTML entity decoding
