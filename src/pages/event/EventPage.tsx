@@ -24,8 +24,9 @@ export function EventPage() {
   useDocumentHead({
     title: pageTitle,
     description: ogDescription,
-    ogTitle: fullTitle, // Use full title for OG image
+    ogTitle: pageTitle, // ultraShortHeadline for og:title meta tag
     ogDescription,
+    ogImageTitle: fullTitle, // Full title for OG image
     ogImageType: 'event',
     ogType: 'article',
   });

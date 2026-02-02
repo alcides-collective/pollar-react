@@ -8,6 +8,7 @@ export interface DocumentHeadOptions {
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  ogImageTitle?: string; // Separate title for the OG image (can differ from ogTitle)
   ogImageType?: OgImageType;
   ogType?: 'website' | 'article';
   twitterCard?: 'summary' | 'summary_large_image';
@@ -41,15 +42,18 @@ export function useDocumentHead(options: DocumentHeadOptions) {
       ogTitle,
       ogDescription,
       ogImage,
+      ogImageTitle,
       ogImageType,
       ogType = 'article',
       twitterCard = 'summary_large_image',
     } = options;
 
     // Generate dynamic OG image URL if type is provided
+    // Use ogImageTitle if provided, otherwise fall back to ogTitle or title
+    const imageTitle = ogImageTitle || ogTitle || title || '';
     const resolvedOgImage = ogImage || (
-      (ogTitle || title) && ogImageType
-        ? generateOgImageUrl(ogTitle || title || '', ogImageType)
+      imageTitle && ogImageType
+        ? generateOgImageUrl(imageTitle, ogImageType)
         : undefined
     );
 
@@ -118,5 +122,5 @@ export function useDocumentHead(options: DocumentHeadOptions) {
       setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', DEFAULT_DESCRIPTION);
       setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', DEFAULT_IMAGE);
     };
-  }, [options.title, options.description, options.ogTitle, options.ogDescription, options.ogImage, options.ogImageType, options.ogType, options.twitterCard]);
+  }, [options.title, options.description, options.ogTitle, options.ogDescription, options.ogImage, options.ogImageTitle, options.ogImageType, options.ogType, options.twitterCard]);
 }
