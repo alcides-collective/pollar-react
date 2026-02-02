@@ -6,14 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "start": "node server.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "express": "^4.21.2",
     "@tanstack/react-virtual": "^3.13.18",
     "@types/mapbox-gl": "^3.4.1",
-    "@vercel/og": "^0.8.6",
-    "chart.js": "^4.5.1",
+        "chart.js": "^4.5.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.30.0",
