@@ -50,10 +50,8 @@ export function NewsGrid() {
   return (
     <section className="max-w-[1400px] mx-auto px-6 pb-10">
       <div className="border border-zinc-200">
-        {/* Sticky Market Ticker */}
-        <div className="sticky top-0 z-10">
-          <MarketTicker />
-        </div>
+        {/* Market Ticker */}
+        <MarketTicker />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px]">
         {/* Main Content */}

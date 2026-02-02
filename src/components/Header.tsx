@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEvents } from '../context/EventsContext';
 import { useCategory } from '../context/CategoryContext';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import logoImg from '../assets/logo.png';
 
 // Static category order (main categories first)
@@ -21,6 +21,47 @@ const CATEGORY_ORDER = [
 export function Header() {
   const { events } = useEvents({ limit: 100, lang: 'pl' });
   const { selectedCategory, setSelectedCategory } = useCategory();
+  const [isVisible, setIsVisible] = useState(true);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const headerRef = useRef<HTMLElement>(null);
+  const lastScrollY = useRef(0);
+
+  // Measure header height
+  useLayoutEffect(() => {
+    const updateHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
+  // Handle scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollThreshold = 10;
+
+      if (Math.abs(currentScrollY - lastScrollY.current) < scrollThreshold) {
+        return;
+      }
+
+      if (currentScrollY < 50) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY.current) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const allCategories = useMemo(() => {
     const uniqueCategories = new Set(events.map(e => e.category).filter(Boolean));
@@ -35,7 +76,8 @@ export function Header() {
 
   
   return (
-    <header className="bg-black sticky top-0 z-50">
+    <>
+    <header ref={headerRef} className={`bg-black fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="max-w-[1400px] mx-auto px-6">
         {/* Top bar */}
         <div className="flex items-center justify-between py-4 border-b border-zinc-800">
@@ -104,5 +146,8 @@ export function Header() {
         </nav>
       </div>
     </header>
+    {/* Spacer for fixed header */}
+    <div style={{ height: headerHeight }} />
+    </>
   );
 }
