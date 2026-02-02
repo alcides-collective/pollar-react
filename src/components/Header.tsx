@@ -3,7 +3,6 @@ import { useEvents } from '../stores/eventsStore';
 import { useUIStore } from '../stores/uiStore';
 import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -109,9 +108,9 @@ export function Header() {
             <a href="#" className="text-sm text-zinc-300 hover:text-white transition-colors">
               Zaloguj się
             </a>
-            <Button variant="outline" size="sm" className="border-zinc-500 hover:border-white text-white hover:text-white hover:bg-transparent">
+            <button className="border border-zinc-500 hover:border-white text-white text-sm px-5 py-2 rounded transition-colors">
               Subskrybuj
-            </Button>
+            </button>
             <button className="text-zinc-300 hover:text-white transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -188,7 +187,13 @@ export function Header() {
                 <Link to="/brief" className="w-full">Daily Brief</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <span className="w-full">Mapa wydarzeń</span>
+                <Link to="/sejm" className="w-full">Sejm</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/mapa" className="w-full">Mapa wydarzeń</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/dane" className="w-full">Otwarte Dane</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <span className="w-full">Archiwum</span>

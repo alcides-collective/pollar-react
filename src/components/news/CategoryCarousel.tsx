@@ -21,13 +21,11 @@ const EventCarouselItem = memo(function EventCarouselItem({ event }: { event: Ev
       <article>
         {event.imageUrl && (
           <div className="overflow-hidden mb-4">
-            <motion.img
+            <img
               src={event.imageUrl}
               alt=""
-              className="w-full aspect-video object-cover"
+              className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
               loading="lazy"
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.3 }}
             />
           </div>
         )}

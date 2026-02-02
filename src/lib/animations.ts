@@ -111,15 +111,20 @@ export const tabContentAnimation: Variants = {
 // Card hover
 export const cardHover = {
   whileHover: {
-    y: -4,
-    transition: { duration: 0.2, ease: 'easeOut' as const },
+    y: -2,
+    transition: { duration: 0.4, ease: 'easeOut' as const },
   },
 }
 
-// Image hover (wewnątrz kart)
+// Image hover (wewnątrz kart) - bardziej delikatne i wolniejsze
 export const imageHover = {
   whileHover: {
-    scale: 1.03,
-    transition: { duration: 0.3, ease: 'easeOut' as const },
+    scale: 1.02,
+    transition: { duration: 0.5, ease: 'easeOut' as const },
   },
 }
+
+// CSS class do użycia z group-hover dla skalowania obrazka
+// Użyj: className="group" na kontenerze
+// oraz: className="transition-transform duration-500 ease-out group-hover:scale-[1.02]" na obrazku
+export const imageHoverClass = 'transition-transform duration-500 ease-out group-hover:scale-[1.02]'

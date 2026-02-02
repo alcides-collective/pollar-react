@@ -830,3 +830,14 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Felieton content - smaller paragraph breaks (half height) */
+.prose br {
+  content: "";
+  display: block;
+  margin-top: 0.4em;
+}
+
+.prose br + br {
+  display: none;
+}

@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
+import { scrollReveal } from '@/lib/animations';
 
 interface DoubleHeroSectionProps {
   events: Event[];
@@ -15,15 +17,23 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
   const rightIsLarger = !reversed;
 
   return (
-    <div className={`grid grid-cols-1 ${gridCols}`}>
+    <motion.div
+      className={`grid grid-cols-1 ${gridCols}`}
+      initial={scrollReveal.initial}
+      whileInView={scrollReveal.whileInView}
+      viewport={scrollReveal.viewport}
+      transition={scrollReveal.transition}
+    >
       <Link to={`/event/${leftEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors border-b md:border-b-0 md:border-r border-zinc-200">
         <article>
           {leftEvent.imageUrl && (
-            <img
-              src={leftEvent.imageUrl}
-              alt=""
-              className="w-full aspect-video object-cover mb-4"
-            />
+            <div className="overflow-hidden mb-4">
+              <img
+                src={leftEvent.imageUrl}
+                alt=""
+                className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              />
+            </div>
           )}
           <span className="text-zinc-400 text-xs">{leftEvent.category}</span>
           <h3 className={`text-zinc-900 font-semibold leading-tight group-hover:underline ${leftIsLarger ? 'text-2xl' : 'text-xl'}`}>
@@ -38,11 +48,13 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
       <Link to={`/event/${rightEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors">
         <article>
           {rightEvent.imageUrl && (
-            <img
-              src={rightEvent.imageUrl}
-              alt=""
-              className="w-full aspect-video object-cover mb-4"
-            />
+            <div className="overflow-hidden mb-4">
+              <img
+                src={rightEvent.imageUrl}
+                alt=""
+                className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              />
+            </div>
           )}
           <span className="text-zinc-400 text-xs">{rightEvent.category}</span>
           <h3 className={`text-zinc-900 font-semibold leading-tight group-hover:underline ${rightIsLarger ? 'text-2xl' : 'text-xl'}`}>
@@ -53,6 +65,6 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
           </p>
         </article>
       </Link>
-    </div>
+    </motion.div>
   );
 }

@@ -9,11 +9,45 @@ import { EventPage } from './pages/event'
 import { BriefPage } from './pages/brief'
 import { FelietonPage } from './pages/felieton'
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage'
+import { MapPage } from './pages/mapa'
 import { ScrollToTop } from './components/ScrollToTop'
+import {
+  SejmLayout,
+  SejmDashboard,
+  MPsPage,
+  MPDetailPage,
+  VotingsPage,
+  VotingDetailPage,
+  ClubsPage,
+  ClubDetailPage,
+  CommitteesPage,
+  CommitteeDetailPage,
+  ProceedingsPage,
+  ProceedingDetailPage,
+  PrintsPage,
+  PrintDetailPage,
+  ProcessesPage,
+  InterpellationsPage,
+  QuestionsPage,
+  VideosPage,
+} from './pages/sejm'
+import { DaneLayout, DanePage } from './pages/dane'
+import { PowietrzePage } from './pages/dane/srodowisko/PowietrzePage'
+import { ImionaPage } from './pages/dane/spoleczenstwo/ImionaPage'
+import { NazwiskaPage } from './pages/dane/spoleczenstwo/NazwiskaPage'
+import { EnergiaPage } from './pages/dane/ekonomia/EnergiaPage'
+import { EurostatPage } from './pages/dane/ekonomia/EurostatPage'
+import { MieszkaniaPage } from './pages/dane/ekonomia/MieszkaniaPage'
+import { KolejPage } from './pages/dane/transport/KolejPage'
+import { PortyPage } from './pages/dane/transport/PortyPage'
+import { PrzestepczoscPage } from './pages/dane/bezpieczenstwo/PrzestepczoscPage'
 
 function HomePage() {
   return <NewsGrid />
 }
+
+// Full-screen routes that don't need Header/Footer
+const FULLSCREEN_ROUTES = ['/mapa']
 
 function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () => void; onContentReady: () => void }) {
   const location = useLocation()
@@ -42,13 +76,53 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
         <Route path="/felieton/:id" element={<FelietonPage />} />
         <Route path="/event/:id" element={<EventPage />} />
         <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
+        <Route path="/mapa" element={<MapPage />} />
+        {/* Sejm routes */}
+        <Route path="/sejm" element={<SejmLayout />}>
+          <Route index element={<SejmDashboard />} />
+          <Route path="poslowie" element={<MPsPage />} />
+          <Route path="poslowie/:id" element={<MPDetailPage />} />
+          <Route path="kluby" element={<ClubsPage />} />
+          <Route path="kluby/:id" element={<ClubDetailPage />} />
+          <Route path="glosowania" element={<VotingsPage />} />
+          <Route path="glosowania/:sitting/:number" element={<VotingDetailPage />} />
+          <Route path="komisje" element={<CommitteesPage />} />
+          <Route path="komisje/:code" element={<CommitteeDetailPage />} />
+          <Route path="posiedzenia" element={<ProceedingsPage />} />
+          <Route path="posiedzenia/:number" element={<ProceedingDetailPage />} />
+          <Route path="druki" element={<PrintsPage />} />
+          <Route path="druki/:number" element={<PrintDetailPage />} />
+          <Route path="procesy" element={<ProcessesPage />} />
+          <Route path="interpelacje" element={<InterpellationsPage />} />
+          <Route path="zapytania" element={<QuestionsPage />} />
+          <Route path="transmisje" element={<VideosPage />} />
+        </Route>
+        {/* Dane routes */}
+        <Route path="/dane" element={<DaneLayout />}>
+          <Route index element={<DanePage />} />
+          <Route path="srodowisko/powietrze" element={<PowietrzePage />} />
+          <Route path="spoleczenstwo/imiona" element={<ImionaPage />} />
+          <Route path="spoleczenstwo/nazwiska" element={<NazwiskaPage />} />
+          <Route path="ekonomia/energia" element={<EnergiaPage />} />
+          <Route path="ekonomia/eurostat" element={<EurostatPage />} />
+          <Route path="ekonomia/mieszkania" element={<MieszkaniaPage />} />
+          <Route path="transport/kolej" element={<KolejPage />} />
+          <Route path="transport/porty" element={<PortyPage />} />
+          <Route path="bezpieczenstwo/przestepczosc" element={<PrzestepczoscPage />} />
+        </Route>
       </Routes>
     </motion.div>
   )
 }
 
-function App() {
+function useIsFullscreenRoute() {
+  const location = useLocation()
+  return FULLSCREEN_ROUTES.some(route => location.pathname === route)
+}
+
+function AppContent() {
   const [showFooter, setShowFooter] = useState(false)
+  const isFullscreen = useIsFullscreenRoute()
 
   const handleRouteChange = useCallback(() => {
     setShowFooter(false)
@@ -58,6 +132,32 @@ function App() {
     setShowFooter(true)
   }, [])
 
+  // Full-screen layout (no header/footer)
+  if (isFullscreen) {
+    return (
+      <>
+        <ScrollToTop />
+        <AnimatedRoutes onRouteChange={handleRouteChange} onContentReady={handleContentReady} />
+      </>
+    )
+  }
+
+  // Standard layout with header/footer
+  return (
+    <>
+      <ScrollToTop />
+      <div className="min-h-screen flex flex-col bg-white">
+        <Header />
+        <main className="flex-1">
+          <AnimatedRoutes onRouteChange={handleRouteChange} onContentReady={handleContentReady} />
+        </main>
+        {showFooter && <Footer />}
+      </div>
+    </>
+  )
+}
+
+function App() {
   return (
     <SWRConfig value={{
       revalidateOnFocus: false,
@@ -66,14 +166,7 @@ function App() {
       keepPreviousData: true,
     }}>
       <BrowserRouter>
-        <ScrollToTop />
-        <div className="min-h-screen flex flex-col bg-white">
-          <Header />
-          <main className="flex-1">
-            <AnimatedRoutes onRouteChange={handleRouteChange} onContentReady={handleContentReady} />
-          </main>
-          {showFooter && <Footer />}
-        </div>
+        <AppContent />
       </BrowserRouter>
     </SWRConfig>
   )

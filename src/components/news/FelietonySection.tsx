@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import type { Felieton, FelietonCategory } from '../../types/felieton';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
+import { staggerContainer, staggerItem } from '@/lib/animations';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.png';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.png';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.png';
@@ -22,11 +24,13 @@ function FelietonCard({ felieton }: { felieton: Felieton }) {
   return (
     <Link to={`/felieton/${felieton.id}`} className="group block p-6 hover:bg-sky-100 transition-colors h-full">
       <article>
-        <img
-          src={imageSrc}
-          alt=""
-          className="w-full aspect-video object-cover mb-4"
-        />
+        <div className="overflow-hidden mb-4">
+          <img
+            src={imageSrc}
+            alt=""
+            className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+          />
+        </div>
         <span className="text-zinc-400 text-xs">{categoryName}</span>
         <h3 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">
           {felieton.title}
@@ -68,20 +72,30 @@ export function FelietonySection({ felietony }: FelietonySectionProps) {
   );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 bg-sky-50">
+    <motion.div
+      className="grid grid-cols-1 md:grid-cols-3 bg-sky-50"
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true }}
+    >
       {categories.map((category, index) => {
         const felieton = felietonyByCategory.get(category);
         const isLast = index === categories.length - 1;
         return (
-          <div key={category} className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}>
+          <motion.div
+            key={category}
+            className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}
+            variants={staggerItem}
+          >
             {felieton ? (
               <FelietonCard felieton={felieton} />
             ) : (
               <PlaceholderCard category={category} />
             )}
-          </div>
+          </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 }
