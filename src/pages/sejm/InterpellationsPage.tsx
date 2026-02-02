@@ -133,9 +133,7 @@ export function InterpellationsPage() {
                 onClick={closeModal}
                 className="text-zinc-400 hover:text-zinc-600"
               >
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <i className="ri-close-line text-2xl" />
               </button>
             </div>
             <div className="p-4 overflow-y-auto flex-1">

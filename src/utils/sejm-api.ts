@@ -21,7 +21,7 @@ import type {
   PrintAISummary,
 } from '../types/sejm';
 
-const API_BASE = 'https://pollar.news/api';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://pollar.up.railway.app/api';
 // Call Sejm API directly - they support CORS
 const SEJM_API_BASE = 'https://api.sejm.gov.pl/sejm/term10';
 

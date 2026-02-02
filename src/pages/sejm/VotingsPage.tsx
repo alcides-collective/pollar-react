@@ -85,15 +85,7 @@ function StackItem({
               {rejectedCount} odrzucone
             </span>
           )}
-          <svg
-            className={`w-3.5 h-3.5 text-zinc-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
+          <i className={`ri-arrow-down-s-line text-zinc-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
         </div>
 
         {/* Vote percentages grid - for groups show % not absolute */}

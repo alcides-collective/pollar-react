@@ -25,7 +25,7 @@ export function CommitteeDetailPage() {
       <div className="text-center py-12">
         <p className="text-zinc-500">Nie znaleziono komisji</p>
         <Link to="/sejm/komisje" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
-          ← Wróć do listy
+          <i className="ri-arrow-left-s-line" /> Wróć do listy
         </Link>
       </div>
     );
@@ -50,7 +50,7 @@ export function CommitteeDetailPage() {
     <div className="space-y-6">
       {/* Back link */}
       <Link to="/sejm/komisje" className="text-sm text-zinc-500 hover:text-zinc-700">
-        ← Wszystkie komisje
+        <i className="ri-arrow-left-s-line" /> Wszystkie komisje
       </Link>
 
       {/* Header */}
@@ -159,7 +159,7 @@ export function CommitteeDetailPage() {
                     rel="noopener noreferrer"
                     className="shrink-0 text-xs text-blue-600 hover:underline"
                   >
-                    Video →
+                    Video <i className="ri-arrow-right-s-line" />
                   </a>
                 )}
               </div>

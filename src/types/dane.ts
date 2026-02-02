@@ -66,6 +66,14 @@ export interface NameEntry {
   type: 'first' | 'second';
 }
 
+export interface SurnameEntry {
+  name: string;
+  totalCount: number;
+  maleCount: number;
+  femaleCount: number;
+  rank: number;
+}
+
 export interface NamesDataset {
   id: string;
   title: string;

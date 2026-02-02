@@ -14,7 +14,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://pollar.news',
+        target: 'https://pollar.up.railway.app',
         changeOrigin: true,
         secure: true,
       },

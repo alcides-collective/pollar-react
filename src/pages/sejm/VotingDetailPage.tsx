@@ -82,7 +82,7 @@ export function VotingDetailPage() {
       <div className="text-center py-12">
         <p className="text-zinc-500">Nie znaleziono głosowania</p>
         <Link to="/sejm/glosowania" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
-          ← Wróć do listy
+          <i className="ri-arrow-left-s-line" /> Wróć do listy
         </Link>
       </div>
     );
@@ -103,7 +103,7 @@ export function VotingDetailPage() {
     <div className="space-y-6">
       {/* Back link */}
       <Link to="/sejm/glosowania" className="text-sm text-zinc-500 hover:text-zinc-700">
-        ← Wszystkie głosowania
+        <i className="ri-arrow-left-s-line" /> Wszystkie głosowania
       </Link>
 
       {/* Header */}

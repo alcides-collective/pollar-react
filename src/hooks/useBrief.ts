@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import type { DailyBrief, BriefResponse } from '../types/brief';
 
-const API_BASE = 'https://pollar.news/api';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://pollar.up.railway.app/api';
 
 function decodeHtmlEntities(text: string): string {
   const entities: Record<string, string> = {

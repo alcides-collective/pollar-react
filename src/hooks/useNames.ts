@@ -5,6 +5,7 @@ import { API_BASE } from '../utils/dane-api';
 interface NamesRankingResponse {
   ranking: NameEntry[];
   availableYears?: number[];
+  year?: number;
 }
 
 interface NamesParams {
@@ -35,6 +36,7 @@ export function useNames(params: NamesParams = {}) {
   return {
     ranking: data?.ranking ?? [],
     availableYears: data?.availableYears ?? [],
+    selectedYear: data?.year,
     loading: isLoading,
     error: error ?? null,
   };

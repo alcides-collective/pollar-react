@@ -24,7 +24,7 @@ export function ProceedingDetailPage() {
       <div className="text-center py-12">
         <p className="text-zinc-500">Nie znaleziono posiedzenia</p>
         <Link to="/sejm/posiedzenia" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
-          ← Wróć do listy
+          <i className="ri-arrow-left-s-line" /> Wróć do listy
         </Link>
       </div>
     );
@@ -48,7 +48,7 @@ export function ProceedingDetailPage() {
     <div className="space-y-6">
       {/* Back link */}
       <Link to="/sejm/posiedzenia" className="text-sm text-zinc-500 hover:text-zinc-700">
-        ← Wszystkie posiedzenia
+        <i className="ri-arrow-left-s-line" /> Wszystkie posiedzenia
       </Link>
 
       {/* Header */}

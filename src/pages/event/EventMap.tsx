@@ -23,7 +23,7 @@ export function EventMap({ location }: EventMapProps) {
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v11',
       center: [location.coordinates.longitude, location.coordinates.latitude],
-      zoom: 8,
+      zoom: 5,
       attributionControl: false,
       interactive: false,
     });

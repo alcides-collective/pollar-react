@@ -4,7 +4,7 @@ import { useSejmStats } from '../../hooks/useSejmStats';
 import { useMPs } from '../../hooks/useMPs';
 import { useVotings } from '../../hooks/useVotings';
 import { useCurrentProceeding } from '../../hooks/useProceedings';
-import { SejmStats, VotingCard, SejmApiError } from '../../components/sejm';
+import { SejmStats, VotingCard, SejmApiError, PollingChart } from '../../components/sejm';
 import { getPartyColor } from '../../types/sejm';
 import type { SejmMP } from '../../types/sejm';
 
@@ -95,8 +95,16 @@ export function SejmDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Stats */}
-      {stats && <SejmStats stats={stats} />}
+      {/* Stats and Polling - side by side on larger screens */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {stats && <SejmStats stats={stats} />}
+
+        {/* Polling */}
+        <div className="rounded-lg border border-zinc-200 p-4">
+          <h3 className="text-sm font-medium text-zinc-900 mb-4">Sondaże</h3>
+          <PollingChart />
+        </div>
+      </div>
 
       {/* Current Proceeding */}
       {currentProceeding && (
@@ -136,7 +144,7 @@ export function SejmDashboard() {
               to="/sejm/poslowie"
               className="text-[10px] text-zinc-400 hover:text-zinc-600 transition-colors"
             >
-              Wszyscy →
+              Wszyscy <i className="ri-arrow-right-s-line" />
             </Link>
           </div>
         </div>
@@ -186,7 +194,7 @@ export function SejmDashboard() {
             to="/sejm/glosowania"
             className="text-xs text-zinc-500 hover:text-zinc-700"
           >
-            Wszystkie →
+            Wszystkie <i className="ri-arrow-right-s-line" />
           </Link>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
@@ -202,7 +210,7 @@ export function SejmDashboard() {
           to="/sejm/druki"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
-          <div className="text-2xl mb-1">📄</div>
+          <i className="ri-file-text-line text-2xl text-zinc-600 mb-1" />
           <div className="text-sm font-medium text-zinc-900">Druki</div>
           <div className="text-xs text-zinc-500">{stats?.prints.recent || 0} ostatnich</div>
         </Link>
@@ -210,7 +218,7 @@ export function SejmDashboard() {
           to="/sejm/interpelacje"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
-          <div className="text-2xl mb-1">❓</div>
+          <i className="ri-question-answer-line text-2xl text-zinc-600 mb-1" />
           <div className="text-sm font-medium text-zinc-900">Interpelacje</div>
           <div className="text-xs text-zinc-500">{stats?.interpellations.recent || 0} ostatnich</div>
         </Link>
@@ -218,14 +226,14 @@ export function SejmDashboard() {
           to="/sejm/komisje"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
-          <div className="text-2xl mb-1">👥</div>
+          <i className="ri-team-line text-2xl text-zinc-600 mb-1" />
           <div className="text-sm font-medium text-zinc-900">Komisje</div>
         </Link>
         <Link
           to="/sejm/transmisje"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
-          <div className="text-2xl mb-1">📺</div>
+          <i className="ri-live-line text-2xl text-zinc-600 mb-1" />
           <div className="text-sm font-medium text-zinc-900">Transmisje</div>
         </Link>
       </div>

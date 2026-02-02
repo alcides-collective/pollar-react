@@ -8,3 +8,4 @@ export { InterpellationCard } from './InterpellationCard';
 export { SejmApiError } from './SejmApiError';
 export { SejmStats } from './SejmStats';
 export { SejmNav } from './SejmNav';
+export { PollingChart } from './PollingChart';

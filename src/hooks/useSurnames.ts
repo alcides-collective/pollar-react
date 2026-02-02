@@ -1,9 +1,10 @@
 import useSWR from 'swr';
-import type { NameEntry } from '../types/dane';
+import type { SurnameEntry } from '../types/dane';
 import { API_BASE } from '../utils/dane-api';
 
 interface SurnamesRankingResponse {
-  ranking: NameEntry[];
+  ranking: SurnameEntry[];
+  date?: string;
 }
 
 interface SurnamesParams {
@@ -31,6 +32,7 @@ export function useSurnames(params: SurnamesParams = {}) {
 
   return {
     ranking: data?.ranking ?? [],
+    date: data?.date,
     loading: isLoading,
     error: error ?? null,
   };
