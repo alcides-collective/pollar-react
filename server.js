@@ -235,8 +235,7 @@ async function fetchFelietonData(felietonId) {
   try {
     const response = await fetch(`${API_BASE}/api/felietony/${felietonId}?lang=pl`);
     if (!response.ok) return null;
-    const result = await response.json();
-    return result.data;
+    return await response.json();
   } catch {
     return null;
   }
