@@ -27,12 +27,14 @@ export function BriefPage() {
       })
     : '';
   const ogTitle = brief ? `Daily Brief – ${formattedDate}` : 'Daily Brief';
+  const ogImageTitle = brief?.headline || ogTitle;
   const ogDescription = prepareOgDescription(brief?.lead || brief?.executiveSummary);
   useDocumentHead({
     title: ogTitle,
     description: ogDescription,
-    ogTitle,
+    ogTitle: ogImageTitle,
     ogDescription,
+    ogImageType: 'brief',
     ogType: 'article',
   });
 

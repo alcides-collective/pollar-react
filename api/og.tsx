@@ -4,8 +4,8 @@ export const config = {
   runtime: 'edge',
 };
 
-// Logo as base64 - will be loaded at build time
-const logoUrl = 'https://pollar.news/logo-white.png';
+// Logo embedded as base64 data URI
+const logoDataUri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAArAAAAFNAQAAAADQ22FBAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAAB3YoTpAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+oCAhQcH9uSUqsAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjYtMDItMDJUMDk6Mzg6NTcrMDA6MDANngMXAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI1LTEyLTIwVDIzOjI0OjU4KzAwOjAwhYt1JQAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNi0wMi0wMlQyMDoyODozMSswMDowMCkct0wAAAEPSURBVHja7drNbQIxFIVRIwpIyZ7SKCWFROMIJfwNgyPMPCQ759sh4bO7bwMpbdG+pF3ZRMJisVispC0rzVVHjMVisdj3sJICa9/tzYaxWCwW+wcrKbS+DgIWi8X2y0rSudfuy4TFYrHjsZJOBQ0Mi8VisZKGqO0cYLFYLPZZVlKf/W58dz/7+Xwu5v3iHnwcHxywWCwW+wQr6dRlUinl5c6C2ZtlHy6fZywWix2QldRjeeUA5PpNiGSvn01YLBY7EttaECuNVikr0z2WH493imYf7heLxWL7ZV8riJWGamW2wWy+m+X6TH9uxRcWi8UOwlbqi5X+W9e/YL+JXfyh77Py7eVjLBaL7Zet1c5+A/P5gLmuqDd9AAAAAElFTkSuQmCC';
 
 export default async function handler(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -78,7 +78,7 @@ export default async function handler(request: Request) {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={logoUrl}
+            src={logoDataUri}
             alt=""
             width={172}
             height={83}

@@ -91,13 +91,15 @@ export function FelietonPage() {
   const { felieton, loading, error } = useFelieton(id);
 
   // SEO meta tags
-  const ogTitle = prepareOgTitle(felieton?.title);
+  const fullTitle = felieton?.title || '';
+  const ogTitle = prepareOgTitle(fullTitle);
   const ogDescription = prepareOgDescription(felieton?.lead);
   useDocumentHead({
-    title: felieton?.title,
+    title: fullTitle,
     description: ogDescription,
-    ogTitle,
+    ogTitle: fullTitle, // Use full title for OG image
     ogDescription,
+    ogImageType: 'felieton',
     ogType: 'article',
   });
 
