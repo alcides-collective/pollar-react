@@ -51,20 +51,12 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
         // On mobile: full width, on desktop: 1/4 of container
         const newWidth = isMobile ? containerWidth : Math.floor(containerWidth / 4);
         setItemWidth(newWidth);
-
-        // DEBUG
-        console.log(`[CategoryCarousel: ${category}]`, {
-          containerWidth,
-          itemWidth: newWidth,
-          isMobile,
-          windowWidth: window.innerWidth,
-        });
       }
     };
     updateWidth();
     window.addEventListener('resize', updateWidth);
     return () => window.removeEventListener('resize', updateWidth);
-  }, [category]);
+  }, []);
 
   // Initialize virtualizer
   const virtualizer = useVirtualizer({
@@ -79,20 +71,6 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
   useEffect(() => {
     virtualizer.measure();
   }, [itemWidth, virtualizer]);
-
-  // DEBUG virtualizer
-  useEffect(() => {
-    const items = virtualizer.getVirtualItems();
-    if (items.length > 0) {
-      console.log(`[Virtualizer: ${category}]`, {
-        totalSize: virtualizer.getTotalSize(),
-        itemCount: events.length,
-        virtualItemsCount: items.length,
-        firstItem: items[0] ? { index: items[0].index, start: items[0].start, size: items[0].size } : null,
-        secondItem: items[1] ? { index: items[1].index, start: items[1].start, size: items[1].size } : null,
-      });
-    }
-  }, [virtualizer, category, events.length, itemWidth]);
 
   // Update container height based on first item (after render)
   useEffect(() => {

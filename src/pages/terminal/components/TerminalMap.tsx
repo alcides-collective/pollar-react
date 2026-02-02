@@ -31,10 +31,15 @@ export function TerminalMap({ event }: TerminalMapProps) {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v11',
-      center: [19.0122, 52.2297], // Poland center
-      zoom: 5,
+      center: [15.0, 50.0], // Europe center
+      zoom: 2,
       attributionControl: false,
       interactive: false,
+    });
+
+    // Resize map when loaded to fix centering issues
+    map.current.on('load', () => {
+      map.current?.resize();
     });
 
     return () => {
@@ -59,31 +64,27 @@ export function TerminalMap({ event }: TerminalMapProps) {
       // Add new marker with custom element (yellow dot for terminal)
       const el = document.createElement('div');
       el.style.cssText = `
-        width: 12px;
-        height: 12px;
+        width: 10px;
+        height: 10px;
         background: #eab308;
         border-radius: 50%;
         border: 2px solid #000;
-        box-shadow: 0 0 8px rgba(234, 179, 8, 0.6);
+        box-shadow: 0 0 6px rgba(234, 179, 8, 0.8);
       `;
 
       markerRef.current = new mapboxgl.Marker({ element: el })
         .setLngLat([longitude, latitude])
         .addTo(map.current);
 
-      // Fly to location
-      map.current.flyTo({
-        center: [longitude, latitude],
-        zoom: 8,
-        duration: 1000,
-      });
+      // Resize first, then center on marker
+      map.current.resize();
+      map.current.setCenter([longitude, latitude]);
+      map.current.setZoom(3);
     } else {
-      // Reset to default view (Poland)
-      map.current.flyTo({
-        center: [19.0122, 52.2297],
-        zoom: 5,
-        duration: 1000,
-      });
+      // Reset to default view (Europe)
+      map.current.resize();
+      map.current.setCenter([15.0, 50.0]);
+      map.current.setZoom(2);
     }
   }, [event?.id, hasCoordinates, firstLocation]);
 
@@ -91,13 +92,13 @@ export function TerminalMap({ event }: TerminalMapProps) {
   const cities = locations.filter(loc => loc.city).map(loc => loc.city?.toUpperCase()).join(' • ');
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      {/* Map container - always rendered */}
-      <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
+    <div style={{ position: 'absolute', inset: 0 }}>
+      {/* Map container - fills parent absolutely */}
+      <div ref={mapContainer} style={{ position: 'absolute', inset: 0 }} />
 
       {/* Overlay when no coordinates */}
       {!hasCoordinates && (
-        <div className="map-placeholder" style={{ position: 'absolute', inset: 0 }}>
+        <div className="map-placeholder" style={{ position: 'absolute', inset: 0, background: '#0a0a0a' }}>
           {cities ? (
             <span className="map-city">{cities}</span>
           ) : (

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEvents } from '../stores/eventsStore';
 import { useUIStore } from '../stores/uiStore';
+import { useSearchStore } from '../stores/searchStore';
 import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -9,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { SearchModal } from '@/components/search';
 import logoImg from '../assets/logo.png';
 
 // Static category order (main categories first)
@@ -29,6 +31,7 @@ export function Header() {
   const { events } = useEvents({ limit: 100, lang: 'pl' });
   const selectedCategory = useUIStore((state) => state.selectedCategory);
   const setSelectedCategory = useUIStore((state) => state.setSelectedCategory);
+  const openSearch = useSearchStore((state) => state.openSearch);
   const [isVisible, setIsVisible] = useState(true);
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLElement>(null);
@@ -111,7 +114,11 @@ export function Header() {
             <button className="border border-zinc-500 hover:border-white text-white text-sm px-5 py-2 rounded transition-colors">
               Subskrybuj
             </button>
-            <button className="text-zinc-300 hover:text-white transition-colors">
+            <button
+              onClick={openSearch}
+              className="text-zinc-300 hover:text-white transition-colors"
+              aria-label="Szukaj"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -208,6 +215,9 @@ export function Header() {
     </motion.header>
     {/* Spacer for fixed header */}
     <div style={{ height: headerHeight }} />
+
+    {/* Search Modal */}
+    <SearchModal />
     </>
   );
 }
