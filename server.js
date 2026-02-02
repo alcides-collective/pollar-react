@@ -23,6 +23,39 @@ try {
   console.warn('Could not load logo:', err.message);
 }
 
+// Static page titles mapping
+const PAGE_TITLES = {
+  '/': { title: 'Pollar News', description: 'Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.' },
+  '/brief': null, // handled separately (dynamic)
+  '/powiazania': { title: 'Powiązania', description: 'Codzienna gra słowna w stylu NYT Connections. Znajdź ukryte powiązania!' },
+  '/mapa': { title: 'Mapa wydarzeń', description: 'Interaktywna mapa najważniejszych wydarzeń.' },
+  '/terminal': { title: 'Terminal', description: 'Terminal informacyjny Pollar News.' },
+  '/polityka-prywatnosci': { title: 'Polityka prywatności', description: 'Polityka prywatności serwisu Pollar News.' },
+  // Sejm
+  '/sejm': { title: 'Sejm', description: 'Dane i statystyki z Sejmu RP.' },
+  '/sejm/poslowie': { title: 'Posłowie', description: 'Lista posłów Sejmu RP X kadencji.' },
+  '/sejm/kluby': { title: 'Kluby parlamentarne', description: 'Kluby i koła poselskie w Sejmie RP.' },
+  '/sejm/glosowania': { title: 'Głosowania', description: 'Historia głosowań w Sejmie RP.' },
+  '/sejm/komisje': { title: 'Komisje sejmowe', description: 'Komisje stałe i nadzwyczajne Sejmu RP.' },
+  '/sejm/posiedzenia': { title: 'Posiedzenia', description: 'Posiedzenia Sejmu RP.' },
+  '/sejm/druki': { title: 'Druki sejmowe', description: 'Projekty ustaw i druki sejmowe.' },
+  '/sejm/procesy': { title: 'Procesy legislacyjne', description: 'Śledzenie procesów legislacyjnych w Sejmie.' },
+  '/sejm/interpelacje': { title: 'Interpelacje', description: 'Interpelacje poselskie.' },
+  '/sejm/zapytania': { title: 'Zapytania', description: 'Zapytania poselskie.' },
+  '/sejm/transmisje': { title: 'Transmisje', description: 'Transmisje z posiedzeń Sejmu.' },
+  // Dane
+  '/dane': { title: 'Dane', description: 'Wizualizacje danych i statystyk.' },
+  '/dane/srodowisko/powietrze': { title: 'Jakość powietrza', description: 'Aktualne dane o jakości powietrza w Polsce.' },
+  '/dane/spoleczenstwo/imiona': { title: 'Imiona', description: 'Statystyki najpopularniejszych imion w Polsce.' },
+  '/dane/spoleczenstwo/nazwiska': { title: 'Nazwiska', description: 'Statystyki najpopularniejszych nazwisk w Polsce.' },
+  '/dane/ekonomia/energia': { title: 'Energia', description: 'Dane o produkcji i zużyciu energii.' },
+  '/dane/ekonomia/eurostat': { title: 'Eurostat', description: 'Dane statystyczne z Eurostatu.' },
+  '/dane/ekonomia/mieszkania': { title: 'Ceny mieszkań', description: 'Aktualne ceny mieszkań w Polsce.' },
+  '/dane/transport/kolej': { title: 'Kolej', description: 'Statystyki transportu kolejowego.' },
+  '/dane/transport/porty': { title: 'Porty', description: 'Statystyki portów morskich.' },
+  '/dane/bezpieczenstwo/przestepczosc': { title: 'Przestępczość', description: 'Statystyki przestępczości w Polsce.' },
+};
+
 // Crawler detection
 // Note: iMessage spoofs facebookexternalhit + Twitterbot, so it's already covered
 const CRAWLER_USER_AGENTS = [
@@ -268,7 +301,7 @@ app.use(async (req, res, next) => {
       const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event`;
 
       return res.send(generateSeoHtml({
-        pageTitle: `${ogTitle} | Pollar`,
+        pageTitle: `${shortTitle} | Pollar`,
         ogTitle,
         description,
         ogImage,
@@ -280,22 +313,23 @@ app.use(async (req, res, next) => {
   // Brief page
   if (req.path === '/brief') {
     const brief = await fetchBriefData();
-    let ogTitle = 'Daily Brief';
+    let briefTitle = 'Daily Brief';
     let description = 'Podsumowanie najważniejszych wydarzeń dnia.';
-    let imageTitle = ogTitle;
+    let imageTitle = briefTitle;
 
     if (brief) {
       const date = brief.date ? new Date(brief.date).toLocaleDateString('pl-PL', {
         day: 'numeric', month: 'long', year: 'numeric'
       }) : '';
-      ogTitle = date ? `Daily Brief – ${date}` : 'Daily Brief';
-      imageTitle = brief.headline || ogTitle;
+      briefTitle = date ? `Daily Brief – ${date}` : 'Daily Brief';
+      imageTitle = brief.headline || briefTitle;
       description = truncate(stripHtml(brief.lead || brief.executiveSummary || ''), 160);
     }
 
+    const ogTitle = `Pollar News: ${briefTitle}`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(imageTitle)}&type=brief`;
     return res.send(generateSeoHtml({
-      pageTitle: `${ogTitle} | Pollar`,
+      pageTitle: `${briefTitle} | Pollar`,
       ogTitle,
       description,
       ogImage,
@@ -307,17 +341,18 @@ app.use(async (req, res, next) => {
   const felietonMatch = req.path.match(/^\/felieton\/([^/?#]+)/);
   if (felietonMatch) {
     const felieton = await fetchFelietonData(felietonMatch[1]);
-    let ogTitle = 'Felieton';
+    let felietonTitle = 'Felieton';
     let description = 'Felieton Pollar News.';
 
     if (felieton) {
-      ogTitle = felieton.title || ogTitle;
+      felietonTitle = felieton.title || felietonTitle;
       description = truncate(stripHtml(felieton.lead || ''), 160);
     }
 
-    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(ogTitle)}&type=felieton`;
+    const ogTitle = `Pollar News: ${felietonTitle}`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(felietonTitle)}&type=felieton`;
     return res.send(generateSeoHtml({
-      pageTitle: `${ogTitle} | Pollar`,
+      pageTitle: `${felietonTitle} | Pollar`,
       ogTitle,
       description,
       ogImage,
@@ -325,14 +360,19 @@ app.use(async (req, res, next) => {
     }));
   }
 
-  // Homepage
-  if (req.path === '/') {
+  // Static pages from PAGE_TITLES map
+  const pageInfo = PAGE_TITLES[req.path];
+  if (pageInfo) {
+    const isHomepage = req.path === '/';
+    const ogTitle = isHomepage ? pageInfo.title : `Pollar News: ${pageInfo.title}`;
+    const pageTitle = isHomepage ? 'Pollar — Wiesz więcej' : `${pageInfo.title} | Pollar`;
+
     return res.send(generateSeoHtml({
-      pageTitle: 'Pollar — Wiesz więcej',
-      ogTitle: 'Pollar News',
-      description: 'Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.',
+      pageTitle,
+      ogTitle,
+      description: pageInfo.description,
       ogImage: `${baseUrl}/og-image.jpg`,
-      targetUrl: baseUrl,
+      targetUrl: isHomepage ? baseUrl : targetUrl,
       ogType: 'website'
     }));
   }
