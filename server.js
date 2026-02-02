@@ -260,7 +260,8 @@ app.use(async (req, res, next) => {
   if (eventMatch) {
     const event = await fetchEventData(eventMatch[1]);
     if (event) {
-      const ogTitle = event.metadata?.ultraShortHeadline || event.title || 'Pollar';
+      const shortTitle = event.metadata?.ultraShortHeadline || event.title || 'Pollar';
+      const ogTitle = `Pollar News: ${shortTitle}`;
       const fullTitle = event.title || 'Pollar';
       const kp = event.metadata?.keyPoints?.[0];
       const description = truncate(stripHtml(kp?.description || event.lead || event.summary || ''), 160);
