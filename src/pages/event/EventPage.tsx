@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useEvent } from '../../hooks/useEvent';
 import { useEvents } from '../../stores/eventsStore';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
-import { prepareOgTitle, prepareOgDescription } from '../../utils/text';
+import { prepareOgDescription } from '../../utils/text';
 import { EventHeader } from './EventHeader';
 import { EventKeyPoints } from './EventKeyPoints';
 import { EventSummary } from './EventSummary';
@@ -17,15 +17,14 @@ export function EventPage() {
 
   // SEO meta tags
   const pageTitle = event?.metadata?.ultraShortHeadline || event?.title || '';
-  const ogImageTitle = event?.title || ''; // Full title for OG image
-  const ogTitle = prepareOgTitle(pageTitle);
+  const fullTitle = event?.title || ''; // Full title for OG image
   const ogDescription = prepareOgDescription(
     event?.metadata?.keyPoints?.[0]?.description || event?.summary
   );
   useDocumentHead({
     title: pageTitle,
     description: ogDescription,
-    ogTitle: ogImageTitle, // Use full title for OG image
+    ogTitle: fullTitle, // Use full title for OG image
     ogDescription,
     ogImageType: 'event',
     ogType: 'article',

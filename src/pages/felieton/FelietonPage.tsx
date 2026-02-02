@@ -3,7 +3,7 @@ import { useFelieton } from '../../hooks/useFelieton';
 import { useEvent } from '../../hooks/useEvent';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
-import { preventWidows, sanitizeAndProcessHtml, prepareOgTitle, prepareOgDescription } from '../../utils/text';
+import { preventWidows, sanitizeAndProcessHtml, prepareOgDescription } from '../../utils/text';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.png';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.png';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.png';
@@ -92,7 +92,6 @@ export function FelietonPage() {
 
   // SEO meta tags
   const fullTitle = felieton?.title || '';
-  const ogTitle = prepareOgTitle(fullTitle);
   const ogDescription = prepareOgDescription(felieton?.lead);
   useDocumentHead({
     title: fullTitle,
