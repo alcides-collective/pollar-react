@@ -39,16 +39,18 @@ const EventCarouselItem = memo(function EventCarouselItem({ event }: { event: Ev
 
 export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [itemWidth, setItemWidth] = useState(300);
-  const [containerHeight, setContainerHeight] = useState(280);
+  const measureRef = useRef<HTMLDivElement>(null);
+  const [itemWidth, setItemWidth] = useState<number | null>(null);
+  const [containerHeight, setContainerHeight] = useState<number | null>(null);
+  const [isMeasuring, setIsMeasuring] = useState(true);
 
   // Calculate item width based on container and screen size
   useLayoutEffect(() => {
     const updateWidth = () => {
-      if (scrollRef.current) {
-        const containerWidth = scrollRef.current.offsetWidth;
+      const container = measureRef.current || scrollRef.current;
+      if (container) {
+        const containerWidth = container.offsetWidth;
         const isMobile = window.innerWidth < 768;
-        // On mobile: full width, on desktop: 1/4 of container
         const newWidth = isMobile ? containerWidth : Math.floor(containerWidth / 4);
         setItemWidth(newWidth);
       }
@@ -58,32 +60,39 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
+  // Measure all items in hidden container to find tallest
+  useLayoutEffect(() => {
+    if (!measureRef.current || !isMeasuring || itemWidth === null) return;
+
+    const items = measureRef.current.querySelectorAll('[data-measure-item]');
+    let maxHeight = 0;
+
+    items.forEach((item) => {
+      const height = item.getBoundingClientRect().height;
+      if (height > maxHeight) {
+        maxHeight = height;
+      }
+    });
+
+    if (maxHeight > 0) {
+      setContainerHeight(maxHeight);
+      setIsMeasuring(false);
+    }
+  }, [itemWidth, isMeasuring, events]);
+
   // Initialize virtualizer
   const virtualizer = useVirtualizer({
     count: events.length,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => itemWidth,
+    estimateSize: () => itemWidth ?? 300,
     horizontal: true,
-    overscan: 3, // Render 3 extra items on each side for smooth scrolling
+    overscan: 3,
   });
 
   // Force virtualizer to recalculate when itemWidth changes
   useEffect(() => {
     virtualizer.measure();
   }, [itemWidth, virtualizer]);
-
-  // Update container height based on first item (after render)
-  useEffect(() => {
-    if (scrollRef.current) {
-      const firstItem = scrollRef.current.querySelector('[data-index="0"]');
-      if (firstItem) {
-        const height = firstItem.getBoundingClientRect().height;
-        if (height > 0) {
-          setContainerHeight(height);
-        }
-      }
-    }
-  }, [events, itemWidth]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -100,6 +109,38 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
 
   if (events.length === 0) {
     return null;
+  }
+
+  // Render hidden measurement container while measuring
+  if (isMeasuring) {
+    return (
+      <div className="border-b border-zinc-200 last:border-b-0 relative">
+        <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
+          <h2 className="text-xl font-bold text-zinc-900">{category}</h2>
+        </div>
+        <div
+          ref={measureRef}
+          aria-hidden="true"
+          className="overflow-hidden"
+          style={{
+            height: 0,
+            pointerEvents: 'none',
+          }}
+        >
+          <div style={{ display: 'flex' }}>
+            {events.map((event) => (
+              <div
+                key={event.id}
+                data-measure-item
+                style={{ width: itemWidth ?? 300, flexShrink: 0 }}
+              >
+                <EventCarouselItem event={event} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -134,7 +175,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
       <div
         ref={scrollRef}
         className="overflow-x-auto scroll-smooth scrollbar-hide"
-        style={{ height: containerHeight }}
+        style={{ height: containerHeight ?? 280 }}
       >
         <div
           style={{
@@ -153,7 +194,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
                   position: 'absolute',
                   top: 0,
                   left: 0,
-                  width: `${itemWidth}px`,
+                  width: `${itemWidth ?? 300}px`,
                   height: '100%',
                   transform: `translateX(${virtualItem.start}px)`,
                 }}
