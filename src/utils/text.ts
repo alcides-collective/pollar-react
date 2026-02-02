@@ -631,8 +631,8 @@ export function sanitizeAndProcessHtml(text: string): string {
     })
     .join('');
 
-  // Remove event UUID/ID references
-  return paragraphs.replace(/\s*\((?:event\s+)?(?:UUID|ID):?\s*\[?[a-f0-9-]{36}\]?\)/gi, '');
+  // Remove event UUID/ID references like (ID: 123) or (event bd6b1f5c-9ca3-46fd-9e0c-6399f2b5e5c2)
+  return paragraphs.replace(/\s*\((?:ID:\s*\d+|event\s+[a-f0-9-]+)\)/gi, '');
 }
 
 /**
@@ -678,5 +678,5 @@ export function sanitizeAndProcessInlineHtml(text: string): string {
     .replace(/<\/b>/gi, '</b>')
     .replace(/<b>/gi, '<b>');
 
-  return processedText.replace(/\s*\((?:event\s+)?(?:UUID|ID):?\s*\[?[a-f0-9-]{36}\]?\)/gi, '');
+  return processedText.replace(/\s*\((?:ID:\s*\d+|event\s+[a-f0-9-]+)\)/gi, '');
 }

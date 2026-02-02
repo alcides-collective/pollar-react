@@ -1,39 +1,6 @@
 import { forwardRef } from 'react';
-import { Link } from 'react-router-dom';
 import type { BriefSection } from '../../types/brief';
-import { useEvent } from '../../hooks/useEvent';
 import { preventWidows, sanitizeAndProcessHtml, sanitizeAndProcessInlineHtml } from '../../utils/text';
-
-function stripIds(text: string): string {
-  return text.replace(/\s*\(ID:\s*\d+\)/gi, '').trim();
-}
-
-function InlineEventCard({ eventId }: { eventId: string }) {
-  const { event, loading } = useEvent(eventId);
-
-  if (loading) {
-    return (
-      <div className="p-3 bg-zinc-50 rounded-lg animate-pulse">
-        <div className="h-4 w-3/4 bg-zinc-200 rounded" />
-      </div>
-    );
-  }
-
-  if (!event) return null;
-
-  const headline = stripIds(event.metadata?.ultraShortHeadline || event.title);
-
-  return (
-    <Link
-      to={`/event/${event.id}`}
-      className="block p-3 bg-zinc-50 hover:bg-zinc-100 rounded-lg transition-colors"
-    >
-      <p className="text-sm text-zinc-700 line-clamp-2">
-        {headline}
-      </p>
-    </Link>
-  );
-}
 
 interface BriefSectionsProps {
   sections: BriefSection[];
@@ -93,34 +60,6 @@ const SectionCard = forwardRef<HTMLDivElement, { section: BriefSection }>(
           </div>
         )}
 
-        {section.insights && section.insights.length > 0 && (
-          <div className="mt-3 pt-3 border-t border-zinc-100">
-            <ul className="space-y-1.5">
-              {section.insights.map((insight, i) => (
-                <li
-                  key={i}
-                  className="text-base text-zinc-500"
-                  dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(insight) }}
-                />
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Mobile: inline events */}
-        {section.keyEvents && section.keyEvents.length > 0 && (
-          <div className="lg:hidden mt-4 pt-4 border-t border-zinc-100">
-            <p className="text-xs uppercase tracking-wider text-zinc-500 mb-2 font-medium flex items-center gap-1.5">
-              <i className="ri-newspaper-line" />
-              Powiązane wydarzenia
-            </p>
-            <div className="space-y-2">
-              {section.keyEvents.map((eventId) => (
-                <InlineEventCard key={eventId} eventId={eventId} />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     );
   }

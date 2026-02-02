@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useEvent } from '../../hooks/useEvent';
 import type { WordOfTheDay, BriefSection } from '../../types/brief';
 import { decodeHtmlEntities } from '../../utils/text';
 
 function stripIds(text: string): string {
-  return text.replace(/\s*\(ID:\s*\d+\)/gi, '').trim();
+  return text
+    .replace(/\s*\(ID:\s*\d+\)/gi, '')
+    .replace(/\s*\(event\s+[a-f0-9-]+\)/gi, '')
+    .trim();
 }
 
 interface BriefSidebarProps {
@@ -88,7 +92,14 @@ function SidebarSectionEvents({ section }: { section: BriefSection }) {
   if (eventIds.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden">
+    <motion.div
+      key={section.headline}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className="bg-white rounded-xl border border-zinc-200 overflow-hidden"
+    >
       <div className="px-4 py-3 border-b border-zinc-200 bg-zinc-50">
         <h3 className="text-sm font-semibold text-zinc-900 flex items-center gap-2">
           <i className="ri-newspaper-line text-zinc-500" />
@@ -99,11 +110,18 @@ function SidebarSectionEvents({ section }: { section: BriefSection }) {
         </p>
       </div>
       <div className="p-3 space-y-2 max-h-[calc(100vh-400px)] overflow-y-auto">
-        {eventIds.map((eventId) => (
-          <SectionEventCard key={eventId} eventId={eventId} />
+        {eventIds.map((eventId, index) => (
+          <motion.div
+            key={eventId}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.2, delay: index * 0.05 }}
+          >
+            <SectionEventCard eventId={eventId} />
+          </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -111,7 +129,11 @@ export function BriefSidebar({ wordOfTheDay, activeSection }: BriefSidebarProps)
   return (
     <aside className="lg:sticky lg:top-6 space-y-4">
       {wordOfTheDay && <SidebarWordOfTheDay word={wordOfTheDay} />}
-      {activeSection && <SidebarSectionEvents section={activeSection} />}
+      <AnimatePresence mode="wait">
+        {activeSection && (
+          <SidebarSectionEvents key={activeSection.headline} section={activeSection} />
+        )}
+      </AnimatePresence>
     </aside>
   );
 }
