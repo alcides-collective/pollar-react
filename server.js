@@ -120,7 +120,7 @@ app.get('/api/og', async (req, res) => {
   const height = 630;
   const padding = 60;
 
-  const textY = typeLabel ? 200 : 120;
+  const textY = typeLabel ? 180 : 120;
   const textElements = displayLines
     .map((line, i) => {
       const y = textY + i * lineHeight;
