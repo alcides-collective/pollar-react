@@ -72,8 +72,8 @@ export default async function handler(request: Request) {
           style={{
             display: 'flex',
             position: 'absolute',
-            bottom: '60px',
-            right: '60px',
+            bottom: '100px',
+            right: '80px',
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}

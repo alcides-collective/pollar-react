@@ -41,8 +41,8 @@ export function EventSidebar({ event }: EventSidebarProps) {
   const keyNumber = extractKeyNumber(event.summary);
   const timeline = extractTimeline(event.summary);
 
-  // OG Image title (dev only)
-  const ogTitle = event.metadata?.ultraShortHeadline || event.title;
+  // OG Image uses full title
+  const ogTitle = event.title;
 
   return (
     <aside className="lg:sticky lg:top-6 space-y-6">
@@ -87,7 +87,7 @@ export function EventSidebar({ event }: EventSidebarProps) {
                 {/* Title */}
                 <div
                   style={{
-                    fontSize: ogTitle.length > 80 ? '12px' : ogTitle.length > 50 ? '14px' : '16px',
+                    fontSize: ogTitle.length > 100 ? '10px' : ogTitle.length > 80 ? '12px' : ogTitle.length > 50 ? '14px' : '16px',
                     fontWeight: 600,
                     color: '#fafafa',
                     lineHeight: 1.2,
@@ -97,19 +97,19 @@ export function EventSidebar({ event }: EventSidebarProps) {
                 >
                   {ogTitle}
                 </div>
-                {/* Logo placeholder */}
-                <div
+                {/* Logo */}
+                <img
+                  src={logoWhite}
+                  alt=""
                   style={{
                     position: 'absolute',
-                    bottom: '16px',
-                    right: '16px',
-                    fontSize: '10px',
-                    color: '#71717a',
+                    bottom: '26px',
+                    right: '22px',
+                    height: '20px',
+                    width: 'auto',
                     opacity: 0.8,
                   }}
-                >
-                  pollar
-                </div>
+                />
               </div>
             </div>
             <p className="text-[10px] text-amber-600 mt-2 font-mono">
