@@ -20,17 +20,22 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
-# Install serve globally
-RUN npm install -g serve
+# Copy package files and install production dependencies
+COPY package*.json ./
+RUN npm ci --omit=dev
 
 # Copy built assets from build stage
 COPY --from=build /app/dist ./dist
 
+# Copy server file
+COPY server.js ./
+
 # Railway uses PORT environment variable
 ENV PORT=3000
+ENV API_BASE=https://pollar.up.railway.app
 
 # Expose the port
 EXPOSE $PORT
 
-# Start the server (serve uses -l for listen port)
-CMD ["sh", "-c", "serve -s dist -l $PORT"]
+# Start the Express server
+CMD ["node", "server.js"]
