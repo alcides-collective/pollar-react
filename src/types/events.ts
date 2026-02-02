@@ -17,8 +17,8 @@ export interface KeyPoint {
 
 export interface MentionedPerson {
   name: string;
-  wikipediaUrl: string;
-  context: string;
+  wikipediaUrl?: string;
+  context?: string;
 }
 
 export interface Article {
@@ -27,7 +27,7 @@ export interface Article {
   source: string;
   url: string;
   imageUrl?: string;
-  publishDate: string;
+  publishDate: string | { _seconds: number; _nanoseconds: number };
 }
 
 export interface EventMetadata {
@@ -47,6 +47,8 @@ export interface EventMetadata {
   imageAttribution: string | null;
   isLowQualityContent: boolean;
   viewCount: number;
+  summarizationModel?: string;
+  ttsText?: string;
 }
 
 export interface Event {
@@ -61,6 +63,7 @@ export interface Event {
   metadata: EventMetadata;
   imageUrl: string;
   audioUrl?: string;
+  summarizationModel?: string;
   category: string;
   sources: string[];
   trendingScore: number;

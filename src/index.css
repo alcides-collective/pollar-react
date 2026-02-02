@@ -86,3 +86,630 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+/* ==========================================
+   Custom Tag Styles for Event Summary
+   ========================================== */
+
+.summary-content p {
+  @apply text-zinc-700 leading-relaxed mb-4;
+}
+
+.summary-content p:last-child {
+  @apply mb-0;
+}
+
+.summary-content b,
+.summary-content strong {
+  font-weight: inherit;
+}
+
+/* Key Points - no bold */
+.key-points b,
+.key-points strong,
+.key-point-content b,
+.key-point-content strong,
+.key-point-title {
+  font-weight: inherit;
+}
+
+/* Section Box */
+.section-box {
+  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 p-4;
+}
+
+.section-title {
+  @apply text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-3 pb-2 border-b border-zinc-200;
+}
+
+.section-content {
+  @apply text-sm text-zinc-700 leading-relaxed;
+}
+
+/* Context Box */
+.context-box {
+  @apply my-6 p-4 bg-zinc-50 border border-zinc-200 rounded-lg;
+}
+
+.context-text {
+  @apply text-sm text-zinc-600 leading-relaxed m-0;
+}
+
+/* Quote Box */
+.quote-box {
+  @apply my-6 p-4 bg-zinc-50 border border-zinc-200 rounded-lg;
+}
+
+.quote-location {
+  @apply block text-[10px] font-medium uppercase tracking-wider text-zinc-400 mb-3;
+}
+
+.quote-text {
+  @apply text-zinc-700 text-base leading-relaxed m-0 mb-3;
+}
+
+.quote-author {
+  @apply block text-xs text-zinc-500 pt-3 border-t border-zinc-200;
+}
+
+/* Bias Box */
+.bias-wrapper {
+  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+}
+
+.bias-header {
+  @apply block text-[10px] font-semibold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+}
+
+.bias-columns {
+  @apply grid grid-cols-2;
+}
+
+.bias-column {
+  @apply p-4;
+}
+
+.bias-label {
+  @apply block text-[10px] font-medium uppercase tracking-wider mb-2;
+}
+
+.bias-left .bias-label {
+  @apply text-red-500;
+}
+
+.bias-right .bias-label {
+  @apply text-blue-500;
+}
+
+.bias-text {
+  @apply text-sm text-zinc-600 leading-relaxed m-0;
+}
+
+.bias-left {
+  @apply border-r border-zinc-200;
+}
+
+/* Manipulation Box */
+.manipulation-box {
+  @apply my-6 p-4 bg-zinc-50 border border-zinc-200 rounded-lg;
+}
+
+.manipulation-label {
+  @apply block text-[10px] font-bold uppercase tracking-wider text-red-500 mb-3;
+}
+
+.manipulation-source {
+  @apply text-xs text-zinc-500 mb-2;
+}
+
+.manipulation-quote {
+  @apply text-zinc-700 text-sm leading-relaxed pl-3 my-3 border-l-2 border-red-300;
+}
+
+.manipulation-explanation {
+  @apply text-sm text-zinc-600 leading-relaxed m-0 pt-3 border-t border-zinc-200;
+}
+
+/* Key Number Box */
+.key-number-box {
+  @apply my-6 text-center py-8 px-4 bg-zinc-50 rounded-lg border border-zinc-200;
+}
+
+.key-number-value {
+  @apply block text-4xl font-bold text-zinc-900 mb-2;
+}
+
+.key-number-description {
+  @apply block text-sm text-zinc-500 leading-relaxed;
+}
+
+/* Fact Check Box */
+.factcheck-box {
+  @apply my-6 p-4 rounded-lg bg-zinc-50 border border-zinc-200;
+}
+
+.factcheck-box.verdict-true {
+  @apply border-l-4 border-l-green-500;
+}
+
+.factcheck-box.verdict-false {
+  @apply border-l-4 border-l-red-500;
+}
+
+.factcheck-box.verdict-partial {
+  @apply border-l-4 border-l-amber-500;
+}
+
+.factcheck-label {
+  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-3;
+}
+
+.factcheck-verdict {
+  @apply flex items-center gap-2 mb-3;
+}
+
+.verdict-icon {
+  @apply text-lg;
+}
+
+.verdict-true .verdict-icon { @apply text-green-500; }
+.verdict-false .verdict-icon { @apply text-red-500; }
+.verdict-partial .verdict-icon { @apply text-amber-500; }
+
+.verdict-text {
+  @apply text-sm font-medium text-zinc-700;
+}
+
+.factcheck-explanation {
+  @apply text-sm text-zinc-600 leading-relaxed m-0 mb-3;
+}
+
+.factcheck-source {
+  @apply text-xs text-zinc-400 pt-3 border-t border-zinc-200;
+}
+
+/* Timeline Box */
+.timeline-box {
+  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 p-4;
+}
+
+.timeline-title {
+  @apply text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-4 pb-2 border-b border-zinc-200;
+}
+
+.timeline-events {
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background-color: #d4d4d8;
+  transform: translateX(-50%);
+}
+
+.timeline-event {
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.timeline-event:last-child,
+.timeline-event-last {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #a1a1aa;
+  border-radius: 50%;
+  border: 2px solid #fafafa;
+  left: -18px;
+  top: 1px;
+  transform: translateX(-50%);
+}
+
+.timeline-content {
+  padding-left: 0;
+}
+
+.timeline-date {
+  @apply text-[10px] font-medium text-zinc-400 uppercase tracking-wider;
+  margin-bottom: 2px;
+}
+
+.timeline-event-title {
+  @apply text-sm text-zinc-800 leading-snug;
+}
+
+.timeline-event-desc {
+  @apply text-xs text-zinc-500 leading-relaxed;
+  margin-top: 4px;
+}
+
+/* Comparison Box */
+.comparison-box {
+  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 p-4;
+}
+
+.comparison-label {
+  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-2;
+}
+
+.comparison-title {
+  @apply text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-4 pb-2 border-b border-zinc-200;
+}
+
+.comparison-cards {
+  @apply space-y-3;
+}
+
+.comparison-card {
+  @apply bg-white rounded border border-zinc-200 overflow-hidden;
+}
+
+.comparison-aspect {
+  @apply text-[10px] font-semibold uppercase tracking-wider text-zinc-500 px-3 py-2 border-b border-zinc-100;
+}
+
+.comparison-columns {
+  @apply grid grid-cols-2;
+}
+
+.comparison-before,
+.comparison-after {
+  @apply p-3;
+}
+
+.comparison-before {
+  @apply border-r border-zinc-100;
+}
+
+.comparison-change-label {
+  @apply block text-[10px] font-medium uppercase tracking-wider mb-1;
+}
+
+.comparison-before .comparison-change-label {
+  @apply text-red-400;
+}
+
+.comparison-after .comparison-change-label {
+  @apply text-green-500;
+}
+
+.comparison-change-text {
+  @apply block text-sm text-zinc-700 leading-relaxed;
+}
+
+/* Results Box (Sports) */
+.results-box {
+  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+}
+
+.results-box-single {
+  @apply text-center py-6;
+}
+
+.results-label {
+  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+}
+
+.results-title {
+  @apply text-sm font-medium text-zinc-700 px-4 py-2;
+}
+
+.results-single-header {
+  @apply flex items-center justify-center gap-2 mb-3;
+}
+
+.results-single-match {
+  @apply flex items-center justify-center gap-6;
+}
+
+.match-team {
+  @apply text-sm text-zinc-600;
+}
+
+.match-winner {
+  @apply font-medium text-zinc-900;
+}
+
+.match-score {
+  @apply text-2xl font-bold text-zinc-900;
+}
+
+.results-single-round {
+  @apply text-xs text-zinc-400 mt-3;
+}
+
+.results-matches {
+  @apply divide-y divide-zinc-200;
+}
+
+.match-row {
+  @apply px-4 py-3;
+}
+
+.match-round {
+  @apply text-[10px] text-zinc-400 uppercase tracking-wider mb-1;
+}
+
+.match-teams {
+  @apply flex items-center justify-between gap-2;
+}
+
+/* Ranking Box */
+.ranking-box,
+.ranking-list-box {
+  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+}
+
+.ranking-label {
+  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+}
+
+.ranking-title {
+  @apply text-sm font-medium text-zinc-700 px-4 py-2 border-b border-zinc-100;
+}
+
+.ranking-table {
+  @apply w-full;
+}
+
+.ranking-row {
+  @apply border-b border-zinc-100 last:border-0;
+}
+
+.ranking-row td {
+  @apply px-4 py-2.5 text-sm;
+}
+
+.ranking-position {
+  @apply w-10 text-center text-zinc-400;
+}
+
+.ranking-name {
+  @apply text-zinc-700;
+}
+
+.ranking-info {
+  @apply block text-xs text-zinc-400 mt-0.5;
+}
+
+.ranking-score {
+  @apply text-right text-zinc-600;
+}
+
+.ranking-items {
+  @apply divide-y divide-zinc-100;
+}
+
+.ranking-item {
+  @apply flex items-center gap-3 px-4 py-2.5;
+}
+
+.ranking-pos {
+  @apply text-zinc-400 w-6;
+}
+
+.ranking-trophy {
+  @apply text-base;
+}
+
+/* Calendar Box */
+.calendar-box {
+  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+}
+
+.calendar-label {
+  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+}
+
+.calendar-title {
+  @apply text-sm font-medium text-zinc-700 px-4 py-2 border-b border-zinc-100;
+}
+
+.calendar-table {
+  @apply w-full;
+}
+
+.calendar-row td {
+  @apply px-4 py-2.5 text-sm border-b border-zinc-100 last:border-0;
+}
+
+.calendar-date {
+  @apply w-28 text-zinc-500;
+}
+
+.calendar-desc {
+  @apply text-zinc-700;
+}
+
+/* Chart Box (Bar Charts) */
+.chart-box {
+  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+}
+
+.chart-label {
+  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+}
+
+.chart-title {
+  @apply text-sm font-medium text-zinc-700 px-4 py-2 border-b border-zinc-100;
+}
+
+.chart-bars {
+  @apply p-4 space-y-3;
+}
+
+.chart-bar-row {
+  @apply flex items-center gap-3;
+}
+
+.chart-bar-label {
+  @apply text-xs text-zinc-600 w-20 shrink-0 truncate;
+}
+
+.chart-bar-track {
+  @apply flex-1 h-3 bg-zinc-200 rounded-full overflow-hidden;
+}
+
+.chart-bar-fill {
+  @apply h-full bg-zinc-600 rounded-full transition-all duration-500;
+}
+
+.chart-bar-value {
+  @apply text-xs text-zinc-500 w-16 text-right shrink-0;
+}
+
+/* Stacked Bar (Pie Chart Alternative) */
+.stacked-box {
+  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+}
+
+.stacked-label {
+  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+}
+
+.stacked-title {
+  @apply text-sm font-medium text-zinc-700 px-4 py-2 border-b border-zinc-100;
+}
+
+.stacked-bar {
+  @apply flex h-4 mx-4 mt-4 rounded-full overflow-hidden;
+}
+
+.stacked-segment {
+  @apply transition-all duration-500;
+}
+
+.stacked-legend {
+  @apply p-4 flex flex-wrap gap-x-4 gap-y-2;
+}
+
+.stacked-legend-item {
+  @apply flex items-center gap-2 text-xs;
+}
+
+.stacked-legend-color {
+  @apply w-2.5 h-2.5 rounded-full shrink-0;
+}
+
+.stacked-legend-text {
+  @apply text-zinc-600;
+}
+
+.stacked-legend-pct {
+  @apply text-zinc-500;
+}
+
+/* Footnote Tooltip */
+.footnote {
+  @apply relative inline cursor-help;
+}
+
+.footnote-term {
+  @apply border-b border-dotted border-zinc-400;
+}
+
+.footnote-tooltip {
+  @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-white border border-zinc-200 rounded-lg shadow-lg opacity-0 invisible transition-all duration-200 z-50;
+}
+
+.footnote:hover .footnote-tooltip,
+.footnote:focus .footnote-tooltip {
+  @apply opacity-100 visible;
+}
+
+.footnote-title {
+  @apply block font-semibold text-zinc-900 text-sm mb-1;
+}
+
+.footnote-desc {
+  @apply block text-xs text-zinc-600 leading-relaxed;
+}
+
+/* ==========================================
+   Sidebar Elements (Key Number & Timeline)
+   ========================================== */
+
+/* Key Number Sidebar */
+.key-number-sidebar {
+  @apply text-center py-8 px-5 bg-zinc-50 rounded-lg border border-zinc-200;
+}
+
+.key-number-sidebar-value {
+  @apply block text-3xl font-bold text-zinc-900 mb-2;
+}
+
+.key-number-sidebar-desc {
+  @apply block text-sm text-zinc-500 leading-relaxed;
+}
+
+/* Timeline Sidebar */
+.timeline-sidebar {
+  @apply bg-zinc-50 rounded-lg border border-zinc-200 p-4;
+}
+
+.timeline-sidebar-title {
+  @apply text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-4 pb-2 border-b border-zinc-200;
+}
+
+.timeline-sidebar-events {
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline-sidebar-line {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background-color: #d4d4d8;
+  transform: translateX(-50%);
+}
+
+.timeline-sidebar-event {
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.timeline-sidebar-event:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-sidebar-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #a1a1aa;
+  border-radius: 50%;
+  border: 2px solid #fafafa;
+  left: -18px;
+  top: 1px;
+  transform: translateX(-50%);
+}
+
+.timeline-sidebar-content {
+  padding-left: 0;
+}
+
+.timeline-sidebar-date {
+  @apply text-[10px] font-medium text-zinc-400 uppercase tracking-wider;
+  margin-bottom: 2px;
+}
+
+.timeline-sidebar-event-title {
+  @apply text-sm text-zinc-800 leading-snug;
+}
+
+.timeline-sidebar-event-desc {
+  @apply text-xs text-zinc-500 leading-relaxed;
+  margin-top: 4px;
+}

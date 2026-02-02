@@ -96,17 +96,6 @@ export function EventPage() {
 
   return (
     <div className="max-w-[1200px] mx-auto">
-      {/* Back button */}
-      <div className="px-6 pt-6">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
-        >
-          <i className="ri-arrow-left-s-line text-lg" />
-          Powrót
-        </Link>
-      </div>
-
       {/* Two-column layout */}
       <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-8">
         {/* Left column - main content */}
