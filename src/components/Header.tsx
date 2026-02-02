@@ -1,6 +1,7 @@
-import { useEvents } from '../hooks/useEvents';
+import { Link } from 'react-router-dom';
+import { useEvents } from '../context/EventsContext';
 import { useCategory } from '../context/CategoryContext';
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useMemo } from 'react';
 import logoImg from '../assets/logo.png';
 
 // Static category order (main categories first)
@@ -20,8 +21,6 @@ const CATEGORY_ORDER = [
 export function Header() {
   const { events } = useEvents({ limit: 100, lang: 'pl' });
   const { selectedCategory, setSelectedCategory } = useCategory();
-  const [showMore, setShowMore] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const allCategories = useMemo(() => {
     const uniqueCategories = new Set(events.map(e => e.category).filter(Boolean));
@@ -34,30 +33,20 @@ export function Header() {
     });
   }, [events]);
 
-  const visibleCategories = allCategories.slice(0, 7);
-  const hiddenCategories = allCategories.slice(7);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setShowMore(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
+  
   return (
     <header className="bg-black sticky top-0 z-50">
       <div className="max-w-[1400px] mx-auto px-6">
         {/* Top bar */}
         <div className="flex items-center justify-between py-4 border-b border-zinc-800">
           <div className="flex items-center gap-10">
-            <img
-              src={logoImg}
-              alt="Pollar"
-              className="h-5 invert"
-            />
+            <Link to="/" onClick={() => setSelectedCategory(null)}>
+              <img
+                src={logoImg}
+                alt="Pollar"
+                className="h-5 invert"
+              />
+            </Link>
           </div>
           <div className="flex items-center gap-6">
             <a href="#" className="text-sm text-zinc-300 hover:text-white transition-colors">
@@ -75,7 +64,7 @@ export function Header() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex items-center justify-between py-3 gap-4">
+        <nav className="flex items-start justify-between pt-3 gap-4">
           <div
             className="flex items-center gap-6 lg:gap-8 overflow-x-auto scrollbar-hide -mx-6 px-6"
             role="region"
@@ -84,66 +73,27 @@ export function Header() {
           >
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`text-sm whitespace-nowrap transition-colors ${
+              className={`relative text-sm whitespace-nowrap transition-colors pb-3 ${
                 selectedCategory === null
-                  ? 'text-white font-medium'
+                  ? 'text-white font-medium after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-white after:rounded-full'
                   : 'text-zinc-300 hover:text-white'
               }`}
             >
               Wszystkie
             </button>
-            {visibleCategories.map((category) => (
+            {allCategories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`text-sm whitespace-nowrap transition-colors ${
+                className={`relative text-sm whitespace-nowrap transition-colors pb-3 ${
                   selectedCategory === category
-                    ? 'text-white font-medium'
+                    ? 'text-white font-medium after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-white after:rounded-full'
                     : 'text-zinc-300 hover:text-white'
                 }`}
               >
                 {category}
               </button>
             ))}
-            {hiddenCategories.length > 0 && (
-              <div className="relative shrink-0" ref={dropdownRef}>
-                <button
-                  onClick={() => setShowMore(!showMore)}
-                  className="text-sm text-zinc-300 hover:text-white transition-colors flex items-center gap-1 whitespace-nowrap"
-                >
-                  Więcej
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-3 w-3 transition-transform ${showMore ? 'rotate-180' : ''}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {showMore && (
-                  <div className="absolute top-full left-0 mt-2 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl py-2 min-w-[200px] z-50">
-                    {hiddenCategories.map((category) => (
-                      <button
-                        key={category}
-                        onClick={() => {
-                          setSelectedCategory(category);
-                          setShowMore(false);
-                        }}
-                        className={`block w-full text-left px-4 py-2 text-sm transition-colors ${
-                          selectedCategory === category
-                            ? 'text-white bg-zinc-800'
-                            : 'text-zinc-300 hover:text-white hover:bg-zinc-800'
-                        }`}
-                      >
-                        {category}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
           </div>
           <div className="text-sm text-zinc-400 shrink-0 hidden sm:block">
             Narzędzia

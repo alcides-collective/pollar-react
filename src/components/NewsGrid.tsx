@@ -1,5 +1,6 @@
-import { useEvents } from '../hooks/useEvents';
+import { useEvents } from '../context/EventsContext';
 import { useBrief } from '../hooks/useBrief';
+import { useFelietony } from '../hooks/useFelietony';
 import { useCategory } from '../context/CategoryContext';
 import { useEventGroups } from '../hooks/useEventGroups';
 import { MarketTicker } from './MarketTicker';
@@ -7,12 +8,14 @@ import { FeaturedSection } from './news/FeaturedSection';
 import { CategoryTabs } from './news/CategoryTabs';
 import { DoubleHeroSection } from './news/DoubleHeroSection';
 import { DailyBriefSection } from './news/DailyBriefSection';
+import { FelietonySection } from './news/FelietonySection';
 import { CategoryCarousel } from './news/CategoryCarousel';
 import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection } from './news/sidebar';
 
 export function NewsGrid() {
   const { selectedCategory } = useCategory();
   const { brief } = useBrief({ lang: 'pl' });
+  const { felietony } = useFelietony();
   const { events, loading, error } = useEvents({
     limit: 100,
     lang: 'pl',
@@ -28,7 +31,7 @@ export function NewsGrid() {
     latestEvents,
   } = useEventGroups(events, selectedCategory);
 
-  if (loading) {
+  if (loading && events.length === 0) {
     return (
       <section className="max-w-[1400px] mx-auto px-4 py-6">
         <div className="text-zinc-500 text-center py-12">Ładowanie...</div>
@@ -54,7 +57,7 @@ export function NewsGrid() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px]">
         {/* Main Content */}
-        <div className="min-w-0 overflow-hidden border-r border-zinc-200 divide-y divide-zinc-200">
+        <div className="min-w-0 overflow-hidden lg:border-r border-zinc-200 divide-y divide-zinc-200">
           <FeaturedSection events={featured} />
 
           <CategoryTabs groups={categoryGroups} />
@@ -64,6 +67,8 @@ export function NewsGrid() {
           {brief && <DailyBriefSection brief={brief} />}
 
           <DoubleHeroSection events={doubleHero2} reversed />
+
+          <FelietonySection felietony={felietony} />
         </div>
 
         {/* Sidebar */}

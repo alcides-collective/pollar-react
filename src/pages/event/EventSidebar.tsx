@@ -1,4 +1,4 @@
-import type { Event, Article } from '../../types/events';
+import type { Event } from '../../types/events';
 import { EventMap } from './EventMap';
 import { AudioPlayer } from './AudioPlayer';
 import { extractKeyNumber, extractTimeline } from '../../utils/text';

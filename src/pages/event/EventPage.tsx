@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useEvent } from '../../hooks/useEvent';
-import { useEvents } from '../../hooks/useEvents';
+import { useEvents } from '../../context/EventsContext';
 import { EventHeader } from './EventHeader';
 import { EventKeyPoints } from './EventKeyPoints';
 import { EventSummary } from './EventSummary';

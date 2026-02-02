@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import useSWR from 'swr';
 import type { Event, EventsParams, EventsResponse } from '../types/events';
 
 const API_BASE = 'https://pollar.news/api';
@@ -41,59 +41,58 @@ interface UseEventsOptions extends EventsParams {
   includeArchive?: boolean;
 }
 
+async function fetchEvents(url: string, includeArchive?: boolean): Promise<Event[]> {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const response_data: EventsResponse = await response.json();
+  let allEvents = response_data.data.map(sanitizeEvent);
+
+  // Fetch archive if requested
+  if (includeArchive) {
+    const archiveUrl = url.replace('/events?', '/events/archive?');
+    const archiveResponse = await fetch(archiveUrl);
+
+    if (archiveResponse.ok) {
+      const archiveData: EventsResponse = await archiveResponse.json();
+      const archiveEvents = archiveData.data.map(sanitizeEvent);
+      allEvents = [...allEvents, ...archiveEvents];
+    }
+  }
+
+  return allEvents;
+}
+
 export function useEvents(params: UseEventsOptions = {}) {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const searchParams = new URLSearchParams();
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
-      setError(null);
+  if (params.page) searchParams.set('page', String(params.page));
+  if (params.limit) searchParams.set('limit', String(params.limit));
+  if (params.category) searchParams.set('category', params.category);
+  if (params.trending) searchParams.set('trending', 'true');
+  if (params.lang) searchParams.set('lang', params.lang);
+  if (params.articleFields) searchParams.set('articleFields', params.articleFields);
 
-      try {
-        const searchParams = new URLSearchParams();
+  const url = `${API_BASE}/events?${searchParams.toString()}`;
+  const cacheKey = `${url}:archive=${params.includeArchive ?? false}`;
 
-        if (params.page) searchParams.set('page', String(params.page));
-        if (params.limit) searchParams.set('limit', String(params.limit));
-        if (params.category) searchParams.set('category', params.category);
-        if (params.trending) searchParams.set('trending', 'true');
-        if (params.lang) searchParams.set('lang', params.lang);
-        if (params.articleFields) searchParams.set('articleFields', params.articleFields);
+  const { data, error, isLoading } = useSWR(
+    cacheKey,
+    () => fetchEvents(url, params.includeArchive),
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 60000, // Cache for 1 minute
+      keepPreviousData: true, // Keep showing old data while revalidating
+    }
+  );
 
-        // Fetch main events
-        const url = `${API_BASE}/events?${searchParams.toString()}`;
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const response_data: EventsResponse = await response.json();
-        let allEvents = response_data.data.map(sanitizeEvent);
-
-        // Fetch archive if requested
-        if (params.includeArchive) {
-          const archiveUrl = `${API_BASE}/events/archive?${searchParams.toString()}`;
-          const archiveResponse = await fetch(archiveUrl);
-
-          if (archiveResponse.ok) {
-            const archiveData: EventsResponse = await archiveResponse.json();
-            const archiveEvents = archiveData.data.map(sanitizeEvent);
-            allEvents = [...allEvents, ...archiveEvents];
-          }
-        }
-
-        setEvents(allEvents);
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error('Failed to fetch events'));
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, [params.page, params.limit, params.category, params.trending, params.lang, params.articleFields, params.includeArchive]);
-
-  return { events, loading, error };
+  return {
+    events: data ?? [],
+    loading: isLoading,
+    error: error ?? null,
+  };
 }

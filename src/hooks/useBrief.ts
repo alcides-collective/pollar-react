@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import useSWR from 'swr';
 import type { DailyBrief, BriefResponse } from '../types/brief';
 
 const API_BASE = 'https://pollar.news/api';
@@ -53,45 +53,37 @@ function sanitizeBrief(brief: DailyBrief): DailyBrief {
   };
 }
 
+async function fetchBrief(url: string): Promise<DailyBrief | null> {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      return null;
+    }
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data: BriefResponse = await response.json();
+  return sanitizeBrief(data.data);
+}
+
 interface UseBriefOptions {
   lang?: 'pl' | 'en' | 'ua';
 }
 
 export function useBrief(options: UseBriefOptions = {}) {
-  const [brief, setBrief] = useState<DailyBrief | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
   const { lang = 'pl' } = options;
+  const url = `${API_BASE}/brief?lang=${lang}`;
 
-  useEffect(() => {
-    const fetchBrief = async () => {
-      setLoading(true);
-      setError(null);
+  const { data, error, isLoading } = useSWR(url, fetchBrief, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    dedupingInterval: 60000,
+  });
 
-      try {
-        const url = `${API_BASE}/brief?lang=${lang}`;
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          if (response.status === 404) {
-            setBrief(null);
-            return;
-          }
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data: BriefResponse = await response.json();
-        setBrief(sanitizeBrief(data.data));
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error('Failed to fetch brief'));
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBrief();
-  }, [lang]);
-
-  return { brief, loading, error };
+  return {
+    brief: data ?? null,
+    loading: isLoading,
+    error: error ?? null,
+  };
 }

@@ -1,0 +1,87 @@
+import { Link } from 'react-router-dom';
+import type { Felieton, FelietonCategory } from '../../types/felieton';
+import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
+import ekonomiaImg from '../../assets/images/felietony/ekonomia.png';
+import geopolitykaImg from '../../assets/images/felietony/geopolityka.png';
+import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.png';
+
+const FELIETON_IMAGES: Record<FelietonCategory, string> = {
+  'ekonomia': ekonomiaImg,
+  'geopolityka': geopolitykaImg,
+  'polska-polityka': polskaPolitykImg,
+};
+
+interface FelietonySectionProps {
+  felietony: Felieton[];
+}
+
+function FelietonCard({ felieton }: { felieton: Felieton }) {
+  const categoryName = FELIETON_CATEGORY_NAMES[felieton.category];
+  const imageSrc = FELIETON_IMAGES[felieton.category];
+
+  return (
+    <Link to={`/felieton/${felieton.id}`} className="group block p-6 hover:bg-sky-100 transition-colors h-full">
+      <article>
+        <img
+          src={imageSrc}
+          alt=""
+          className="w-full aspect-video object-cover mb-4"
+        />
+        <span className="text-zinc-400 text-xs">{categoryName}</span>
+        <h3 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">
+          {felieton.title}
+        </h3>
+        <p className="text-sm text-zinc-600 mt-2 leading-snug line-clamp-3">
+          {felieton.lead}
+        </p>
+      </article>
+    </Link>
+  );
+}
+
+function PlaceholderCard({ category }: { category: FelietonCategory }) {
+  const categoryName = FELIETON_CATEGORY_NAMES[category];
+  const imageSrc = FELIETON_IMAGES[category];
+
+  return (
+    <div className="p-6 opacity-50 h-full">
+      <article>
+        <img
+          src={imageSrc}
+          alt=""
+          className="w-full aspect-video object-cover mb-4 grayscale"
+        />
+        <span className="text-zinc-400 text-xs">{categoryName}</span>
+        <h3 className="text-zinc-400 font-semibold text-xl leading-tight">
+          Felieton w przygotowaniu...
+        </h3>
+      </article>
+    </div>
+  );
+}
+
+export function FelietonySection({ felietony }: FelietonySectionProps) {
+  const categories: FelietonCategory[] = ['ekonomia', 'geopolityka', 'polska-polityka'];
+
+  const felietonyByCategory = new Map(
+    felietony.map((f) => [f.category, f])
+  );
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 bg-sky-50">
+      {categories.map((category, index) => {
+        const felieton = felietonyByCategory.get(category);
+        const isLast = index === categories.length - 1;
+        return (
+          <div key={category} className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}>
+            {felieton ? (
+              <FelietonCard felieton={felieton} />
+            ) : (
+              <PlaceholderCard category={category} />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}

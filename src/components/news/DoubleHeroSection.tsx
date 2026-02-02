@@ -16,7 +16,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
 
   return (
     <div className={`grid grid-cols-1 ${gridCols}`}>
-      <Link to={`/event/${leftEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors border-r border-zinc-200">
+      <Link to={`/event/${leftEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors border-b md:border-b-0 md:border-r border-zinc-200">
         <article>
           {leftEvent.imageUrl && (
             <img

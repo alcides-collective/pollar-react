@@ -1,0 +1,1 @@
+export { FelietonPage } from './FelietonPage';

@@ -14,12 +14,12 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
 
   return (
     <div>
-      <div className="flex items-center border-b border-zinc-200">
+      <div className="grid grid-cols-2 md:flex md:items-center md:border-b border-zinc-200">
         {groups.map(([_, events], index) => (
           <button
             key={index}
             onClick={() => setSelectedTab(index)}
-            className={`text-sm px-6 py-4 transition-colors border-r border-zinc-200 last:border-r-0 ${
+            className={`text-xs md:text-sm px-4 py-3 md:px-6 md:py-4 transition-colors border-b md:border-b-0 border-r border-zinc-200 even:border-r-0 md:even:border-r md:last:border-r-0 ${
               selectedTab === index
                 ? 'text-zinc-900 font-bold bg-zinc-50'
                 : 'text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50'
@@ -31,12 +31,12 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
       </div>
 
       {selectedGroup && (
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           {selectedGroup[1][0] && (
-            <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 flex-[2] p-6 border-r border-zinc-200">
-              <article className="flex gap-4">
+            <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
+              <article className="flex flex-col md:flex-row gap-4">
                 {selectedGroup[1][0].imageUrl && (
-                  <div className="w-80 shrink-0">
+                  <div className="w-full md:w-80 md:shrink-0">
                     <img
                       src={selectedGroup[1][0].imageUrl}
                       alt=""
