@@ -12,11 +12,11 @@ interface CategoryCarouselProps {
 }
 
 // Memoized event card component with hover animation
-const EventCarouselItem = memo(function EventCarouselItem({ event }: { event: Event }) {
+const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }: { event: Event; hideBorder?: boolean }) {
   return (
     <Link
       to={`/event/${event.id}`}
-      className="group p-6 hover:bg-zinc-50 transition-colors h-full block border-r border-zinc-200"
+      className={`group p-6 hover:bg-zinc-50 transition-colors h-full block ${hideBorder ? '' : 'border-r border-zinc-200'}`}
     >
       <article>
         {event.imageUrl && (
@@ -57,7 +57,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
           setIsMeasuring(true);
         }
         setIsMobile(mobile);
-        const newWidth = mobile ? containerWidth : Math.floor(containerWidth / 4);
+        const newWidth = mobile ? containerWidth : containerWidth / 4;
         setItemWidth(newWidth);
       }
     };
@@ -90,7 +90,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
   const virtualizer = useVirtualizer({
     count: events.length,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => itemWidth ?? 300,
+    estimateSize: () => itemWidth ?? 200,
     horizontal: true,
     overscan: 3,
   });
@@ -101,9 +101,10 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
   }, [itemWidth, virtualizer]);
 
   const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
+    if (scrollRef.current && itemWidth) {
       const currentScroll = scrollRef.current.scrollLeft;
-      const scrollAmount = scrollRef.current.offsetWidth;
+      // On mobile scroll by 1, on desktop scroll by 4
+      const scrollAmount = isMobile ? itemWidth : itemWidth * 4;
       scrollRef.current.scrollTo({
         left: direction === 'left'
           ? currentScroll - scrollAmount
@@ -134,13 +135,13 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
           }}
         >
           <div style={{ display: 'flex' }}>
-            {events.map((event) => (
+            {events.map((event, index) => (
               <div
                 key={event.id}
                 data-measure-item
                 style={{ width: itemWidth ?? 300, flexShrink: 0 }}
               >
-                <EventCarouselItem event={event} />
+                <EventCarouselItem event={event} hideBorder={isMobile || index % 4 === 3} />
               </div>
             ))}
           </div>
@@ -195,6 +196,8 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
         >
           {virtualizer.getVirtualItems().map((virtualItem) => {
             const event = events[virtualItem.index];
+            // Hide border on last card of each group of 4 (desktop) or all cards (mobile)
+            const hideBorder = isMobile || virtualItem.index % 4 === 3;
             return (
               <div
                 key={event.id}
@@ -209,7 +212,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
                   scrollSnapAlign: isMobile ? 'start' : undefined,
                 }}
               >
-                <EventCarouselItem event={event} />
+                <EventCarouselItem event={event} hideBorder={hideBorder} />
               </div>
             );
           })}
