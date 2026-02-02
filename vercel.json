@@ -1,9 +1,15 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
-  "devCommand": "vite --port $PORT",
   "buildCommand": "vite build",
   "outputDirectory": "dist",
+  "functions": {
+    "api/og.js": {
+      "runtime": "@vercel/edge"
+    }
+  },
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
