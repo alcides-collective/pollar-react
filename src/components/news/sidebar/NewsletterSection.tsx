@@ -61,7 +61,6 @@ export function NewsletterSection() {
             <Button
               type="submit"
               disabled={status === 'loading'}
-              size="sm"
             >
               {status === 'loading' ? '...' : 'Zapisz'}
             </Button>

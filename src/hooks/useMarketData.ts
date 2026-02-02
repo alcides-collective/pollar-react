@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const API_BASE = import.meta.env.VITE_API_BASE || 'https://pollar.up.railway.app/api';
+import { API_BASE } from '../config/api';
 
 const INDICES = [
   { symbol: 'WIG20.WA', name: 'WIG20' },

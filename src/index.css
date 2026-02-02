@@ -127,6 +127,14 @@ body {
   @apply text-sm text-zinc-700 leading-relaxed;
 }
 
+.section-content p {
+  @apply mb-4;
+}
+
+.section-content p:last-child {
+  @apply mb-0;
+}
+
 /* Context Box */
 .context-box {
   @apply my-6 p-4 bg-zinc-50 border border-zinc-200 rounded-lg;
@@ -831,7 +839,15 @@ body {
   }
 }
 
-/* Felieton content - smaller paragraph breaks (half height) */
+/* Felieton content prose styles */
+.prose p {
+  @apply mb-4;
+}
+
+.prose p:last-child {
+  @apply mb-0;
+}
+
 .prose br {
   content: "";
   display: block;

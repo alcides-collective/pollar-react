@@ -20,10 +20,7 @@ import type {
   SejmVideo,
   PrintAISummary,
 } from '../types/sejm';
-
-const API_BASE = import.meta.env.VITE_API_BASE || 'https://pollar.up.railway.app/api';
-// Call Sejm API directly - they support CORS
-const SEJM_API_BASE = 'https://api.sejm.gov.pl/sejm/term10';
+import { API_BASE, SEJM_API_BASE } from '../config/api';
 
 interface FetchOptions extends RequestInit {
   params?: Record<string, string | number | boolean | undefined>;

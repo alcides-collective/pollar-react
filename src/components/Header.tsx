@@ -196,6 +196,9 @@ export function Header() {
                 <Link to="/dane" className="w-full">Otwarte Dane</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
+                <Link to="/terminal" className="w-full">Terminal</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
                 <span className="w-full">Archiwum</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

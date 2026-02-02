@@ -26,7 +26,7 @@ export function BriefWordOfTheDay({ word }: BriefWordOfTheDayProps) {
           <span className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
             Definicja
           </span>
-          <p className="text-sm text-zinc-700 text-justify mt-1">
+          <p className="text-sm text-zinc-700 mt-1">
             {decodeHtmlEntities(word.encyclopedicDefinition)}
           </p>
         </div>
@@ -34,7 +34,7 @@ export function BriefWordOfTheDay({ word }: BriefWordOfTheDayProps) {
           <span className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
             Komentarz
           </span>
-          <p className="text-sm text-zinc-700 text-justify mt-1">
+          <p className="text-sm text-zinc-700 mt-1">
             {decodeHtmlEntities(word.editorialDefinition)}
           </p>
         </div>

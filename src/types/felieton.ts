@@ -4,7 +4,7 @@ export type FelietonEdition = 'morning' | 'evening';
 export interface SourceEvent {
   id: string;
   title: string;
-  date: string;
+  date: string | { _seconds: number; _nanoseconds: number };
 }
 
 export interface Felieton {

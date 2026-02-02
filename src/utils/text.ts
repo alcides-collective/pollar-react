@@ -23,6 +23,13 @@ export interface ExtractedTimeline {
   events: TimelineEvent[];
 }
 
+export interface ExtractedLineChart {
+  id: string;
+  title: string;
+  unit: string;
+  items: { label: string; value: number }[];
+}
+
 /**
  * Extract key number from summary for display in sidebar (desktop only)
  */
@@ -58,6 +65,71 @@ export function extractTimeline(summary: string | undefined): ExtractedTimeline 
     return null;
   }
 }
+
+/**
+ * Extract all line charts from summary for rendering as React components
+ * Returns array of chart data with unique IDs
+ */
+export function extractLineCharts(summary: string | undefined): ExtractedLineChart[] {
+  if (!summary) return [];
+
+  const charts: ExtractedLineChart[] = [];
+
+  // Match both attribute orders: tytuł + jednostka and jednostka + tytuł
+  const regex1 = /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+jednostk?a?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/wykres-liniowy>/gi;
+  const regex2 = /<wykres-liniowy\s+jednostk?a?\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/wykres-liniowy>/gi;
+
+  let match;
+  let chartIndex = 0;
+
+  // Process first order (tytuł, jednostka)
+  while ((match = regex1.exec(summary)) !== null) {
+    const [, title, unit, dataStr] = match;
+    const items = parseChartData(dataStr);
+    if (items.length > 0) {
+      charts.push({
+        id: `line-chart-${chartIndex++}`,
+        title,
+        unit,
+        items
+      });
+    }
+  }
+
+  // Process second order (jednostka, tytuł)
+  while ((match = regex2.exec(summary)) !== null) {
+    const [, unit, title, dataStr] = match;
+    const items = parseChartData(dataStr);
+    if (items.length > 0) {
+      charts.push({
+        id: `line-chart-${chartIndex++}`,
+        title,
+        unit,
+        items
+      });
+    }
+  }
+
+  return charts;
+}
+
+/**
+ * Parse chart data string into label/value pairs
+ */
+function parseChartData(dataStr: string): { label: string; value: number }[] {
+  const items: { label: string; value: number }[] = [];
+  dataStr.split(',').forEach((pair: string) => {
+    const match = pair.trim().match(/^([^:]+):\s*([\d.,]+)/);
+    if (match) {
+      items.push({
+        label: match[1].trim(),
+        value: parseFloat(match[2].replace(',', '.'))
+      });
+    }
+  });
+  return items;
+}
+
 
 /**
  * Remove extracted sidebar elements from summary to avoid duplication
@@ -202,8 +274,12 @@ export function sanitizeAndProcessHtml(text: string): string {
     // Convert markdown bold **text** to <b>text</b>
     .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
     // Convert <sekcja tytuł="..."> to section header
+    // Replace \n\n inside section content with paragraph break div
     .replace(/<sekcja\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/sekcja>/gi,
-      '\n\n<div class="section-box"><h3 class="section-title">$1</h3><div class="section-content">$2</div></div>\n\n')
+      (_, title, content) => {
+        const processedContent = content.replace(/\n\n+/g, '</p><p>');
+        return `\n\n<div class="section-box"><h3 class="section-title">${title}</h3><div class="section-content"><p>${processedContent}</p></div></div>\n\n`;
+      })
     // Convert <kontekst> tags to styled context box
     .replace(/<kontekst>([\s\S]*?)<\/kontekst>/gi,
       '\n\n<div class="context-box"><p class="context-text">$1</p></div>\n\n')
@@ -300,14 +376,20 @@ export function sanitizeAndProcessHtml(text: string): string {
         try {
           const items = JSON.parse(jsonData.trim());
           if (!Array.isArray(items)) return '';
-          const cardsHtml = items.map((item: {aspekt?: string, przed?: string, po?: string}) =>
-            `<div class="comparison-card">` +
+          const cardsHtml = items.map((item: Record<string, string>) => {
+            // Find keys dynamically - support "przed", "przed (na Allegro)", etc.
+            const keys = Object.keys(item);
+            const przedKey = keys.find(k => k.toLowerCase().startsWith('przed'));
+            const poKey = keys.find(k => k.toLowerCase().startsWith('po'));
+            const przedValue = przedKey ? item[przedKey] : '';
+            const poValue = poKey ? item[poKey] : '';
+            return `<div class="comparison-card">` +
             `<div class="comparison-aspect">${item.aspekt || ''}</div>` +
             `<div class="comparison-columns">` +
-            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${item.przed || ''}</span></div>` +
-            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${item.po || ''}</span></div>` +
-            `</div></div>`
-          ).join('');
+            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${przedValue}</span></div>` +
+            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${poValue}</span></div>` +
+            `</div></div>`;
+          }).join('');
           return `\n\n<div class="comparison-box"><span class="comparison-label">PORÓWNANIE</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
         } catch {
           return '';
@@ -319,14 +401,20 @@ export function sanitizeAndProcessHtml(text: string): string {
         try {
           const items = JSON.parse(jsonData.trim());
           if (!Array.isArray(items)) return '';
-          const cardsHtml = items.map((item: {aspekt?: string, przed?: string, po?: string}) =>
-            `<div class="comparison-card">` +
+          const cardsHtml = items.map((item: Record<string, string>) => {
+            // Find keys dynamically - support "przed", "przed (na Allegro)", etc.
+            const keys = Object.keys(item);
+            const przedKey = keys.find(k => k.toLowerCase().startsWith('przed'));
+            const poKey = keys.find(k => k.toLowerCase().startsWith('po'));
+            const przedValue = przedKey ? item[przedKey] : '';
+            const poValue = poKey ? item[poKey] : '';
+            return `<div class="comparison-card">` +
             `<div class="comparison-aspect">${item.aspekt || ''}</div>` +
             `<div class="comparison-columns">` +
-            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${item.przed || ''}</span></div>` +
-            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${item.po || ''}</span></div>` +
-            `</div></div>`
-          ).join('');
+            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${przedValue}</span></div>` +
+            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${poValue}</span></div>` +
+            `</div></div>`;
+          }).join('');
           return `\n\n<div class="comparison-box"><span class="comparison-label">PORÓWNANIE</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
         } catch {
           return '';
@@ -496,50 +584,9 @@ export function sanitizeAndProcessHtml(text: string): string {
           return '';
         }
       })
-    // Convert <wykres-liniowy> (simplified - same as bar for now)
-    .replace(/<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+jednostk?a?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/wykres-liniowy>/gi,
-      (_, title, unit, dataStr) => {
-        try {
-          const items: {label: string, value: number}[] = [];
-          dataStr.split(',').forEach((pair: string) => {
-            const match = pair.trim().match(/^([^:]+):\s*([\d.,]+)/);
-            if (match) {
-              items.push({ label: match[1].trim(), value: parseFloat(match[2].replace(',', '.')) });
-            }
-          });
-          if (items.length === 0) return '';
-          const maxValue = Math.max(...items.map(i => i.value));
-          const barsHtml = items.map(item => {
-            const pct = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
-            return `<div class="chart-bar-row"><span class="chart-bar-label">${item.label}</span><div class="chart-bar-track"><div class="chart-bar-fill" style="width: ${pct}%"></div></div><span class="chart-bar-value">${item.value} ${unit}</span></div>`;
-          }).join('');
-          return `\n\n<div class="chart-box"><span class="chart-label">WYKRES</span><div class="chart-title">${title}</div><div class="chart-bars">${barsHtml}</div></div>\n\n`;
-        } catch {
-          return '';
-        }
-      })
-    // Handle alternate order for wykres-liniowy
-    .replace(/<wykres-liniowy\s+jednostk?a?\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/wykres-liniowy>/gi,
-      (_, unit, title, dataStr) => {
-        try {
-          const items: {label: string, value: number}[] = [];
-          dataStr.split(',').forEach((pair: string) => {
-            const match = pair.trim().match(/^([^:]+):\s*([\d.,]+)/);
-            if (match) {
-              items.push({ label: match[1].trim(), value: parseFloat(match[2].replace(',', '.')) });
-            }
-          });
-          if (items.length === 0) return '';
-          const maxValue = Math.max(...items.map(i => i.value));
-          const barsHtml = items.map(item => {
-            const pct = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
-            return `<div class="chart-bar-row"><span class="chart-bar-label">${item.label}</span><div class="chart-bar-track"><div class="chart-bar-fill" style="width: ${pct}%"></div></div><span class="chart-bar-value">${item.value} ${unit}</span></div>`;
-          }).join('');
-          return `\n\n<div class="chart-box"><span class="chart-label">WYKRES</span><div class="chart-title">${title}</div><div class="chart-bars">${barsHtml}</div></div>\n\n`;
-        } catch {
-          return '';
-        }
-      })
+    // Remove <wykres-liniowy> tags - they are handled separately as React components in EventSummary
+    .replace(/<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk?a?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
+    .replace(/<wykres-liniowy\s+jednostk?a?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
     // Convert <wykres-kołowy> to stacked bar representation
     .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["'](?:\s+jednostk?a?\s*=\s*["'][^"']*["'])?>([\s\S]*?)<\/wykres-kołowy>/gi,
       (_, title, dataStr) => {
@@ -565,7 +612,7 @@ export function sanitizeAndProcessHtml(text: string): string {
         return `\n\n<div class="stacked-box"><span class="stacked-label">STRUKTURA</span><div class="stacked-title">${title}</div><div class="stacked-bar">${segmentsHtml}</div><div class="stacked-legend">${legendHtml}</div></div>\n\n`;
       })
     // Remove all remaining HTML tags except allowed ones
-    .replace(/<(?!a\s|\/a>|b>|\/b>|strong>|\/strong>|div\s|\/div>|span\s|\/span>|p\s|\/p>|blockquote\s|\/blockquote>|cite\s|\/cite>|table\s|\/table>|thead>|\/thead>|tbody>|\/tbody>|tr\s|\/tr>|th>|\/th>|td\s|\/td>|h3\s|\/h3>)[^>]+>/gi, '')
+    .replace(/<(?!a\s|\/a>|b>|\/b>|strong>|\/strong>|div\s|\/div>|span\s|\/span>|p\s|\/p>|blockquote\s|\/blockquote>|cite\s|\/cite>|table\s|\/table>|thead>|\/thead>|tbody>|\/tbody>|tr\s|\/tr>|th>|\/th>|td\s|\/td>|h3\s|\/h3>|br\s|br>|br\/>)[^>]+>/gi, '')
     // Sanitize <a> tags to only allow href
     .replace(/<a\s[^>]*?href\s*=\s*["']([^"']*?)["'][^>]*?>/gi, '<a href="$1" target="_blank" rel="noopener noreferrer">')
     .replace(/<a(?!\s[^>]*href)[^>]*>/gi, '')
@@ -584,8 +631,8 @@ export function sanitizeAndProcessHtml(text: string): string {
     })
     .join('');
 
-  // Remove event UUID references
-  return paragraphs.replace(/\s*\((?:event\s+)?(?:UUID:?\s*)?\[?[a-f0-9-]{36}\]?\)/gi, '');
+  // Remove event UUID/ID references
+  return paragraphs.replace(/\s*\((?:event\s+)?(?:UUID|ID):?\s*\[?[a-f0-9-]{36}\]?\)/gi, '');
 }
 
 /**
@@ -631,5 +678,5 @@ export function sanitizeAndProcessInlineHtml(text: string): string {
     .replace(/<\/b>/gi, '</b>')
     .replace(/<b>/gi, '<b>');
 
-  return processedText.replace(/\s*\((?:event\s+)?(?:UUID:?\s*)?\[?[a-f0-9-]{36}\]?\)/gi, '');
+  return processedText.replace(/\s*\((?:event\s+)?(?:UUID|ID):?\s*\[?[a-f0-9-]{36}\]?\)/gi, '');
 }

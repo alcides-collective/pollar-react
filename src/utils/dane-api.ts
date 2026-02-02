@@ -2,7 +2,9 @@
  * API client for dane.gov.pl endpoints
  */
 
-const API_BASE = (import.meta.env.VITE_API_BASE || 'https://pollar.up.railway.app/api') + '/dane';
+import { API_BASE as BASE_API_URL } from '../config/api';
+
+const API_BASE = `${BASE_API_URL}/dane`;
 
 async function fetchJson<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const url = `${API_BASE}${endpoint}`;

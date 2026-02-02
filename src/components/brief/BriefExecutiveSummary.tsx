@@ -11,7 +11,7 @@ export function BriefExecutiveSummary({ summary }: BriefExecutiveSummaryProps) {
         Podsumowanie
       </h2>
       <div
-        className="prose prose-zinc max-w-none text-zinc-700 text-justify leading-relaxed"
+        className="prose prose-zinc max-w-none text-zinc-700 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: sanitizeAndProcessHtml(summary) }}
       />
     </div>

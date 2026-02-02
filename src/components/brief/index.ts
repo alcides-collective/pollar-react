@@ -4,3 +4,4 @@ export { BriefWordOfTheDay } from './BriefWordOfTheDay';
 export { BriefSections } from './BriefSections';
 export { BriefInsights } from './BriefInsights';
 export { BriefMentions } from './BriefMentions';
+export { BriefSidebar } from './BriefSidebar';

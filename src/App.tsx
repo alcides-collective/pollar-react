@@ -10,6 +10,7 @@ import { BriefPage } from './pages/brief'
 import { FelietonPage } from './pages/felieton'
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage'
 import { MapPage } from './pages/mapa'
+import { TerminalPage } from './pages/terminal'
 import { ScrollToTop } from './components/ScrollToTop'
 import {
   SejmLayout,
@@ -47,7 +48,7 @@ function HomePage() {
 }
 
 // Full-screen routes that don't need Header/Footer
-const FULLSCREEN_ROUTES = ['/mapa']
+const FULLSCREEN_ROUTES = ['/mapa', '/terminal']
 
 function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () => void; onContentReady: () => void }) {
   const location = useLocation()
@@ -77,6 +78,7 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
         <Route path="/event/:id" element={<EventPage />} />
         <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
         <Route path="/mapa" element={<MapPage />} />
+        <Route path="/terminal" element={<TerminalPage />} />
         {/* Sejm routes */}
         <Route path="/sejm" element={<SejmLayout />}>
           <Route index element={<SejmDashboard />} />
