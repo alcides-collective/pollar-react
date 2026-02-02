@@ -20,6 +20,9 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
+# Install fontconfig and fallback fonts for OG image generation
+RUN apk add --no-cache fontconfig font-noto font-noto-extra ttf-dejavu
+
 # Copy package files and install production dependencies
 COPY package*.json ./
 RUN npm ci --omit=dev
@@ -27,8 +30,13 @@ RUN npm ci --omit=dev
 # Copy built assets from build stage
 COPY --from=build /app/dist ./dist
 
-# Copy server file
+# Copy server file and assets
 COPY server.js ./
+COPY server-assets ./server-assets
+
+# Set fontconfig path and rebuild font cache
+ENV FONTCONFIG_PATH=/app/server-assets/fonts
+RUN mkdir -p /tmp/fontconfig-cache && fc-cache -fv /app/server-assets/fonts
 
 # Railway uses PORT environment variable
 ENV PORT=3000

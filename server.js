@@ -2,6 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync } from 'fs';
+import sharp from 'sharp';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -9,6 +10,18 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_BASE = process.env.API_BASE || 'https://pollar.up.railway.app';
+
+// Font family for SVG (must match installed font via fontconfig)
+const FONT_FAMILY = 'HK Grotesk SemiBold, HKGrotesk-SemiBold, Noto Sans, DejaVu Sans, sans-serif';
+
+// Load logo buffer at startup for Sharp compositing
+let logoBuffer = null;
+try {
+  logoBuffer = readFileSync(join(__dirname, 'server-assets/logo-white.png'));
+  console.log('Logo loaded successfully');
+} catch (err) {
+  console.warn('Could not load logo:', err.message);
+}
 
 // Crawler detection
 const CRAWLER_USER_AGENTS = [
@@ -47,6 +60,119 @@ function truncate(text, maxLength) {
   }
   return truncated.slice(0, maxLength - 1) + '…';
 }
+
+function escapeXml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+// OG Image generation endpoint
+app.get('/api/og', async (req, res) => {
+  const { title = 'Pollar News', type = 'default' } = req.query;
+
+  const typeLabels = {
+    event: 'WYDARZENIE',
+    brief: 'DAILY BRIEF',
+    felieton: 'FELIETON',
+    default: '',
+  };
+  const typeLabel = typeLabels[type] || '';
+
+  // Calculate font size based on title length
+  const fontSize = title.length > 100 ? 40 : title.length > 80 ? 48 : title.length > 50 ? 56 : 64;
+  const lineHeight = Math.round(fontSize * 1.2);
+
+  // Wrap text into lines
+  const maxCharsPerLine = Math.floor(1080 / (fontSize * 0.5));
+  const words = title.split(' ');
+  const lines = [];
+  let currentLine = '';
+
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    if (testLine.length <= maxCharsPerLine) {
+      currentLine = testLine;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+
+  // Limit to ~6 lines max
+  const maxLines = Math.floor(400 / lineHeight);
+  const displayLines = lines.slice(0, maxLines);
+  if (lines.length > maxLines && displayLines.length > 0) {
+    const lastIndex = displayLines.length - 1;
+    const lastLine = displayLines[lastIndex];
+    if (lastLine) {
+      displayLines[lastIndex] = lastLine.slice(0, -3) + '…';
+    }
+  }
+
+  // Build SVG
+  const width = 1200;
+  const height = 630;
+  const padding = 60;
+
+  const textY = typeLabel ? 160 : 120;
+  const textElements = displayLines
+    .map((line, i) => {
+      const y = textY + i * lineHeight;
+      return `<text x="${padding}" y="${y}" font-size="${fontSize}" font-weight="600" fill="#fafafa">${escapeXml(line)}</text>`;
+    })
+    .join('\n');
+
+  const typeLabelElement = typeLabel
+    ? `<text x="${padding}" y="100" font-size="24" fill="#a1a1aa" letter-spacing="0.1em">${escapeXml(typeLabel)}</text>`
+    : '';
+
+  // Font style - uses system fonts configured via fontconfig
+  const fontStyle = `text { font-family: ${FONT_FAMILY}; }`;
+
+  const svg = `
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <style>${fontStyle}</style>
+      <rect width="100%" height="100%" fill="#09090b"/>
+      ${typeLabelElement}
+      ${textElements}
+    </svg>
+  `;
+
+  try {
+    // Generate base image from SVG
+    let image = sharp(Buffer.from(svg));
+
+    // Composite logo if available
+    if (logoBuffer) {
+      const logoHeight = 50;
+      const logoWidth = Math.round(logoHeight * 2.07); // aspect ratio 688:333
+      const resizedLogo = await sharp(logoBuffer)
+        .resize(logoWidth, logoHeight)
+        .png()
+        .toBuffer();
+
+      image = image.composite([{
+        input: resizedLogo,
+        top: height - 70 - logoHeight,
+        left: width - padding - logoWidth,
+      }]);
+    }
+
+    const pngBuffer = await image.png().toBuffer();
+
+    res.set('Content-Type', 'image/png');
+    res.set('Cache-Control', 'public, max-age=172800, s-maxage=604800');
+    res.send(pngBuffer);
+  } catch (err) {
+    console.error('OG image generation failed:', err);
+    res.status(500).json({ error: 'Failed to generate image' });
+  }
+});
 
 function generateSeoHtml(opts) {
   const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article' } = opts;
@@ -132,7 +258,7 @@ app.use(async (req, res, next) => {
       const fullTitle = event.title || 'Pollar';
       const kp = event.metadata?.keyPoints?.[0];
       const description = truncate(stripHtml(kp?.description || event.lead || event.summary || ''), 160);
-      const ogImage = `${API_BASE}/api/og?title=${encodeURIComponent(fullTitle)}&type=event`;
+      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event`;
 
       return res.send(generateSeoHtml({
         pageTitle: `${ogTitle} | Pollar`,
@@ -160,7 +286,7 @@ app.use(async (req, res, next) => {
       description = truncate(stripHtml(brief.lead || brief.executiveSummary || ''), 160);
     }
 
-    const ogImage = `${API_BASE}/api/og?title=${encodeURIComponent(imageTitle)}&type=brief`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(imageTitle)}&type=brief`;
     return res.send(generateSeoHtml({
       pageTitle: `${ogTitle} | Pollar`,
       ogTitle,
@@ -182,7 +308,7 @@ app.use(async (req, res, next) => {
       description = truncate(stripHtml(felieton.lead || ''), 160);
     }
 
-    const ogImage = `${API_BASE}/api/og?title=${encodeURIComponent(ogTitle)}&type=felieton`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(ogTitle)}&type=felieton`;
     return res.send(generateSeoHtml({
       pageTitle: `${ogTitle} | Pollar`,
       ogTitle,
