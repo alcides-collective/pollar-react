@@ -60,6 +60,7 @@ export interface Event {
   lastSummarizationComplete: string;
   metadata: EventMetadata;
   imageUrl: string;
+  audioUrl?: string;
   category: string;
   sources: string[];
   trendingScore: number;

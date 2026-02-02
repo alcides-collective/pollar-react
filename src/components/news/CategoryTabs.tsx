@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import type { Event } from '../../types/events';
 
 interface CategoryTabsProps {
@@ -32,37 +33,40 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
       {selectedGroup && (
         <div className="flex">
           {selectedGroup[1][0] && (
-            <article className="group cursor-pointer flex gap-4 flex-[2] p-6 border-r border-zinc-200">
-              {selectedGroup[1][0].imageUrl && (
-                <div className="w-80 shrink-0">
-                  <img
-                    src={selectedGroup[1][0].imageUrl}
-                    alt=""
-                    className="w-full aspect-video object-cover"
-                  />
+            <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 flex-[2] p-6 border-r border-zinc-200">
+              <article className="flex gap-4">
+                {selectedGroup[1][0].imageUrl && (
+                  <div className="w-80 shrink-0">
+                    <img
+                      src={selectedGroup[1][0].imageUrl}
+                      alt=""
+                      className="w-full aspect-video object-cover"
+                    />
+                  </div>
+                )}
+                <div>
+                  <span className="text-zinc-400 text-xs">{selectedGroup[1][0].category}</span>
+                  <h4 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">
+                    {selectedGroup[1][0].title}
+                  </h4>
+                  <p className="text-sm text-zinc-600 mt-2 leading-snug">
+                    {selectedGroup[1][0].lead}
+                  </p>
                 </div>
-              )}
-              <div>
-                <span className="text-zinc-400 text-xs">{selectedGroup[1][0].category}</span>
-                <h4 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">
-                  {selectedGroup[1][0].title}
-                </h4>
-                <p className="text-sm text-zinc-600 mt-2 leading-snug">
-                  {selectedGroup[1][0].lead}
-                </p>
-              </div>
-            </article>
+              </article>
+            </Link>
           )}
           <div className="flex-1 divide-y divide-zinc-200">
             {selectedGroup[1].slice(1).map((event) => (
-              <article
+              <Link
                 key={event.id}
-                className="group cursor-pointer p-6 hover:bg-zinc-50 transition-colors"
+                to={`/event/${event.id}`}
+                className="group block p-6 hover:bg-zinc-50 transition-colors"
               >
                 <h4 className="text-zinc-600 text-sm leading-tight group-hover:underline">
                   {event.title}
                 </h4>
-              </article>
+              </Link>
             ))}
           </div>
         </div>

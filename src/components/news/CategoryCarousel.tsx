@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import type { Event } from '../../types/events';
 
 interface CategoryCarouselProps {
@@ -45,21 +46,24 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
         className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide"
       >
         {events.map((event) => (
-          <article
+          <Link
             key={event.id}
-            className="group cursor-pointer p-6 hover:bg-zinc-50 transition-colors shrink-0 w-full md:w-1/4 snap-start border-r border-zinc-200 last:border-r-0"
+            to={`/event/${event.id}`}
+            className="group p-6 hover:bg-zinc-50 transition-colors shrink-0 w-full md:w-1/4 snap-start border-r border-zinc-200 last:border-r-0"
           >
-            {event.imageUrl && (
-              <img
-                src={event.imageUrl}
-                alt=""
-                className="w-full aspect-video object-cover mb-4"
-              />
-            )}
-            <h3 className="text-zinc-900 font-semibold leading-tight group-hover:underline">
-              {event.title}
-            </h3>
-          </article>
+            <article>
+              {event.imageUrl && (
+                <img
+                  src={event.imageUrl}
+                  alt=""
+                  className="w-full aspect-video object-cover mb-4"
+                />
+              )}
+              <h3 className="text-zinc-900 font-semibold leading-tight group-hover:underline">
+                {event.title}
+              </h3>
+            </article>
+          </Link>
         ))}
       </div>
     </div>

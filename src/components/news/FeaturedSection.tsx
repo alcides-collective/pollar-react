@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { Event } from '../../types/events';
 
 interface FeaturedSectionProps {
@@ -12,7 +13,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2">
-      <div className="p-6 border-r border-zinc-200">
+      <Link to={`/event/${mainEvent.id}`} className="p-6 border-r border-zinc-200 block">
         {mainEvent.imageUrl && (
           <img
             src={mainEvent.imageUrl}
@@ -20,20 +21,23 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
             className="w-full aspect-video object-cover"
           />
         )}
-      </div>
+      </Link>
 
       <div className="p-6">
         <span className="text-zinc-500 text-sm">{mainEvent.category}</span>
-        <h2 className="text-3xl font-bold text-zinc-900 mt-1 mb-4 leading-tight hover:underline cursor-pointer">
-          {mainEvent.title}
-        </h2>
+        <Link to={`/event/${mainEvent.id}`}>
+          <h2 className="text-3xl font-bold text-zinc-900 mt-1 mb-4 leading-tight hover:underline cursor-pointer">
+            {mainEvent.title}
+          </h2>
+        </Link>
 
         {secondaryEvents.length > 0 && (
           <div className="border-t border-zinc-200 pt-4 mt-4 space-y-4">
             {secondaryEvents.map((event) => (
-              <div
+              <Link
                 key={event.id}
-                className="hover:bg-zinc-50 transition-colors cursor-pointer flex gap-3 p-2 -mx-2 rounded"
+                to={`/event/${event.id}`}
+                className="hover:bg-zinc-50 transition-colors flex gap-3 p-2 -mx-2 rounded"
               >
                 {event.imageUrl && (
                   <img
@@ -48,7 +52,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                     {event.title}
                   </h3>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { Event } from '../../types/events';
 
 type EventCardSize = 'sm' | 'md' | 'lg' | 'xl';
@@ -29,25 +30,27 @@ export function EventCard({
   const styles = sizeStyles[size];
 
   return (
-    <article className={`group cursor-pointer ${className}`}>
-      {showImage && event.imageUrl && (
-        <img
-          src={event.imageUrl}
-          alt=""
-          className="w-full aspect-video object-cover mb-4"
-        />
-      )}
-      {showCategory && (
-        <span className="text-zinc-400 text-xs">{event.category}</span>
-      )}
-      <h3 className={`text-zinc-900 font-semibold leading-tight group-hover:underline ${styles.title}`}>
-        {event.title}
-      </h3>
-      {showLead && event.lead && (
-        <p className={`text-zinc-600 mt-2 leading-snug ${styles.lead}`}>
-          {event.lead}
-        </p>
-      )}
-    </article>
+    <Link to={`/event/${event.id}`} className={`group block ${className}`}>
+      <article>
+        {showImage && event.imageUrl && (
+          <img
+            src={event.imageUrl}
+            alt=""
+            className="w-full aspect-video object-cover mb-4"
+          />
+        )}
+        {showCategory && (
+          <span className="text-zinc-400 text-xs">{event.category}</span>
+        )}
+        <h3 className={`text-zinc-900 font-semibold leading-tight group-hover:underline ${styles.title}`}>
+          {event.title}
+        </h3>
+        {showLead && event.lead && (
+          <p className={`text-zinc-600 mt-2 leading-snug ${styles.lead}`}>
+            {event.lead}
+          </p>
+        )}
+      </article>
+    </Link>
   );
 }

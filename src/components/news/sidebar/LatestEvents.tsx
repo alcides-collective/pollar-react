@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { Event } from '../../../types/events';
 import { formatTimeAgo } from '../../../utils/formatTimeAgo';
 
@@ -11,7 +12,7 @@ export function LatestEvents({ events }: LatestEventsProps) {
       <h3 className="text-red-500 font-semibold mb-4">Najnowsze</h3>
       <div className="space-y-5">
         {events.map((event) => (
-          <article key={event.id} className="flex gap-4 group cursor-pointer">
+          <Link key={event.id} to={`/event/${event.id}`} className="flex gap-4 group">
             <span className="text-red-500 text-xs shrink-0 w-12">
               {formatTimeAgo(event.updatedAt)}
             </span>
@@ -21,7 +22,7 @@ export function LatestEvents({ events }: LatestEventsProps) {
                 {event.title}
               </h4>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </div>
