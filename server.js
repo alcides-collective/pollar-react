@@ -366,12 +366,13 @@ app.use(async (req, res, next) => {
     const isHomepage = req.path === '/';
     const ogTitle = isHomepage ? pageInfo.title : `Pollar News: ${pageInfo.title}`;
     const pageTitle = isHomepage ? 'Pollar — Wiesz więcej' : `${pageInfo.title} | Pollar`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}`;
 
     return res.send(generateSeoHtml({
       pageTitle,
       ogTitle,
       description: pageInfo.description,
-      ogImage: `${baseUrl}/og-image.jpg`,
+      ogImage,
       targetUrl: isHomepage ? baseUrl : targetUrl,
       ogType: 'website'
     }));
