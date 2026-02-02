@@ -1,6 +1,7 @@
 import { useBrief } from '../hooks/useBrief';
 import { useFelietony } from '../hooks/useFelietony';
 import { useEventGroupsWithArchive } from '../hooks/useEventSelectors';
+import { useSelectedCategory } from '../stores/uiStore';
 import { MarketTicker } from './MarketTicker';
 import { FeaturedSection } from './news/FeaturedSection';
 import { CategoryTabs } from './news/CategoryTabs';
@@ -11,8 +12,10 @@ import { CategoryCarousel } from './news/CategoryCarousel';
 import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection } from './news/sidebar';
 
 export function NewsGrid() {
+  const selectedCategory = useSelectedCategory();
   const { brief } = useBrief({ lang: 'pl' });
   const { felietony } = useFelietony();
+  const isFiltered = !!selectedCategory;
   const {
     featured,
     categoryGroups,
@@ -55,11 +58,11 @@ export function NewsGrid() {
 
           <DoubleHeroSection events={doubleHero1} />
 
-          {brief && <DailyBriefSection brief={brief} />}
+          {!isFiltered && brief && <DailyBriefSection brief={brief} />}
 
           <DoubleHeroSection events={doubleHero2} reversed />
 
-          <FelietonySection felietony={felietony} />
+          {!isFiltered && <FelietonySection felietony={felietony} />}
         </div>
 
         {/* Sidebar */}

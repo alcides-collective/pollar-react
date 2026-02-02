@@ -18,11 +18,18 @@ export function useEventGroups(events: Event[], selectedCategory: string | null)
     return events.filter(e => e.category === selectedCategory);
   }, [events, selectedCategory]);
 
-  // Featured events: minimum 15 unique sources, take top 3
+  // Featured events: prioritize 15+ sources, fill remaining with highest sourceCount
   const featured = useMemo(() => {
-    return filteredEvents
-      .filter(e => e.sourceCount >= 15)
-      .slice(0, 3);
+    const withMinSources = filteredEvents.filter(e => e.sourceCount >= 15);
+    if (withMinSources.length >= 3) {
+      return withMinSources.slice(0, 3);
+    }
+    const usedIds = new Set(withMinSources.map(e => e.id));
+    const remaining = filteredEvents
+      .filter(e => !usedIds.has(e.id))
+      .sort((a, b) => b.sourceCount - a.sourceCount)
+      .slice(0, 3 - withMinSources.length);
+    return [...withMinSources, ...remaining];
   }, [filteredEvents]);
 
   // Group events by shared people/countries for tabs

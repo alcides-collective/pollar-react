@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Header } from './components/Header'
 import { NewsGrid } from './components/NewsGrid'
 import { Footer } from './components/Footer'
+import { CookiePopup } from './components/CookiePopup'
 import { EventPage } from './pages/event'
 import { BriefPage } from './pages/brief'
 import { FelietonPage } from './pages/felieton'
@@ -42,6 +43,7 @@ import { MieszkaniaPage } from './pages/dane/ekonomia/MieszkaniaPage'
 import { KolejPage } from './pages/dane/transport/KolejPage'
 import { PortyPage } from './pages/dane/transport/PortyPage'
 import { PrzestepczoscPage } from './pages/dane/bezpieczenstwo/PrzestepczoscPage'
+import { PowiazaniaPage } from './pages/powiazania'
 
 function HomePage() {
   return <NewsGrid />
@@ -79,6 +81,7 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
         <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
         <Route path="/mapa" element={<MapPage />} />
         <Route path="/terminal" element={<TerminalPage />} />
+        <Route path="/powiazania" element={<PowiazaniaPage />} />
         {/* Sejm routes */}
         <Route path="/sejm" element={<SejmLayout />}>
           <Route index element={<SejmDashboard />} />
@@ -169,6 +172,7 @@ function App() {
     }}>
       <BrowserRouter>
         <AppContent />
+        <CookiePopup />
       </BrowserRouter>
     </SWRConfig>
   )

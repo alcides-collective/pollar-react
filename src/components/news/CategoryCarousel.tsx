@@ -5,6 +5,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import type { Event } from '../../types/events';
 import { Button } from '@/components/ui/button';
 import { hoverScale } from '@/lib/animations';
+import { EventImage } from '../common/EventImage';
 
 interface CategoryCarouselProps {
   category: string;
@@ -19,16 +20,13 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
       className={`group p-6 hover:bg-zinc-50 transition-colors h-full block ${hideBorder ? '' : 'border-r border-zinc-200'}`}
     >
       <article>
-        {event.imageUrl && (
-          <div className="overflow-hidden mb-4">
-            <img
-              src={event.imageUrl}
-              alt=""
-              className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-              loading="lazy"
-            />
-          </div>
-        )}
+        <div className="overflow-hidden mb-4">
+          <EventImage
+            event={event}
+            className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+            hoverScale={1}
+          />
+        </div>
         <h3 className="text-zinc-900 font-semibold leading-tight group-hover:underline">
           {event.title}
         </h3>

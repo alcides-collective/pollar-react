@@ -206,6 +206,9 @@ export function Header() {
                 <Link to="/terminal" className="w-full">Terminal</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
+                <Link to="/powiazania" className="w-full">Powiązania</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
                 <span className="w-full">Archiwum</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

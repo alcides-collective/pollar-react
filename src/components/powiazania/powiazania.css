@@ -1,0 +1,117 @@
+/* Powiazania Game Animations */
+
+/* Success pulse animation */
+@keyframes success-pulse {
+  0% {
+    box-shadow: 0 0 0 0 transparent;
+    transform: scale(1);
+    border-color: currentColor;
+  }
+  50% {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--category-color) 30%, transparent);
+    transform: scale(1.01);
+    border-color: var(--category-color);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    transform: scale(1);
+    border-color: var(--category-color);
+  }
+}
+
+.success-pulse {
+  animation: success-pulse 120ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Tile exit animation */
+@keyframes tile-exit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+.tile-exiting {
+  animation: tile-exit 400ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* Tile push down animation */
+.tile-pushing-down {
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(calc(var(--pow-tile-size) + 0.5rem));
+}
+
+/* Category reveal animation */
+@keyframes category-reveal {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.category-revealing {
+  animation: category-reveal 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Content fade animation */
+@keyframes content-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.content-fade-in {
+  animation: content-fade 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Category push down */
+.category-pushing-down {
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(calc(var(--pow-tile-size) + 0.5rem));
+}
+
+/* Grid shake animation */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .success-pulse,
+  .tile-exiting,
+  .category-revealing,
+  .content-fade-in {
+    animation-duration: 1ms !important;
+  }
+
+  .tile-pushing-down,
+  .category-pushing-down {
+    transition-duration: 1ms !important;
+  }
+}
+
+/* Button active state */
+button:active:not(:disabled) {
+  transform: scale(0.95);
+}

@@ -13,11 +13,11 @@ export function LatestEvents({ events }: LatestEventsProps) {
     <div className="p-6">
       <h3 className="text-red-500 font-semibold mb-4">Najnowsze</h3>
       <motion.div
+        key={events.map(e => e.id).join(',')}
         className="space-y-5"
         variants={staggerContainer}
         initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
+        animate="animate"
       >
         {events.map((event) => (
           <motion.div key={event.id} variants={staggerItem}>

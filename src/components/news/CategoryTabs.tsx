@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Event } from '../../types/events';
 import { tabContentAnimation } from '@/lib/animations';
+import { EventImage } from '../common/EventImage';
 
 interface CategoryTabsProps {
   groups: Array<[string, Event[]]>;
@@ -52,17 +53,13 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
             {selectedGroup[1][0] && (
               <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
                 <article className="flex flex-col md:flex-row gap-4">
-                  {selectedGroup[1][0].imageUrl && (
-                    <div className="w-full md:w-80 md:shrink-0 overflow-hidden">
-                      <motion.img
-                        src={selectedGroup[1][0].imageUrl}
-                        alt=""
-                        className="w-full aspect-video object-cover"
-                        whileHover={{ scale: 1.03 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    </div>
-                  )}
+                  <div className="w-full md:w-80 md:shrink-0 overflow-hidden">
+                    <EventImage
+                      event={selectedGroup[1][0]}
+                      className="w-full aspect-video object-cover"
+                      hoverScale={1.03}
+                    />
+                  </div>
                   <div>
                     <span className="text-zinc-400 text-xs">{selectedGroup[1][0].category}</span>
                     <h4 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">

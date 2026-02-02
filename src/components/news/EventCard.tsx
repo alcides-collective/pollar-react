@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Event } from '../../types/events';
+import { EventImage } from '../common/EventImage';
 
 type EventCardSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -32,12 +33,12 @@ export function EventCard({
   return (
     <Link to={`/event/${event.id}`} className={`group block ${className}`}>
       <article>
-        {showImage && event.imageUrl && (
+        {showImage && (
           <div className="overflow-hidden mb-4">
-            <img
-              src={event.imageUrl}
-              alt=""
+            <EventImage
+              event={event}
               className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              hoverScale={1}
             />
           </div>
         )}

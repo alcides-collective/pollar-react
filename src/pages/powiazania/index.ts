@@ -1,0 +1,1 @@
+export { PowiazaniaPage } from './PowiazaniaPage';
