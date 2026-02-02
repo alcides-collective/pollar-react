@@ -2,6 +2,7 @@ import type { Event } from '../../types/events';
 import { EventMap } from './EventMap';
 import { AudioPlayer } from './AudioPlayer';
 import { extractKeyNumber, extractTimeline } from '../../utils/text';
+import logoWhite from '../../assets/logo-white.png';
 
 interface EventSidebarProps {
   event: Event;
@@ -40,8 +41,84 @@ export function EventSidebar({ event }: EventSidebarProps) {
   const keyNumber = extractKeyNumber(event.summary);
   const timeline = extractTimeline(event.summary);
 
+  // OG Image title (dev only)
+  const ogTitle = event.metadata?.ultraShortHeadline || event.title;
+
   return (
     <aside className="lg:sticky lg:top-6 space-y-6">
+      {/* OG Image Preview (dev only) - rendered as React component */}
+      {import.meta.env.DEV && (
+        <div className="hidden lg:block px-6 lg:px-0">
+          <div className="rounded-lg border border-dashed border-amber-400 bg-amber-50/50 p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <i className="ri-image-line text-amber-600" />
+              <span className="text-xs font-medium text-amber-700 uppercase tracking-wider">
+                og:image preview
+              </span>
+            </div>
+            {/* Simulated OG Image - same styles as api/og.tsx */}
+            <div
+              className="w-full rounded border border-amber-200 overflow-hidden"
+              style={{ aspectRatio: '1200/630' }}
+            >
+              <div
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundColor: '#09090b',
+                  padding: '16px',
+                  position: 'relative',
+                }}
+              >
+                {/* Type label */}
+                <div
+                  style={{
+                    fontSize: '8px',
+                    color: '#a1a1aa',
+                    marginBottom: '8px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  Wydarzenie
+                </div>
+                {/* Title */}
+                <div
+                  style={{
+                    fontSize: ogTitle.length > 80 ? '12px' : ogTitle.length > 50 ? '14px' : '16px',
+                    fontWeight: 600,
+                    color: '#fafafa',
+                    lineHeight: 1.2,
+                    flex: 1,
+                    overflow: 'hidden',
+                  }}
+                >
+                  {ogTitle}
+                </div>
+                {/* Logo placeholder */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '16px',
+                    right: '16px',
+                    fontSize: '10px',
+                    color: '#71717a',
+                    opacity: 0.8,
+                  }}
+                >
+                  pollar
+                </div>
+              </div>
+            </div>
+            <p className="text-[10px] text-amber-600 mt-2 font-mono">
+              /api/og?title={encodeURIComponent(ogTitle)}&type=event
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Map */}
       {location && (
         <div className="px-6 lg:px-0">
