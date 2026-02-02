@@ -1,8 +1,6 @@
-import { useEvents } from '../context/EventsContext';
 import { useBrief } from '../hooks/useBrief';
 import { useFelietony } from '../hooks/useFelietony';
-import { useCategory } from '../context/CategoryContext';
-import { useEventGroups } from '../hooks/useEventGroups';
+import { useEventGroupsWithArchive } from '../hooks/useEventSelectors';
 import { MarketTicker } from './MarketTicker';
 import { FeaturedSection } from './news/FeaturedSection';
 import { CategoryTabs } from './news/CategoryTabs';
@@ -13,15 +11,8 @@ import { CategoryCarousel } from './news/CategoryCarousel';
 import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection } from './news/sidebar';
 
 export function NewsGrid() {
-  const { selectedCategory } = useCategory();
   const { brief } = useBrief({ lang: 'pl' });
   const { felietony } = useFelietony();
-  const { events, loading, error } = useEvents({
-    limit: 100,
-    lang: 'pl',
-    includeArchive: !!selectedCategory,
-  });
-
   const {
     featured,
     categoryGroups,
@@ -29,9 +20,11 @@ export function NewsGrid() {
     doubleHero2,
     eventsByCategory,
     latestEvents,
-  } = useEventGroups(events, selectedCategory);
+    loading,
+    error,
+  } = useEventGroupsWithArchive();
 
-  if (loading && events.length === 0) {
+  if (loading && featured.length === 0) {
     return (
       <section className="max-w-[1400px] mx-auto px-4 py-6">
         <div className="text-zinc-500 text-center py-12">Ładowanie...</div>

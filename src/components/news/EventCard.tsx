@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
+import { cardHover, imageHover } from '@/lib/animations';
 
 type EventCardSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -31,13 +33,18 @@ export function EventCard({
 
   return (
     <Link to={`/event/${event.id}`} className={`group block ${className}`}>
-      <article>
+      <motion.article
+        {...cardHover}
+      >
         {showImage && event.imageUrl && (
-          <img
-            src={event.imageUrl}
-            alt=""
-            className="w-full aspect-video object-cover mb-4"
-          />
+          <div className="overflow-hidden mb-4">
+            <motion.img
+              src={event.imageUrl}
+              alt=""
+              className="w-full aspect-video object-cover"
+              {...imageHover}
+            />
+          </div>
         )}
         {showCategory && (
           <span className="text-zinc-400 text-xs">{event.category}</span>
@@ -50,7 +57,7 @@ export function EventCard({
             {event.lead}
           </p>
         )}
-      </article>
+      </motion.article>
     </Link>
   );
 }

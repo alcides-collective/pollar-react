@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { fadeIn } from '@/lib/animations';
 
 export function NewsletterSection() {
   const [email, setEmail] = useState('');
@@ -24,27 +28,46 @@ export function NewsletterSection() {
         Otrzymuj codzienny przegląd najważniejszych wydarzeń.
       </p>
 
-      {status === 'success' ? (
-        <p className="text-sm text-green-600">Dziękujemy za zapisanie się!</p>
-      ) : (
-        <form onSubmit={handleSubmit} className="flex gap-2">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Twój email"
-            className="flex-1 text-sm px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-zinc-500 text-zinc-900 bg-white"
-            required
-          />
-          <button
-            type="submit"
-            disabled={status === 'loading'}
-            className="text-sm px-4 py-2 bg-zinc-900 text-white rounded hover:bg-zinc-800 transition-colors disabled:opacity-50"
+      <AnimatePresence mode="wait">
+        {status === 'success' ? (
+          <motion.p
+            key="success"
+            className="text-sm text-green-600"
+            initial={fadeIn.initial}
+            animate={fadeIn.animate}
+            exit={fadeIn.exit}
+            transition={fadeIn.transition}
           >
-            {status === 'loading' ? '...' : 'Zapisz'}
-          </button>
-        </form>
-      )}
+            Dziękujemy za zapisanie się!
+          </motion.p>
+        ) : (
+          <motion.form
+            key="form"
+            onSubmit={handleSubmit}
+            className="flex gap-2"
+            initial={fadeIn.initial}
+            animate={fadeIn.animate}
+            exit={fadeIn.exit}
+            transition={fadeIn.transition}
+          >
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Twój email"
+              className="flex-1 text-sm text-zinc-900 placeholder:text-zinc-400 bg-white border-zinc-300"
+              required
+            />
+            <Button
+              type="submit"
+              disabled={status === 'loading'}
+              size="sm"
+            >
+              {status === 'loading' ? '...' : 'Zapisz'}
+            </Button>
+          </motion.form>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
