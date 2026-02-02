@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 const API_BASE = process.env.API_BASE || 'https://pollar.up.railway.app';
 
 // Font family for SVG (must match installed font via fontconfig)
-const FONT_FAMILY = 'HK Grotesk SemiBold, HKGrotesk-SemiBold, Noto Sans, DejaVu Sans, sans-serif';
+const FONT_FAMILY = "'HK Grotesk', 'Noto Sans', 'DejaVu Sans', sans-serif";
 
 // Load logo buffer at startup for Sharp compositing
 let logoBuffer = null;
@@ -120,16 +120,16 @@ app.get('/api/og', async (req, res) => {
   const height = 630;
   const padding = 60;
 
-  const textY = typeLabel ? 160 : 120;
+  const textY = typeLabel ? 200 : 120;
   const textElements = displayLines
     .map((line, i) => {
       const y = textY + i * lineHeight;
-      return `<text x="${padding}" y="${y}" font-size="${fontSize}" font-weight="600" fill="#fafafa">${escapeXml(line)}</text>`;
+      return `<text x="${padding}" y="${y}" font-size="${fontSize}" font-weight="700" fill="#fafafa">${escapeXml(line)}</text>`;
     })
     .join('\n');
 
   const typeLabelElement = typeLabel
-    ? `<text x="${padding}" y="100" font-size="24" fill="#a1a1aa" letter-spacing="0.1em">${escapeXml(typeLabel)}</text>`
+    ? `<text x="${padding}" y="100" font-size="24" font-weight="600" fill="#a1a1aa" letter-spacing="0.1em">${escapeXml(typeLabel)}</text>`
     : '';
 
   // Font style - uses system fonts configured via fontconfig
