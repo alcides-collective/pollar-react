@@ -145,6 +145,7 @@ interface UseEventsOptions {
   lang?: string;
   includeArchive?: boolean;
   category?: string;
+  articleFields?: 'minimal' | 'full';
 }
 
 export function useEvents(params: UseEventsOptions = {}) {

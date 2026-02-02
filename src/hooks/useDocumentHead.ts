@@ -1,13 +1,28 @@
 import { useEffect } from 'react';
 
+export type OgImageType = 'event' | 'brief' | 'felieton';
+
 export interface DocumentHeadOptions {
   title?: string;
   description?: string;
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  ogImageType?: OgImageType;
   ogType?: 'website' | 'article';
   twitterCard?: 'summary' | 'summary_large_image';
+}
+
+/**
+ * Generates dynamic OG image URL using the /api/og endpoint
+ */
+export function generateOgImageUrl(title: string, type?: OgImageType): string {
+  const params = new URLSearchParams();
+  params.set('title', title);
+  if (type) {
+    params.set('type', type);
+  }
+  return `/api/og?${params.toString()}`;
 }
 
 const DEFAULT_TITLE = 'Pollar News';
@@ -26,9 +41,17 @@ export function useDocumentHead(options: DocumentHeadOptions) {
       ogTitle,
       ogDescription,
       ogImage,
+      ogImageType,
       ogType = 'article',
       twitterCard = 'summary_large_image',
     } = options;
+
+    // Generate dynamic OG image URL if type is provided
+    const resolvedOgImage = ogImage || (
+      (ogTitle || title) && ogImageType
+        ? generateOgImageUrl(ogTitle || title || '', ogImageType)
+        : undefined
+    );
 
     // Store original values for cleanup
     const originalTitle = document.title;
@@ -66,8 +89,8 @@ export function useDocumentHead(options: DocumentHeadOptions) {
     if (ogDescription || description) {
       setMetaTag('meta[property="og:description"]', 'property', 'og:description', ogDescription || description || DEFAULT_DESCRIPTION);
     }
-    if (ogImage) {
-      setMetaTag('meta[property="og:image"]', 'property', 'og:image', ogImage);
+    if (resolvedOgImage) {
+      setMetaTag('meta[property="og:image"]', 'property', 'og:image', resolvedOgImage);
     }
     setMetaTag('meta[property="og:type"]', 'property', 'og:type', ogType);
 
@@ -79,8 +102,8 @@ export function useDocumentHead(options: DocumentHeadOptions) {
     if (ogDescription || description) {
       setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', ogDescription || description || DEFAULT_DESCRIPTION);
     }
-    if (ogImage) {
-      setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', ogImage);
+    if (resolvedOgImage) {
+      setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', resolvedOgImage);
     }
 
     // Cleanup: reset to defaults on unmount
@@ -95,5 +118,5 @@ export function useDocumentHead(options: DocumentHeadOptions) {
       setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', DEFAULT_DESCRIPTION);
       setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', DEFAULT_IMAGE);
     };
-  }, [options.title, options.description, options.ogTitle, options.ogDescription, options.ogImage, options.ogType, options.twitterCard]);
+  }, [options.title, options.description, options.ogTitle, options.ogDescription, options.ogImage, options.ogImageType, options.ogType, options.twitterCard]);
 }

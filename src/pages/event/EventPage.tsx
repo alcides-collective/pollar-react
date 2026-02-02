@@ -16,15 +16,17 @@ export function EventPage() {
   const { events: allEvents } = useEvents({ limit: 100, lang: 'pl' });
 
   // SEO meta tags
-  const ogTitle = prepareOgTitle(event?.metadata?.ultraShortHeadline || event?.title);
+  const fullTitle = event?.metadata?.ultraShortHeadline || event?.title || '';
+  const ogTitle = prepareOgTitle(fullTitle);
   const ogDescription = prepareOgDescription(
     event?.metadata?.keyPoints?.[0]?.description || event?.summary
   );
   useDocumentHead({
-    title: event?.metadata?.ultraShortHeadline || event?.title,
+    title: fullTitle,
     description: ogDescription,
     ogTitle,
     ogDescription,
+    ogImageType: 'event',
     ogType: 'article',
   });
 
