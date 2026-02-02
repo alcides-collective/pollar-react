@@ -29,9 +29,7 @@ function SourceEventCard({ eventId }: { eventId: string }) {
 
   if (!event) return null;
 
-  const date = event.metadata?.originalDate
-    ? new Date(event.metadata.originalDate)
-    : new Date(event.createdAt);
+  const date = new Date(event.createdAt);
 
   const formattedDate = date.toLocaleDateString('pl-PL', {
     day: 'numeric',
