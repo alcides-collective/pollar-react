@@ -24,6 +24,7 @@ try {
 }
 
 // Crawler detection
+// Note: iMessage spoofs facebookexternalhit + Twitterbot, so it's already covered
 const CRAWLER_USER_AGENTS = [
   'facebookexternalhit', 'Facebot', 'Twitterbot', 'LinkedInBot', 'WhatsApp',
   'Slackbot', 'TelegramBot', 'Discordbot', 'Googlebot', 'bingbot', 'Applebot',
@@ -176,7 +177,8 @@ app.get('/api/og', async (req, res) => {
 
 function generateSeoHtml(opts) {
   const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article' } = opts;
-  return `<!doctype html>
+  // All meta tags use self-closing /> for iMessage compatibility
+  return `<!DOCTYPE html>
 <html lang="pl">
   <head>
     <meta charset="utf-8" />
@@ -188,6 +190,7 @@ function generateSeoHtml(opts) {
     <meta property="og:title" content="${escapeHtml(ogTitle)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:image" content="${ogImage}" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:url" content="${targetUrl}" />
@@ -195,12 +198,11 @@ function generateSeoHtml(opts) {
     <meta name="twitter:title" content="${escapeHtml(ogTitle)}" />
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${ogImage}" />
-    <meta http-equiv="refresh" content="0; url=${targetUrl}" />
     <link rel="canonical" href="${targetUrl}" />
-    <script>window.location.replace(${JSON.stringify(targetUrl)});</script>
   </head>
   <body>
-    <p>Przekierowywanie… Jeśli strona się nie przeładuje, <a href="${targetUrl}">kliknij tutaj</a>.</p>
+    <p>Przekierowywanie do <a href="${targetUrl}">${escapeHtml(ogTitle)}</a>...</p>
+    <script>window.location.replace(${JSON.stringify(targetUrl)});</script>
   </body>
 </html>`;
 }
@@ -240,13 +242,18 @@ async function fetchFelietonData(felietonId) {
   }
 }
 
+// Trust proxy for correct protocol detection behind Railway/load balancer
+app.set('trust proxy', true);
+
 // Crawler middleware
 app.use(async (req, res, next) => {
   if (!isCrawler(req.headers['user-agent'])) {
     return next();
   }
 
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  // Always use HTTPS in production
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : req.protocol;
+  const baseUrl = `${protocol}://${req.get('host')}`;
   const targetUrl = `${baseUrl}${req.path}`;
 
   // Event page

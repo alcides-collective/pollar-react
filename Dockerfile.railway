@@ -38,8 +38,9 @@ COPY server-assets ./server-assets
 ENV FONTCONFIG_PATH=/app/server-assets/fonts
 RUN mkdir -p /tmp/fontconfig-cache && fc-cache -fv /app/server-assets/fonts
 
-# Railway uses PORT environment variable
+# Environment variables
 ENV PORT=3000
+ENV NODE_ENV=production
 ENV API_BASE=https://pollar.up.railway.app
 
 # Expose the port
