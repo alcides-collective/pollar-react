@@ -1,6 +1,6 @@
 import { useRef, useState, useLayoutEffect, useEffect, memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import type { Event } from '../../types/events';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,6 @@ import { hoverScale } from '@/lib/animations';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 import { SectionImageContext } from '../../hooks/useSectionImages';
-import { useImageLoadingStore } from '../../stores/imageLoadingStore';
 
 interface CategoryCarouselProps {
   category: string;
@@ -52,61 +51,17 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
   const [isMeasuring, setIsMeasuring] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Custom image loading tracking for virtualized carousel
+  // Section ID for context (no blocking on image load)
   const sectionId = `carousel-${category}`;
-  // Select actions individually for stable references
-  const registerSection = useImageLoadingStore((s) => s.registerSection);
-  const unregisterSection = useImageLoadingStore((s) => s.unregisterSection);
-  const registerImage = useImageLoadingStore((s) => s.registerImage);
-  const markImageLoaded = useImageLoadingStore((s) => s.markImageLoaded);
-  const markImageError = useImageLoadingStore((s) => s.markImageError);
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
-  const [shouldShow, setShouldShow] = useState(false);
-  const loadedCountRef = useRef(0);
-  const initialVisibleCount = 4; // Desktop shows 4 items initially
 
-  // Register section on mount
-  useEffect(() => {
-    registerSection(sectionId, 'low');
-    return () => unregisterSection(sectionId);
-  }, [sectionId, registerSection, unregisterSection]);
-
-  // Custom context that only tracks initial visible items
+  // Simple context - no blocking on image load
   const carouselContext = useMemo(() => ({
     sectionId,
     priority: 'low' as const,
-    registerImage: (imageId: string) => {
-      if (!initialLoadComplete) {
-        registerImage(sectionId, imageId);
-      }
-    },
-    markLoaded: (imageId: string) => {
-      if (!initialLoadComplete) {
-        markImageLoaded(sectionId, imageId);
-        loadedCountRef.current++;
-        if (loadedCountRef.current >= Math.min(initialVisibleCount, events.length)) {
-          setInitialLoadComplete(true);
-        }
-      }
-    },
-    markError: (imageId: string) => {
-      if (!initialLoadComplete) {
-        markImageError(sectionId, imageId);
-        loadedCountRef.current++;
-        if (loadedCountRef.current >= Math.min(initialVisibleCount, events.length)) {
-          setInitialLoadComplete(true);
-        }
-      }
-    },
-  }), [sectionId, registerImage, markImageLoaded, markImageError, initialLoadComplete, events.length]);
-
-  // Add delay before showing to prevent flash
-  useEffect(() => {
-    if (initialLoadComplete) {
-      const timer = setTimeout(() => setShouldShow(true), 100);
-      return () => clearTimeout(timer);
-    }
-  }, [initialLoadComplete]);
+    registerImage: () => {},
+    markLoaded: () => {},
+    markError: () => {},
+  }), [sectionId]);
 
   // Calculate item width based on container and screen size
   useLayoutEffect(() => {
@@ -217,94 +172,73 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
 
   return (
     <SectionImageContext.Provider value={carouselContext}>
-      <AnimatePresence mode="wait">
-        {shouldShow ? (
-          <motion.div
-            key="content"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="border-b border-zinc-200 last:border-b-0"
-          >
-            <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
-              <h2 className="text-xl font-bold text-zinc-900">{category}</h2>
-              <div className="flex gap-2">
-                <motion.div {...hoverScale}>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => scroll('left')}
-                    className="w-8 h-8 rounded-full"
-                    aria-label="Przewiń w lewo"
-                  >
-                    <i className="ri-arrow-left-s-line text-lg text-zinc-900"></i>
-                  </Button>
-                </motion.div>
-                <motion.div {...hoverScale}>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => scroll('right')}
-                    className="w-8 h-8 rounded-full"
-                    aria-label="Przewiń w prawo"
-                  >
-                    <i className="ri-arrow-right-s-line text-lg text-zinc-900"></i>
-                  </Button>
-                </motion.div>
-              </div>
-            </div>
-            <div
-              ref={scrollRef}
-              className="overflow-x-auto scroll-smooth scrollbar-hide"
-              style={{
-                height: containerHeight ?? 200,
-                scrollSnapType: isMobile ? 'x mandatory' : undefined,
-              }}
-            >
-              <div
-                style={{
-                  width: `${virtualizer.getTotalSize()}px`,
-                  height: '100%',
-                  position: 'relative',
-                }}
+      <div className="border-b border-zinc-200 last:border-b-0">
+        <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
+          <h2 className="text-xl font-bold text-zinc-900">{category}</h2>
+          <div className="flex gap-2">
+            <motion.div {...hoverScale}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => scroll('left')}
+                className="w-8 h-8 rounded-full"
+                aria-label="Przewiń w lewo"
               >
-                {virtualizer.getVirtualItems().map((virtualItem) => {
-                  const event = events[virtualItem.index];
-                  const hideBorder = isMobile || virtualItem.index % 4 === 3;
-                  return (
-                    <div
-                      key={event.id}
-                      data-index={virtualItem.index}
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: `${itemWidth ?? 300}px`,
-                        height: '100%',
-                        transform: `translateX(${virtualItem.start}px)`,
-                        scrollSnapAlign: isMobile ? 'start' : undefined,
-                      }}
-                    >
-                      <EventCarouselItem event={event} hideBorder={hideBorder} />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </motion.div>
-        ) : (
-          <div
-            key="placeholder"
-            className="border-b border-zinc-200 last:border-b-0 invisible"
-            aria-hidden="true"
-          >
-            <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
-              <h2 className="text-xl font-bold text-zinc-900">{category}</h2>
-            </div>
-            <div style={{ height: containerHeight ?? 200 }} />
+                <i className="ri-arrow-left-s-line text-lg text-zinc-900"></i>
+              </Button>
+            </motion.div>
+            <motion.div {...hoverScale}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => scroll('right')}
+                className="w-8 h-8 rounded-full"
+                aria-label="Przewiń w prawo"
+              >
+                <i className="ri-arrow-right-s-line text-lg text-zinc-900"></i>
+              </Button>
+            </motion.div>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+        <div
+          ref={scrollRef}
+          className="overflow-x-auto scroll-smooth scrollbar-hide"
+          style={{
+            height: containerHeight ?? 200,
+            scrollSnapType: isMobile ? 'x mandatory' : undefined,
+          }}
+        >
+          <div
+            style={{
+              width: `${virtualizer.getTotalSize()}px`,
+              height: '100%',
+              position: 'relative',
+            }}
+          >
+            {virtualizer.getVirtualItems().map((virtualItem) => {
+              const event = events[virtualItem.index];
+              const hideBorder = isMobile || virtualItem.index % 4 === 3;
+              return (
+                <div
+                  key={event.id}
+                  data-index={virtualItem.index}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: `${itemWidth ?? 300}px`,
+                    height: '100%',
+                    transform: `translateX(${virtualItem.start}px)`,
+                    scrollSnapAlign: isMobile ? 'start' : undefined,
+                  }}
+                >
+                  <EventCarouselItem event={event} hideBorder={hideBorder} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </SectionImageContext.Provider>
   );
 }

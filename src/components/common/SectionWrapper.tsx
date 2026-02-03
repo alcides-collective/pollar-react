@@ -9,6 +9,8 @@ interface SectionWrapperProps {
   className?: string;
   animationVariants?: Variants;
   minDisplayDelay?: number;
+  /** Maximum time to wait for images before showing section anyway (ms) */
+  maxWaitTime?: number;
 }
 
 const defaultVariants: Variants = {
@@ -27,6 +29,7 @@ export function SectionWrapper({
   className,
   animationVariants = defaultVariants,
   minDisplayDelay = 100,
+  maxWaitTime = 3000,
 }: SectionWrapperProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [detectedPriority, setDetectedPriority] = useState<'high' | 'low'>(
@@ -57,6 +60,17 @@ export function SectionWrapper({
       return () => clearTimeout(timer);
     }
   }, [isReady, minDisplayDelay]);
+
+  // Fallback timeout - show section after maxWaitTime even if images haven't loaded
+  useEffect(() => {
+    if (shouldShow) return; // Already showing, no need for fallback
+
+    const fallbackTimer = setTimeout(() => {
+      setShouldShow(true);
+    }, maxWaitTime);
+
+    return () => clearTimeout(fallbackTimer);
+  }, [maxWaitTime, shouldShow]);
 
   return (
     <SectionImageContext.Provider value={contextValue}>
