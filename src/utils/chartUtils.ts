@@ -208,7 +208,7 @@ export function calculateYBounds(values: number[]): { yMin: number; yMax: number
 /**
  * Parse labels to timestamps for time-proportional positioning
  */
-export function parseLabelsToTimestamps(rawLabels: string[], dateScale: DateScale): number[] {
+export function parseLabelsToTimestamps(rawLabels: string[], _dateScale: DateScale): number[] {
   // Check if we have mixed formats (some date-only, some with time)
   const hasTimeFormats = rawLabels.some(l => l.includes('T'));
   const hasDateOnlyFormats = rawLabels.some(l => !l.includes('T') && /^\d{4}-\d{2}-\d{2}$/.test(l.trim()));

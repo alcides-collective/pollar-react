@@ -10,7 +10,6 @@ import {
   Legend,
   Filler,
   type ChartOptions,
-  type TooltipItem,
   type Tick,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -22,7 +21,6 @@ import {
   formatChartNumber,
   CHART_COLORS,
   POLISH_MONTHS_SHORT,
-  type DateScale,
 } from '../../utils/chartUtils';
 
 ChartJS.register(
