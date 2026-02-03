@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Event } from '../../../types/events';
-import { formatTimeAgo } from '../../../utils/formatTimeAgo';
+import { LiveTimeAgo } from '../../common/LiveTimeAgo';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 
 interface LatestEventsProps {
@@ -23,7 +23,7 @@ export function LatestEvents({ events }: LatestEventsProps) {
           <motion.div key={event.id} variants={staggerItem}>
             <Link to={`/event/${event.id}`} className="block group">
               <div className="flex items-center gap-2 text-xs mb-1">
-                <span className="text-red-500">{formatTimeAgo(event.updatedAt)}</span>
+                <LiveTimeAgo date={event.updatedAt} className="text-red-500" />
                 <span className="text-zinc-300">•</span>
                 <span className="text-zinc-400">{event.category}</span>
               </div>
