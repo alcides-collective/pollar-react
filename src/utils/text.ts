@@ -550,7 +550,8 @@ export function sanitizeAndProcessHtml(text: string): string {
           const maxValue = Math.max(...items.map(i => i.value));
           const barsHtml = items.map(item => {
             const pct = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
-            return `<div class="chart-bar-row"><span class="chart-bar-label">${item.label}</span><div class="chart-bar-track"><div class="chart-bar-fill" style="width: ${pct}%"></div></div><span class="chart-bar-value">${item.value} ${unit}</span></div>`;
+            const displayUnit = unit.toLowerCase() === 'liczba' ? '' : ` ${unit}`;
+            return `<div class="chart-bar-row"><span class="chart-bar-label">${item.label}</span><div class="chart-bar-track"><div class="chart-bar-fill" style="width: ${pct}%"></div></div><span class="chart-bar-value">${item.value}${displayUnit}</span></div>`;
           }).join('');
           return `\n\n<div class="chart-box"><span class="chart-label">WYKRES</span><div class="chart-title">${title}</div><div class="chart-bars">${barsHtml}</div></div>\n\n`;
         } catch {
@@ -572,7 +573,8 @@ export function sanitizeAndProcessHtml(text: string): string {
           const maxValue = Math.max(...items.map(i => i.value));
           const barsHtml = items.map(item => {
             const pct = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
-            return `<div class="chart-bar-row"><span class="chart-bar-label">${item.label}</span><div class="chart-bar-track"><div class="chart-bar-fill" style="width: ${pct}%"></div></div><span class="chart-bar-value">${item.value} ${unit}</span></div>`;
+            const displayUnit = unit.toLowerCase() === 'liczba' ? '' : ` ${unit}`;
+            return `<div class="chart-bar-row"><span class="chart-bar-label">${item.label}</span><div class="chart-bar-track"><div class="chart-bar-fill" style="width: ${pct}%"></div></div><span class="chart-bar-value">${item.value}${displayUnit}</span></div>`;
           }).join('');
           return `\n\n<div class="chart-box"><span class="chart-label">WYKRES</span><div class="chart-title">${title}</div><div class="chart-bars">${barsHtml}</div></div>\n\n`;
         } catch {
