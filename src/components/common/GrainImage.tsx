@@ -1,3 +1,6 @@
+import { useId } from 'react';
+import { useImageInSection } from '../../hooks/useSectionImages';
+
 interface GrainImageProps {
   src: string;
   alt?: string;
@@ -22,6 +25,11 @@ export function GrainImage({
   groupHover = false,
   hoverShadow,
 }: GrainImageProps) {
+  // Section image tracking
+  const uniqueId = useId();
+  const imageId = `grain-${src}-${uniqueId}`;
+  const { priority, onLoad, onError } = useImageInSection(imageId);
+
   // groupHover uses parent's group class, hoverScale (legacy) creates own group
   const useParentGroup = groupHover || hoverScale;
   const showShadow = hoverShadow ?? useParentGroup;
@@ -36,6 +44,9 @@ export function GrainImage({
         src={src}
         alt={alt}
         className="w-full h-full object-cover"
+        loading={priority === 'high' ? 'eager' : 'lazy'}
+        onLoad={onLoad}
+        onError={onError}
       />
       <div
         className="absolute inset-0 pointer-events-none"

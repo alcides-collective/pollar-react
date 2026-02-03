@@ -5,6 +5,7 @@ import type { Event } from '../../types/events';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 import { AnimateHeight } from '../common/AnimateHeight';
+import { SectionWrapper } from '../common/SectionWrapper';
 
 interface CategoryTabsProps {
   groups: Array<[string, Event[]]>;
@@ -50,9 +51,13 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className="flex flex-col md:flex-row"
             >
-              {selectedGroup[1][0] && (
+              <SectionWrapper
+                sectionId={`category-tabs-${selectedTab}-${selectedGroup[1][0]?.id || 'empty'}`}
+                priority="auto"
+              >
+                <div className="flex flex-col md:flex-row">
+                  {selectedGroup[1][0] && (
                 <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
                   <article className="flex flex-col md:flex-row gap-4">
                     <div className="w-full md:w-80 md:shrink-0">
@@ -93,7 +98,9 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                     </h4>
                   </Link>
                 ))}
+                </div>
               </div>
+              </SectionWrapper>
             </motion.div>
           )}
         </AnimatePresence>

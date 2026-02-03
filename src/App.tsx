@@ -67,6 +67,7 @@ import { NotificationsPage } from './pages/notifications'
 import { ArchivePage, CategoryArchivePage } from './pages/archiwum'
 import { AsystentPage } from './pages/asystent'
 import { useEventStream } from './hooks/useEventStream'
+import { useAllSectionsReady } from './stores/imageLoadingStore'
 
 function HomePage() {
   return <NewsGrid />
@@ -167,6 +168,9 @@ function useIsFullscreenRoute() {
 function AppContent() {
   const [showFooter, setShowFooter] = useState(false)
   const isFullscreen = useIsFullscreenRoute()
+  const location = useLocation()
+  const allSectionsReady = useAllSectionsReady()
+  const isHomePage = location.pathname === '/'
 
   // Initialize auth listener
   const initializeAuth = useAuthStore((s) => s.initialize)
@@ -224,7 +228,7 @@ function AppContent() {
         <main className="flex-1">
           <AnimatedRoutes onRouteChange={handleRouteChange} onContentReady={handleContentReady} />
         </main>
-        {showFooter && <Footer />}
+        {(isHomePage ? allSectionsReady : showFooter) && <Footer />}
       </div>
     </>
   )

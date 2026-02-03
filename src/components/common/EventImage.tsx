@@ -1,6 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useId } from 'react';
 import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
+import { useImageInSection } from '../../hooks/useSectionImages';
 
 const PLACEHOLDER_IMAGE = '/opengraph-image.jpg';
 
@@ -20,6 +21,11 @@ interface EventImageProps {
 export function EventImage({ event, className, style, hoverScale = 1.02, grainOpacity = 0.25, groupHover = false, hoverShadow }: EventImageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [allFailed, setAllFailed] = useState(false);
+
+  // Section image tracking
+  const uniqueId = useId();
+  const imageId = `event-${event.id}-${uniqueId}`;
+  const { priority, onLoad, onError } = useImageInSection(imageId);
 
   // Stabilna lista URLi - tylko niepuste stringi
   const imageUrls = useMemo(() => {
@@ -47,7 +53,12 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
       setCurrentIndex(nextIndex);
     } else {
       setAllFailed(true);
+      onError();
     }
+  };
+
+  const handleLoad = () => {
+    onLoad();
   };
 
   // Użyj placeholdera gdy brak obrazków lub wszystkie zawiodły
@@ -74,6 +85,8 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
         src={currentImageUrl}
         alt=""
         className="w-full h-full object-cover"
+        loading={priority === 'high' ? 'eager' : 'lazy'}
+        onLoad={handleLoad}
         onError={allFailed ? undefined : handleError}
       />
       <div

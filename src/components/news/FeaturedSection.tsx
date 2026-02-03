@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
-import { staggerContainer, staggerItem, scrollReveal } from '@/lib/animations';
+import { staggerContainer, staggerItem } from '@/lib/animations';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
+import { SectionWrapper } from '../common/SectionWrapper';
 
 interface FeaturedSectionProps {
   events: Event[];
@@ -17,13 +18,11 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
   const imageSource = getImageSource(mainEvent);
 
   return (
-    <motion.div
-      key={events.map(e => e.id).join(',')}
-      className="grid grid-cols-1 md:grid-cols-2"
-      initial={scrollReveal.initial}
-      animate={scrollReveal.whileInView}
-      transition={scrollReveal.transition}
+    <SectionWrapper
+      sectionId={`featured-${events.map(e => e.id).join(',')}`}
+      priority="high"
     >
+      <div className="grid grid-cols-1 md:grid-cols-2">
       <div className="md:border-r border-zinc-200 relative overflow-hidden">
         <Link to={`/event/${mainEvent.id}`} className="group block">
           <EventImage
@@ -106,6 +105,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
           </motion.div>
         )}
       </div>
-    </motion.div>
+      </div>
+    </SectionWrapper>
   );
 }

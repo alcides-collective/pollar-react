@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import type { DailyBrief } from '../../types/brief';
-import { scrollReveal } from '@/lib/animations';
 import { GrainImage } from '../common/GrainImage';
+import { SectionWrapper } from '../common/SectionWrapper';
 import dailyBriefImg from '../../assets/images/daily/day.webp';
 
 interface DailyBriefSectionProps {
@@ -28,14 +27,12 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
   });
 
   return (
-    <Link to="/brief" className="group block">
-      <motion.div
-        className="bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer"
-        initial={scrollReveal.initial}
-        whileInView={scrollReveal.whileInView}
-        viewport={scrollReveal.viewport}
-        transition={scrollReveal.transition}
-      >
+    <SectionWrapper
+      sectionId={`daily-brief-${brief.date}`}
+      priority="low"
+    >
+      <Link to="/brief" className="group block">
+        <div className="bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer">
         <p className="text-sm text-sky-700 px-6 pt-6 pb-4">
           Daily Brief na {formattedDate}
           {brief.greeting && ` — ${brief.greeting}`}
@@ -66,7 +63,8 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
             )} */}
           </div>
         </div>
-      </motion.div>
-    </Link>
+        </div>
+      </Link>
+    </SectionWrapper>
   );
 }

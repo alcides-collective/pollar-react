@@ -12,6 +12,7 @@ import { DiscoverSection } from './news/DiscoverSection';
 import { CategoryCarousel } from './news/CategoryCarousel';
 import { LatestEvents, /* NewsletterSection, */ MapSection, AboutSection, ContactSection, VersionSection } from './news/sidebar';
 import { AISidebarWidget } from './ai';
+import { LoadingSpinner } from './common/LoadingSpinner';
 
 export function NewsGrid() {
   const selectedCategory = useSelectedCategory();
@@ -31,9 +32,9 @@ export function NewsGrid() {
 
   if (loading && featured.length === 0) {
     return (
-      <section className="max-w-[1400px] mx-auto px-4 pb-6">
-        <div className="text-zinc-500 text-center py-12">Ładowanie...</div>
-      </section>
+      <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
+        <LoadingSpinner size={48} />
+      </div>
     );
   }
 

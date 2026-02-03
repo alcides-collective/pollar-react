@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import type { Felieton, FelietonCategory } from '../../types/felieton';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
-import { staggerContainer, staggerItem } from '@/lib/animations';
 import { GrainImage } from '../common/GrainImage';
+import { SectionWrapper } from '../common/SectionWrapper';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.webp';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.webp';
@@ -74,30 +73,28 @@ export function FelietonySection({ felietony }: FelietonySectionProps) {
   );
 
   return (
-    <motion.div
-      className="grid grid-cols-1 md:grid-cols-3 bg-sky-50"
-      variants={staggerContainer}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true }}
+    <SectionWrapper
+      sectionId="felietony-section"
+      priority="low"
     >
-      {categories.map((category, index) => {
-        const felieton = felietonyByCategory.get(category);
-        const isLast = index === categories.length - 1;
-        return (
-          <motion.div
-            key={category}
-            className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}
-            variants={staggerItem}
-          >
-            {felieton ? (
-              <FelietonCard felieton={felieton} />
-            ) : (
-              <PlaceholderCard category={category} />
-            )}
-          </motion.div>
-        );
-      })}
-    </motion.div>
+      <div className="grid grid-cols-1 md:grid-cols-3 bg-sky-50">
+        {categories.map((category, index) => {
+          const felieton = felietonyByCategory.get(category);
+          const isLast = index === categories.length - 1;
+          return (
+            <div
+              key={category}
+              className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}
+            >
+              {felieton ? (
+                <FelietonCard felieton={felieton} />
+              ) : (
+                <PlaceholderCard category={category} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </SectionWrapper>
   );
 }

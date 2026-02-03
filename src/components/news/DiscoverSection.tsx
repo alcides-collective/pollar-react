@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { staggerContainer, staggerItem } from '@/lib/animations';
 import { GrainImage } from '../common/GrainImage';
+import { SectionWrapper } from '../common/SectionWrapper';
 import powiazaniaImg from '../../assets/images/discover/powiazania.webp';
 import sejmImg from '../../assets/images/discover/sejm.webp';
 import gieldaImg from '../../assets/images/discover/gielda.webp';
@@ -71,25 +70,23 @@ function DiscoverCard({ link }: { link: DiscoverLink }) {
 
 export function DiscoverSection() {
   return (
-    <motion.div
-      className="grid grid-cols-1 md:grid-cols-3 bg-amber-50"
-      variants={staggerContainer}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true }}
+    <SectionWrapper
+      sectionId="discover-section"
+      priority="low"
     >
-      {DISCOVER_LINKS.map((link, index) => {
-        const isLast = index === DISCOVER_LINKS.length - 1;
-        return (
-          <motion.div
-            key={link.path}
-            className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}
-            variants={staggerItem}
-          >
-            <DiscoverCard link={link} />
-          </motion.div>
-        );
-      })}
-    </motion.div>
+      <div className="grid grid-cols-1 md:grid-cols-3 bg-amber-50">
+        {DISCOVER_LINKS.map((link, index) => {
+          const isLast = index === DISCOVER_LINKS.length - 1;
+          return (
+            <div
+              key={link.path}
+              className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}
+            >
+              <DiscoverCard link={link} />
+            </div>
+          );
+        })}
+      </div>
+    </SectionWrapper>
   );
 }

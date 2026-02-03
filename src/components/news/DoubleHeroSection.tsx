@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
-import { scrollReveal } from '@/lib/animations';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
+import { SectionWrapper } from '../common/SectionWrapper';
 
 interface DoubleHeroSectionProps {
   events: Event[];
@@ -19,13 +18,11 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
   const rightIsLarger = !reversed;
 
   return (
-    <motion.div
-      className={`grid grid-cols-1 ${gridCols}`}
-      initial={scrollReveal.initial}
-      whileInView={scrollReveal.whileInView}
-      viewport={scrollReveal.viewport}
-      transition={scrollReveal.transition}
+    <SectionWrapper
+      sectionId={`double-hero-${leftEvent.id}-${rightEvent.id}${reversed ? '-reversed' : ''}`}
+      priority="auto"
     >
+      <div className={`grid grid-cols-1 ${gridCols}`}>
       <Link to={`/event/${leftEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors border-b md:border-b-0 md:border-r border-zinc-200">
         <article>
           <div className="mb-4 relative">
@@ -73,6 +70,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
           </p>
         </article>
       </Link>
-    </motion.div>
+      </div>
+    </SectionWrapper>
   );
 }

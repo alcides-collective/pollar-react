@@ -8,6 +8,7 @@ import { useUser } from '../../stores/authStore';
 import { useReadHistoryStore } from '../../stores/readHistoryStore';
 import { prepareOgDescription } from '../../utils/text';
 import { staggerContainer, staggerItem, fadeInUp } from '../../lib/animations';
+import { Skeleton } from '../../components/ui/skeleton';
 import { EventHeader } from './EventHeader';
 import { EventKeyPoints } from './EventKeyPoints';
 import { EventSummary } from './EventSummary';
@@ -61,35 +62,35 @@ export function EventPage() {
   if (loading) {
     return (
       <div className="max-w-[1200px] mx-auto px-6 py-10">
-        <div className="animate-pulse">
+        <div>
           {/* Header skeleton */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <div className="h-4 w-20 bg-zinc-200 rounded" />
-              <div className="h-4 w-32 bg-zinc-200 rounded" />
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-32" />
             </div>
-            <div className="h-10 w-3/4 bg-zinc-200 rounded mb-3" />
-            <div className="h-10 w-1/2 bg-zinc-200 rounded mb-4" />
-            <div className="h-6 w-full bg-zinc-200 rounded mb-2" />
-            <div className="h-6 w-4/5 bg-zinc-200 rounded" />
+            <Skeleton className="h-10 w-3/4 mb-3" />
+            <Skeleton className="h-10 w-1/2 mb-4" />
+            <Skeleton className="h-6 w-full mb-2" />
+            <Skeleton className="h-6 w-4/5" />
           </div>
 
           {/* Two column skeleton */}
           <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-8">
             <div className="space-y-4">
-              <div className="h-4 w-24 bg-zinc-200 rounded" />
+              <Skeleton className="h-4 w-24" />
               {[1, 2, 3].map((i) => (
                 <div key={i} className="flex gap-3">
-                  <div className="h-6 w-6 bg-zinc-200 rounded-full" />
+                  <Skeleton className="h-6 w-6 rounded-full" />
                   <div className="flex-1">
-                    <div className="h-5 w-1/3 bg-zinc-200 rounded mb-2" />
-                    <div className="h-4 w-full bg-zinc-200 rounded" />
+                    <Skeleton className="h-5 w-1/3 mb-2" />
+                    <Skeleton className="h-4 w-full" />
                   </div>
                 </div>
               ))}
             </div>
             <div className="hidden lg:block">
-              <div className="h-64 bg-zinc-200 rounded-lg" />
+              <Skeleton className="h-64 rounded-lg" />
             </div>
           </div>
         </div>

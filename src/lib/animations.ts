@@ -204,3 +204,19 @@ export const typingDot: Variants = {
     },
   },
 }
+
+// Section reveal animation (used by SectionWrapper for image-coordinated reveals)
+export const sectionReveal: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: 'easeOut',
+    },
+  },
+}
