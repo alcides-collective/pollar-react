@@ -132,13 +132,22 @@ function SidebarSectionEvents({ section }: { section: BriefSection }) {
   );
 }
 
-export function BriefSidebar({ wordOfTheDay, activeSection }: BriefSidebarProps) {
+function getSectionEventIds(section: BriefSection): string[] {
+  const keyEvents = (section.keyEvents ?? []).filter(id => id && id.trim());
+  const extractedIds = extractEventIds(section.content);
+  return [...new Set([...keyEvents, ...extractedIds])];
+}
+
+export function BriefSidebar({ wordOfTheDay, activeSection, sections = [] }: BriefSidebarProps) {
+  // If no active section, find first section with events
+  const sectionToShow = activeSection ?? sections.find(s => getSectionEventIds(s).length > 0) ?? null;
+
   return (
     <aside className="lg:sticky lg:top-6 space-y-4">
       {wordOfTheDay && <SidebarWordOfTheDay word={wordOfTheDay} />}
       <AnimatePresence mode="wait">
-        {activeSection && (
-          <SidebarSectionEvents key={activeSection.headline} section={activeSection} />
+        {sectionToShow && (
+          <SidebarSectionEvents key={sectionToShow.headline} section={sectionToShow} />
         )}
       </AnimatePresence>
     </aside>

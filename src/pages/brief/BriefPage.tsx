@@ -185,6 +185,7 @@ export function BriefPage() {
           <BriefSidebar
             wordOfTheDay={brief.wordOfTheDay}
             activeSection={activeSection}
+            sections={brief.sections}
           />
         </div>
       </div>

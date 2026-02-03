@@ -42,7 +42,7 @@ function AuthButton() {
               {initials}
             </div>
           )}
-          <span className="hidden sm:block text-sm text-zinc-300 group-hover:text-white px-3 max-w-[120px] truncate bg-gradient-to-r from-zinc-800 to-zinc-800/50 group-hover:from-zinc-700 group-hover:to-zinc-700/50 transition-colors">
+          <span className="hidden sm:flex items-center text-sm text-zinc-300 group-hover:text-white h-[34px] px-3 max-w-[120px] truncate bg-gradient-to-r from-zinc-800 to-zinc-800/50 group-hover:from-zinc-700 group-hover:to-zinc-700/50 transition-colors">
             {displayName}
           </span>
         </DropdownMenuTrigger>
