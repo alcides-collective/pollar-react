@@ -9,7 +9,7 @@ import { DoubleHeroSection } from './news/DoubleHeroSection';
 import { DailyBriefSection } from './news/DailyBriefSection';
 import { FelietonySection } from './news/FelietonySection';
 import { CategoryCarousel } from './news/CategoryCarousel';
-import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection } from './news/sidebar';
+import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection, VersionSection } from './news/sidebar';
 
 export function NewsGrid() {
   const selectedCategory = useSelectedCategory();
@@ -72,6 +72,7 @@ export function NewsGrid() {
           <MapSection />
           <AboutSection />
           <ContactSection />
+          <VersionSection />
         </aside>
         </div>
       </div>
