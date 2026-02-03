@@ -535,52 +535,9 @@ export function sanitizeAndProcessHtml(text: string): string {
           return '';
         }
       })
-    // Convert <wykres-słupkowy> to simple bar representation (text-based for now)
-    .replace(/<wykres-s[łt][uó]pkowy\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+jednostk?a?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/wykres-s[łt][uó]pkowy>/gi,
-      (_, title, unit, dataStr) => {
-        try {
-          const items: {label: string, value: number}[] = [];
-          dataStr.split(',').forEach((pair: string) => {
-            const match = pair.trim().match(/^([^:]+):\s*([\d.,]+)/);
-            if (match) {
-              items.push({ label: match[1].trim(), value: parseFloat(match[2].replace(',', '.')) });
-            }
-          });
-          if (items.length === 0) return '';
-          const maxValue = Math.max(...items.map(i => i.value));
-          const barsHtml = items.map(item => {
-            const pct = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
-            const displayUnit = unit.toLowerCase() === 'liczba' ? '' : ` ${unit}`;
-            return `<div class="chart-bar-row"><span class="chart-bar-label">${item.label}</span><div class="chart-bar-track"><div class="chart-bar-fill" style="width: ${pct}%"></div></div><span class="chart-bar-value">${item.value}${displayUnit}</span></div>`;
-          }).join('');
-          return `\n\n<div class="chart-box"><span class="chart-label">WYKRES</span><div class="chart-title">${title}</div><div class="chart-bars">${barsHtml}</div></div>\n\n`;
-        } catch {
-          return '';
-        }
-      })
-    // Handle alternate attribute order for wykres-słupkowy
-    .replace(/<wykres-s[łt][uó]pkowy\s+jednostk?a?\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/wykres-s[łt][uó]pkowy>/gi,
-      (_, unit, title, dataStr) => {
-        try {
-          const items: {label: string, value: number}[] = [];
-          dataStr.split(',').forEach((pair: string) => {
-            const match = pair.trim().match(/^([^:]+):\s*([\d.,]+)/);
-            if (match) {
-              items.push({ label: match[1].trim(), value: parseFloat(match[2].replace(',', '.')) });
-            }
-          });
-          if (items.length === 0) return '';
-          const maxValue = Math.max(...items.map(i => i.value));
-          const barsHtml = items.map(item => {
-            const pct = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
-            const displayUnit = unit.toLowerCase() === 'liczba' ? '' : ` ${unit}`;
-            return `<div class="chart-bar-row"><span class="chart-bar-label">${item.label}</span><div class="chart-bar-track"><div class="chart-bar-fill" style="width: ${pct}%"></div></div><span class="chart-bar-value">${item.value}${displayUnit}</span></div>`;
-          }).join('');
-          return `\n\n<div class="chart-box"><span class="chart-label">WYKRES</span><div class="chart-title">${title}</div><div class="chart-bars">${barsHtml}</div></div>\n\n`;
-        } catch {
-          return '';
-        }
-      })
+    // Remove <wykres-słupkowy> tags - they are handled separately as React components in EventSummary
+    .replace(/<wykres-s[łt][uó]pkowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk?a?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
+    .replace(/<wykres-s[łt][uó]pkowy\s+jednostk?a?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
     // Remove <wykres-liniowy> tags - they are handled separately as React components in EventSummary
     .replace(/<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk?a?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
     .replace(/<wykres-liniowy\s+jednostk?a?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')

@@ -208,7 +208,7 @@ body {
 }
 
 .manipulation-source {
-  @apply text-xs text-zinc-500 mb-2;
+  @apply text-xs text-zinc-500 mb-2 truncate;
 }
 
 .manipulation-quote {
@@ -274,7 +274,7 @@ body {
 }
 
 .factcheck-source {
-  @apply text-xs text-zinc-400 pt-3 border-t border-zinc-200;
+  @apply text-xs text-zinc-400 pt-3 border-t border-zinc-200 truncate;
 }
 
 /* Timeline Box */

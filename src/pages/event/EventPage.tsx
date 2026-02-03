@@ -169,6 +169,8 @@ export function EventPage() {
           <p>viewCount: <span className="text-zinc-900">{event.viewCount}</span></p>
           <p>freshnessLevel: <span className="text-zinc-900">{event.freshnessLevel}</span></p>
           <p>category: <span className="text-zinc-900">{event.category}</span></p>
+          <p className="mt-2">summary (raw):</p>
+          <pre className="text-zinc-900 whitespace-pre-wrap text-[10px] mt-1 max-h-40 overflow-auto">{event.summary}</pre>
         </div>
       )}
     </motion.div>

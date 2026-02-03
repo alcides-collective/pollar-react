@@ -29,7 +29,7 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
             groupHover
           />
           {imageSource && (
-            <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded">
+            <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">
               Źródło: {imageSource}
             </span>
           )}

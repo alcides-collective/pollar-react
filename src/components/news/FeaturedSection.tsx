@@ -44,7 +44,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             {imageSource && (
-              <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2">
+              <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2 max-w-full truncate">
                 Źródło: {imageSource}
               </span>
             )}
@@ -87,7 +87,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                         groupHover
                       />
                       {getImageSource(event) && (
-                        <span className="absolute bottom-1 left-1 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-1.5 py-0.5 rounded z-10">
+                        <span className="absolute bottom-1 left-1 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-1.5 py-0.5 rounded z-10 max-w-[calc(100%-0.5rem)] truncate">
                           Źródło: {getImageSource(event)}
                         </span>
                       )}

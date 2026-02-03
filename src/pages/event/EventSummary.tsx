@@ -1,29 +1,33 @@
 import { useMemo } from 'react';
 import { sanitizeAndProcessHtml, removeExtractedElements } from '../../utils/text';
 import { SummaryLineChart, type LineChartData } from '../../components/charts/SummaryLineChart';
+import { SummaryBarChart, type BarChartData } from '../../components/charts/SummaryBarChart';
+import { parseSimpleData } from '../../utils/chartUtils';
 
 interface EventSummaryProps {
   summary: string;
 }
 
 interface ContentSegment {
-  type: 'html' | 'linechart';
+  type: 'html' | 'linechart' | 'barchart';
   content: string;
-  chartData?: LineChartData;
+  chartData?: LineChartData | BarChartData;
 }
 
 /**
- * Parse summary to extract line charts and split into segments
+ * Parse summary to extract charts and split into segments
  */
 function parseContentWithCharts(summary: string): ContentSegment[] {
   // First remove sidebar-extracted elements
   const cleanedSummary = removeExtractedElements(summary);
 
   const segments: ContentSegment[] = [];
-  let chartIndex = 0;
+  let lineChartIndex = 0;
+  let barChartIndex = 0;
 
-  // Pattern to match wykres-liniowy tags (both attribute orders)
-  const chartPattern = /<wykres-liniowy\s+(?:tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+jednostk?a?\s*=\s*["']([^"']+)["']|jednostk?a?\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["'])>([\s\S]*?)<\/wykres-liniowy>/gi;
+  // Combined pattern for all chart types
+  // wykres-liniowy and wykres-słupkowy (handles typos: stópkowy, tytu, jednost, etc.)
+  const chartPattern = /<wykres-(liniowy|s[łt][uó]pkowy)\s+(?:tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+jednostk?a?\s*=\s*["']([^"']+)["']|jednostk?a?\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["'])>([\s\S]*?)<\/wykres-(?:liniowy|s[łt][uó]pkowy)>/gi;
 
   let lastIndex = 0;
   let match;
@@ -43,33 +47,43 @@ function parseContentWithCharts(summary: string): ContentSegment[] {
       }
     }
 
-    // Parse chart data
-    const title = match[1] || match[4];
-    const unit = match[2] || match[3];
-    const dataStr = match[5];
+    // Determine chart type
+    const chartType = match[1].toLowerCase();
+    const isBarChart = chartType.startsWith('s'); // słupkowy, stópkowy, etc.
 
-    const items: { label: string; value: number }[] = [];
-    dataStr.split(',').forEach((pair: string) => {
-      const pairMatch = pair.trim().match(/^([^:]+):\s*([\d.,]+)/);
-      if (pairMatch) {
-        items.push({
-          label: pairMatch[1].trim(),
-          value: parseFloat(pairMatch[2].replace(',', '.'))
-        });
-      }
-    });
+    // Parse chart data
+    const title = match[2] || match[5];
+    const unit = match[3] || match[4];
+    const dataStr = match[6];
+
+    // Use parseSimpleData from chartUtils for consistent parsing
+    const { labels, values } = parseSimpleData(dataStr);
+    const items = labels.map((label, i) => ({ label, value: values[i] }));
 
     if (items.length > 0) {
-      segments.push({
-        type: 'linechart',
-        content: '',
-        chartData: {
-          id: `line-chart-${chartIndex++}`,
-          title,
-          unit,
-          items
-        }
-      });
+      if (isBarChart) {
+        segments.push({
+          type: 'barchart',
+          content: '',
+          chartData: {
+            id: `bar-chart-${barChartIndex++}`,
+            title,
+            unit,
+            items
+          }
+        });
+      } else {
+        segments.push({
+          type: 'linechart',
+          content: '',
+          chartData: {
+            id: `line-chart-${lineChartIndex++}`,
+            title,
+            unit,
+            items
+          }
+        });
+      }
     }
 
     lastIndex = match.index + match[0].length;
@@ -108,7 +122,10 @@ export function EventSummary({ summary }: EventSummaryProps) {
       <div className="prose prose-zinc max-w-none summary-content">
         {segments.map((segment, index) => {
           if (segment.type === 'linechart' && segment.chartData) {
-            return <SummaryLineChart key={`chart-${index}`} data={segment.chartData} />;
+            return <SummaryLineChart key={`line-${index}`} data={segment.chartData as LineChartData} />;
+          }
+          if (segment.type === 'barchart' && segment.chartData) {
+            return <SummaryBarChart key={`bar-${index}`} data={segment.chartData as BarChartData} />;
           }
           return (
             <div
