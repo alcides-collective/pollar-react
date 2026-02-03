@@ -3,7 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import { AIMessage } from './AIMessage';
 import { AITypingIndicator } from './AITypingIndicator';
 import { AISuggestions } from './AISuggestions';
-import { useAIMessages, useAILoading, useAIFollowUps } from '../../stores/aiStore';
+import { useAIMessages, useAILoading, useAIFollowUps, useAIAnimatingMessageId } from '../../stores/aiStore';
 
 interface AIMessageListProps {
   onSuggestionSelect: (suggestion: string) => void;
@@ -17,6 +17,7 @@ export function AIMessageList({
   const messages = useAIMessages();
   const isLoading = useAILoading();
   const followUps = useAIFollowUps();
+  const animatingMessageId = useAIAnimatingMessageId();
 
   const internalRef = useRef<HTMLDivElement>(null);
   const containerRef = scrollContainerRef || internalRef;
@@ -77,6 +78,7 @@ export function AIMessageList({
   const lastMessage = messages[messages.length - 1];
   const showFollowUps =
     !isLoading &&
+    !animatingMessageId &&
     followUps.length > 0 &&
     lastMessage?.role === 'assistant';
 

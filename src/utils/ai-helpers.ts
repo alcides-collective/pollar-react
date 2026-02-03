@@ -121,22 +121,28 @@ export function formatSourceDate(
 
 /**
  * Get dynamic typing label based on debug steps
+ * Simplified to 3 main stages for better UX
  */
 export function getTypingLabel(debugSteps: DebugStep[]): TypingLabel {
-  if (debugSteps.length === 0) return 'Myślę';
-  if (debugSteps.some((s) => s.step === 'complete')) return 'Piszę odpowiedź';
-  if (debugSteps.some((s) => s.step === 'generating'))
+  if (debugSteps.length === 0) return 'Analizuję pytanie';
+
+  // Stage 3: Generating response
+  if (debugSteps.some((s) => s.step === 'generating' || s.step === 'complete')) {
     return 'Generuję odpowiedź';
-  if (debugSteps.some((s) => s.step === 'searchComplete'))
-    return 'Analizuję wydarzenia';
-  if (debugSteps.some((s) => s.step === 'rerank')) return 'Rerankuję wyniki';
-  if (debugSteps.some((s) => s.step === 'fusion')) return 'Łączę wyniki';
-  if (debugSteps.some((s) => s.step === 'parallelSearch'))
-    return 'Szukam wydarzeń';
-  if (debugSteps.some((s) => s.step === 'keywordsAndExpansion'))
-    return 'Analizuję pytanie';
-  if (debugSteps.some((s) => s.step === 'keywords')) return 'Szukam wydarzeń';
-  return 'Myślę';
+  }
+
+  // Stage 2: Searching for information
+  if (debugSteps.some((s) =>
+    s.step === 'parallelSearch' ||
+    s.step === 'fusion' ||
+    s.step === 'rerank' ||
+    s.step === 'searchComplete'
+  )) {
+    return 'Szukam informacji';
+  }
+
+  // Stage 1: Analyzing question (default)
+  return 'Analizuję pytanie';
 }
 
 /**
