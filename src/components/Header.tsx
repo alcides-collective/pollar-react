@@ -248,7 +248,7 @@ export function Header() {
               </button>
             ))}
           </div>
-          <div className="bg-black pl-2 shrink-0">
+          <div className="bg-black pl-2 shrink-0 relative z-10">
             <DropdownMenu>
               <DropdownMenuTrigger className="text-sm text-zinc-400 hover:text-white flex items-center gap-1 transition-colors outline-none pb-3">
               <span className="hidden sm:inline">Narzędzia</span>
