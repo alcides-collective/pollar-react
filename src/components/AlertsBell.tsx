@@ -50,26 +50,22 @@ function VotingAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { ale
   return (
     <DropdownMenuItem
       asChild
-      className={`flex flex-col items-start gap-1 py-3 cursor-pointer ${
-        !alert.read ? 'bg-blue-50' : ''
-      }`}
+      className={`py-2 cursor-pointer ${!alert.read ? 'bg-blue-50' : ''}`}
       onClick={onMarkAsRead}
     >
       <Link to={`/sejm/glosowania/${alert.sitting}/${alert.votingNumber}`}>
-        <div className="flex items-center gap-2 w-full">
-          <span className="font-medium text-sm text-zinc-900 truncate">
-            {alert.mpName}
-          </span>
-          <span className={`text-xs font-medium ${voteInfo.color}`}>
-            {voteInfo.text}
-          </span>
+        <div className="flex items-start gap-1.5 w-full">
+          <p className="text-xs text-zinc-600 line-clamp-2 flex-1">
+            <span className="inline-flex items-baseline gap-1 mr-1 text-xs font-medium">
+              <span className="text-zinc-900">{alert.mpName}</span>
+              <span className={voteInfo.color}>{voteInfo.text}</span>
+            </span>
+            {alert.votingTitle}
+          </p>
           {!alert.read && (
-            <span className="ml-auto h-2 w-2 bg-blue-500 rounded-full" />
+            <span className="shrink-0 h-1.5 w-1.5 bg-blue-500 rounded-full mt-1" />
           )}
         </div>
-        <p className="text-xs text-zinc-500 line-clamp-2 w-full">
-          {alert.votingTitle}
-        </p>
       </Link>
     </DropdownMenuItem>
   );
@@ -81,23 +77,21 @@ function CategoryAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { a
   return (
     <DropdownMenuItem
       asChild
-      className={`flex flex-col items-start gap-1 py-3 cursor-pointer ${
-        !alert.read ? 'bg-blue-50' : ''
-      }`}
+      className={`py-2 cursor-pointer ${!alert.read ? 'bg-blue-50' : ''}`}
       onClick={onMarkAsRead}
     >
       <Link to={`/event/${alert.eventId}`}>
-        <div className="flex items-center gap-2 w-full">
-          <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">
-            {categoryLabel}
-          </span>
+        <div className="flex items-start gap-1.5 w-full">
+          <p className="text-xs text-zinc-900 line-clamp-2 flex-1">
+            <span className="inline text-[10px] px-1 bg-amber-100 text-amber-700 rounded font-medium mr-1">
+              {categoryLabel}
+            </span>
+            {alert.eventTitle}
+          </p>
           {!alert.read && (
-            <span className="ml-auto h-2 w-2 bg-blue-500 rounded-full" />
+            <span className="shrink-0 h-1.5 w-1.5 bg-blue-500 rounded-full mt-1" />
           )}
         </div>
-        <p className="text-sm font-medium text-zinc-900 line-clamp-2 w-full">
-          {alert.eventTitle}
-        </p>
       </Link>
     </DropdownMenuItem>
   );

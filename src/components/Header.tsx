@@ -13,6 +13,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { SearchModal } from '@/components/search';
 import { AlertsBell } from '@/components/AlertsBell';
 import logoImg from '../assets/logo.png';
@@ -72,12 +78,27 @@ function AuthButton() {
   }
 
   return (
-    <button
-      onClick={() => openAuthModal('login')}
-      className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
-    >
-      Zaloguj się
-    </button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => openAuthModal('login')}
+            className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
+          >
+            Zaloguj się
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" align="end" className="max-w-64">
+          <p className="font-medium mb-1.5">Zaloguj się, aby uzyskać dostęp do:</p>
+          <ul className="space-y-1 text-zinc-400">
+            <li>• Śledzenia posłów i ich głosowań</li>
+            <li>• Powiadomień o nowych wydarzeniach</li>
+            <li>• Zapisywania artykułów</li>
+            <li>• Personalizacji kategorii</li>
+          </ul>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
