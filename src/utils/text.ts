@@ -485,7 +485,7 @@ export function sanitizeAndProcessHtml(text: string): string {
           const isTrofea = typ.toLowerCase() === 'trofea';
           const label = isTrofea ? 'OSIĄGNIĘCIA' : 'RANKING';
           const rowsHtml = entries.map((entry: {pozycja?: number, nazwa?: string, info?: string}, index: number) => {
-            const position = isTrofea ? `<span class="ranking-trophy">🏆</span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
+            const position = isTrofea ? `<span class="ranking-trophy"><i class="ri-trophy-fill"></i></span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
             return `<div class="ranking-item">` +
               position +
               `<span class="ranking-name">${entry.nazwa || ''}</span>` +
@@ -506,7 +506,7 @@ export function sanitizeAndProcessHtml(text: string): string {
           const isTrofea = typ.toLowerCase() === 'trofea';
           const label = isTrofea ? 'OSIĄGNIĘCIA' : 'RANKING';
           const rowsHtml = entries.map((entry: {pozycja?: number, nazwa?: string, info?: string}, index: number) => {
-            const position = isTrofea ? `<span class="ranking-trophy">🏆</span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
+            const position = isTrofea ? `<span class="ranking-trophy"><i class="ri-trophy-fill"></i></span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
             return `<div class="ranking-item">` +
               position +
               `<span class="ranking-name">${entry.nazwa || ''}</span>` +
@@ -566,7 +566,7 @@ export function sanitizeAndProcessHtml(text: string): string {
         return `\n\n<div class="stacked-box"><span class="stacked-label">STRUKTURA</span><div class="stacked-title">${title}</div><div class="stacked-bar">${segmentsHtml}</div><div class="stacked-legend">${legendHtml}</div></div>\n\n`;
       })
     // Remove all remaining HTML tags except allowed ones
-    .replace(/<(?!a\s|\/a>|b>|\/b>|strong>|\/strong>|div\s|\/div>|span\s|\/span>|p\s|\/p>|blockquote\s|\/blockquote>|cite\s|\/cite>|table\s|\/table>|thead>|\/thead>|tbody>|\/tbody>|tr\s|\/tr>|th>|\/th>|td\s|\/td>|h3\s|\/h3>|br\s|br>|br\/>)[^>]+>/gi, '')
+    .replace(/<(?!a\s|\/a>|b>|\/b>|i\s|\/i>|strong>|\/strong>|div\s|\/div>|span\s|\/span>|p\s|\/p>|blockquote\s|\/blockquote>|cite\s|\/cite>|table\s|\/table>|thead>|\/thead>|tbody>|\/tbody>|tr\s|\/tr>|th>|\/th>|td\s|\/td>|h3\s|\/h3>|br\s|br>|br\/>)[^>]+>/gi, '')
     // Sanitize <a> tags to only allow href
     .replace(/<a\s[^>]*?href\s*=\s*["']([^"']*?)["'][^>]*?>/gi, '<a href="$1" target="_blank" rel="noopener noreferrer">')
     .replace(/<a(?!\s[^>]*href)[^>]*>/gi, '')

@@ -507,7 +507,7 @@ body {
 }
 
 .ranking-trophy {
-  @apply text-base;
+  @apply text-amber-500;
 }
 
 /* Calendar Box */

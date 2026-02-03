@@ -61,36 +61,82 @@ export function EventPage() {
 
   if (loading) {
     return (
-      <div className="max-w-[1200px] mx-auto px-6 py-10">
-        <div>
-          {/* Header skeleton */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <Skeleton className="h-4 w-20" />
-              <Skeleton className="h-4 w-32" />
+      <div className="max-w-[1200px] mx-auto">
+        {/* Two-column layout */}
+        <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-8">
+          {/* Left column - main content */}
+          <div>
+            {/* EventHeader skeleton */}
+            <div className="px-6 pt-8 pb-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Skeleton className="h-4 w-48" />
+                <Skeleton className="h-4 w-16" />
+              </div>
+              <div className="flex items-start gap-4 mb-4">
+                <div className="flex-1">
+                  <Skeleton className="h-9 w-full mb-2" />
+                  <Skeleton className="h-9 w-3/4" />
+                </div>
+                <Skeleton className="h-9 w-9 rounded-full shrink-0" />
+              </div>
+              <Skeleton className="h-6 w-full mb-2" />
+              <Skeleton className="h-6 w-4/5" />
             </div>
-            <Skeleton className="h-10 w-3/4 mb-3" />
-            <Skeleton className="h-10 w-1/2 mb-4" />
-            <Skeleton className="h-6 w-full mb-2" />
-            <Skeleton className="h-6 w-4/5" />
+
+            {/* EventKeyPoints skeleton */}
+            <div className="px-6 py-6 border-t border-zinc-200">
+              <Skeleton className="h-3 w-28 mb-4" />
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="flex gap-3">
+                    <Skeleton className="h-6 w-6 rounded-full shrink-0" />
+                    <div className="flex-1">
+                      <Skeleton className="h-5 w-2/5 mb-2" />
+                      <Skeleton className="h-4 w-full mb-1" />
+                      <Skeleton className="h-4 w-3/4" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* EventSummary skeleton */}
+            <div className="px-6 py-6 border-t border-zinc-200">
+              <Skeleton className="h-3 w-24 mb-4" />
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-4/5" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </div>
+            </div>
+
+            {/* EventNavigation skeleton */}
+            <div className="px-6 py-6 border-t border-zinc-200">
+              <div className="flex gap-3">
+                <Skeleton className="flex-1 h-24" />
+                <Skeleton className="flex-1 h-24" />
+              </div>
+            </div>
           </div>
 
-          {/* Two column skeleton */}
-          <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-8">
-            <div className="space-y-4">
-              <Skeleton className="h-4 w-24" />
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex gap-3">
-                  <Skeleton className="h-6 w-6 rounded-full" />
-                  <div className="flex-1">
-                    <Skeleton className="h-5 w-1/3 mb-2" />
-                    <Skeleton className="h-4 w-full" />
-                  </div>
-                </div>
-              ))}
+          {/* Right column - sidebar */}
+          <div className="py-6 lg:py-8 space-y-6">
+            {/* Map placeholder */}
+            <div className="px-6 lg:px-0">
+              <Skeleton className="h-48" />
             </div>
-            <div className="hidden lg:block">
-              <Skeleton className="h-64 rounded-lg" />
+            {/* Sources skeleton */}
+            <div className="px-6 lg:px-0">
+              <Skeleton className="h-3 w-20 mb-3" />
+              <div className="space-y-2">
+                {[1, 2, 3].map((i) => (
+                  <Skeleton key={i} className="h-20" />
+                ))}
+              </div>
             </div>
           </div>
         </div>
