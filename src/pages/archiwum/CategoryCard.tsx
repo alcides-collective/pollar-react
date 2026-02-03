@@ -12,7 +12,7 @@ interface CategoryCardProps {
 
 export function CategoryCard({ category, events, maxEvents = 5 }: CategoryCardProps) {
   const displayEvents = events.slice(0, maxEvents);
-  const categoryUrl = `/archiwum/${encodeURIComponent(category)}`;
+  const categoryUrl = `/archiwum/${encodeURIComponent(category.toLowerCase())}`;
 
   return (
     <div className="bg-white border border-zinc-200 rounded-xl p-5 h-full flex flex-col">

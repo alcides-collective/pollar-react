@@ -106,6 +106,21 @@ export interface VotingAlert {
 }
 
 /**
+ * Category event alert for favorite categories
+ * Stored in subcollection: users/{userId}/categoryAlerts
+ */
+export interface CategoryEventAlert {
+  id: string;
+  eventId: string;
+  eventTitle: string;
+  eventLead?: string;
+  category: string;
+  imageUrl?: string;
+  createdAt: Timestamp;
+  read: boolean;
+}
+
+/**
  * User notification preferences
  */
 export interface NotificationPreferences {

@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
 
+const PLACEHOLDER_IMAGE = '/opengraph-image.jpg';
+
 interface EventImageProps {
   event: Event;
   className?: string;
@@ -11,6 +13,7 @@ interface EventImageProps {
 
 export function EventImage({ event, className, style, hoverScale = 1.02 }: EventImageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [allFailed, setAllFailed] = useState(false);
 
   // Stabilna lista URLi - tylko niepuste stringi
   const imageUrls = useMemo(() => {
@@ -29,33 +32,31 @@ export function EventImage({ event, className, style, hoverScale = 1.02 }: Event
   // Reset indeksu gdy event się zmienia
   useEffect(() => {
     setCurrentIndex(0);
+    setAllFailed(false);
   }, [event.id]);
 
-  const currentImageUrl = imageUrls[currentIndex];
-
   const handleError = () => {
-    setCurrentIndex(prev => {
-      const nextIndex = prev + 1;
-      if (nextIndex < imageUrls.length) {
-        return nextIndex;
-      }
-      return prev;
-    });
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < imageUrls.length) {
+      setCurrentIndex(nextIndex);
+    } else {
+      setAllFailed(true);
+    }
   };
 
-  // Brak obrazków - nie renderuj
-  if (!currentImageUrl) {
-    return null;
-  }
+  // Użyj placeholdera gdy brak obrazków lub wszystkie zawiodły
+  const currentImageUrl = allFailed || imageUrls.length === 0
+    ? PLACEHOLDER_IMAGE
+    : imageUrls[currentIndex];
 
   return (
     <motion.img
-      key={`${event.id}-${currentIndex}`}
+      key={`${event.id}-${currentIndex}-${allFailed}`}
       src={currentImageUrl}
       alt=""
       className={className}
       style={style}
-      onError={handleError}
+      onError={allFailed ? undefined : handleError}
       whileHover={{ scale: hoverScale }}
       transition={{ duration: 0.4 }}
     />

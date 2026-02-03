@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useUser } from '@/stores/authStore';
+import { EventImage } from '@/components/common/EventImage';
 import {
   useSavedEventIds,
   useFavoriteCategories,
@@ -102,13 +103,11 @@ function DashboardContent() {
                     to={`/event/${event.id}`}
                     className="block bg-white border border-zinc-200 rounded-lg overflow-hidden hover:border-zinc-300 transition-colors"
                   >
-                    {event.imageUrl && (
-                      <img
-                        src={event.imageUrl}
-                        alt=""
-                        className="h-32 w-full object-cover"
-                      />
-                    )}
+                    <EventImage
+                      event={event}
+                      className="h-32 w-full object-cover"
+                      hoverScale={1}
+                    />
                     <div className="p-3">
                       <span className="text-xs text-zinc-500">{event.category}</span>
                       <h3 className="font-medium text-zinc-900 line-clamp-2 mt-1">
@@ -138,13 +137,11 @@ function DashboardContent() {
                     to={`/event/${event.id}`}
                     className="flex items-center gap-3 p-3 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 transition-colors"
                   >
-                    {event.imageUrl && (
-                      <img
-                        src={event.imageUrl}
-                        alt=""
-                        className="h-12 w-16 object-cover rounded"
-                      />
-                    )}
+                    <EventImage
+                      event={event}
+                      className="h-12 w-16 object-cover rounded"
+                      hoverScale={1}
+                    />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-zinc-900 text-sm line-clamp-1">
                         {event.title}
@@ -184,13 +181,11 @@ function DashboardContent() {
                     to={`/event/${event.id}`}
                     className="flex items-center gap-3 p-3 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 transition-colors"
                   >
-                    {event.imageUrl && (
-                      <img
-                        src={event.imageUrl}
-                        alt=""
-                        className="h-12 w-16 object-cover rounded"
-                      />
-                    )}
+                    <EventImage
+                      event={event}
+                      className="h-12 w-16 object-cover rounded"
+                      hoverScale={1}
+                    />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-zinc-900 text-sm line-clamp-1">
                         {event.title}

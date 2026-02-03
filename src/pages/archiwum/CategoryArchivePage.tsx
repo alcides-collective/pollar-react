@@ -12,17 +12,22 @@ export function CategoryArchivePage() {
 
   const { events, loading, error } = useArchiveEvents({ limit: 500 });
 
-  // Filtruj eventy po kategorii
-  const categoryEvents = useMemo(() => {
-    return events.filter((event) => event.category === decodedCategory);
+  // Filtruj eventy po kategorii (case-insensitive)
+  const { categoryEvents, displayCategory } = useMemo(() => {
+    const filtered = events.filter(
+      (event) => event.category?.toLowerCase() === decodedCategory.toLowerCase()
+    );
+    // Użyj oryginalnej nazwy kategorii z pierwszego eventu (z dużą literą)
+    const originalName = filtered[0]?.category || decodedCategory;
+    return { categoryEvents: filtered, displayCategory: originalName };
   }, [events, decodedCategory]);
 
   // SEO
   useDocumentHead({
-    title: `${decodedCategory} - Archiwum`,
-    description: `Archiwum wydarzeń z kategorii ${decodedCategory}`,
-    ogTitle: `${decodedCategory} - Archiwum wydarzeń`,
-    ogDescription: `Przeglądaj wszystkie wydarzenia z kategorii ${decodedCategory}`,
+    title: `${displayCategory} - Archiwum`,
+    description: `Archiwum wydarzeń z kategorii ${displayCategory}`,
+    ogTitle: `${displayCategory} - Archiwum wydarzeń`,
+    ogDescription: `Przeglądaj wszystkie wydarzenia z kategorii ${displayCategory}`,
   });
 
   // Loading state
@@ -80,7 +85,7 @@ export function CategoryArchivePage() {
             <i className="ri-folder-open-line text-2xl text-zinc-400" />
           </div>
           <h1 className="text-xl font-medium text-zinc-900 mb-2">
-            Brak wydarzeń w kategorii "{decodedCategory}"
+            Brak wydarzeń w kategorii "{displayCategory}"
           </h1>
           <p className="text-zinc-600 mb-6">Nie znaleziono żadnych wydarzeń w tej kategorii.</p>
           <Link
@@ -110,7 +115,7 @@ export function CategoryArchivePage() {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-zinc-900 mb-1">{decodedCategory}</h1>
+        <h1 className="text-2xl font-bold text-zinc-900 mb-1">{displayCategory}</h1>
         <p className="text-zinc-500">
           {categoryEvents.length} {categoryEvents.length === 1 ? 'wydarzenie' : 'wydarzeń'} w archiwum
         </p>

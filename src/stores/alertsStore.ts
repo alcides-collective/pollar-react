@@ -2,29 +2,56 @@ import { create } from 'zustand';
 import {
   getVotingAlerts,
   getUnreadAlertsCount,
-  markAlertAsRead as markAlertAsReadService,
-  markAllAlertsAsRead as markAllAlertsAsReadService,
+  markAlertAsRead as markVotingAlertAsReadService,
+  markAllAlertsAsRead as markAllVotingAlertsAsReadService,
+  getCategoryAlerts,
+  getUnreadCategoryAlertsCount,
+  markCategoryAlertAsRead as markCategoryAlertAsReadService,
+  markAllCategoryAlertsAsRead as markAllCategoryAlertsAsReadService,
 } from '@/services/alertsService';
-import type { VotingAlert } from '@/types/auth';
+import type { VotingAlert, CategoryEventAlert } from '@/types/auth';
 
 // ============ Types ============
 
+export type CombinedAlert =
+  | (VotingAlert & { alertType: 'voting' })
+  | (CategoryEventAlert & { alertType: 'category' });
+
 interface AlertsState {
-  alerts: VotingAlert[];
-  unreadCount: number;
+  // Voting alerts
+  votingAlerts: VotingAlert[];
+  votingUnreadCount: number;
+
+  // Category alerts
+  categoryAlerts: CategoryEventAlert[];
+  categoryUnreadCount: number;
+
+  // Combined
+  totalUnreadCount: number;
+
+  // Status
   isLoading: boolean;
   error: string | null;
   lastFetched: number | null;
 }
 
 interface AlertsActions {
-  // Fetch
-  fetchAlerts: () => Promise<void>;
-  fetchUnreadCount: () => Promise<void>;
+  // Fetch voting alerts
+  fetchVotingAlerts: () => Promise<void>;
+  fetchVotingUnreadCount: () => Promise<void>;
+  markVotingAlertAsRead: (alertId: string) => Promise<void>;
+  markAllVotingAlertsAsRead: () => Promise<void>;
 
-  // Actions
-  markAsRead: (alertId: string) => Promise<void>;
-  markAllAsRead: () => Promise<void>;
+  // Fetch category alerts
+  fetchCategoryAlerts: () => Promise<void>;
+  fetchCategoryUnreadCount: () => Promise<void>;
+  markCategoryAlertAsRead: (alertId: string) => Promise<void>;
+  markAllCategoryAlertsAsRead: () => Promise<void>;
+
+  // Combined
+  fetchAllAlerts: () => Promise<void>;
+  fetchTotalUnreadCount: () => Promise<void>;
+  markAllAlertsAsRead: () => Promise<void>;
 
   // Helpers
   clearStore: () => void;
@@ -41,115 +68,270 @@ let pollingInterval: ReturnType<typeof setInterval> | null = null;
 
 export const useAlertsStore = create<AlertsStore>((set, get) => ({
   // Initial State
-  alerts: [],
-  unreadCount: 0,
+  votingAlerts: [],
+  votingUnreadCount: 0,
+  categoryAlerts: [],
+  categoryUnreadCount: 0,
+  totalUnreadCount: 0,
   isLoading: false,
   error: null,
   lastFetched: null,
 
-  // Fetch all alerts
-  fetchAlerts: async () => {
-    set({ isLoading: true, error: null });
+  // ============ Voting Alerts ============
+
+  fetchVotingAlerts: async () => {
     try {
-      const alerts = await getVotingAlerts(50);
-      const unreadCount = alerts.filter(a => !a.read).length;
+      const votingAlerts = await getVotingAlerts(50);
+      const votingUnreadCount = votingAlerts.filter(a => !a.read).length;
       set({
-        alerts,
-        unreadCount,
-        lastFetched: Date.now(),
+        votingAlerts,
+        votingUnreadCount,
+        totalUnreadCount: votingUnreadCount + get().categoryUnreadCount,
       });
     } catch (error) {
+      console.error('Error fetching voting alerts:', error);
+    }
+  },
+
+  fetchVotingUnreadCount: async () => {
+    try {
+      const votingUnreadCount = await getUnreadAlertsCount();
+      set({
+        votingUnreadCount,
+        totalUnreadCount: votingUnreadCount + get().categoryUnreadCount,
+      });
+    } catch (error) {
+      console.error('Error fetching voting unread count:', error);
+    }
+  },
+
+  markVotingAlertAsRead: async (alertId) => {
+    const { votingAlerts, votingUnreadCount } = get();
+
+    // Optimistic update
+    set({
+      votingAlerts: votingAlerts.map(a =>
+        a.id === alertId ? { ...a, read: true } : a
+      ),
+      votingUnreadCount: Math.max(0, votingUnreadCount - 1),
+      totalUnreadCount: Math.max(0, get().totalUnreadCount - 1),
+    });
+
+    try {
+      await markVotingAlertAsReadService(alertId);
+    } catch (error) {
+      // Revert on error
+      set({
+        votingAlerts,
+        votingUnreadCount,
+        totalUnreadCount: votingUnreadCount + get().categoryUnreadCount,
+      });
+      console.error('Error marking voting alert as read:', error);
+    }
+  },
+
+  markAllVotingAlertsAsRead: async () => {
+    const { votingAlerts, votingUnreadCount } = get();
+    const previousAlerts = [...votingAlerts];
+
+    // Optimistic update
+    set({
+      votingAlerts: votingAlerts.map(a => ({ ...a, read: true })),
+      votingUnreadCount: 0,
+      totalUnreadCount: get().categoryUnreadCount,
+    });
+
+    try {
+      await markAllVotingAlertsAsReadService();
+    } catch (error) {
+      // Revert on error
+      set({
+        votingAlerts: previousAlerts,
+        votingUnreadCount,
+        totalUnreadCount: votingUnreadCount + get().categoryUnreadCount,
+      });
+      console.error('Error marking all voting alerts as read:', error);
+    }
+  },
+
+  // ============ Category Alerts ============
+
+  fetchCategoryAlerts: async () => {
+    try {
+      const categoryAlerts = await getCategoryAlerts(50);
+      const categoryUnreadCount = categoryAlerts.filter(a => !a.read).length;
+      set({
+        categoryAlerts,
+        categoryUnreadCount,
+        totalUnreadCount: get().votingUnreadCount + categoryUnreadCount,
+      });
+    } catch (error) {
+      console.error('Error fetching category alerts:', error);
+    }
+  },
+
+  fetchCategoryUnreadCount: async () => {
+    try {
+      const categoryUnreadCount = await getUnreadCategoryAlertsCount();
+      set({
+        categoryUnreadCount,
+        totalUnreadCount: get().votingUnreadCount + categoryUnreadCount,
+      });
+    } catch (error) {
+      console.error('Error fetching category unread count:', error);
+    }
+  },
+
+  markCategoryAlertAsRead: async (alertId) => {
+    const { categoryAlerts, categoryUnreadCount } = get();
+
+    // Optimistic update
+    set({
+      categoryAlerts: categoryAlerts.map(a =>
+        a.id === alertId ? { ...a, read: true } : a
+      ),
+      categoryUnreadCount: Math.max(0, categoryUnreadCount - 1),
+      totalUnreadCount: Math.max(0, get().totalUnreadCount - 1),
+    });
+
+    try {
+      await markCategoryAlertAsReadService(alertId);
+    } catch (error) {
+      // Revert on error
+      set({
+        categoryAlerts,
+        categoryUnreadCount,
+        totalUnreadCount: get().votingUnreadCount + categoryUnreadCount,
+      });
+      console.error('Error marking category alert as read:', error);
+    }
+  },
+
+  markAllCategoryAlertsAsRead: async () => {
+    const { categoryAlerts, categoryUnreadCount } = get();
+    const previousAlerts = [...categoryAlerts];
+
+    // Optimistic update
+    set({
+      categoryAlerts: categoryAlerts.map(a => ({ ...a, read: true })),
+      categoryUnreadCount: 0,
+      totalUnreadCount: get().votingUnreadCount,
+    });
+
+    try {
+      await markAllCategoryAlertsAsReadService();
+    } catch (error) {
+      // Revert on error
+      set({
+        categoryAlerts: previousAlerts,
+        categoryUnreadCount,
+        totalUnreadCount: get().votingUnreadCount + categoryUnreadCount,
+      });
+      console.error('Error marking all category alerts as read:', error);
+    }
+  },
+
+  // ============ Combined ============
+
+  fetchAllAlerts: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      await Promise.all([
+        get().fetchVotingAlerts(),
+        get().fetchCategoryAlerts(),
+      ]);
+      set({ lastFetched: Date.now() });
+    } catch (error) {
       set({ error: 'Nie udało się pobrać alertów' });
-      console.error('Error fetching alerts:', error);
+      console.error('Error fetching all alerts:', error);
     } finally {
       set({ isLoading: false });
     }
   },
 
-  // Fetch only unread count (lighter)
-  fetchUnreadCount: async () => {
+  fetchTotalUnreadCount: async () => {
     try {
-      const unreadCount = await getUnreadAlertsCount();
-      set({ unreadCount });
+      const [votingCount, categoryCount] = await Promise.all([
+        getUnreadAlertsCount(),
+        getUnreadCategoryAlertsCount(),
+      ]);
+      set({
+        votingUnreadCount: votingCount,
+        categoryUnreadCount: categoryCount,
+        totalUnreadCount: votingCount + categoryCount,
+      });
     } catch (error) {
-      console.error('Error fetching unread count:', error);
+      console.error('Error fetching total unread count:', error);
     }
   },
 
-  // Mark single alert as read
-  markAsRead: async (alertId) => {
-    const { alerts } = get();
+  markAllAlertsAsRead: async () => {
+    const {
+      votingAlerts,
+      categoryAlerts,
+      votingUnreadCount,
+      categoryUnreadCount,
+    } = get();
+    const previousVotingAlerts = [...votingAlerts];
+    const previousCategoryAlerts = [...categoryAlerts];
 
     // Optimistic update
     set({
-      alerts: alerts.map(a =>
-        a.id === alertId ? { ...a, read: true } : a
-      ),
-      unreadCount: Math.max(0, get().unreadCount - 1),
+      votingAlerts: votingAlerts.map(a => ({ ...a, read: true })),
+      categoryAlerts: categoryAlerts.map(a => ({ ...a, read: true })),
+      votingUnreadCount: 0,
+      categoryUnreadCount: 0,
+      totalUnreadCount: 0,
     });
 
     try {
-      await markAlertAsReadService(alertId);
+      await Promise.all([
+        markAllVotingAlertsAsReadService(),
+        markAllCategoryAlertsAsReadService(),
+      ]);
     } catch (error) {
       // Revert on error
       set({
-        alerts: alerts.map(a =>
-          a.id === alertId ? { ...a, read: false } : a
-        ),
-        unreadCount: get().unreadCount + 1,
+        votingAlerts: previousVotingAlerts,
+        categoryAlerts: previousCategoryAlerts,
+        votingUnreadCount,
+        categoryUnreadCount,
+        totalUnreadCount: votingUnreadCount + categoryUnreadCount,
       });
-      console.error('Error marking alert as read:', error);
-    }
-  },
-
-  // Mark all alerts as read
-  markAllAsRead: async () => {
-    const { alerts } = get();
-    const previousAlerts = [...alerts];
-
-    // Optimistic update
-    set({
-      alerts: alerts.map(a => ({ ...a, read: true })),
-      unreadCount: 0,
-    });
-
-    try {
-      await markAllAlertsAsReadService();
-    } catch (error) {
-      // Revert on error
-      set({ alerts: previousAlerts, unreadCount: previousAlerts.filter(a => !a.read).length });
       console.error('Error marking all alerts as read:', error);
     }
   },
 
-  // Clear store (on logout)
+  // ============ Helpers ============
+
   clearStore: () => {
     if (pollingInterval) {
       clearInterval(pollingInterval);
       pollingInterval = null;
     }
     set({
-      alerts: [],
-      unreadCount: 0,
+      votingAlerts: [],
+      votingUnreadCount: 0,
+      categoryAlerts: [],
+      categoryUnreadCount: 0,
+      totalUnreadCount: 0,
       error: null,
       lastFetched: null,
     });
   },
 
-  // Start polling for unread count (every 60 seconds)
   startPolling: () => {
     if (pollingInterval) return;
 
     // Initial fetch
-    get().fetchUnreadCount();
+    get().fetchTotalUnreadCount();
 
     // Poll every 60 seconds
     pollingInterval = setInterval(() => {
-      get().fetchUnreadCount();
+      get().fetchTotalUnreadCount();
     }, 60 * 1000);
   },
 
-  // Stop polling
   stopPolling: () => {
     if (pollingInterval) {
       clearInterval(pollingInterval);
@@ -160,14 +342,57 @@ export const useAlertsStore = create<AlertsStore>((set, get) => ({
 
 // ============ Convenience Hooks ============
 
+/** @deprecated Use useVotingAlerts() instead */
 export function useAlerts() {
-  return useAlertsStore((state) => state.alerts);
+  return useAlertsStore((state) => state.votingAlerts);
 }
 
+/** @deprecated Use useTotalUnreadCount() instead */
 export function useUnreadAlertsCount() {
-  return useAlertsStore((state) => state.unreadCount);
+  return useAlertsStore((state) => state.totalUnreadCount);
 }
 
 export function useAlertsLoading() {
   return useAlertsStore((state) => state.isLoading);
+}
+
+// New hooks
+export function useVotingAlerts() {
+  return useAlertsStore((state) => state.votingAlerts);
+}
+
+export function useCategoryAlerts() {
+  return useAlertsStore((state) => state.categoryAlerts);
+}
+
+export function useVotingUnreadCount() {
+  return useAlertsStore((state) => state.votingUnreadCount);
+}
+
+export function useCategoryUnreadCount() {
+  return useAlertsStore((state) => state.categoryUnreadCount);
+}
+
+export function useTotalUnreadCount() {
+  return useAlertsStore((state) => state.totalUnreadCount);
+}
+
+/**
+ * Returns combined alerts sorted by createdAt descending
+ */
+export function useCombinedAlerts(): CombinedAlert[] {
+  const votingAlerts = useAlertsStore((state) => state.votingAlerts);
+  const categoryAlerts = useAlertsStore((state) => state.categoryAlerts);
+
+  const combined: CombinedAlert[] = [
+    ...votingAlerts.map(a => ({ ...a, alertType: 'voting' as const })),
+    ...categoryAlerts.map(a => ({ ...a, alertType: 'category' as const })),
+  ];
+
+  // Sort by createdAt descending
+  return combined.sort((a, b) => {
+    const dateA = a.createdAt?.toDate?.() || new Date(0);
+    const dateB = b.createdAt?.toDate?.() || new Date(0);
+    return dateB.getTime() - dateA.getTime();
+  });
 }

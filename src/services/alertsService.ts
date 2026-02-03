@@ -1,6 +1,6 @@
 import { buildApiUrl } from '@/config/api';
 import { useAuthStore } from '@/stores/authStore';
-import type { VotingAlert } from '@/types/auth';
+import type { VotingAlert, CategoryEventAlert } from '@/types/auth';
 
 /**
  * Historical voting alert (backfill for followed MPs)
@@ -149,4 +149,86 @@ export async function getHistoricalVotingAlerts(
     count: data.count || 0,
     hasMore: data.hasMore || false,
   };
+}
+
+// ============ Category Alerts ============
+
+/**
+ * Gets category event alerts for the current user
+ */
+export async function getCategoryAlerts(limit: number = 50): Promise<CategoryEventAlert[]> {
+  const token = await getAuthToken();
+  if (!token) return [];
+
+  const response = await fetch(buildApiUrl(`/category-alerts?limit=${limit}`), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to get category alerts: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.alerts || [];
+}
+
+/**
+ * Gets the count of unread category alerts
+ */
+export async function getUnreadCategoryAlertsCount(): Promise<number> {
+  const token = await getAuthToken();
+  if (!token) return 0;
+
+  const response = await fetch(buildApiUrl('/category-alerts/unread-count'), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to get unread category alerts count: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.count || 0;
+}
+
+/**
+ * Marks a single category alert as read
+ */
+export async function markCategoryAlertAsRead(alertId: string): Promise<void> {
+  const token = await getAuthToken();
+  if (!token) return;
+
+  const response = await fetch(buildApiUrl(`/category-alerts/${alertId}/read`), {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to mark category alert as read: ${response.status}`);
+  }
+}
+
+/**
+ * Marks all category alerts as read
+ */
+export async function markAllCategoryAlertsAsRead(): Promise<void> {
+  const token = await getAuthToken();
+  if (!token) return;
+
+  const response = await fetch(buildApiUrl('/category-alerts/read-all'), {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to mark all category alerts as read: ${response.status}`);
+  }
 }

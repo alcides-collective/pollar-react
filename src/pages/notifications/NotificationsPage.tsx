@@ -1,18 +1,33 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { useAlerts, useAlertsStore } from '@/stores/alertsStore';
+import {
+  useAlertsStore,
+  useCombinedAlerts,
+  useTotalUnreadCount,
+  type CombinedAlert,
+} from '@/stores/alertsStore';
 import { useFavoriteCategories, useFollowedMPIds } from '@/stores/userStore';
-import { useEvents } from '@/stores/eventsStore';
 import { useMPs } from '@/hooks/useMPs';
 import {
   getHistoricalVotingAlerts,
   type HistoricalVotingAlert,
-  type CombinedAlert,
 } from '@/services/alertsService';
 
 type FilterType = 'all' | 'voting' | 'category';
 type VoteFilter = 'all' | 'yes' | 'no' | 'abstain' | 'absent';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  polityka: 'Polityka',
+  swiat: 'Świat',
+  gospodarka: 'Gospodarka',
+  spoleczenstwo: 'Społeczeństwo',
+  nauka: 'Nauka',
+  sport: 'Sport',
+  kultura: 'Kultura',
+  technologia: 'Technologia',
+  inne: 'Inne',
+};
 
 function formatVote(vote: string): { text: string; color: string; bg: string } {
   switch (vote) {
@@ -54,14 +69,16 @@ export function NotificationsPage() {
 }
 
 function NotificationsContent() {
-  const realAlerts = useAlerts();
-  const fetchAlerts = useAlertsStore((s) => s.fetchAlerts);
-  const markAsRead = useAlertsStore((s) => s.markAsRead);
-  const markAllAsRead = useAlertsStore((s) => s.markAllAsRead);
+  const combinedAlerts = useCombinedAlerts();
+  const totalUnreadCount = useTotalUnreadCount();
+
+  const fetchAllAlerts = useAlertsStore((s) => s.fetchAllAlerts);
+  const markVotingAlertAsRead = useAlertsStore((s) => s.markVotingAlertAsRead);
+  const markCategoryAlertAsRead = useAlertsStore((s) => s.markCategoryAlertAsRead);
+  const markAllAlertsAsRead = useAlertsStore((s) => s.markAllAlertsAsRead);
 
   const favoriteCategories = useFavoriteCategories();
   const followedMPIds = useFollowedMPIds();
-  const { events } = useEvents({ limit: 100, lang: 'pl' });
   const { mps } = useMPs();
 
   const [historicalAlerts, setHistoricalAlerts] = useState<HistoricalVotingAlert[]>([]);
@@ -71,6 +88,7 @@ function NotificationsContent() {
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [voteFilter, setVoteFilter] = useState<VoteFilter>('all');
   const [mpFilter, setMpFilter] = useState<number | 'all'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<string | 'all'>('all');
   const [showHistorical, setShowHistorical] = useState(true);
 
   // Get followed MP names for filter dropdown
@@ -78,11 +96,12 @@ function NotificationsContent() {
     return mps.filter((mp) => followedMPIds.includes(mp.id));
   }, [mps, followedMPIds]);
 
-  // Fetch real alerts and historical on mount
+  // Fetch alerts on mount
   useEffect(() => {
-    fetchAlerts();
-  }, [fetchAlerts]);
+    fetchAllAlerts();
+  }, [fetchAllAlerts]);
 
+  // Fetch historical voting alerts
   useEffect(() => {
     if (followedMPIds.length > 0) {
       setIsLoadingHistorical(true);
@@ -113,76 +132,114 @@ function NotificationsContent() {
     }
   };
 
-  // Combine and filter alerts
-  const combinedAlerts = useMemo(() => {
-    const alerts: CombinedAlert[] = [];
+  // Combine real alerts with historical
+  type DisplayAlert =
+    | CombinedAlert
+    | (HistoricalVotingAlert & { alertType: 'historical' });
 
-    // Add real alerts (with isHistorical = false)
-    for (const alert of realAlerts) {
-      alerts.push({ ...alert, isHistorical: false });
-    }
+  const allAlerts = useMemo(() => {
+    const alerts: DisplayAlert[] = [...combinedAlerts];
 
     // Add historical alerts (exclude duplicates)
     if (showHistorical) {
-      const realAlertIds = new Set(realAlerts.map((a) => a.votingId + '-' + a.mpId));
+      const votingAlertIds = new Set(
+        combinedAlerts
+          .filter((a) => a.alertType === 'voting')
+          .map((a) => (a as any).votingId + '-' + (a as any).mpId)
+      );
+
       for (const alert of historicalAlerts) {
         const key = alert.votingId + '-' + alert.mpId;
-        if (!realAlertIds.has(key)) {
-          alerts.push(alert);
+        if (!votingAlertIds.has(key)) {
+          alerts.push({ ...alert, alertType: 'historical' });
         }
       }
     }
 
     return alerts;
-  }, [realAlerts, historicalAlerts, showHistorical]);
+  }, [combinedAlerts, historicalAlerts, showHistorical]);
 
   // Apply filters
   const filteredAlerts = useMemo(() => {
-    let result = combinedAlerts;
+    let result = allAlerts;
 
     // Filter by type
     if (filterType === 'voting') {
-      result = result.filter((a) => 'mpId' in a);
+      result = result.filter((a) => a.alertType === 'voting' || a.alertType === 'historical');
+    } else if (filterType === 'category') {
+      result = result.filter((a) => a.alertType === 'category');
     }
 
-    // Filter by vote
+    // Filter by vote (only for voting alerts)
     if (voteFilter !== 'all') {
-      result = result.filter((a) => 'vote' in a && a.vote === voteFilter);
+      result = result.filter((a) => {
+        if (a.alertType === 'voting' || a.alertType === 'historical') {
+          return (a as any).vote === voteFilter;
+        }
+        return true;
+      });
     }
 
-    // Filter by MP
+    // Filter by MP (only for voting alerts)
     if (mpFilter !== 'all') {
-      result = result.filter((a) => 'mpId' in a && a.mpId === mpFilter);
+      result = result.filter((a) => {
+        if (a.alertType === 'voting' || a.alertType === 'historical') {
+          return (a as any).mpId === mpFilter;
+        }
+        return true;
+      });
+    }
+
+    // Filter by category (only for category alerts)
+    if (categoryFilter !== 'all') {
+      result = result.filter((a) => {
+        if (a.alertType === 'category') {
+          return (a as any).category === categoryFilter;
+        }
+        return true;
+      });
     }
 
     // Sort by date (newest first)
     return result.sort((a, b) => {
-      const dateA = 'createdAt' in a ? (a.createdAt as any)?.seconds || 0 : new Date(a.date).getTime() / 1000;
-      const dateB = 'createdAt' in b ? (b.createdAt as any)?.seconds || 0 : new Date(b.date).getTime() / 1000;
-      return dateB - dateA;
+      const getTimestamp = (alert: DisplayAlert): number => {
+        if ('createdAt' in alert && alert.createdAt) {
+          const createdAt = alert.createdAt as any;
+          if (typeof createdAt === 'object' && 'seconds' in createdAt) {
+            return createdAt.seconds;
+          }
+          if (createdAt.toDate) {
+            return createdAt.toDate().getTime() / 1000;
+          }
+        }
+        if ('date' in alert) {
+          return new Date((alert as any).date).getTime() / 1000;
+        }
+        return 0;
+      };
+      return getTimestamp(b) - getTimestamp(a);
     });
-  }, [combinedAlerts, filterType, voteFilter, mpFilter]);
+  }, [allAlerts, filterType, voteFilter, mpFilter, categoryFilter]);
 
-  // Category-based event suggestions
-  const categoryEvents = useMemo(() => {
-    if (favoriteCategories.length === 0) return [];
-    return events
-      .filter((e) => favoriteCategories.includes(e.category))
-      .slice(0, 10);
-  }, [events, favoriteCategories]);
-
-  const unreadCount = realAlerts.filter((a) => !a.read).length;
+  const handleAlertClick = (alert: DisplayAlert) => {
+    if (alert.alertType === 'voting') {
+      markVotingAlertAsRead(alert.id);
+    } else if (alert.alertType === 'category') {
+      markCategoryAlertAsRead(alert.id);
+    }
+    // Historical alerts don't need to be marked as read
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-zinc-900">Powiadomienia</h1>
-        {unreadCount > 0 && (
+        {totalUnreadCount > 0 && (
           <button
-            onClick={() => markAllAsRead()}
+            onClick={() => markAllAlertsAsRead()}
             className="text-sm text-zinc-500 hover:text-zinc-700"
           >
-            Oznacz wszystkie jako przeczytane ({unreadCount})
+            Oznacz wszystkie jako przeczytane ({totalUnreadCount})
           </button>
         )}
       </div>
@@ -202,22 +259,24 @@ function NotificationsContent() {
           </select>
         </div>
 
-        <div>
-          <label className="block text-xs text-zinc-500 mb-1">Głos</label>
-          <select
-            value={voteFilter}
-            onChange={(e) => setVoteFilter(e.target.value as VoteFilter)}
-            className="text-sm border border-zinc-200 rounded px-2 py-1"
-          >
-            <option value="all">Wszystkie</option>
-            <option value="yes">Za</option>
-            <option value="no">Przeciw</option>
-            <option value="abstain">Wstrzymał się</option>
-            <option value="absent">Nieobecny</option>
-          </select>
-        </div>
+        {filterType !== 'category' && (
+          <div>
+            <label className="block text-xs text-zinc-500 mb-1">Głos</label>
+            <select
+              value={voteFilter}
+              onChange={(e) => setVoteFilter(e.target.value as VoteFilter)}
+              className="text-sm border border-zinc-200 rounded px-2 py-1"
+            >
+              <option value="all">Wszystkie</option>
+              <option value="yes">Za</option>
+              <option value="no">Przeciw</option>
+              <option value="abstain">Wstrzymał się</option>
+              <option value="absent">Nieobecny</option>
+            </select>
+          </div>
+        )}
 
-        {followedMPs.length > 0 && (
+        {filterType !== 'category' && followedMPs.length > 0 && (
           <div>
             <label className="block text-xs text-zinc-500 mb-1">Poseł</label>
             <select
@@ -235,17 +294,37 @@ function NotificationsContent() {
           </div>
         )}
 
-        <div className="flex items-end">
-          <label className="flex items-center gap-2 text-sm cursor-pointer">
-            <input
-              type="checkbox"
-              checked={showHistorical}
-              onChange={(e) => setShowHistorical(e.target.checked)}
-              className="rounded"
-            />
-            <span className="text-zinc-600">Pokaż historyczne</span>
-          </label>
-        </div>
+        {filterType !== 'voting' && favoriteCategories.length > 0 && (
+          <div>
+            <label className="block text-xs text-zinc-500 mb-1">Kategoria</label>
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="text-sm border border-zinc-200 rounded px-2 py-1"
+            >
+              <option value="all">Wszystkie ({favoriteCategories.length})</option>
+              {favoriteCategories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {CATEGORY_LABELS[cat] || cat}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {filterType !== 'category' && (
+          <div className="flex items-end">
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showHistorical}
+                onChange={(e) => setShowHistorical(e.target.checked)}
+                className="rounded"
+              />
+              <span className="text-zinc-600">Pokaż historyczne</span>
+            </label>
+          </div>
+        )}
       </div>
 
       {/* Stats */}
@@ -289,78 +368,82 @@ function NotificationsContent() {
         </div>
       )}
 
-      {/* Favorite categories events */}
-      {filterType !== 'voting' && categoryEvents.length > 0 && (
-        <section className="mb-8">
-          <h2 className="text-lg font-semibold text-zinc-900 mb-4">
-            Z Twoich ulubionych kategorii
-          </h2>
-          <div className="space-y-2">
-            {categoryEvents.slice(0, 5).map((event) => (
-              <Link
-                key={event.id}
-                to={`/event/${event.id}`}
-                className="flex items-center gap-3 p-3 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 transition-colors"
-              >
-                {event.imageUrl && (
-                  <img
-                    src={event.imageUrl}
-                    alt=""
-                    className="h-12 w-16 object-cover rounded"
-                  />
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded">
-                      {event.category}
-                    </span>
-                  </div>
-                  <h3 className="font-medium text-zinc-900 text-sm line-clamp-1">
-                    {event.title}
-                  </h3>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* Alerts list */}
+      <section>
+        <h2 className="text-lg font-semibold text-zinc-900 mb-4">
+          Powiadomienia
+          {isLoadingHistorical && (
+            <span className="ml-2 text-sm font-normal text-zinc-500">
+              (ładowanie historycznych...)
+            </span>
+          )}
+        </h2>
 
-      {/* Voting alerts list */}
-      {filterType !== 'category' && (
-        <section>
-          <h2 className="text-lg font-semibold text-zinc-900 mb-4">
-            Głosowania śledzonych posłów
-            {isLoadingHistorical && (
-              <span className="ml-2 text-sm font-normal text-zinc-500">
-                (ładowanie historycznych...)
-              </span>
+        {filteredAlerts.length === 0 ? (
+          <div className="bg-zinc-50 rounded-lg p-6 text-center">
+            <p className="text-zinc-500">Brak powiadomień.</p>
+            {followedMPIds.length === 0 && favoriteCategories.length === 0 && (
+              <p className="text-sm text-zinc-400 mt-2">
+                Dodaj ulubione kategorie lub zacznij śledzić posłów
+              </p>
             )}
-          </h2>
-
-          {filteredAlerts.length === 0 ? (
-            <div className="bg-zinc-50 rounded-lg p-6 text-center">
-              <p className="text-zinc-500">Brak powiadomień o głosowaniach.</p>
-              {followedMPIds.length === 0 && (
-                <Link
-                  to="/sejm/poslowie"
-                  className="text-blue-600 hover:underline text-sm mt-2 inline-block"
-                >
-                  Zacznij śledzić posłów
-                </Link>
-              )}
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {filteredAlerts.map((alert) => {
-                const voteInfo = formatVote(alert.vote);
-                const isHistorical = 'isHistorical' in alert && alert.isHistorical;
-                const isUnread = !isHistorical && 'read' in alert && !alert.read;
-                const dateStr = 'createdAt' in alert ? alert.createdAt : alert.date;
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {filteredAlerts.map((alert) => {
+              if (alert.alertType === 'category') {
+                // Category alert
+                const categoryLabel = CATEGORY_LABELS[alert.category] || alert.category;
+                const isUnread = !alert.read;
 
                 return (
                   <Link
-                    key={alert.id}
-                    to={`/sejm/glosowania/${alert.sitting}/${alert.votingNumber}`}
+                    key={`category-${alert.id}`}
+                    to={`/event/${alert.eventId}`}
+                    className={`block p-4 rounded-lg border transition-colors ${
+                      isUnread
+                        ? 'bg-blue-50 border-blue-200 hover:border-blue-300'
+                        : 'bg-white border-zinc-200 hover:border-zinc-300'
+                    }`}
+                    onClick={() => handleAlertClick(alert)}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">
+                            {categoryLabel}
+                          </span>
+                          {isUnread && (
+                            <span className="h-2 w-2 bg-blue-500 rounded-full" />
+                          )}
+                        </div>
+                        <p className="font-medium text-zinc-900 line-clamp-2">
+                          {alert.eventTitle}
+                        </p>
+                        {alert.eventLead && (
+                          <p className="text-sm text-zinc-500 line-clamp-1 mt-1">
+                            {alert.eventLead}
+                          </p>
+                        )}
+                      </div>
+                      <div className="text-xs text-zinc-400 whitespace-nowrap">
+                        {formatDate(alert.createdAt as any)}
+                      </div>
+                    </div>
+                  </Link>
+                );
+              } else {
+                // Voting alert (regular or historical)
+                const votingAlert = alert as any;
+                const voteInfo = formatVote(votingAlert.vote);
+                const isHistorical = alert.alertType === 'historical';
+                const isUnread = !isHistorical && !votingAlert.read;
+                const dateStr = 'createdAt' in votingAlert ? votingAlert.createdAt : votingAlert.date;
+
+                return (
+                  <Link
+                    key={`voting-${alert.id}`}
+                    to={`/sejm/glosowania/${votingAlert.sitting}/${votingAlert.votingNumber}`}
                     className={`block p-4 rounded-lg border transition-colors ${
                       isUnread
                         ? 'bg-blue-50 border-blue-200 hover:border-blue-300'
@@ -368,17 +451,13 @@ function NotificationsContent() {
                         ? 'bg-zinc-50 border-zinc-200 hover:border-zinc-300'
                         : 'bg-white border-zinc-200 hover:border-zinc-300'
                     }`}
-                    onClick={() => {
-                      if (!isHistorical && 'id' in alert) {
-                        markAsRead(alert.id);
-                      }
-                    }}
+                    onClick={() => handleAlertClick(alert)}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <span className="font-medium text-zinc-900">
-                            {alert.mpName}
+                            {votingAlert.mpName}
                           </span>
                           <span className={`text-xs px-2 py-0.5 rounded ${voteInfo.bg} ${voteInfo.color}`}>
                             {voteInfo.text}
@@ -393,31 +472,31 @@ function NotificationsContent() {
                           )}
                         </div>
                         <p className="text-sm text-zinc-600 line-clamp-2">
-                          {alert.votingTitle}
+                          {votingAlert.votingTitle}
                         </p>
                       </div>
                       <div className="text-xs text-zinc-400 whitespace-nowrap">
-                        {formatDate(dateStr as string)}
+                        {formatDate(dateStr)}
                       </div>
                     </div>
                   </Link>
                 );
-              })}
+              }
+            })}
 
-              {/* Load more button */}
-              {showHistorical && hasMoreHistorical && (
-                <button
-                  onClick={loadMoreHistorical}
-                  disabled={isLoadingHistorical}
-                  className="w-full mt-4 py-3 text-sm text-zinc-600 hover:text-zinc-900 border border-zinc-200 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isLoadingHistorical ? 'Ładowanie...' : 'Załaduj więcej historycznych'}
-                </button>
-              )}
-            </div>
-          )}
-        </section>
-      )}
+            {/* Load more button for historical */}
+            {showHistorical && hasMoreHistorical && filterType !== 'category' && (
+              <button
+                onClick={loadMoreHistorical}
+                disabled={isLoadingHistorical}
+                className="w-full mt-4 py-3 text-sm text-zinc-600 hover:text-zinc-900 border border-zinc-200 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoadingHistorical ? 'Ładowanie...' : 'Załaduj więcej historycznych'}
+              </button>
+            )}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

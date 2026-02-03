@@ -48,6 +48,11 @@ function AuthButton() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem asChild>
+            <Link to="/dashboard" className="w-full cursor-pointer">
+              Dashboard
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link to="/profil" className="w-full cursor-pointer">
               Moj profil
             </Link>
