@@ -6,6 +6,18 @@ export interface CookieConsent {
   marketing: boolean;
 }
 
+// Google Consent Mode v2 helper
+function updateGoogleConsent(consent: CookieConsent) {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('consent', 'update', {
+      'analytics_storage': consent.analytics ? 'granted' : 'denied',
+      'ad_storage': consent.marketing ? 'granted' : 'denied',
+      'ad_user_data': consent.marketing ? 'granted' : 'denied',
+      'ad_personalization': consent.marketing ? 'granted' : 'denied',
+    });
+  }
+}
+
 interface CookieConsentState {
   consent: CookieConsent | null;
   hasInteracted: boolean;
@@ -49,6 +61,7 @@ export const useCookieConsentStore = create<CookieConsentStore>((set) => ({
       marketing: true,
     };
     saveToStorage(consent);
+    updateGoogleConsent(consent);
     set({ consent, hasInteracted: true });
   },
 
@@ -59,16 +72,21 @@ export const useCookieConsentStore = create<CookieConsentStore>((set) => ({
       marketing: false,
     };
     saveToStorage(consent);
+    updateGoogleConsent(consent);
     set({ consent, hasInteracted: true });
   },
 
   setConsent: (consent: CookieConsent) => {
     saveToStorage(consent);
+    updateGoogleConsent(consent);
     set({ consent, hasInteracted: true });
   },
 
   loadFromStorage: () => {
     const { consent, hasInteracted } = loadFromStorageSync();
+    if (consent) {
+      updateGoogleConsent(consent);
+    }
     set({ consent, hasInteracted });
   },
 }));

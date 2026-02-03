@@ -1,5 +1,17 @@
 /// <reference types="vite/client" />
 
+// Google Analytics gtag type
+type GtagCommand = 'config' | 'event' | 'js' | 'set' | 'consent';
+
+interface Window {
+  dataLayer: unknown[];
+  gtag: (
+    command: GtagCommand,
+    targetOrAction: string | Date,
+    params?: Record<string, unknown>
+  ) => void;
+}
+
 /**
  * Type definitions for Vite environment variables
  *
