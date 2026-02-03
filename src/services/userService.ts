@@ -41,7 +41,8 @@ export async function createOrUpdateUserProfile(
     await updateDoc(userRef, {
       lastActiveAt: serverTimestamp(),
     });
-    return userDoc.data() as UserProfile;
+    // Include document ID in profile data
+    return { ...userDoc.data(), id: userDoc.id } as UserProfile;
   }
 
   // Create new profile
@@ -85,7 +86,8 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
     return null;
   }
 
-  return userDoc.data() as UserProfile;
+  // Include document ID in profile data
+  return { ...userDoc.data(), id: userDoc.id } as UserProfile;
 }
 
 /**
