@@ -7,6 +7,26 @@
 // Extraction functions for sidebar display
 // ==========================================
 
+/**
+ * Extract event UUIDs from text content
+ * Matches patterns like (event UUID) or just (UUID)
+ */
+export function extractEventIds(text: string | undefined): string[] {
+  if (!text) return [];
+
+  const uuidPattern = /\((?:event\s+)?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\)/gi;
+  const matches: string[] = [];
+  let match;
+
+  while ((match = uuidPattern.exec(text)) !== null) {
+    if (!matches.includes(match[1])) {
+      matches.push(match[1]);
+    }
+  }
+
+  return matches;
+}
+
 export interface ExtractedKeyNumber {
   value: string;
   description: string;

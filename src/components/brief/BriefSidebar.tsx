@@ -3,17 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEvent } from '../../hooks/useEvent';
 import type { WordOfTheDay, BriefSection } from '../../types/brief';
 import { decodeHtmlEntities } from '../../utils/sanitize';
+import { extractEventIds } from '../../utils/text';
 
 function stripIds(text: string): string {
   return text
     .replace(/\s*\(ID:\s*\d+\)/gi, '')
-    .replace(/\s*\(event\s+[a-f0-9-]+\)/gi, '')
+    .replace(/\s*\((?:event\s+)?[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\)/gi, '')
     .trim();
 }
 
 interface BriefSidebarProps {
   wordOfTheDay: WordOfTheDay | null;
   activeSection: BriefSection | null;
+  sections?: BriefSection[];
 }
 
 function SectionEventCard({ eventId }: { eventId: string }) {
@@ -87,7 +89,12 @@ function SidebarWordOfTheDay({ word }: { word: WordOfTheDay }) {
 }
 
 function SidebarSectionEvents({ section }: { section: BriefSection }) {
-  const eventIds = section.keyEvents ?? [];
+  // Use keyEvents if available, otherwise extract UUIDs from content
+  // Filter out empty strings from keyEvents
+  const keyEvents = (section.keyEvents ?? []).filter(id => id && id.trim());
+  const extractedIds = extractEventIds(section.content);
+  // Merge both sources, prefer keyEvents but add extracted ones too
+  const eventIds = [...new Set([...keyEvents, ...extractedIds])];
 
   if (eventIds.length === 0) return null;
 
