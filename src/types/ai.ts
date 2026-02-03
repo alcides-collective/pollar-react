@@ -81,11 +81,11 @@ export interface SSEEvent {
 }
 
 export type TypingLabel =
-  | 'Mysle'
-  | 'Analizuje pytanie'
-  | 'Szukam wydarzen'
-  | 'Lacze wyniki'
-  | 'Rerankuje wyniki'
-  | 'Analizuje wydarzenia'
-  | 'Generuje odpowiedz'
-  | 'Pisze odpowiedz';
+  | 'Myślę'
+  | 'Analizuję pytanie'
+  | 'Szukam wydarzeń'
+  | 'Łączę wyniki'
+  | 'Rerankuję wyniki'
+  | 'Analizuję wydarzenia'
+  | 'Generuję odpowiedź'
+  | 'Piszę odpowiedź';

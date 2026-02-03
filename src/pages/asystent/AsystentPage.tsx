@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { AIChat } from '../../components/ai';
+import { AIChat, AISidebar } from '../../components/ai';
 
 export function AsystentPage() {
   // Disable body scroll while on this page
@@ -13,8 +13,16 @@ export function AsystentPage() {
   }, []);
 
   return (
-    <div className="h-dvh w-full overflow-hidden bg-white dark:bg-zinc-950">
-      <AIChat variant="page" />
+    <div className="h-dvh w-full overflow-hidden bg-white dark:bg-zinc-950 flex">
+      {/* Sidebar - hidden on mobile */}
+      <div className="hidden md:block h-full">
+        <AISidebar />
+      </div>
+
+      {/* Main chat area */}
+      <div className="flex-1 h-full min-w-0">
+        <AIChat variant="page" />
+      </div>
     </div>
   );
 }

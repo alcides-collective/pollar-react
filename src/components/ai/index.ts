@@ -8,3 +8,4 @@ export { AISuggestions } from './AISuggestions';
 export { AITypingIndicator } from './AITypingIndicator';
 export { AIDebugPanel } from './AIDebugPanel';
 export { AISidebarWidget } from './AISidebarWidget';
+export { AISidebar } from './AISidebar';

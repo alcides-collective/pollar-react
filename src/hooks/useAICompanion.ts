@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react';
-import { useAIStore } from '../stores/aiStore';
+import { useAIStore, useAIMessages, useAILoading } from '../stores/aiStore';
 import { API_BASE } from '../config/api';
 import type { SSEEvent, AIEventSource } from '../types/ai';
 import {
@@ -10,6 +10,11 @@ import {
 
 // Get or create visitor ID for rate limiting
 function getVisitorId(): string {
+  // In DEV mode, generate new ID each time to bypass rate limits
+  if (import.meta.env.DEV) {
+    return `dev_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+  }
+
   const key = 'pollar-visitor-id';
   let id = localStorage.getItem(key);
   if (!id) {
@@ -28,9 +33,11 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
   const { language = 'pl', onAnimationStart } = options;
   const abortControllerRef = useRef<AbortController | null>(null);
 
+  // Get messages from current conversation
+  const messages = useAIMessages();
+  const isLoading = useAILoading();
+
   const {
-    messages,
-    isLoading,
     isStreaming,
     addMessage,
     setLoading,
@@ -110,6 +117,7 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
           headers: {
             'Content-Type': 'application/json',
             'X-Visitor-Id': visitorId,
+            ...(import.meta.env.DEV && { 'X-Dev-Mode': 'true' }),
           },
           body: JSON.stringify({
             message: userMessage.trim(),

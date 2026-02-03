@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { useAISuggestions, useAILoading, useAIRemainingQueries } from '../../stores/aiStore';
 
 interface AISuggestionsProps {
@@ -11,37 +10,30 @@ export function AISuggestions({ onSelect, variant = 'grid' }: AISuggestionsProps
   const isLoading = useAILoading();
   const remainingQueries = useAIRemainingQueries();
 
-  const isDisabled = isLoading || remainingQueries <= 0;
+  // In dev mode, ignore rate limits
+  const isDisabled = isLoading || (!import.meta.env.DEV && remainingQueries <= 0);
 
   if (variant === 'list') {
     // Used for follow-ups
     return (
-      <motion.div
-        className="flex flex-col gap-2 mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/50"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.2 }}
-      >
-        {suggestions.map((suggestion, i) => (
-          <motion.button
+      <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/50 animate-fade-in">
+        {suggestions.map((suggestion) => (
+          <button
             key={suggestion}
             onClick={() => onSelect(suggestion)}
             disabled={isDisabled}
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
             className="text-sm text-left text-zinc-600 dark:text-zinc-400
                        border border-zinc-200 dark:border-zinc-700 rounded-lg
                        px-4 py-3 leading-relaxed
                        hover:bg-zinc-50 dark:hover:bg-zinc-800/50
                        hover:border-zinc-300 dark:hover:border-zinc-600
                        disabled:opacity-50 disabled:cursor-not-allowed
-                       transition-all duration-150"
+                       transition-colors duration-150"
           >
             {suggestion}
-          </motion.button>
+          </button>
         ))}
-      </motion.div>
+      </div>
     );
   }
 
@@ -50,23 +42,22 @@ export function AISuggestions({ onSelect, variant = 'grid' }: AISuggestionsProps
     <div className="flex flex-col items-center justify-center h-full px-4 py-8">
       <div className="w-full max-w-md grid grid-cols-1 sm:grid-cols-2 gap-2">
         {suggestions.map((suggestion, i) => (
-          <motion.button
+          <button
             key={suggestion}
             onClick={() => onSelect(suggestion)}
             disabled={isDisabled}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            className="font-serif text-sm text-left text-zinc-600 dark:text-zinc-400
+            style={{ animationDelay: `${i * 50}ms` }}
+            className="text-sm text-left text-zinc-600 dark:text-zinc-400
                        border border-zinc-200 dark:border-zinc-700 rounded-lg
                        px-4 py-3.5 leading-relaxed
                        hover:bg-zinc-50 dark:hover:bg-zinc-800/50
                        hover:border-zinc-300 dark:hover:border-zinc-600
                        disabled:opacity-50 disabled:cursor-not-allowed
-                       transition-all duration-150"
+                       transition-colors duration-150
+                       animate-fade-in opacity-0 [animation-fill-mode:forwards]"
           >
             {suggestion}
-          </motion.button>
+          </button>
         ))}
       </div>
     </div>

@@ -1,5 +1,4 @@
 import { memo, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { AIMessage as AIMessageType } from '../../types/ai';
 import { tokenizeContent, formatMarkdown } from '../../utils/ai-helpers';
@@ -39,18 +38,13 @@ export const AIMessage = memo(function AIMessage({
 
   if (message.role === 'user') {
     return (
-      <motion.div
-        className="self-end max-w-[90%]"
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
-      >
+      <div className="self-end max-w-[90%] animate-fade-in">
         <div className="bg-zinc-100 dark:bg-zinc-800/60 px-4 py-3 rounded-2xl rounded-br-sm">
           <p className="text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200">
             {message.content}
           </p>
         </div>
-      </motion.div>
+      </div>
     );
   }
 
@@ -60,14 +54,11 @@ export const AIMessage = memo(function AIMessage({
     : tokens;
 
   return (
-    <motion.div
-      className="self-start w-full"
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
+    <div
+      className="self-start w-full animate-fade-in"
       onClick={handleClick}
     >
-      <div className="text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200 whitespace-pre-line">
+      <div className="text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200">
         {visibleTokens.map((token, i) => (
           <span
             key={`${index}-${i}`}
@@ -80,7 +71,9 @@ export const AIMessage = memo(function AIMessage({
       {/* Source links styling */}
       <style>{`
         .source-link {
+          display: inline;
           color: rgb(113 113 122);
+          font-size: inherit;
           text-decoration: underline;
           text-underline-offset: 2px;
           transition: color 0.15s ease;
@@ -95,6 +88,6 @@ export const AIMessage = memo(function AIMessage({
           color: rgb(212 212 216);
         }
       `}</style>
-    </motion.div>
+    </div>
   );
 });

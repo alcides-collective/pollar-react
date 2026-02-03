@@ -1,13 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useAISuggestions, useAIStore } from '../../stores/aiStore';
 import { DEFAULT_SUGGESTIONS } from '../../utils/ai-helpers';
 import { API_BASE } from '../../config/api';
 
-// Animation timing for placeholder
-const WORD_DELAY = 150; // ms between each word
-const PAUSE_BETWEEN = 4000; // ms to show full placeholder
+const PAUSE_BETWEEN = 4000; // ms to show each placeholder
 
 export function AISidebarWidget() {
   const navigate = useNavigate();
@@ -15,12 +12,13 @@ export function AISidebarWidget() {
   const setSuggestions = useAIStore((s) => s.setSuggestions);
 
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
-  const [visibleWords, setVisibleWords] = useState<string[]>([]);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   // Use suggestions or default
   const placeholders =
     suggestions.length >= 4 ? suggestions : DEFAULT_SUGGESTIONS;
+
+  const currentText = placeholders[placeholderIndex];
 
   // Fetch suggestions on mount
   useEffect(() => {
@@ -40,56 +38,21 @@ export function AISidebarWidget() {
     fetchSuggestions();
   }, [setSuggestions]);
 
-  // Initialize with first placeholder
+  // Cycle through placeholders with fade
   useEffect(() => {
-    const words = placeholders[0].split(' ');
-    setVisibleWords(words);
-  }, [placeholders]);
+    const interval = setInterval(() => {
+      // Fade out
+      setIsVisible(false);
 
-  // Animate placeholder cycling
-  const animatePlaceholder = useCallback(() => {
-    if (isAnimating) return;
-    setIsAnimating(true);
+      // After fade out, change text and fade in
+      setTimeout(() => {
+        setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
+        setIsVisible(true);
+      }, 200);
+    }, PAUSE_BETWEEN);
 
-    const currentWords = placeholders[placeholderIndex].split(' ');
-    const nextIndex = (placeholderIndex + 1) % placeholders.length;
-    const nextWords = placeholders[nextIndex].split(' ');
-
-    // Phase 1: Hide words one by one (from end to start)
-    let hideIndex = currentWords.length - 1;
-    const hideInterval = setInterval(() => {
-      if (hideIndex >= 0) {
-        setVisibleWords(currentWords.slice(0, hideIndex));
-        hideIndex--;
-      } else {
-        clearInterval(hideInterval);
-
-        // Switch to next placeholder
-        setPlaceholderIndex(nextIndex);
-        setVisibleWords([]);
-
-        // Phase 2: Show new words one by one
-        let showIndex = 0;
-        const showInterval = setInterval(() => {
-          if (showIndex < nextWords.length) {
-            setVisibleWords(nextWords.slice(0, showIndex + 1));
-            showIndex++;
-          } else {
-            clearInterval(showInterval);
-            setIsAnimating(false);
-          }
-        }, WORD_DELAY);
-      }
-    }, WORD_DELAY);
-  }, [isAnimating, placeholderIndex, placeholders]);
-
-  // Start animation cycle
-  useEffect(() => {
-    const totalAnimationTime =
-      PAUSE_BETWEEN + placeholders[0].split(' ').length * WORD_DELAY * 2;
-    const interval = setInterval(animatePlaceholder, totalAnimationTime);
     return () => clearInterval(interval);
-  }, [animatePlaceholder, placeholders]);
+  }, [placeholders.length]);
 
   const handleClick = () => {
     navigate('/asystent');
@@ -120,24 +83,14 @@ export function AISidebarWidget() {
           <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z" />
         </svg>
 
-        {/* Animated placeholder */}
-        <div className="flex-1 text-left overflow-hidden">
-          <div className="text-sm text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
-            <AnimatePresence mode="popLayout">
-              {visibleWords.map((word, i) => (
-                <motion.span
-                  key={`${word}-${i}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15, delay: i * 0.03 }}
-                  className="inline-block mr-[0.3em]"
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </AnimatePresence>
-          </div>
+        {/* Placeholder text - fixed height to prevent layout shift */}
+        <div className="flex-1 text-left overflow-hidden min-h-[20px]">
+          <span
+            className="text-sm text-zinc-400 dark:text-zinc-500 block truncate transition-opacity duration-200"
+            style={{ opacity: isVisible ? 1 : 0 }}
+          >
+            {currentText}
+          </span>
         </div>
       </button>
     </div>

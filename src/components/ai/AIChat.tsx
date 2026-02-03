@@ -1,5 +1,4 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { AIHeader } from './AIHeader';
 import { AIMessageList } from './AIMessageList';
 import { AIInput } from './AIInput';
@@ -11,9 +10,10 @@ import { useAIError, useAIStore } from '../../stores/aiStore';
 interface AIChatProps {
   variant?: 'page' | 'modal';
   onClose?: () => void;
+  showHeader?: boolean;
 }
 
-export function AIChat({ variant = 'page', onClose }: AIChatProps) {
+export function AIChat({ variant = 'page', showHeader = true }: AIChatProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const error = useAIError();
   const setError = useAIStore((s) => s.setError);
@@ -69,43 +69,39 @@ export function AIChat({ variant = 'page', onClose }: AIChatProps) {
   return (
     <div className="flex flex-col h-full bg-white dark:bg-zinc-950">
       {/* Header */}
-      <AIHeader
-        showBackButton={variant === 'page'}
-        onBack={variant === 'modal' ? onClose : undefined}
-      />
+      {showHeader && <AIHeader />}
 
-      {/* Messages area - scrollable */}
+      {/* Messages area - scrollable with centered content */}
       <div
         ref={scrollContainerRef}
         className="flex-1 overflow-y-auto min-h-0"
       >
-        <AIMessageList
-          onSuggestionSelect={handleSuggestionSelect}
-          scrollContainerRef={scrollContainerRef}
-        />
+        <div className="max-w-3xl mx-auto w-full">
+          <AIMessageList
+            onSuggestionSelect={handleSuggestionSelect}
+            scrollContainerRef={scrollContainerRef}
+          />
+        </div>
       </div>
 
       {/* Error message */}
-      <AnimatePresence>
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            onClick={handleDismissError}
-            className="px-4 py-3 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400
-                       text-sm text-center cursor-pointer shrink-0"
-          >
-            {error}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {error && (
+        <div
+          onClick={handleDismissError}
+          className="px-4 py-3 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400
+                     text-sm text-center cursor-pointer shrink-0 animate-fade-in"
+        >
+          {error}
+        </div>
+      )}
 
       {/* Debug panel (dev mode only) */}
       <AIDebugPanel />
 
-      {/* Input area - fixed at bottom */}
-      <AIInput onSend={handleSend} autoFocus={variant === 'page'} />
+      {/* Input area - fixed at bottom, centered */}
+      <div className="max-w-3xl mx-auto w-full">
+        <AIInput onSend={handleSend} autoFocus={variant === 'page'} />
+      </div>
     </div>
   );
 }

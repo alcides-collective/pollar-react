@@ -123,20 +123,20 @@ export function formatSourceDate(
  * Get dynamic typing label based on debug steps
  */
 export function getTypingLabel(debugSteps: DebugStep[]): TypingLabel {
-  if (debugSteps.length === 0) return 'Mysle';
-  if (debugSteps.some((s) => s.step === 'complete')) return 'Pisze odpowiedz';
+  if (debugSteps.length === 0) return 'Myślę';
+  if (debugSteps.some((s) => s.step === 'complete')) return 'Piszę odpowiedź';
   if (debugSteps.some((s) => s.step === 'generating'))
-    return 'Generuje odpowiedz';
+    return 'Generuję odpowiedź';
   if (debugSteps.some((s) => s.step === 'searchComplete'))
-    return 'Analizuje wydarzenia';
-  if (debugSteps.some((s) => s.step === 'rerank')) return 'Rerankuje wyniki';
-  if (debugSteps.some((s) => s.step === 'fusion')) return 'Lacze wyniki';
+    return 'Analizuję wydarzenia';
+  if (debugSteps.some((s) => s.step === 'rerank')) return 'Rerankuję wyniki';
+  if (debugSteps.some((s) => s.step === 'fusion')) return 'Łączę wyniki';
   if (debugSteps.some((s) => s.step === 'parallelSearch'))
-    return 'Szukam wydarzen';
+    return 'Szukam wydarzeń';
   if (debugSteps.some((s) => s.step === 'keywordsAndExpansion'))
-    return 'Analizuje pytanie';
-  if (debugSteps.some((s) => s.step === 'keywords')) return 'Szukam wydarzen';
-  return 'Mysle';
+    return 'Analizuję pytanie';
+  if (debugSteps.some((s) => s.step === 'keywords')) return 'Szukam wydarzeń';
+  return 'Myślę';
 }
 
 /**
