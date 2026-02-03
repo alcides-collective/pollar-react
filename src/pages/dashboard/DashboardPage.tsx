@@ -30,15 +30,15 @@ function DashboardContent() {
   const alerts = useAlerts();
 
   const fetchReadHistory = useReadHistoryStore((s) => s.fetchReadHistory);
-  const fetchAlerts = useAlertsStore((s) => s.fetchAlerts);
+  const fetchAllAlerts = useAlertsStore((s) => s.fetchAllAlerts);
 
   // Fetch data on mount
   useEffect(() => {
     if (user?.uid) {
       fetchReadHistory(user.uid);
-      fetchAlerts();
+      fetchAllAlerts();
     }
-  }, [user?.uid, fetchReadHistory, fetchAlerts]);
+  }, [user?.uid, fetchReadHistory, fetchAllAlerts]);
 
   // Get events for display
   const { events } = useEvents({ limit: 100, lang: 'pl', skipHiddenFilter: true });
