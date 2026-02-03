@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { toast } from 'sonner';
 import { API_BASE } from '../config/api';
+import { useEventsStore } from '../stores/eventsStore';
 
 interface StreamEvent {
   id: string;
@@ -145,6 +146,9 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
 
         // Handle new and updated events
         if (data.type === 'new' || data.type === 'updated') {
+          // Invalidate events cache to trigger refetch
+          useEventsStore.getState().clearCache();
+
           if (document.hidden) {
             // Tab is hidden - buffer the event
             bufferedEventsRef.current.push(data);
