@@ -5,6 +5,7 @@ import {
   useUserProfile,
   useSavedEventIds,
   useHiddenCategories,
+  useFavoriteCategories,
   useUserStore,
 } from '@/stores/userStore';
 import { useEvents } from '@/stores/eventsStore';
@@ -42,7 +43,9 @@ function ProfileContent() {
   const profile = useUserProfile();
   const savedEventIds = useSavedEventIds();
   const hiddenCategories = useHiddenCategories();
+  const favoriteCategories = useFavoriteCategories();
   const toggleHiddenCategory = useUserStore((s) => s.toggleHiddenCategory);
+  const toggleFavoriteCategory = useUserStore((s) => s.toggleFavoriteCategory);
   const signOut = useAuthStore((s) => s.signOut);
 
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
@@ -126,6 +129,37 @@ function ProfileContent() {
             ))}
           </div>
         )}
+      </section>
+
+      {/* Favorite Categories */}
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold text-zinc-900 mb-2">
+          Ulubione kategorie
+        </h2>
+        <p className="text-sm text-zinc-500 mb-4">
+          Wydarzenia z ulubionych kategorii będą wyświetlane jako pierwsze na stronie głównej.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {ALL_CATEGORIES.map((category) => {
+            const isFavorite = favoriteCategories.includes(category);
+            return (
+              <button
+                key={category}
+                onClick={() => toggleFavoriteCategory(category)}
+                className={`px-4 py-2 rounded-lg text-sm text-left transition-colors ${
+                  isFavorite
+                    ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                    : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  {isFavorite && <span className="text-amber-500">★</span>}
+                  {category}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </section>
 
       {/* Hidden Categories */}

@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useMarketData } from '../hooks/useMarketData';
 
 export function MarketTicker() {
@@ -17,9 +18,9 @@ export function MarketTicker() {
   if (loading && indices.length === 0) {
     return (
       <div className="bg-zinc-50 border-b border-zinc-200 px-4 py-2 flex items-center gap-2">
-        <div className="text-sm text-zinc-500 shrink-0">
+        <Link to="/gielda" className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors shrink-0">
           Notowania
-        </div>
+        </Link>
         <div className="text-sm text-zinc-400">Ładowanie...</div>
       </div>
     );
@@ -27,9 +28,9 @@ export function MarketTicker() {
 
   return (
     <div className="bg-zinc-50 border-b border-zinc-200 px-4 py-2 flex items-center gap-2">
-      <div className="text-sm text-zinc-500 shrink-0">
+      <Link to="/gielda" className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors shrink-0">
         Notowania
-      </div>
+      </Link>
 
       <div ref={scrollRef} className="flex items-center gap-3 overflow-x-auto scrollbar-hide">
         {indices.map((item) => {

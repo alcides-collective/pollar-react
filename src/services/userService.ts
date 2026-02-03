@@ -262,3 +262,27 @@ export async function removeFavoriteCategory(
     favoriteCategories: arrayRemove(category),
   });
 }
+
+// ============ Followed MPs ============
+
+/**
+ * Follows an MP (adds to user's followed MPs list)
+ */
+export async function followMP(uid: string, mpId: number): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    followedMPIds: arrayUnion(mpId),
+  });
+}
+
+/**
+ * Unfollows an MP (removes from user's followed MPs list)
+ */
+export async function unfollowMP(uid: string, mpId: number): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    followedMPIds: arrayRemove(mpId),
+  });
+}

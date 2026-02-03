@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SearchModal } from '@/components/search';
+import { AlertsBell } from '@/components/AlertsBell';
 import logoImg from '../assets/logo.png';
 
 // Auth button component
@@ -166,6 +167,7 @@ export function Header() {
             </Link>
           </div>
           <div className="flex items-center gap-6">
+            <AlertsBell />
             <AuthButton />
             <button
               onClick={openProModal}
@@ -255,26 +257,53 @@ export function Header() {
               </svg>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem>
-                <Link to="/brief" className="w-full">Daily Brief</Link>
+              <DropdownMenuItem asChild>
+                <Link to="/brief" className="w-full flex items-center gap-2">
+                  <i className="ri-newspaper-line" />
+                  Daily Brief
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/sejm" className="w-full">Sejm</Link>
+              <DropdownMenuItem asChild>
+                <Link to="/sejm" className="w-full flex items-center gap-2">
+                  <i className="ri-government-line" />
+                  Sejm
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/mapa" className="w-full">Mapa wydarzeń</Link>
+              <DropdownMenuItem asChild>
+                <Link to="/gielda" className="w-full flex items-center gap-2">
+                  <i className="ri-line-chart-line" />
+                  Giełda
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/dane" className="w-full">Otwarte Dane</Link>
+              <DropdownMenuItem asChild>
+                <Link to="/mapa" className="w-full flex items-center gap-2">
+                  <i className="ri-map-pin-line" />
+                  Mapa wydarzeń
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/terminal" className="w-full">Terminal</Link>
+              <DropdownMenuItem asChild>
+                <Link to="/dane" className="w-full flex items-center gap-2">
+                  <i className="ri-database-2-line" />
+                  Otwarte Dane
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/powiazania" className="w-full">Powiązania</Link>
+              <DropdownMenuItem asChild>
+                <Link to="/terminal" className="w-full flex items-center gap-2">
+                  <i className="ri-terminal-line" />
+                  Terminal
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <span className="w-full">Archiwum</span>
+              <DropdownMenuItem asChild>
+                <Link to="/powiazania" className="w-full flex items-center gap-2">
+                  <i className="ri-mind-map" />
+                  Powiązania
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/archiwum" className="w-full flex items-center gap-2">
+                  <i className="ri-archive-line" />
+                  Archiwum
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>

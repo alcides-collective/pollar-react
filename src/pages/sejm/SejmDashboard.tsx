@@ -6,6 +6,8 @@ import { useVotings } from '../../hooks/useVotings';
 import { useCurrentProceeding } from '../../hooks/useProceedings';
 import { SejmStats, VotingCard, SejmApiError, PollingChart } from '../../components/sejm';
 import { getPartyColor } from '../../types/sejm';
+import { useIsAuthenticated } from '../../stores/authStore';
+import { useFollowedMPIds } from '../../stores/userStore';
 import type { SejmMP } from '../../types/sejm';
 
 type SortOption = 'votes' | 'attendance_high' | 'attendance_low' | 'youngest' | 'oldest';
@@ -41,6 +43,14 @@ export function SejmDashboard() {
   const { votings, loading: votingsLoading } = useVotings();
   const { proceeding: currentProceeding } = useCurrentProceeding();
   const [selectedSort, setSelectedSort] = useState<SortOption>('votes');
+  const isAuthenticated = useIsAuthenticated();
+  const followedMPIds = useFollowedMPIds();
+
+  // Get followed MPs data
+  const followedMPs = useMemo(() => {
+    if (!isAuthenticated || followedMPIds.length === 0) return [];
+    return mps.filter((mp) => followedMPIds.includes(mp.id));
+  }, [mps, followedMPIds, isAuthenticated]);
 
   const topMPs = useMemo(() => {
     const activeMps = mps.filter(mp => mp.active);
@@ -95,6 +105,55 @@ export function SejmDashboard() {
 
   return (
     <div className="space-y-6">
+      {/* Followed MPs Section - only for authenticated users */}
+      {isAuthenticated && followedMPs.length > 0 && (
+        <div className="rounded-lg border-2 border-blue-200 bg-blue-50 p-4">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-medium text-zinc-900">
+              Śledzeni posłowie ({followedMPs.length})
+            </h3>
+            <Link
+              to="/sejm/poslowie"
+              className="text-xs text-zinc-500 hover:text-zinc-700"
+            >
+              Dodaj więcej <i className="ri-arrow-right-s-line" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
+            {followedMPs.slice(0, 10).map((mp) => {
+              const color = getPartyColor(mp.club);
+              return (
+                <Link
+                  key={mp.id}
+                  to={`/sejm/poslowie/${mp.id}`}
+                  className="group flex flex-col items-center text-center"
+                >
+                  <div className="relative">
+                    <img
+                      src={mp.photoUrl}
+                      alt={mp.firstLastName}
+                      className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm group-hover:border-blue-300 transition-colors"
+                    />
+                    <span
+                      className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white"
+                      style={{ backgroundColor: color.bg }}
+                    />
+                  </div>
+                  <p className="text-[10px] text-zinc-600 mt-1 line-clamp-1 max-w-full">
+                    {mp.lastName}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+          {followedMPs.length > 10 && (
+            <p className="text-xs text-zinc-500 mt-3 text-center">
+              +{followedMPs.length - 10} więcej
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Stats and Polling - side by side on larger screens */}
       <div className="grid gap-4 lg:grid-cols-2">
         {stats && <SejmStats stats={stats} />}

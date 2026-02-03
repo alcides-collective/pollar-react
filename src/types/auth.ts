@@ -49,6 +49,10 @@ export interface UserProfile {
   hiddenCategories: string[];
   /** Avatar URL from Firebase Storage */
   photoURL?: string | null;
+  /** Followed MP IDs */
+  followedMPIds?: number[];
+  /** Notification preferences */
+  notificationPreferences?: NotificationPreferences;
 }
 
 /**
@@ -73,6 +77,46 @@ export interface AuthFormState {
 export interface ReadHistoryEntry {
   eventId: string;
   readAt: Timestamp;
+}
+
+/**
+ * Followed MP entry
+ */
+export interface FollowedMP {
+  mpId: number;
+  followedAt: Timestamp;
+  alertsEnabled: boolean;
+}
+
+/**
+ * Voting alert for followed MPs
+ * Stored in subcollection: users/{userId}/votingAlerts
+ */
+export interface VotingAlert {
+  id: string;
+  votingId: string;
+  sitting: number;
+  votingNumber: number;
+  mpId: number;
+  mpName: string;
+  votingTitle: string;
+  vote: 'yes' | 'no' | 'abstain' | 'absent';
+  createdAt: Timestamp;
+  read: boolean;
+}
+
+/**
+ * User notification preferences
+ */
+export interface NotificationPreferences {
+  /** Alerts for favorite categories */
+  favoriteCategories: boolean;
+  /** Alerts for followed MPs */
+  followedMPs: boolean;
+  /** Voting alerts */
+  votingAlerts: boolean;
+  /** Email digest frequency */
+  emailDigest: 'none' | 'daily' | 'weekly';
 }
 
 /**

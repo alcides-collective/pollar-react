@@ -48,8 +48,18 @@ import { MieszkaniaPage } from './pages/dane/ekonomia/MieszkaniaPage'
 import { KolejPage } from './pages/dane/transport/KolejPage'
 import { PortyPage } from './pages/dane/transport/PortyPage'
 import { PrzestepczoscPage } from './pages/dane/bezpieczenstwo/PrzestepczoscPage'
+import {
+  GieldaLayout,
+  GieldaPage,
+  StocksPage,
+  IndicesPage,
+  WatchlistPage,
+  StockDetailPage,
+  IndexDetailPage,
+} from './pages/gielda'
 import { PowiazaniaPage } from './pages/powiazania'
 import { ProfilePage } from './pages/profile/ProfilePage'
+import { DashboardPage } from './pages/dashboard/DashboardPage'
 import { useEventStream } from './hooks/useEventStream'
 
 function HomePage() {
@@ -89,6 +99,7 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
         <Route path="/mapa" element={<MapPage />} />
         <Route path="/terminal" element={<TerminalPage />} />
         <Route path="/powiazania" element={<PowiazaniaPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/profil" element={<ProfilePage />} />
         {/* Sejm routes */}
         <Route path="/sejm" element={<SejmLayout />}>
@@ -122,6 +133,15 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
           <Route path="transport/kolej" element={<KolejPage />} />
           <Route path="transport/porty" element={<PortyPage />} />
           <Route path="bezpieczenstwo/przestepczosc" element={<PrzestepczoscPage />} />
+        </Route>
+        {/* Gielda routes */}
+        <Route path="/gielda" element={<GieldaLayout />}>
+          <Route index element={<GieldaPage />} />
+          <Route path="akcje" element={<StocksPage />} />
+          <Route path="akcje/:symbol" element={<StockDetailPage />} />
+          <Route path="indeksy" element={<IndicesPage />} />
+          <Route path="indeksy/:symbol" element={<IndexDetailPage />} />
+          <Route path="watchlist" element={<WatchlistPage />} />
         </Route>
       </Routes>
     </motion.div>

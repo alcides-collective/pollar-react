@@ -3,6 +3,7 @@ import type { Event } from '../types/events';
 import { CATEGORY_ORDER } from '../constants/categories';
 import { useEvents } from '../stores/eventsStore';
 import { useSelectedCategory } from '../stores/uiStore';
+import { useFavoriteCategories } from '../stores/userStore';
 
 export interface EventGroups {
   featured: Event[];
@@ -20,7 +21,8 @@ interface UseEventGroupsOptions {
 
 function computeEventGroups(
   events: Event[],
-  selectedCategory: string | null
+  selectedCategory: string | null,
+  favoriteCategories: string[] = []
 ): Omit<EventGroups, 'loading' | 'error'> {
   const filteredEvents = selectedCategory
     ? events.filter(e => e.category === selectedCategory)
@@ -107,6 +109,11 @@ function computeEventGroups(
   });
 
   const sortedCategories = Array.from(grouped.keys()).sort((a, b) => {
+    // Favorite categories first
+    const aFav = favoriteCategories.includes(a) ? 0 : 1;
+    const bFav = favoriteCategories.includes(b) ? 0 : 1;
+    if (aFav !== bFav) return aFav - bFav;
+    // Then by standard order
     const indexA = CATEGORY_ORDER.indexOf(a);
     const indexB = CATEGORY_ORDER.indexOf(b);
     return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
@@ -138,6 +145,7 @@ export function useEventGroups(
   options: UseEventGroupsOptions = {}
 ): EventGroups & { loading: boolean; error: Error | null } {
   const selectedCategory = useSelectedCategory();
+  const favoriteCategories = useFavoriteCategories();
   const includeArchive = options.includeArchive ?? !!selectedCategory;
 
   const { events, loading, error } = useEvents({
@@ -148,8 +156,8 @@ export function useEventGroups(
   });
 
   const groups = useMemo(
-    () => computeEventGroups(events, selectedCategory),
-    [events, selectedCategory]
+    () => computeEventGroups(events, selectedCategory, favoriteCategories),
+    [events, selectedCategory, favoriteCategories]
   );
 
   return {

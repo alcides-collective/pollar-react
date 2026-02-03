@@ -7,6 +7,8 @@ import {
   removeHiddenCategory,
   addFavoriteCategory,
   removeFavoriteCategory,
+  followMP,
+  unfollowMP,
 } from '@/services/userService';
 import { trackBookmarkEvent, trackHiddenCategory } from '@/lib/analytics';
 import type { UserProfile } from '@/types/auth';
@@ -18,6 +20,7 @@ interface UserState {
   savedEventIds: string[];
   hiddenCategories: string[];
   favoriteCategories: string[];
+  followedMPIds: number[];
   isLoading: boolean;
   error: string | null;
 }
@@ -39,6 +42,10 @@ interface UserActions {
   toggleFavoriteCategory: (category: string) => Promise<void>;
   isCategoryFavorite: (category: string) => boolean;
 
+  // Followed MPs
+  toggleFollowMP: (mpId: number) => Promise<void>;
+  isFollowingMP: (mpId: number) => boolean;
+
   // Internal
   setError: (error: string | null) => void;
 }
@@ -53,6 +60,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   savedEventIds: [],
   hiddenCategories: [],
   favoriteCategories: [],
+  followedMPIds: [],
   isLoading: false,
   error: null,
 
@@ -67,6 +75,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
           savedEventIds: profile.savedEventIds || [],
           hiddenCategories: profile.hiddenCategories || [],
           favoriteCategories: profile.favoriteCategories || [],
+          followedMPIds: profile.followedMPIds || [],
         });
       }
     } catch (error) {
@@ -83,6 +92,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
       savedEventIds: [],
       hiddenCategories: [],
       favoriteCategories: [],
+      followedMPIds: [],
       error: null,
     });
   },
@@ -207,6 +217,46 @@ export const useUserStore = create<UserStore>((set, get) => ({
     return get().favoriteCategories.includes(category);
   },
 
+  // Followed MPs
+  toggleFollowMP: async (mpId) => {
+    const { profile, followedMPIds } = get();
+    if (!profile) return;
+
+    const isFollowing = followedMPIds.includes(mpId);
+
+    // Optimistic update
+    if (isFollowing) {
+      set({
+        followedMPIds: followedMPIds.filter((id) => id !== mpId),
+      });
+    } else {
+      set({ followedMPIds: [...followedMPIds, mpId] });
+    }
+
+    try {
+      if (isFollowing) {
+        await unfollowMP(profile.id, mpId);
+      } else {
+        await followMP(profile.id, mpId);
+      }
+    } catch (error) {
+      // Revert on error
+      if (isFollowing) {
+        set({ followedMPIds: [...followedMPIds, mpId] });
+      } else {
+        set({
+          followedMPIds: followedMPIds.filter((id) => id !== mpId),
+        });
+      }
+      set({ error: 'Nie udało się zaktualizować śledzonych posłów' });
+      throw error;
+    }
+  },
+
+  isFollowingMP: (mpId) => {
+    return get().followedMPIds.includes(mpId);
+  },
+
   // Internal
   setError: (error) => set({ error }),
 }));
@@ -235,4 +285,16 @@ export function useIsEventSaved(eventId: string) {
 
 export function useIsCategoryHidden(category: string) {
   return useUserStore((state) => state.hiddenCategories.includes(category));
+}
+
+export function useIsCategoryFavorite(category: string) {
+  return useUserStore((state) => state.favoriteCategories.includes(category));
+}
+
+export function useFollowedMPIds() {
+  return useUserStore((state) => state.followedMPIds);
+}
+
+export function useIsFollowingMP(mpId: number) {
+  return useUserStore((state) => state.followedMPIds.includes(mpId));
 }

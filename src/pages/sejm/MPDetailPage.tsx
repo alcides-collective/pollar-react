@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useMP } from '../../hooks/useMP';
 import { PartyBadge, SejmApiError } from '../../components/sejm';
+import { FollowMPButton } from '../../components/FollowMPButton';
 
 export function MPDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -64,13 +65,16 @@ export function MPDetailPage() {
         </div>
 
         <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-2xl font-semibold text-zinc-900">{mp.firstLastName}</h1>
-            {!mp.active && (
-              <span className="bg-zinc-200 text-zinc-600 text-xs px-2 py-0.5 rounded">
-                Nieaktywny
-              </span>
-            )}
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-semibold text-zinc-900">{mp.firstLastName}</h1>
+              {!mp.active && (
+                <span className="bg-zinc-200 text-zinc-600 text-xs px-2 py-0.5 rounded">
+                  Nieaktywny
+                </span>
+              )}
+            </div>
+            <FollowMPButton mpId={mp.id} mpName={mp.firstLastName} />
           </div>
 
           <div className="flex items-center gap-3 mb-4">

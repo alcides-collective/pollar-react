@@ -24,6 +24,15 @@ const footerSections = [
     ],
   },
   {
+    title: 'Giełda',
+    links: [
+      { label: 'Przegląd', to: '/gielda' },
+      { label: 'Akcje', to: '/gielda/akcje' },
+      { label: 'Indeksy', to: '/gielda/indeksy' },
+      { label: 'Obserwowane', to: '/gielda/watchlist' },
+    ],
+  },
+  {
     title: 'Dane',
     links: [
       { label: 'Przegląd', to: '/dane' },
@@ -71,7 +80,7 @@ export function Footer() {
 
         {/* Sekcje linków */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"
+          className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12"
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"
