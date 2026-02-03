@@ -40,54 +40,56 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
         ))}
       </div>
 
-      <AnimatePresence mode="wait">
-        {selectedGroup && (
-          <motion.div
-            key={selectedTab}
-            className="flex flex-col md:flex-row"
-            variants={tabContentAnimation}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            {selectedGroup[1][0] && (
-              <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
-                <article className="flex flex-col md:flex-row gap-4">
-                  <div className="w-full md:w-80 md:shrink-0 overflow-hidden">
-                    <EventImage
-                      event={selectedGroup[1][0]}
-                      className="w-full aspect-video object-cover"
-                      hoverScale={1.03}
-                    />
-                  </div>
-                  <div>
-                    <span className="text-zinc-400 text-xs">{selectedGroup[1][0].category}</span>
-                    <h4 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">
-                      {selectedGroup[1][0].title}
-                    </h4>
-                    <p className="text-sm text-zinc-600 mt-2 leading-snug">
-                      {selectedGroup[1][0].lead}
-                    </p>
-                  </div>
-                </article>
-              </Link>
-            )}
-            <div className="flex-1 divide-y divide-zinc-200">
-              {selectedGroup[1].slice(1).map((event) => (
-                <Link
-                  key={event.id}
-                  to={`/event/${event.id}`}
-                  className="group block p-6 hover:bg-zinc-50 transition-colors"
-                >
-                  <h4 className="text-zinc-600 text-sm leading-tight group-hover:underline">
-                    {event.title}
-                  </h4>
+      <motion.div layout transition={{ duration: 0.3, ease: "easeInOut" }}>
+        <AnimatePresence mode="wait">
+          {selectedGroup && (
+            <motion.div
+              key={selectedTab}
+              className="flex flex-col md:flex-row"
+              variants={tabContentAnimation}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              {selectedGroup[1][0] && (
+                <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
+                  <article className="flex flex-col md:flex-row gap-4">
+                    <div className="w-full md:w-80 md:shrink-0 overflow-hidden">
+                      <EventImage
+                        event={selectedGroup[1][0]}
+                        className="w-full aspect-video object-cover"
+                        hoverScale={1.03}
+                      />
+                    </div>
+                    <div>
+                      <span className="text-zinc-400 text-xs">{selectedGroup[1][0].category}</span>
+                      <h4 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">
+                        {selectedGroup[1][0].title}
+                      </h4>
+                      <p className="text-sm text-zinc-600 mt-2 leading-snug">
+                        {selectedGroup[1][0].lead}
+                      </p>
+                    </div>
+                  </article>
                 </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              )}
+              <div className="flex-1 divide-y divide-zinc-200">
+                {selectedGroup[1].slice(1).map((event) => (
+                  <Link
+                    key={event.id}
+                    to={`/event/${event.id}`}
+                    className="group block p-6 hover:bg-zinc-50 transition-colors"
+                  >
+                    <h4 className="text-zinc-600 text-sm leading-tight group-hover:underline">
+                      {event.title}
+                    </h4>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 }
