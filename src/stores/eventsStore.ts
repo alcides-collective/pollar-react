@@ -17,6 +17,8 @@ interface EventsState {
   loading: Record<string, boolean>;
   errors: Record<string, Error | null>;
   fetchingKeys: Set<string>;
+  /** IDs of events that are "new" (highlight in UI) */
+  newEventIds: Set<string>;
 }
 
 interface EventsActions {
@@ -30,7 +32,11 @@ interface EventsActions {
   clearCache: (key?: string) => void;
   prefetchArchive: (params?: { limit?: number; lang?: string }) => void;
   /** Upsert a single event into all caches (for real-time SSE updates) */
-  upsertEvent: (event: Partial<Event> & { id: string }) => void;
+  upsertEvent: (event: Partial<Event> & { id: string }, isNew?: boolean) => void;
+  /** Mark an event as "seen" (remove from newEventIds) */
+  markEventAsSeen: (eventId: string) => void;
+  /** Clear all new event markers */
+  clearNewEvents: () => void;
 }
 
 type EventsStore = EventsState & EventsActions;
@@ -41,6 +47,7 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
   loading: {},
   errors: {},
   fetchingKeys: new Set(),
+  newEventIds: new Set(),
 
   // Actions
   fetchEvents: async (key: string, fetchFn: () => Promise<Event[]>) => {
@@ -108,9 +115,16 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
     }
   },
 
-  upsertEvent: (partialEvent: Partial<Event> & { id: string }) => {
+  upsertEvent: (partialEvent: Partial<Event> & { id: string }, isNew = false) => {
     set((state) => {
       const newCache = { ...state.cache };
+      let newEventIds = state.newEventIds;
+
+      // If this is a new event, add to newEventIds
+      if (isNew) {
+        newEventIds = new Set(state.newEventIds);
+        newEventIds.add(partialEvent.id);
+      }
 
       // Update event in all cache entries
       Object.keys(newCache).forEach((key) => {
@@ -149,8 +163,20 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
         }
       });
 
-      return { cache: newCache };
+      return { cache: newCache, newEventIds };
     });
+  },
+
+  markEventAsSeen: (eventId: string) => {
+    set((state) => {
+      const newEventIds = new Set(state.newEventIds);
+      newEventIds.delete(eventId);
+      return { newEventIds };
+    });
+  },
+
+  clearNewEvents: () => {
+    set({ newEventIds: new Set() });
   },
 
   prefetchArchive: (params = {}) => {

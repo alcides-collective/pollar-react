@@ -156,6 +156,7 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
           const sanitizedLead = data.lead ? decodeHtmlEntities(data.lead) : undefined;
 
           // Directly upsert event into store (bypasses backend cache)
+          // Pass isNew=true for new events to highlight them in UI
           useEventsStore.getState().upsertEvent({
             id: data.id,
             title: sanitizedTitle,
@@ -164,7 +165,7 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
             imageUrl: data.imageUrl,
             updatedAt: data.updatedAt || data.timestamp,
             sourceCount: data.sourceCount || 0,
-          });
+          }, data.type === 'new');
 
           // Show toast only for NEW events (not updates)
           if (data.type === 'new') {
