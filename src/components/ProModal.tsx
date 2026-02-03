@@ -47,12 +47,9 @@ export function ProModal() {
             <span className="text-2xl font-semibold">13,99 zł</span>
             <span className="text-sm text-zinc-500">/ miesiąc</span>
           </div>
-          <Button className="w-full">
-            Aktywuj Pro
+          <Button className="w-full" disabled>
+            Wkrótce
           </Button>
-          <p className="text-xs text-zinc-500 text-center mt-3">
-            Możesz anulować w każdej chwili
-          </p>
         </div>
       </DialogContent>
     </Dialog>
