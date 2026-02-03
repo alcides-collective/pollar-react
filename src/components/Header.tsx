@@ -3,7 +3,7 @@ import { useEvents } from '../stores/eventsStore';
 import { useUIStore } from '../stores/uiStore';
 import { useSearchStore } from '../stores/searchStore';
 import { useAuthStore, useUser, useIsAuthenticated } from '../stores/authStore';
-import { useProStore } from '../stores/proStore';
+// import { useProStore } from '../stores/proStore';
 import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -95,7 +95,7 @@ export function Header() {
   const selectedCategory = useUIStore((state) => state.selectedCategory);
   const setSelectedCategory = useUIStore((state) => state.setSelectedCategory);
   const openSearch = useSearchStore((state) => state.openSearch);
-  const openProModal = useProStore((state) => state.openProModal);
+  // const openProModal = useProStore((state) => state.openProModal);
   const [isVisible, setIsVisible] = useState(true);
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLElement>(null);
