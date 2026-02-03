@@ -1,0 +1,118 @@
+import { useState, type FormEvent } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useAuthStore, useAuthError } from '@/stores/authStore';
+import { isValidEmail, AuthErrorMessages } from '@/lib/auth-errors';
+
+export function PasswordResetForm() {
+  const [email, setEmail] = useState('');
+  const [localError, setLocalError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  const resetPassword = useAuthStore((s) => s.resetPassword);
+  const setView = useAuthStore((s) => s.setAuthModalView);
+  const clearError = useAuthStore((s) => s.clearError);
+  const isLoading = useAuthStore((s) => s.isLoading);
+  const storeError = useAuthError();
+
+  const error = localError || storeError;
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setLocalError(null);
+    clearError();
+    setSuccess(false);
+
+    if (!isValidEmail(email)) {
+      setLocalError(AuthErrorMessages.INVALID_EMAIL);
+      return;
+    }
+
+    try {
+      await resetPassword(email);
+      setSuccess(true);
+    } catch {
+      // Error is handled in store
+    }
+  };
+
+  if (success) {
+    return (
+      <div className="space-y-4 text-center">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+          <svg
+            className="h-6 w-6 text-green-600 dark:text-green-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+        <div>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            Wysłaliśmy link do resetowania hasła na adres:
+          </p>
+          <p className="mt-1 font-medium text-zinc-900 dark:text-zinc-100">
+            {email}
+          </p>
+        </div>
+        <p className="text-xs text-zinc-500">
+          Sprawdź również folder spam, jeśli nie widzisz wiadomości.
+        </p>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={() => setView('login')}
+        >
+          Powrót do logowania
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        Wprowadź adres email powiązany z Twoim kontem. Wyślemy Ci link do
+        zresetowania hasła.
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+            {error}
+          </div>
+        )}
+
+        <Input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={isLoading}
+          required
+          autoComplete="email"
+        />
+
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? 'Wysyłanie...' : 'Wyślij link'}
+        </Button>
+
+        <button
+          type="button"
+          onClick={() => setView('login')}
+          className="w-full text-center text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+        >
+          Powrót do logowania
+        </button>
+      </form>
+    </div>
+  );
+}

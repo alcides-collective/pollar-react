@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEvents } from '../../hooks/useEvents';
+import { useEvents } from '../../stores/eventsStore';
 import { useMarketData } from '../../hooks/useMarketData';
 import { TerminalHeader } from './components/TerminalHeader';
 import { EventDetailsPanel } from './components/EventDetailsPanel';
@@ -237,7 +237,7 @@ export function TerminalPage() {
 
       <TerminalStatusBar
         connected={!error}
-        loading={loading}
+        loading={loading ?? false}
         lastUpdateTime={Date.now()}
         eventCount={events.length}
         totalEventCount={trendingEvents.length}

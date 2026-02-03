@@ -1,40 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Event } from '../types/events';
 import { API_BASE } from '../config/api';
-
-function decodeHtmlEntities(text: string): string {
-  const entities: Record<string, string> = {
-    '&rdquo;': '"',
-    '&ldquo;': '"',
-    '&bdquo;': '„',
-    '&quot;': '"',
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&nbsp;': ' ',
-    '&ndash;': '–',
-    '&mdash;': '—',
-    '&hellip;': '…',
-    '&apos;': "'",
-    '&lsquo;': '\u2018',
-    '&rsquo;': '\u2019',
-  };
-
-  let result = text;
-  for (const [entity, char] of Object.entries(entities)) {
-    result = result.replaceAll(entity, char);
-  }
-  return result;
-}
-
-function sanitizeEvent(event: Event): Event {
-  return {
-    ...event,
-    title: decodeHtmlEntities(event.title),
-    lead: decodeHtmlEntities(event.lead),
-    summary: decodeHtmlEntities(event.summary),
-  };
-}
+import { sanitizeEvent } from '../utils/sanitize';
 
 export function useEvent(eventId: string | undefined) {
   const [event, setEvent] = useState<Event | null>(null);

@@ -2,16 +2,72 @@ import { Link } from 'react-router-dom';
 import { useEvents } from '../stores/eventsStore';
 import { useUIStore } from '../stores/uiStore';
 import { useSearchStore } from '../stores/searchStore';
+import { useAuthStore, useUser, useIsAuthenticated } from '../stores/authStore';
 import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SearchModal } from '@/components/search';
 import logoImg from '../assets/logo.png';
+
+// Auth button component
+function AuthButton() {
+  const isAuthenticated = useIsAuthenticated();
+  const user = useUser();
+  const openAuthModal = useAuthStore((s) => s.openAuthModal);
+  const signOut = useAuthStore((s) => s.signOut);
+
+  if (isAuthenticated && user) {
+    const displayName = user.displayName || user.email || 'Uzytkownik';
+    const initials = displayName.charAt(0).toUpperCase();
+
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex items-center gap-2 text-sm text-zinc-300 hover:text-white transition-colors outline-none">
+          {user.photoURL ? (
+            <img
+              src={user.photoURL}
+              alt=""
+              className="h-7 w-7 rounded-full object-cover"
+            />
+          ) : (
+            <div className="h-7 w-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-medium text-white">
+              {initials}
+            </div>
+          )}
+          <span className="hidden sm:inline max-w-[120px] truncate">
+            {displayName}
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuItem asChild>
+            <Link to="/profil" className="w-full cursor-pointer">
+              Moj profil
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
+            Wyloguj się
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => openAuthModal('login')}
+      className="text-sm text-zinc-300 hover:text-white transition-colors"
+    >
+      Zaloguj się
+    </button>
+  );
+}
 
 // Static category order (main categories first)
 const CATEGORY_ORDER = [
@@ -108,11 +164,9 @@ export function Header() {
             </Link>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-sm text-zinc-300 hover:text-white transition-colors">
-              Zaloguj się
-            </a>
+            <AuthButton />
             <button className="border border-zinc-500 hover:border-white text-white text-sm px-5 py-2 rounded transition-colors">
-              Subskrybuj
+              Pollar Pro
             </button>
             <button
               onClick={openSearch}

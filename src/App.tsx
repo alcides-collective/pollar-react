@@ -2,7 +2,11 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 import { motion } from 'framer-motion'
 import { useState, useEffect, useCallback } from 'react'
+import { Toaster } from 'sonner'
 import { Header } from './components/Header'
+import { AuthModal, EmailVerificationBanner } from './components/auth'
+import { useAuthStore } from './stores/authStore'
+import { useUserStore } from './stores/userStore'
 import { NewsGrid } from './components/NewsGrid'
 import { Footer } from './components/Footer'
 import { CookiePopup } from './components/CookiePopup'
@@ -44,6 +48,7 @@ import { KolejPage } from './pages/dane/transport/KolejPage'
 import { PortyPage } from './pages/dane/transport/PortyPage'
 import { PrzestepczoscPage } from './pages/dane/bezpieczenstwo/PrzestepczoscPage'
 import { PowiazaniaPage } from './pages/powiazania'
+import { ProfilePage } from './pages/profile/ProfilePage'
 
 function HomePage() {
   return <NewsGrid />
@@ -82,6 +87,7 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
         <Route path="/mapa" element={<MapPage />} />
         <Route path="/terminal" element={<TerminalPage />} />
         <Route path="/powiazania" element={<PowiazaniaPage />} />
+        <Route path="/profil" element={<ProfilePage />} />
         {/* Sejm routes */}
         <Route path="/sejm" element={<SejmLayout />}>
           <Route index element={<SejmDashboard />} />
@@ -129,6 +135,26 @@ function AppContent() {
   const [showFooter, setShowFooter] = useState(false)
   const isFullscreen = useIsFullscreenRoute()
 
+  // Initialize auth listener
+  const initializeAuth = useAuthStore((s) => s.initialize)
+  const user = useAuthStore((s) => s.user)
+  const fetchProfile = useUserStore((s) => s.fetchProfile)
+  const clearProfile = useUserStore((s) => s.clearProfile)
+
+  useEffect(() => {
+    const unsubscribe = initializeAuth()
+    return () => unsubscribe()
+  }, [initializeAuth])
+
+  // Fetch user profile when user changes
+  useEffect(() => {
+    if (user) {
+      fetchProfile(user.uid)
+    } else {
+      clearProfile()
+    }
+  }, [user, fetchProfile, clearProfile])
+
   const handleRouteChange = useCallback(() => {
     setShowFooter(false)
   }, [])
@@ -153,6 +179,7 @@ function AppContent() {
       <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-white">
         <Header />
+        <EmailVerificationBanner />
         <main className="flex-1">
           <AnimatedRoutes onRouteChange={handleRouteChange} onContentReady={handleContentReady} />
         </main>
@@ -172,7 +199,9 @@ function App() {
     }}>
       <BrowserRouter>
         <AppContent />
+        <AuthModal />
         <CookiePopup />
+        <Toaster position="bottom-right" richColors closeButton />
       </BrowserRouter>
     </SWRConfig>
   )

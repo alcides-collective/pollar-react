@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEvent } from '../../hooks/useEvent';
 import type { WordOfTheDay, BriefSection } from '../../types/brief';
-import { decodeHtmlEntities } from '../../utils/text';
+import { decodeHtmlEntities } from '../../utils/sanitize';
 
 function stripIds(text: string): string {
   return text

@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useEvent } from '../../hooks/useEvent';
 import { useEvents } from '../../stores/eventsStore';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { prepareOgDescription } from '../../utils/text';
+import { staggerContainer, staggerItem, fadeInUp } from '../../lib/animations';
 import { EventHeader } from './EventHeader';
 import { EventKeyPoints } from './EventKeyPoints';
 import { EventSummary } from './EventSummary';
@@ -113,22 +115,39 @@ export function EventPage() {
   if (!event) return null;
 
   return (
-    <div className="max-w-[1200px] mx-auto">
+    <motion.div
+      className="max-w-[1200px] mx-auto"
+      initial="initial"
+      animate="animate"
+      variants={staggerContainer}
+    >
       {/* Two-column layout */}
       <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-8">
         {/* Left column - main content */}
-        <div>
-          <EventHeader event={event} />
-          <EventKeyPoints keyPoints={event.metadata?.keyPoints || []} />
-          <EventSummary summary={event.summary} />
-          <EventNavigation previousEvent={previousEvent} nextEvent={nextEvent} />
-        </div>
+        <motion.div variants={staggerContainer}>
+          <motion.div variants={staggerItem}>
+            <EventHeader event={event} />
+          </motion.div>
+          <motion.div variants={staggerItem}>
+            <EventKeyPoints keyPoints={event.metadata?.keyPoints || []} />
+          </motion.div>
+          <motion.div variants={staggerItem}>
+            <EventSummary summary={event.summary} />
+          </motion.div>
+          <motion.div variants={staggerItem}>
+            <EventNavigation previousEvent={previousEvent} nextEvent={nextEvent} />
+          </motion.div>
+        </motion.div>
 
         {/* Right column - sidebar */}
-        <div className="py-6 lg:py-8">
+        <motion.div
+          className="py-6 lg:py-8"
+          {...fadeInUp}
+          transition={{ ...fadeInUp.transition, delay: 0.2 }}
+        >
           <EventSidebar event={event} />
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

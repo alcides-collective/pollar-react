@@ -1,40 +1,7 @@
 import useSWR from 'swr';
 import type { Felieton, FelietonyResponse } from '../types/felieton';
 import { API_BASE } from '../config/api';
-
-function decodeHtmlEntities(text: string): string {
-  const entities: Record<string, string> = {
-    '&rdquo;': '"',
-    '&ldquo;': '"',
-    '&bdquo;': '„',
-    '&quot;': '"',
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&nbsp;': ' ',
-    '&ndash;': '–',
-    '&mdash;': '—',
-    '&hellip;': '…',
-    '&apos;': "'",
-    '&lsquo;': '\u2018',
-    '&rsquo;': '\u2019',
-  };
-
-  let result = text;
-  for (const [entity, char] of Object.entries(entities)) {
-    result = result.replaceAll(entity, char);
-  }
-  return result;
-}
-
-function sanitizeFelieton(felieton: Felieton): Felieton {
-  return {
-    ...felieton,
-    title: decodeHtmlEntities(felieton.title),
-    lead: decodeHtmlEntities(felieton.lead),
-    ultraShortHeadline: decodeHtmlEntities(felieton.ultraShortHeadline),
-  };
-}
+import { sanitizeFelieton } from '../utils/sanitize';
 
 async function fetchFelietony(url: string): Promise<Felieton[]> {
   const response = await fetch(url);

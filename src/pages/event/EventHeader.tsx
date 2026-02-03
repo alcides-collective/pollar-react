@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Event } from '../../types/events';
 import { AudioPlayer } from './AudioPlayer';
+import { BookmarkButton } from '../../components/BookmarkButton';
 import { getModelDisplayName, getModelColorClass, estimateCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
 
 interface EventHeaderProps {
@@ -53,10 +54,13 @@ export function EventHeader({ event }: EventHeaderProps) {
         )}
       </div>
 
-      {/* Title */}
-      <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium text-zinc-900 leading-tight mb-4">
-        {event.title}
-      </h1>
+      {/* Title with bookmark */}
+      <div className="flex items-start gap-4 mb-4">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium text-zinc-900 leading-tight flex-1">
+          {event.title}
+        </h1>
+        <BookmarkButton eventId={event.id} size="md" className="shrink-0 mt-1" />
+      </div>
 
       {/* Lead */}
       <p className="text-lg text-zinc-600 leading-relaxed">

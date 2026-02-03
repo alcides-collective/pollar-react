@@ -1,5 +1,5 @@
 import type { WordOfTheDay } from '../../types/brief';
-import { decodeHtmlEntities } from '../../utils/text';
+import { decodeHtmlEntities } from '../../utils/sanitize';
 
 interface BriefWordOfTheDayProps {
   word: WordOfTheDay;

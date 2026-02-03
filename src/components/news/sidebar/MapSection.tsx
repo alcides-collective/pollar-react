@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useEvents } from '../../../stores/eventsStore';
@@ -67,9 +68,12 @@ export function MapSection() {
   }, [allLocations]);
 
   return (
-    <div className="p-6">
-      <h3 className="text-zinc-900 font-semibold mb-3">Mapa wydarzeń</h3>
-      <div ref={mapContainer} className="h-48 overflow-hidden" />
-    </div>
+    <Link to="/mapa" className="block p-6 group hover:bg-zinc-50 transition-colors">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-zinc-900 font-semibold">Mapa wydarzeń</h3>
+        <i className="ri-arrow-right-line text-zinc-400 group-hover:text-zinc-900 group-hover:translate-x-1 transition-all" />
+      </div>
+      <div ref={mapContainer} className="h-48 overflow-hidden rounded-lg" />
+    </Link>
   );
 }

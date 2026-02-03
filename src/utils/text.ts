@@ -161,31 +161,6 @@ export function preventWidows(text: string): string {
 }
 
 /**
- * Decodes common HTML entities to their actual characters
- */
-export function decodeHtmlEntities(text: string): string {
-  if (!text || typeof text !== 'string') return text ?? '';
-
-  return text
-    .replace(/&bdquo;/g, '\u201E')  // Polish opening quote „
-    .replace(/&rdquo;/g, '\u201D')  // Polish closing quote "
-    .replace(/&ldquo;/g, '\u201C')  // Left double quote "
-    .replace(/&lsquo;/g, '\u2018')  // Left single quote '
-    .replace(/&rsquo;/g, '\u2019')  // Right single quote/apostrophe '
-    .replace(/&mdash;/g, '\u2014')  // Em dash —
-    .replace(/&ndash;/g, '\u2013')  // En dash –
-    .replace(/&nbsp;/g, '\u00A0')   // Non-breaking space
-    .replace(/&amp;/g, '&')         // Ampersand
-    .replace(/&lt;/g, '<')          // Less than
-    .replace(/&gt;/g, '>')          // Greater than
-    .replace(/&quot;/g, '"')        // Double quote
-    .replace(/&apos;/g, "'")        // Single quote/apostrophe
-    .replace(/&hellip;/g, '\u2026') // Ellipsis …
-    .replace(/&laquo;/g, '\u00AB')  // Left guillemet «
-    .replace(/&raquo;/g, '\u00BB'); // Right guillemet »
-}
-
-/**
  * Strips all HTML tags from text, leaving only plain text content.
  * Also decodes HTML entities and replaces Polish quotes.
  */

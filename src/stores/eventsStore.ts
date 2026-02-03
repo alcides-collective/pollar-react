@@ -1,43 +1,10 @@
 import { create } from 'zustand';
 import type { Event, EventsResponse } from '../types/events';
 import { API_BASE, apiConfig } from '../config/api';
+import { sanitizeEvent } from '../utils/sanitize';
+import { useUserStore } from './userStore';
 
 const CACHE_TTL = apiConfig.cacheTTL;
-
-// HTML entity decoding
-function decodeHtmlEntities(text: string): string {
-  const entities: Record<string, string> = {
-    '&rdquo;': '"',
-    '&ldquo;': '"',
-    '&bdquo;': '„',
-    '&quot;': '"',
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&nbsp;': ' ',
-    '&ndash;': '–',
-    '&mdash;': '—',
-    '&hellip;': '…',
-    '&apos;': "'",
-    '&lsquo;': '\u2018',
-    '&rsquo;': '\u2019',
-  };
-
-  let result = text;
-  for (const [entity, char] of Object.entries(entities)) {
-    result = result.replaceAll(entity, char);
-  }
-  return result;
-}
-
-function sanitizeEvent(event: Event): Event {
-  return {
-    ...event,
-    title: decodeHtmlEntities(event.title),
-    lead: decodeHtmlEntities(event.lead),
-    summary: decodeHtmlEntities(event.summary),
-  };
-}
 
 // Types
 interface CacheEntry {
@@ -61,6 +28,7 @@ interface EventsActions {
     isFresh: boolean;
   };
   clearCache: (key?: string) => void;
+  prefetchArchive: (params?: { limit?: number; lang?: string }) => void;
 }
 
 type EventsStore = EventsState & EventsActions;
@@ -137,6 +105,35 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
       set({ cache: {} });
     }
   },
+
+  prefetchArchive: (params = {}) => {
+    const { limit = 100, lang = 'pl' } = params;
+    const searchParams = new URLSearchParams();
+    searchParams.set('limit', String(limit));
+    searchParams.set('lang', lang);
+
+    const archiveUrl = `${API_BASE}/events/archive?${searchParams.toString()}`;
+    const cacheKey = `archive:${archiveUrl}`;
+
+    const state = get();
+    const cached = state.cache[cacheKey];
+    const isFresh = cached ? (Date.now() - cached.timestamp) < CACHE_TTL : false;
+
+    // Skip if already fresh or fetching
+    if (isFresh || state.fetchingKeys.has(cacheKey)) {
+      return;
+    }
+
+    // Fetch archive in background
+    get().fetchEvents(cacheKey, async () => {
+      const response = await fetch(archiveUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: EventsResponse = await response.json();
+      return data.data.map(sanitizeEvent);
+    });
+  },
 }));
 
 // Hook for fetching events (similar to old useEvents)
@@ -146,10 +143,12 @@ interface UseEventsOptions {
   includeArchive?: boolean;
   category?: string;
   articleFields?: 'minimal' | 'full';
+  /** Skip filtering by hidden categories (e.g. for profile page) */
+  skipHiddenFilter?: boolean;
 }
 
 export function useEvents(params: UseEventsOptions = {}) {
-  const { fetchEvents, getEventsFromCache } = useEventsStore();
+  const { fetchEvents, getEventsFromCache, prefetchArchive } = useEventsStore();
 
   const searchParams = new URLSearchParams();
   if (params.limit) searchParams.set('limit', String(params.limit));
@@ -157,7 +156,14 @@ export function useEvents(params: UseEventsOptions = {}) {
   if (params.category) searchParams.set('category', params.category);
 
   const url = `${API_BASE}/events?${searchParams.toString()}`;
-  const cacheKey = `${url}:archive=${params.includeArchive ?? false}`;
+  const cacheKey = url; // Simplified key - archive handled separately
+
+  // Archive cache key
+  const archiveSearchParams = new URLSearchParams();
+  archiveSearchParams.set('limit', String(params.limit || 100));
+  archiveSearchParams.set('lang', params.lang || 'pl');
+  const archiveUrl = `${API_BASE}/events/archive?${archiveSearchParams.toString()}`;
+  const archiveCacheKey = `archive:${archiveUrl}`;
 
   const fetchEventsFn = async (): Promise<Event[]> => {
     const response = await fetch(url);
@@ -166,26 +172,43 @@ export function useEvents(params: UseEventsOptions = {}) {
     }
 
     const responseData: EventsResponse = await response.json();
-    let allEvents = responseData.data.map(sanitizeEvent);
-
-    if (params.includeArchive) {
-      const archiveUrl = url.replace('/events?', '/events/archive?');
-      const archiveResponse = await fetch(archiveUrl);
-      if (archiveResponse.ok) {
-        const archiveData: EventsResponse = await archiveResponse.json();
-        allEvents = [...allEvents, ...archiveData.data.map(sanitizeEvent)];
-      }
-    }
-
-    return allEvents;
+    return responseData.data.map(sanitizeEvent);
   };
 
   const { events, loading, error, isFresh } = getEventsFromCache(cacheKey);
+  const archiveCache = getEventsFromCache(archiveCacheKey);
 
   // Trigger fetch if not fresh and not already fetching
   if (!isFresh && !loading) {
     fetchEvents(cacheKey, fetchEventsFn);
   }
 
-  return { events, loading: loading || (!isFresh && events.length === 0), error };
+  // Prefetch archive in background after main events load
+  if (isFresh && !params.includeArchive) {
+    prefetchArchive({ limit: params.limit, lang: params.lang });
+  }
+
+  // Combine with archive if requested
+  let finalEvents = events;
+  if (params.includeArchive && archiveCache.events.length > 0) {
+    // Dedupe by id
+    const eventIds = new Set(events.map(e => e.id));
+    const uniqueArchive = archiveCache.events.filter(e => !eventIds.has(e.id));
+    finalEvents = [...events, ...uniqueArchive];
+  }
+
+  const isLoading = loading || (!isFresh && events.length === 0);
+  const archiveLoading = params.includeArchive && archiveCache.loading && archiveCache.events.length === 0;
+
+  // Filter out hidden categories (only if user is logged in and has hidden categories)
+  const hiddenCategories = useUserStore((s) => s.hiddenCategories);
+  const filteredEvents = params.skipHiddenFilter || hiddenCategories.length === 0
+    ? finalEvents
+    : finalEvents.filter((event) => !hiddenCategories.includes(event.category));
+
+  return {
+    events: filteredEvents,
+    loading: isLoading || archiveLoading,
+    error: error || archiveCache.error
+  };
 }
