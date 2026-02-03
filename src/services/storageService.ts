@@ -44,7 +44,7 @@ export async function uploadAvatar(uid: string, file: File): Promise<string> {
   const downloadURL = await getDownloadURL(storageRef);
 
   // Update user profile in Firebase Auth
-  const currentUser = auth.currentUser;
+  const currentUser = auth?.currentUser;
   if (currentUser) {
     await updateProfile(currentUser, { photoURL: downloadURL });
   }

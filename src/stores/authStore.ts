@@ -122,6 +122,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   // Auth Operations
   signInWithEmail: async (email, password) => {
+    if (!isFirebaseConfigured || !auth) {
+      set({ error: 'Firebase nie jest skonfigurowany' });
+      return;
+    }
     set({ isLoading: true, error: null });
     try {
       const credential = await signInWithEmailAndPassword(auth, email, password);
@@ -138,6 +142,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   signUpWithEmail: async (email, password, displayName) => {
+    if (!isFirebaseConfigured || !auth) {
+      set({ error: 'Firebase nie jest skonfigurowany' });
+      return;
+    }
     set({ isLoading: true, error: null });
     try {
       const credential = await createUserWithEmailAndPassword(
@@ -170,6 +178,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   signInWithGoogle: async () => {
+    if (!isFirebaseConfigured || !auth) {
+      set({ error: 'Firebase nie jest skonfigurowany' });
+      return;
+    }
     set({ isLoading: true, error: null });
     try {
       const provider = new GoogleAuthProvider();
@@ -192,6 +204,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   signInWithApple: async () => {
+    if (!isFirebaseConfigured || !auth) {
+      set({ error: 'Firebase nie jest skonfigurowany' });
+      return;
+    }
     set({ isLoading: true, error: null });
     try {
       const provider = new OAuthProvider('apple.com');
@@ -214,6 +230,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   signOut: async () => {
+    if (!isFirebaseConfigured || !auth) return;
     set({ isLoading: true });
     try {
       await firebaseSignOut(auth);
@@ -228,6 +245,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   resetPassword: async (email) => {
+    if (!isFirebaseConfigured || !auth) {
+      set({ error: 'Firebase nie jest skonfigurowany' });
+      return;
+    }
     set({ isLoading: true, error: null });
     try {
       await sendPasswordResetEmail(auth, email);
@@ -242,6 +263,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   resendVerificationEmail: async () => {
+    if (!isFirebaseConfigured || !auth) return;
     const currentUser = auth.currentUser;
     if (currentUser && !currentUser.emailVerified) {
       await sendEmailVerification(currentUser);
@@ -249,12 +271,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   getAccessToken: async () => {
+    if (!isFirebaseConfigured || !auth) return null;
     const currentUser = auth.currentUser;
     if (!currentUser) return null;
     return getIdToken(currentUser);
   },
 
   refreshUser: async () => {
+    if (!isFirebaseConfigured || !auth) return;
     const currentUser = auth.currentUser;
     if (currentUser) {
       // Reload user data from Firebase
@@ -264,6 +288,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   changePassword: async (currentPassword, newPassword) => {
+    if (!isFirebaseConfigured || !auth) {
+      throw new Error('Firebase nie jest skonfigurowany');
+    }
     const currentUser = auth.currentUser;
     if (!currentUser || !currentUser.email) {
       throw new Error('Nie jesteś zalogowany');
@@ -290,6 +317,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   deleteAccount: async (password) => {
+    if (!isFirebaseConfigured || !auth || !db) {
+      throw new Error('Firebase nie jest skonfigurowany');
+    }
     const currentUser = auth.currentUser;
     if (!currentUser || !currentUser.email) {
       throw new Error('Nie jesteś zalogowany');
@@ -321,6 +351,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   updateDisplayName: async (displayName) => {
+    if (!isFirebaseConfigured || !auth) {
+      throw new Error('Firebase nie jest skonfigurowany');
+    }
     const currentUser = auth.currentUser;
     if (!currentUser) {
       throw new Error('Nie jesteś zalogowany');

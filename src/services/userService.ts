@@ -17,7 +17,7 @@ import {
   deleteUser,
   type User,
 } from 'firebase/auth';
-import { db, auth } from '@/config/firebase';
+import { db, auth, isFirebaseConfigured } from '@/config/firebase';
 import type { UserProfile, AuthProviderName } from '@/types/auth';
 
 const USERS_COLLECTION = 'users';
@@ -30,6 +30,9 @@ export async function createOrUpdateUserProfile(
   user: User,
   authProvider: AuthProviderName
 ): Promise<UserProfile> {
+  if (!isFirebaseConfigured || !db) {
+    throw new Error('Firebase nie jest skonfigurowany');
+  }
   const userRef = doc(db, USERS_COLLECTION, user.uid);
   const userDoc = await getDoc(userRef);
 
@@ -72,6 +75,9 @@ export async function createOrUpdateUserProfile(
  * Gets a user profile from Firestore
  */
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {
+  if (!isFirebaseConfigured || !db) {
+    return null;
+  }
   const userRef = doc(db, USERS_COLLECTION, uid);
   const userDoc = await getDoc(userRef);
 
@@ -88,6 +94,9 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
 export async function updateUserDisplayName(
   displayName: string
 ): Promise<void> {
+  if (!isFirebaseConfigured || !db || !auth) {
+    throw new Error('Firebase nie jest skonfigurowany');
+  }
   const user = auth.currentUser;
   if (!user) throw new Error('User not authenticated');
 
@@ -103,6 +112,9 @@ export async function updateUserDisplayName(
  * Updates user's photo URL in both Firebase Auth and Firestore
  */
 export async function updateUserPhotoURL(photoURL: string): Promise<void> {
+  if (!isFirebaseConfigured || !db || !auth) {
+    throw new Error('Firebase nie jest skonfigurowany');
+  }
   const user = auth.currentUser;
   if (!user) throw new Error('User not authenticated');
 
@@ -121,6 +133,9 @@ export async function changeUserPassword(
   currentPassword: string,
   newPassword: string
 ): Promise<void> {
+  if (!isFirebaseConfigured || !auth) {
+    throw new Error('Firebase nie jest skonfigurowany');
+  }
   const user = auth.currentUser;
   if (!user || !user.email) throw new Error('User not authenticated');
 
@@ -136,6 +151,9 @@ export async function changeUserPassword(
  * Deletes user account (requires reauthentication for email users)
  */
 export async function deleteUserAccount(password?: string): Promise<void> {
+  if (!isFirebaseConfigured || !db || !auth) {
+    throw new Error('Firebase nie jest skonfigurowany');
+  }
   const user = auth.currentUser;
   if (!user) throw new Error('User not authenticated');
 
@@ -162,6 +180,7 @@ export async function addSavedEvent(
   uid: string,
   eventId: string
 ): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
   const userRef = doc(db, USERS_COLLECTION, uid);
   await updateDoc(userRef, {
     savedEventIds: arrayUnion(eventId),
@@ -175,6 +194,7 @@ export async function removeSavedEvent(
   uid: string,
   eventId: string
 ): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
   const userRef = doc(db, USERS_COLLECTION, uid);
   await updateDoc(userRef, {
     savedEventIds: arrayRemove(eventId),
@@ -190,6 +210,7 @@ export async function addHiddenCategory(
   uid: string,
   category: string
 ): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
   const userRef = doc(db, USERS_COLLECTION, uid);
   await updateDoc(userRef, {
     hiddenCategories: arrayUnion(category),
@@ -203,6 +224,7 @@ export async function removeHiddenCategory(
   uid: string,
   category: string
 ): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
   const userRef = doc(db, USERS_COLLECTION, uid);
   await updateDoc(userRef, {
     hiddenCategories: arrayRemove(category),
@@ -218,6 +240,7 @@ export async function addFavoriteCategory(
   uid: string,
   category: string
 ): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
   const userRef = doc(db, USERS_COLLECTION, uid);
   await updateDoc(userRef, {
     favoriteCategories: arrayUnion(category),
@@ -231,6 +254,7 @@ export async function removeFavoriteCategory(
   uid: string,
   category: string
 ): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
   const userRef = doc(db, USERS_COLLECTION, uid);
   await updateDoc(userRef, {
     favoriteCategories: arrayRemove(category),
