@@ -163,9 +163,9 @@ export function generateMessageId(): string {
  * Format remaining queries text in Polish
  */
 export function formatRemainingQueries(remaining: number): string {
-  if (remaining === 1) return `pozostalo 1 zapytanie`;
-  if (remaining > 1 && remaining < 5) return `pozostalo ${remaining} zapytania`;
-  return `pozostalo ${remaining} zapytan`;
+  if (remaining === 1) return `pozostało 1 zapytanie`;
+  if (remaining > 1 && remaining < 5) return `pozostało ${remaining} zapytania`;
+  return `pozostało ${remaining} zapytań`;
 }
 
 /**

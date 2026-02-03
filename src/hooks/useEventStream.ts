@@ -130,19 +130,14 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
 
     eventSource.onopen = () => {
       reconnectAttempts.current = 0;
-      console.log('[SSE] Connected to event stream');
     };
 
     eventSource.onmessage = (event) => {
       try {
         const data: StreamEvent = JSON.parse(event.data);
 
-        // Log all incoming events for debugging
-        console.log('[SSE] Received event:', data);
-
         // Skip connection confirmation messages
         if (data.type === 'connected') {
-          console.log('[SSE] Connection confirmed');
           return;
         }
 
@@ -185,15 +180,13 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
       }
     };
 
-    eventSource.onerror = (error) => {
-      console.error('[SSE] Connection error:', error);
+    eventSource.onerror = () => {
       eventSource.close();
       eventSourceRef.current = null;
 
       // Exponential backoff for reconnection
       reconnectAttempts.current += 1;
       const delay = Math.min(1000 * Math.pow(2, reconnectAttempts.current), 30000);
-      console.log(`[SSE] Reconnecting in ${delay}ms (attempt ${reconnectAttempts.current})`);
 
       reconnectTimeoutRef.current = setTimeout(() => {
         connect();
