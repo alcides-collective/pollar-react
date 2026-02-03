@@ -1,9 +1,17 @@
 import { useMemo } from 'react';
-import type { Event } from '../types/events';
+import type { Event, FreshnessLevel } from '../types/events';
 import { CATEGORY_ORDER } from '../constants/categories';
 import { useEvents } from '../stores/eventsStore';
 import { useSelectedCategory } from '../stores/uiStore';
 import { useFavoriteCategories } from '../stores/userStore';
+
+// Fresh events can appear in all sections (featured, hero, tabs, latest)
+// OLD events are only shown in CategoryCarousel at the bottom
+const FRESH_LEVELS: FreshnessLevel[] = ['BREAKING', 'HOT', 'RECENT', 'AGING'];
+
+function isFreshEvent(event: Event): boolean {
+  return FRESH_LEVELS.includes(event.freshnessLevel);
+}
 
 export interface EventGroups {
   featured: Event[];
@@ -43,14 +51,19 @@ function computeEventGroups(
     // Sort by boosted trendingScore (favorites will naturally rise to top)
     .sort((a, b) => b.trendingScore - a.trendingScore);
 
+  // Split into fresh (for main sections) and all events (for carousel)
+  // OLD events should only appear in CategoryCarousel at the bottom
+  const freshBoostedEvents = boostedEvents.filter(isFreshEvent);
+
   // Featured events: prioritize 15+ sources, fill remaining with highest sourceCount
-  const withMinSources = boostedEvents.filter(e => e.sourceCount >= 15);
+  // Only use FRESH events for featured section
+  const withMinSources = freshBoostedEvents.filter(e => e.sourceCount >= 15);
   let featured: Event[];
   if (withMinSources.length >= 3) {
     featured = withMinSources.slice(0, 3);
   } else {
     const usedIds = new Set(withMinSources.map(e => e.id));
-    const remaining = boostedEvents
+    const remaining = freshBoostedEvents
       .filter(e => !usedIds.has(e.id))
       .sort((a, b) => b.sourceCount - a.sourceCount)
       .slice(0, 3 - withMinSources.length);
@@ -58,8 +71,9 @@ function computeEventGroups(
   }
 
   // Group events by shared people/countries for tabs
+  // Only use FRESH events for category tabs
   const featuredIds = new Set(featured.map(e => e.id));
-  const eventsForGrid = boostedEvents.filter(e => !featuredIds.has(e.id));
+  const eventsForGrid = freshBoostedEvents.filter(e => !featuredIds.has(e.id));
   const groupUsedIds = new Set<string>();
   const groups: Array<[string, Event[]]> = [];
 
@@ -95,20 +109,21 @@ function computeEventGroups(
     groups.push([label, groupEvents]);
   }
 
-  // Collect all used IDs
+  // Collect all used IDs (for fresh events used in main sections)
   const usedIds = new Set<string>(featured.map(e => e.id));
   groups.forEach(([_, evts]) => evts.forEach(e => usedIds.add(e.id)));
 
-  // Double hero events
-  const availableForHero1 = boostedEvents.filter(e => !usedIds.has(e.id));
+  // Double hero events - only use FRESH events
+  const availableForHero1 = freshBoostedEvents.filter(e => !usedIds.has(e.id));
   const doubleHero1 = availableForHero1.slice(0, 2);
 
   const hero1Ids = new Set(usedIds);
   doubleHero1.forEach(e => hero1Ids.add(e.id));
-  const availableForHero2 = boostedEvents.filter(e => !hero1Ids.has(e.id));
+  const availableForHero2 = freshBoostedEvents.filter(e => !hero1Ids.has(e.id));
   const doubleHero2 = availableForHero2.slice(0, 2);
 
-  // More events
+  // More events for CategoryCarousel - includes ALL events (fresh + OLD)
+  // that weren't used in main sections above
   const allUsedIds = new Set(hero1Ids);
   doubleHero2.forEach(e => allUsedIds.add(e.id));
   const moreEvents = boostedEvents.filter(e => !allUsedIds.has(e.id));
@@ -139,8 +154,9 @@ function computeEventGroups(
     events: grouped.get(category)!
   }));
 
-  // Latest events (use boosted for consistency, sorted by date)
-  const latestEvents = [...boostedEvents]
+  // Latest events - only FRESH events (sorted by date)
+  // OLD events shouldn't appear in "Najnowsze" sidebar
+  const latestEvents = [...freshBoostedEvents]
     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
     .slice(0, 6);
 
