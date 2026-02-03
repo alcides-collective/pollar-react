@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import { toast } from 'sonner';
 import { API_BASE } from '../config/api';
 import { useEventsStore } from '../stores/eventsStore';
+import { decodeHtmlEntities } from '../utils/sanitize';
 
 interface StreamEvent {
   id: string;
@@ -150,23 +151,30 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
 
         // Handle new and updated events
         if (data.type === 'new' || data.type === 'updated') {
+          // Sanitize text fields (decode HTML entities like &bdquo; &rdquo;)
+          const sanitizedTitle = decodeHtmlEntities(data.title);
+          const sanitizedLead = data.lead ? decodeHtmlEntities(data.lead) : undefined;
+
           // Directly upsert event into store (bypasses backend cache)
           useEventsStore.getState().upsertEvent({
             id: data.id,
-            title: data.title,
-            lead: data.lead,
+            title: sanitizedTitle,
+            lead: sanitizedLead,
             category: data.category,
             imageUrl: data.imageUrl,
             updatedAt: data.updatedAt || data.timestamp,
             sourceCount: data.sourceCount || 0,
           });
 
+          // Create sanitized event for toast/buffer
+          const sanitizedEvent = { ...data, title: sanitizedTitle };
+
           if (document.hidden) {
             // Tab is hidden - buffer the event
-            bufferedEventsRef.current.push(data);
+            bufferedEventsRef.current.push(sanitizedEvent);
           } else {
             // Tab is visible - show toast immediately
-            showEventToast(data);
+            showEventToast(sanitizedEvent);
           }
         }
       } catch (err) {
