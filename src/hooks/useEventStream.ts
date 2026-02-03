@@ -33,7 +33,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 export function useEventStream(options: UseEventStreamOptions = {}) {
   const { enabled = true, onNewEvent } = options;
   const eventSourceRef = useRef<EventSource | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reconnectAttempts = useRef(0);
 
   const connect = useCallback(() => {
