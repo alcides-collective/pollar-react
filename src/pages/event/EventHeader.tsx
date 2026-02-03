@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Event } from '../../types/events';
 import { AudioPlayer } from './AudioPlayer';
 import { BookmarkButton } from '../../components/BookmarkButton';
-import { getModelDisplayName, getModelColorClass, estimateCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
+import { getModelDisplayName, getModelColorClass, getModelDescription, estimateCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
 
 interface EventHeaderProps {
   event: Event;
@@ -10,11 +10,13 @@ interface EventHeaderProps {
 
 export function EventHeader({ event }: EventHeaderProps) {
   const [showCO2Tooltip, setShowCO2Tooltip] = useState(false);
+  const [showModelTooltip, setShowModelTooltip] = useState(false);
 
   const modelId = event.metadata?.summarizationModel || event.summarizationModel;
   const co2Grams = estimateCO2(event);
   const co2Value = formatCO2(co2Grams);
   const co2Equivalents = getCO2Equivalents(co2Grams);
+  const modelDescription = getModelDescription(modelId);
 
   return (
     <header className="px-6 pt-8 pb-6">
@@ -23,8 +25,17 @@ export function EventHeader({ event }: EventHeaderProps) {
         {modelId && (
           <span className="font-light">
             Wygenerowany przez{' '}
-            <span className={`font-medium ${getModelColorClass(modelId)}`}>
+            <span
+              className={`relative font-medium cursor-help border-b border-dotted border-current ${getModelColorClass(modelId)}`}
+              onMouseEnter={() => setShowModelTooltip(true)}
+              onMouseLeave={() => setShowModelTooltip(false)}
+            >
               {getModelDisplayName(modelId)}
+              {showModelTooltip && modelDescription.text && (
+                <span className="absolute left-0 bottom-full mb-2 px-3 py-2 bg-zinc-900 text-white text-xs rounded shadow-lg z-[60] w-72 font-normal leading-relaxed">
+                  {modelDescription.text}
+                </span>
+              )}
             </span>{' '}
             emitując{' '}
             <span

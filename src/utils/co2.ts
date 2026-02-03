@@ -129,3 +129,44 @@ export function getCO2Equivalents(grams: number): string[] {
     `= ${milkMl.toFixed(1)}ml mleka`
   ];
 }
+
+// Model descriptions for tooltips
+export function getModelDescription(modelId: string | undefined): { title: string; text: string } {
+  if (!modelId) return { title: 'AI', text: '' };
+
+  const descriptions: Record<string, { title: string; text: string }> = {
+    'google/gemini-3-pro-preview': {
+      title: 'Gemini 3 Pro',
+      text: 'Topowy model Google z listopada 2025. Przetwarza do miliona tokenów na wejściu i 64 tysiące na wyjściu. W testach MMMU-Pro osiąga 81%, a w trybie Deep Think poprawia wynik ARC-AGI-2 z 31% do 45%. Rozumie tekst, obrazy, wideo i dźwięk.'
+    },
+    'google/gemini-3-flash-preview': {
+      title: 'Gemini 3 Flash',
+      text: 'Szybki model Google z grudnia 2025, generuje 218 tokenów na sekundę — trzy razy więcej niż poprzednik. W testach kodowania SWE-bench zdobywa 78%, a w rozumowaniu GPQA Diamond aż 90%. Kosztuje pół dolara za milion tokenów wejściowych.'
+    },
+    'google/gemini-2.5-pro-preview-06-05': {
+      title: 'Gemini 2.5 Pro',
+      text: 'Model z maja 2025, poprzednia generacja flagowca Google. Obsługuje milion tokenów kontekstu i rozumie różne formaty — tekst, obrazy, wideo oraz audio. Został zastąpiony przez nowszą serię 3, ale wciąż działa stabilnie.'
+    },
+    'deepseek/deepseek-v3.2': {
+      title: 'DeepSeek v3.2',
+      text: 'Chiński model open-source z grudnia 2025, licencja Apache 2.0. Ma 671 miliardów parametrów, ale dzięki architekturze MoE aktywuje tylko 37 miliardów na token. W teście AIME 2025 zdobywa 96% — więcej niż GPT-5. Kosztuje 10× mniej niż konkurenci.'
+    },
+    'z-ai/glm-4.7': {
+      title: 'GLM-4.7',
+      text: 'Model open-source od Z.AI z grudnia 2025. Ma 355 miliardów parametrów, ale architektura MoE aktywuje tylko 32 miliardy na token. Zajmuje 1. miejsce wśród modeli open-source na Code Arena. W SWE-bench zdobywa 73,8%, a w τ²-Bench aż 87,4%.'
+    },
+    'openai/gpt-5.1-codex-mini': {
+      title: 'GPT-5.1 Codex Mini',
+      text: 'Mniejszy model z rodziny Codex od OpenAI, listopad 2025. Zoptymalizowany pod kątem szybkości i kosztu. Osiąga 96% w matematyce i 98% w rozumowaniu. Idealny do codziennych zadań przy zachowaniu wysokiej jakości.'
+    },
+    'openai/gpt-5.1-codex-max': {
+      title: 'GPT-5.1 Codex Max',
+      text: 'Flagowy model agentyczny OpenAI z listopada 2025. Pierwszy model trenowany na milionach tokenów kontekstu przez kompaktowanie. W SWE-Bench zdobywa 77,9%, używając 30% mniej tokenów reasoning niż poprzednik.'
+    }
+  };
+
+  return descriptions[modelId] || {
+    title: getModelDisplayName(modelId),
+    text: 'Model sztucznej inteligencji użyty do analizy i podsumowania tego wydarzenia.'
+  };
+}
