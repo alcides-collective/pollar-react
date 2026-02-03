@@ -50,6 +50,7 @@ import { PortyPage } from './pages/dane/transport/PortyPage'
 import { PrzestepczoscPage } from './pages/dane/bezpieczenstwo/PrzestepczoscPage'
 import { PowiazaniaPage } from './pages/powiazania'
 import { ProfilePage } from './pages/profile/ProfilePage'
+import { useEventStream } from './hooks/useEventStream'
 
 function HomePage() {
   return <NewsGrid />
@@ -155,6 +156,9 @@ function AppContent() {
       clearProfile()
     }
   }, [user, fetchProfile, clearProfile])
+
+  // Connect to SSE for real-time event notifications
+  useEventStream({ enabled: true })
 
   const handleRouteChange = useCallback(() => {
     setShowFooter(false)
