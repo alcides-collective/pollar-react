@@ -62,6 +62,7 @@ import {
 import { PowiazaniaPage } from './pages/powiazania'
 import { ProfilePage } from './pages/profile/ProfilePage'
 import { DashboardPage } from './pages/dashboard/DashboardPage'
+import { NotificationsPage } from './pages/notifications'
 import { useEventStream } from './hooks/useEventStream'
 
 function HomePage() {
@@ -103,6 +104,7 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
         <Route path="/powiazania" element={<PowiazaniaPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/profil" element={<ProfilePage />} />
+        <Route path="/powiadomienia" element={<NotificationsPage />} />
         {/* Sejm routes */}
         <Route path="/sejm" element={<SejmLayout />}>
           <Route index element={<SejmDashboard />} />

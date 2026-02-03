@@ -52,6 +52,11 @@ function AuthButton() {
               Moj profil
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/powiadomienia" className="w-full cursor-pointer">
+              Powiadomienia
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
             Wyloguj się

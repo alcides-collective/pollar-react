@@ -97,8 +97,14 @@ export function AlertsBell() {
         <DropdownMenuSeparator />
 
         {displayAlerts.length === 0 ? (
-          <div className="px-2 py-4 text-center text-sm text-zinc-500">
-            Brak alertów
+          <div className="px-2 py-4 text-center">
+            <p className="text-sm text-zinc-500 mb-2">Brak nowych alertów</p>
+            <Link
+              to="/powiadomienia"
+              className="text-xs text-blue-600 hover:underline"
+            >
+              Zobacz historię powiadomień
+            </Link>
           </div>
         ) : (
           <>
@@ -133,19 +139,15 @@ export function AlertsBell() {
               );
             })}
 
-            {alerts.length > 10 && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild className="justify-center">
-                  <Link
-                    to="/dashboard"
-                    className="text-sm text-zinc-600 hover:text-zinc-900"
-                  >
-                    Zobacz wszystkie alerty
-                  </Link>
-                </DropdownMenuItem>
-              </>
-            )}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild className="justify-center">
+              <Link
+                to="/powiadomienia"
+                className="text-sm text-zinc-600 hover:text-zinc-900"
+              >
+                Zobacz wszystkie powiadomienia
+              </Link>
+            </DropdownMenuItem>
           </>
         )}
       </DropdownMenuContent>

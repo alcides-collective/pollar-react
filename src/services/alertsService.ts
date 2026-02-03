@@ -3,6 +3,27 @@ import { useAuthStore } from '@/stores/authStore';
 import type { VotingAlert } from '@/types/auth';
 
 /**
+ * Historical voting alert (backfill for followed MPs)
+ */
+export interface HistoricalVotingAlert {
+  id: string;
+  votingId: string;
+  sitting: number;
+  votingNumber: number;
+  mpId: number;
+  mpName: string;
+  votingTitle: string;
+  vote: 'yes' | 'no' | 'abstain' | 'absent';
+  date: string;
+  isHistorical: true;
+}
+
+/**
+ * Combined alert type for display
+ */
+export type CombinedAlert = (VotingAlert & { isHistorical?: false }) | HistoricalVotingAlert;
+
+/**
  * Gets the authentication token
  */
 async function getAuthToken(): Promise<string | null> {
@@ -87,4 +108,31 @@ export async function markAllAlertsAsRead(): Promise<void> {
   if (!response.ok) {
     throw new Error(`Failed to mark all alerts as read: ${response.status}`);
   }
+}
+
+/**
+ * Gets historical voting alerts (backfill for followed MPs)
+ */
+export async function getHistoricalVotingAlerts(
+  days: number = 30,
+  limit: number = 100
+): Promise<HistoricalVotingAlert[]> {
+  const token = await getAuthToken();
+  if (!token) return [];
+
+  const response = await fetch(
+    buildApiUrl(`/voting-alerts/historical?days=${days}&limit=${limit}`),
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to get historical alerts: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.alerts || [];
 }
