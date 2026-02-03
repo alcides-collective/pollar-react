@@ -8,6 +8,8 @@ interface GrainImageProps {
   hoverScale?: boolean;
   /** Enable scale on parent group hover (requires parent with 'group' class) */
   groupHover?: boolean;
+  /** Enable shadow on hover (defaults to true when groupHover is enabled) */
+  hoverShadow?: boolean;
 }
 
 export function GrainImage({
@@ -18,17 +20,22 @@ export function GrainImage({
   grainOpacity = 0.25,
   hoverScale = false,
   groupHover = false,
+  hoverShadow,
 }: GrainImageProps) {
   // groupHover uses parent's group class, hoverScale (legacy) creates own group
   const useParentGroup = groupHover || hoverScale;
+  const showShadow = hoverShadow ?? useParentGroup;
+
+  const hoverClasses = useParentGroup
+    ? `transition-all duration-500 ease-out group-hover:scale-[1.02]${showShadow ? ' group-hover:shadow-xl' : ''}`
+    : '';
 
   return (
-    <div className="relative overflow-hidden">
+    <div className={`relative overflow-hidden ${className} ${hoverClasses}`} style={style}>
       <img
         src={src}
         alt={alt}
-        className={`${className} ${useParentGroup ? 'transition-transform duration-500 ease-out group-hover:scale-[1.02]' : ''}`}
-        style={style}
+        className="w-full h-full object-cover"
       />
       <div
         className="absolute inset-0 pointer-events-none"

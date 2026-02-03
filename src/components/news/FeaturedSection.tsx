@@ -24,7 +24,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
       animate={scrollReveal.whileInView}
       transition={scrollReveal.transition}
     >
-      <div className="md:border-r border-zinc-200 relative">
+      <div className="md:border-r border-zinc-200 relative overflow-hidden">
         <Link to={`/event/${mainEvent.id}`} className="group block">
           <EventImage
             event={mainEvent}
@@ -34,6 +34,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
               WebkitMaskImage: 'radial-gradient(ellipse 150% 100% at 0% 0%, black 50%, transparent 100%)',
             }}
             groupHover
+            hoverShadow={false}
           />
         </Link>
         {(imageSource || mainEvent.lead) && (

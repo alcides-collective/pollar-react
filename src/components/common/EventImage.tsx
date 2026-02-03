@@ -13,9 +13,11 @@ interface EventImageProps {
   grainOpacity?: number;
   /** Enable scale on parent group hover (requires parent with 'group' class) */
   groupHover?: boolean;
+  /** Enable shadow on hover (defaults to true when groupHover is enabled) */
+  hoverShadow?: boolean;
 }
 
-export function EventImage({ event, className, style, hoverScale = 1.02, grainOpacity = 0.25, groupHover = false }: EventImageProps) {
+export function EventImage({ event, className, style, hoverScale = 1.02, grainOpacity = 0.25, groupHover = false, hoverShadow }: EventImageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [allFailed, setAllFailed] = useState(false);
 
@@ -55,7 +57,10 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
 
   // Use CSS group-hover when groupHover is enabled, otherwise use motion.whileHover
   const useGroupHover = groupHover;
-  const groupHoverClass = useGroupHover ? 'transition-transform duration-500 ease-out group-hover:scale-[1.02]' : '';
+  const showShadow = hoverShadow ?? groupHover;
+  const groupHoverClass = useGroupHover
+    ? `transition-all duration-500 ease-out group-hover:scale-[1.02]${showShadow ? ' group-hover:shadow-xl' : ''}`
+    : (showShadow ? 'transition-shadow duration-500 group-hover:shadow-xl' : '');
 
   return (
     <motion.div
