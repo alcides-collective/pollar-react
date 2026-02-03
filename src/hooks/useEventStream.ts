@@ -166,15 +166,17 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
             sourceCount: data.sourceCount || 0,
           });
 
-          // Create sanitized event for toast/buffer
-          const sanitizedEvent = { ...data, title: sanitizedTitle };
+          // Show toast only for NEW events (not updates)
+          if (data.type === 'new') {
+            const sanitizedEvent = { ...data, title: sanitizedTitle };
 
-          if (document.hidden) {
-            // Tab is hidden - buffer the event
-            bufferedEventsRef.current.push(sanitizedEvent);
-          } else {
-            // Tab is visible - show toast immediately
-            showEventToast(sanitizedEvent);
+            if (document.hidden) {
+              // Tab is hidden - buffer the event
+              bufferedEventsRef.current.push(sanitizedEvent);
+            } else {
+              // Tab is visible - show toast immediately
+              showEventToast(sanitizedEvent);
+            }
           }
         }
       } catch (err) {
