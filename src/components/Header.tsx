@@ -38,7 +38,7 @@ function AuthButton() {
               className="h-[34px] w-[34px] object-cover"
             />
           ) : (
-            <div className="h-[34px] w-[34px] bg-zinc-700 flex items-center justify-center text-xs font-medium text-white">
+            <div className="h-[34px] w-[34px] bg-zinc-600 flex items-center justify-center text-sm font-medium text-white">
               {initials}
             </div>
           )}
@@ -171,7 +171,7 @@ export function Header() {
               />
             </Link>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-3">
             <AlertsBell />
             <AuthButton />
             <button
