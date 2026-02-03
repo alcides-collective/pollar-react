@@ -1,10 +1,17 @@
 import { Link } from 'react-router-dom';
+import { GrainImage } from '../components/common/GrainImage';
+import privacyImg from '../assets/images/privacy.webp';
 
 export function PrivacyPolicyPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <article className="prose prose-zinc max-w-none">
         <h1 className="text-3xl font-bold mb-6 text-zinc-900">Polityka prywatności POLLAR P.S.A.</h1>
+        <GrainImage
+          src={privacyImg}
+          alt="Polityka prywatności"
+          className="w-full aspect-[21/9] object-cover rounded-lg mb-8 not-prose"
+        />
         <p className="text-zinc-600 mb-4">W Pollar szanujemy Twoją prywatność. Chcemy, abyś wiedział, w jaki sposób gromadzimy Twoje dane, dlaczego są nam potrzebne i jakie prawa Ci przysługują. Ta Polityka wyjaśnia, jak korzystamy z Twoich danych i jak możesz sprawować nad nimi kontrolę.</p>
         <p className="text-zinc-600 mb-4">Ta Polityka opisuje zasady przetwarzania danych na naszej stronie internetowej <a href="https://pollar.pl" className="text-red-600 hover:underline">https://pollar.pl</a> („<strong>Strona Internetowa</strong>") oraz aplikacji web, mobilnych i TV („<strong>Aplikacje</strong>").</p>
         <p className="text-zinc-600 mb-4">Dokument został przygotowany w języku polskim z myślą o użytkownikach w Polsce.</p>
