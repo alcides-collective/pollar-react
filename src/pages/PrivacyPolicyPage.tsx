@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export function PrivacyPolicyPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
@@ -286,6 +288,24 @@ export function PrivacyPolicyPage() {
           <p className="text-zinc-600 mb-4">Chcemy, aby nasze zasady dotyczące ochrony danych były przejrzyste i dopasowane do tego, jak faktycznie korzystasz ze Strony Internetowej. Dlatego ta Polityka może być co jakiś czas aktualizowana.</p>
           <p className="text-zinc-600 mb-4">Zawsze najnowsza wersja dokumentu będzie dostępna na tej stronie, razem z datą, od której obowiązuje.</p>
           <p className="text-zinc-600 font-semibold">Ta wersja Polityki obowiązuje od: 7 października 2025</p>
+        </section>
+
+        <section className="mt-12 pt-8 border-t border-zinc-200">
+          <div className="bg-zinc-50 rounded-lg p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold text-zinc-900 mb-1">Zarządzaj ustawieniami cookies</h3>
+              <p className="text-sm text-zinc-600">Zmień swoje preferencje dotyczące plików cookie w każdej chwili.</p>
+            </div>
+            <Link
+              to="/cookies"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-900 text-white text-sm font-medium rounded-lg hover:bg-zinc-800 transition-colors shrink-0"
+            >
+              Ustawienia cookies
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
         </section>
       </article>
     </div>

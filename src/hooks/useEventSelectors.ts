@@ -28,14 +28,29 @@ function computeEventGroups(
     ? events.filter(e => e.category === selectedCategory)
     : events;
 
+  // Boost events from favorite categories
+  // Create a map with boosted scores for sorting/selection
+  const boostedEvents = filteredEvents
+    .map(e => {
+      const isFavorite = favoriteCategories.includes(e.category);
+      return {
+        ...e,
+        // Boost sourceCount by 10 and trendingScore by 1.5x for favorites
+        sourceCount: isFavorite ? e.sourceCount + 10 : e.sourceCount,
+        trendingScore: isFavorite ? e.trendingScore * 1.5 : e.trendingScore,
+      };
+    })
+    // Sort by boosted trendingScore (favorites will naturally rise to top)
+    .sort((a, b) => b.trendingScore - a.trendingScore);
+
   // Featured events: prioritize 15+ sources, fill remaining with highest sourceCount
-  const withMinSources = filteredEvents.filter(e => e.sourceCount >= 15);
+  const withMinSources = boostedEvents.filter(e => e.sourceCount >= 15);
   let featured: Event[];
   if (withMinSources.length >= 3) {
     featured = withMinSources.slice(0, 3);
   } else {
     const usedIds = new Set(withMinSources.map(e => e.id));
-    const remaining = filteredEvents
+    const remaining = boostedEvents
       .filter(e => !usedIds.has(e.id))
       .sort((a, b) => b.sourceCount - a.sourceCount)
       .slice(0, 3 - withMinSources.length);
@@ -44,7 +59,7 @@ function computeEventGroups(
 
   // Group events by shared people/countries for tabs
   const featuredIds = new Set(featured.map(e => e.id));
-  const eventsForGrid = filteredEvents.filter(e => !featuredIds.has(e.id));
+  const eventsForGrid = boostedEvents.filter(e => !featuredIds.has(e.id));
   const groupUsedIds = new Set<string>();
   const groups: Array<[string, Event[]]> = [];
 
@@ -85,18 +100,18 @@ function computeEventGroups(
   groups.forEach(([_, evts]) => evts.forEach(e => usedIds.add(e.id)));
 
   // Double hero events
-  const availableForHero1 = filteredEvents.filter(e => !usedIds.has(e.id));
+  const availableForHero1 = boostedEvents.filter(e => !usedIds.has(e.id));
   const doubleHero1 = availableForHero1.slice(0, 2);
 
   const hero1Ids = new Set(usedIds);
   doubleHero1.forEach(e => hero1Ids.add(e.id));
-  const availableForHero2 = filteredEvents.filter(e => !hero1Ids.has(e.id));
+  const availableForHero2 = boostedEvents.filter(e => !hero1Ids.has(e.id));
   const doubleHero2 = availableForHero2.slice(0, 2);
 
   // More events
   const allUsedIds = new Set(hero1Ids);
   doubleHero2.forEach(e => allUsedIds.add(e.id));
-  const moreEvents = filteredEvents.filter(e => !allUsedIds.has(e.id));
+  const moreEvents = boostedEvents.filter(e => !allUsedIds.has(e.id));
 
   // Group by category
   const grouped = new Map<string, Event[]>();
@@ -124,8 +139,8 @@ function computeEventGroups(
     events: grouped.get(category)!
   }));
 
-  // Latest events
-  const latestEvents = [...filteredEvents]
+  // Latest events (use boosted for consistency, sorted by date)
+  const latestEvents = [...boostedEvents]
     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
     .slice(0, 6);
 

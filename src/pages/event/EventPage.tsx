@@ -158,6 +158,19 @@ export function EventPage() {
           <EventSidebar event={event} />
         </motion.div>
       </div>
+
+      {/* Debug info - DEV only */}
+      {import.meta.env.DEV && (
+        <div className="mt-8 mx-6 p-4 bg-zinc-100 rounded-lg font-mono text-xs text-zinc-600">
+          <p className="font-semibold mb-2">Debug Info:</p>
+          <p>trendingScore: <span className="text-zinc-900">{event.trendingScore}</span></p>
+          <p>sourceCount: <span className="text-zinc-900">{event.sourceCount}</span></p>
+          <p>articleCount: <span className="text-zinc-900">{event.articleCount}</span></p>
+          <p>viewCount: <span className="text-zinc-900">{event.viewCount}</span></p>
+          <p>freshnessLevel: <span className="text-zinc-900">{event.freshnessLevel}</span></p>
+          <p>category: <span className="text-zinc-900">{event.category}</span></p>
+        </div>
+      )}
     </motion.div>
   );
 }

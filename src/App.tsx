@@ -17,6 +17,7 @@ import { EventPage } from './pages/event'
 import { BriefPage } from './pages/brief'
 import { FelietonPage } from './pages/felieton'
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage'
+import { CookieSettingsPage } from './pages/CookieSettingsPage'
 import { MapPage } from './pages/mapa'
 import { TerminalPage } from './pages/terminal'
 import { ScrollToTop } from './components/ScrollToTop'
@@ -63,6 +64,7 @@ import { PowiazaniaPage } from './pages/powiazania'
 import { ProfilePage } from './pages/profile/ProfilePage'
 import { DashboardPage } from './pages/dashboard/DashboardPage'
 import { NotificationsPage } from './pages/notifications'
+import { ArchivePage } from './pages/archiwum'
 import { useEventStream } from './hooks/useEventStream'
 
 function HomePage() {
@@ -99,12 +101,14 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
         <Route path="/felieton/:id" element={<FelietonPage />} />
         <Route path="/event/:id" element={<EventPage />} />
         <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
+        <Route path="/cookies" element={<CookieSettingsPage />} />
         <Route path="/mapa" element={<MapPage />} />
         <Route path="/terminal" element={<TerminalPage />} />
         <Route path="/powiazania" element={<PowiazaniaPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/profil" element={<ProfilePage />} />
         <Route path="/powiadomienia" element={<NotificationsPage />} />
+        <Route path="/archiwum" element={<ArchivePage />} />
         {/* Sejm routes */}
         <Route path="/sejm" element={<SejmLayout />}>
           <Route index element={<SejmDashboard />} />

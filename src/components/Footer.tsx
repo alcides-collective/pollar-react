@@ -47,7 +47,7 @@ const footerSections = [
 const legalLinks = [
   { label: 'Regulamin', to: '#' },
   { label: 'Polityka prywatności', to: '/polityka-prywatnosci' },
-  { label: 'Cookies', to: '#' },
+  { label: 'Cookies', to: '/cookies' },
 ];
 
 const socialLinks = [
