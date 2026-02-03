@@ -1,9 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useEvent } from '../../hooks/useEvent';
 import { useEvents } from '../../stores/eventsStore';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
+import { useUser } from '../../stores/authStore';
+import { useReadHistoryStore } from '../../stores/readHistoryStore';
 import { prepareOgDescription } from '../../utils/text';
 import { staggerContainer, staggerItem, fadeInUp } from '../../lib/animations';
 import { EventHeader } from './EventHeader';
@@ -16,6 +18,7 @@ export function EventPage() {
   const { id } = useParams<{ id: string }>();
   const { event, loading, error } = useEvent(id);
   const { events: allEvents } = useEvents({ limit: 100, lang: 'pl' });
+  const user = useUser();
 
   // SEO meta tags
   const pageTitle = event?.metadata?.ultraShortHeadline || event?.title || '';
@@ -32,6 +35,13 @@ export function EventPage() {
     ogImageType: 'event',
     ogType: 'article',
   });
+
+  // Mark event as read in user's history
+  useEffect(() => {
+    if (user?.uid && id && event && !loading) {
+      useReadHistoryStore.getState().markAsRead(user.uid, id);
+    }
+  }, [user?.uid, id, event, loading]);
 
   // Find previous and next events
   const { previousEvent, nextEvent } = useMemo(() => {
