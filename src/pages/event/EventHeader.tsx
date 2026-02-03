@@ -34,7 +34,7 @@ export function EventHeader({ event }: EventHeaderProps) {
             >
               {co2Value}mg CO<sub>2</sub>
               {showCO2Tooltip && (
-                <span className="absolute left-0 bottom-full mb-2 px-3 py-2 bg-zinc-900 text-white text-xs rounded shadow-lg whitespace-nowrap z-10">
+                <span className="absolute left-0 bottom-full mb-2 px-3 py-2 bg-zinc-900 text-white text-xs rounded shadow-lg whitespace-nowrap z-[60]">
                   {co2Equivalents.map((equiv, i) => (
                     <span key={i} className="block">{equiv}</span>
                   ))}

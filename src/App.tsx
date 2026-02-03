@@ -207,7 +207,17 @@ function App() {
         <AuthModal />
         <ProModal />
         <CookiePopup />
-        <Toaster position="bottom-right" richColors closeButton />
+        <Toaster
+          position="bottom-right"
+          richColors
+          closeButton
+          toastOptions={{
+            classNames: {
+              toast: 'grid grid-cols-[1fr_auto] items-start gap-2',
+              actionButton: 'col-start-2 row-start-2 self-end',
+            },
+          }}
+        />
       </BrowserRouter>
     </SWRConfig>
   )
