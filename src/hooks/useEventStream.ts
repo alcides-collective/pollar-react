@@ -6,7 +6,11 @@ import { useEventsStore } from '../stores/eventsStore';
 interface StreamEvent {
   id: string;
   title: string;
+  lead?: string;
   category: string;
+  imageUrl?: string;
+  updatedAt?: string;
+  sourceCount?: number;
   type: 'new' | 'updated' | 'connected';
   timestamp: string;
 }
@@ -146,8 +150,16 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
 
         // Handle new and updated events
         if (data.type === 'new' || data.type === 'updated') {
-          // Invalidate events cache to trigger refetch
-          useEventsStore.getState().clearCache();
+          // Directly upsert event into store (bypasses backend cache)
+          useEventsStore.getState().upsertEvent({
+            id: data.id,
+            title: data.title,
+            lead: data.lead,
+            category: data.category,
+            imageUrl: data.imageUrl,
+            updatedAt: data.updatedAt || data.timestamp,
+            sourceCount: data.sourceCount || 0,
+          });
 
           if (document.hidden) {
             // Tab is hidden - buffer the event

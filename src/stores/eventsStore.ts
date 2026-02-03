@@ -29,6 +29,8 @@ interface EventsActions {
   };
   clearCache: (key?: string) => void;
   prefetchArchive: (params?: { limit?: number; lang?: string }) => void;
+  /** Upsert a single event into all caches (for real-time SSE updates) */
+  upsertEvent: (event: Partial<Event> & { id: string }) => void;
 }
 
 type EventsStore = EventsState & EventsActions;
@@ -104,6 +106,51 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
     } else {
       set({ cache: {} });
     }
+  },
+
+  upsertEvent: (partialEvent: Partial<Event> & { id: string }) => {
+    set((state) => {
+      const newCache = { ...state.cache };
+
+      // Update event in all cache entries
+      Object.keys(newCache).forEach((key) => {
+        const entry = newCache[key];
+        if (!entry?.data) return;
+
+        const existingIndex = entry.data.findIndex((e) => e.id === partialEvent.id);
+
+        if (existingIndex >= 0) {
+          // Update existing event
+          const updatedEvents = [...entry.data];
+          updatedEvents[existingIndex] = {
+            ...updatedEvents[existingIndex],
+            ...partialEvent,
+            // Ensure updatedAt is a string
+            updatedAt: partialEvent.updatedAt || new Date().toISOString(),
+          };
+          newCache[key] = { ...entry, data: updatedEvents };
+        } else {
+          // Add new event at the beginning (it's the newest)
+          const newEvent: Event = {
+            id: partialEvent.id,
+            title: partialEvent.title || '',
+            lead: partialEvent.lead,
+            category: partialEvent.category || 'inne',
+            imageUrl: partialEvent.imageUrl,
+            updatedAt: partialEvent.updatedAt || new Date().toISOString(),
+            createdAt: partialEvent.createdAt || new Date().toISOString(),
+            sourceCount: partialEvent.sourceCount || 0,
+            articleCount: partialEvent.articleCount || 0,
+            trendingScore: partialEvent.trendingScore || 0,
+            viewCount: partialEvent.viewCount || 0,
+            metadata: partialEvent.metadata || {},
+          } as Event;
+          newCache[key] = { ...entry, data: [newEvent, ...entry.data] };
+        }
+      });
+
+      return { cache: newCache };
+    });
   },
 
   prefetchArchive: (params = {}) => {
