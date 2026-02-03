@@ -195,7 +195,13 @@ interface UseEventsOptions {
 }
 
 export function useEvents(params: UseEventsOptions = {}) {
-  const { fetchEvents, getEventsFromCache, prefetchArchive } = useEventsStore();
+  // Subscribe to store state DIRECTLY to ensure re-renders on cache updates
+  const cache = useEventsStore((s) => s.cache);
+  const loading = useEventsStore((s) => s.loading);
+  const errors = useEventsStore((s) => s.errors);
+  const fetchEvents = useEventsStore((s) => s.fetchEvents);
+  const prefetchArchive = useEventsStore((s) => s.prefetchArchive);
+  const fetchingKeys = useEventsStore((s) => s.fetchingKeys);
 
   const searchParams = new URLSearchParams();
   if (params.limit) searchParams.set('limit', String(params.limit));
@@ -222,11 +228,22 @@ export function useEvents(params: UseEventsOptions = {}) {
     return responseData.data.map(sanitizeEvent);
   };
 
-  const { events, loading, error, isFresh } = getEventsFromCache(cacheKey);
-  const archiveCache = getEventsFromCache(archiveCacheKey);
+  // Get events directly from subscribed cache state
+  const cached = cache[cacheKey];
+  const now = Date.now();
+  const isFresh = cached ? (now - cached.timestamp) < CACHE_TTL : false;
+  const events = cached?.data ?? [];
+  const loadingState = loading[cacheKey] ?? false;
+  const error = errors[cacheKey] ?? null;
+
+  // Archive cache
+  const archiveCached = cache[archiveCacheKey];
+  const archiveEvents = archiveCached?.data ?? [];
+  const archiveLoading = loading[archiveCacheKey] ?? false;
+  const archiveError = errors[archiveCacheKey] ?? null;
 
   // Trigger fetch if not fresh and not already fetching
-  if (!isFresh && !loading) {
+  if (!isFresh && !loadingState && !fetchingKeys.has(cacheKey)) {
     fetchEvents(cacheKey, fetchEventsFn);
   }
 
@@ -237,15 +254,15 @@ export function useEvents(params: UseEventsOptions = {}) {
 
   // Combine with archive if requested
   let finalEvents = events;
-  if (params.includeArchive && archiveCache.events.length > 0) {
+  if (params.includeArchive && archiveEvents.length > 0) {
     // Dedupe by id
     const eventIds = new Set(events.map(e => e.id));
-    const uniqueArchive = archiveCache.events.filter(e => !eventIds.has(e.id));
+    const uniqueArchive = archiveEvents.filter(e => !eventIds.has(e.id));
     finalEvents = [...events, ...uniqueArchive];
   }
 
-  const isLoading = loading || (!isFresh && events.length === 0);
-  const archiveLoading = params.includeArchive && archiveCache.loading && archiveCache.events.length === 0;
+  const isLoading = loadingState || (!isFresh && events.length === 0);
+  const isArchiveLoading = params.includeArchive && archiveLoading && archiveEvents.length === 0;
 
   // Filter out hidden categories (only if user is logged in and has hidden categories)
   const hiddenCategories = useUserStore((s) => s.hiddenCategories);
@@ -255,7 +272,7 @@ export function useEvents(params: UseEventsOptions = {}) {
 
   return {
     events: filteredEvents,
-    loading: isLoading || archiveLoading,
-    error: error || archiveCache.error
+    loading: isLoading || isArchiveLoading,
+    error: error || archiveError
   };
 }
