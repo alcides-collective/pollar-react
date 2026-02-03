@@ -1,11 +1,14 @@
-import { PanelLeft, Plus } from 'lucide-react';
+import { ArrowLeft, PanelLeft, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAIMessages, useAIStore, useAISidebarOpen } from '../../stores/aiStore';
 
 interface AIHeaderProps {
   showSidebarToggle?: boolean;
+  showBackButton?: boolean;
 }
 
-export function AIHeader({ showSidebarToggle = true }: AIHeaderProps) {
+export function AIHeader({ showSidebarToggle = true, showBackButton = true }: AIHeaderProps) {
+  const navigate = useNavigate();
   const messages = useAIMessages();
   const isSidebarOpen = useAISidebarOpen();
   const { resetConversation, toggleSidebar } = useAIStore();
@@ -14,10 +17,30 @@ export function AIHeader({ showSidebarToggle = true }: AIHeaderProps) {
     resetConversation();
   };
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
     <header className="flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shrink-0">
-      {/* Left side - sidebar toggle */}
-      <div className="flex items-center gap-2 w-32">
+      {/* Left side - back button and sidebar toggle */}
+      <div className="flex items-center gap-1 w-32">
+        {showBackButton && (
+          <button
+            onClick={handleBack}
+            aria-label="Wróć"
+            className="p-2 rounded-lg
+                       text-zinc-500 dark:text-zinc-400
+                       hover:bg-zinc-100 dark:hover:bg-zinc-800
+                       transition-colors duration-150"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+        )}
         {showSidebarToggle && !isSidebarOpen && (
           <button
             onClick={toggleSidebar}

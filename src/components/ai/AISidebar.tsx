@@ -112,7 +112,7 @@ export function AISidebar() {
   // Collapsed state - just show toggle button
   if (!isOpen) {
     return (
-      <div className="flex flex-col items-center py-3 px-2 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
+      <div className="flex flex-col items-center h-full py-3 px-2 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
         <button
           onClick={toggleSidebar}
           className="p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800

@@ -9,7 +9,7 @@ interface DailyBriefSectionProps {
   brief: DailyBrief;
 }
 
-function WordOfTheDayBox({ word, etymology, editorialDefinition }: { word: string; etymology: string; editorialDefinition: string }) {
+/* function WordOfTheDayBox({ word, etymology, editorialDefinition }: { word: string; etymology: string; editorialDefinition: string }) {
   return (
     <div className="p-3 bg-sky-100/50 border border-sky-200/50 h-fit">
       <p className="text-xs text-sky-600 font-medium mb-1">Słowo dnia</p>
@@ -18,7 +18,7 @@ function WordOfTheDayBox({ word, etymology, editorialDefinition }: { word: strin
       <p className="text-xs text-zinc-600">{editorialDefinition}</p>
     </div>
   );
-}
+} */
 
 export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
   const formattedDate = new Date(brief.date).toLocaleDateString('pl-PL', {
@@ -55,15 +55,15 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
                 {brief.lead}
               </p>
             </div>
-            {brief.wordOfTheDay && (
+            {/* {brief.wordOfTheDay && (
               <div className="hidden md:block w-48 shrink-0">
-                <WordOfTheDayBox
+                <_WordOfTheDayBox
                   word={brief.wordOfTheDay.word}
                   etymology={brief.wordOfTheDay.etymology}
                   editorialDefinition={brief.wordOfTheDay.editorialDefinition}
                 />
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </motion.div>

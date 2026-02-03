@@ -96,12 +96,11 @@ export function AIInput({ onSend, autoFocus = false }: AIInputProps) {
         </button>
       </div>
 
-      {/* Rate limit info - only in production */}
-      {!import.meta.env.DEV && (
-        <p className="mt-2 text-[11px] text-zinc-400 dark:text-zinc-500 text-center">
-          {formatRemainingQueries(remainingQueries)}
-        </p>
-      )}
+      {/* Legal disclaimer and rate limit */}
+      <p className="mt-2 text-[11px] text-zinc-400 dark:text-zinc-500 text-center">
+        AI może popełniać błędy. Zawsze weryfikuj ważne informacje.
+        {!import.meta.env.DEV && ` · ${formatRemainingQueries(remainingQueries)}`}
+      </p>
     </div>
   );
 }

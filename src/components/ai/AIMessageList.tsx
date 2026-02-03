@@ -42,10 +42,17 @@ export function AIMessageList({
     return () => observer.disconnect();
   }, [containerRef]);
 
-  // Show scroll button when loading and not at bottom
+  // Show scroll button when loading, not at bottom, AND content is scrollable
   useEffect(() => {
-    setShowScrollButton(isLoading && !isUserAtBottom);
-  }, [isLoading, isUserAtBottom]);
+    const container = containerRef.current;
+    if (!container) {
+      setShowScrollButton(false);
+      return;
+    }
+    // Only show if content actually overflows (needs scrolling)
+    const isScrollable = container.scrollHeight > container.clientHeight + 50;
+    setShowScrollButton(isLoading && !isUserAtBottom && isScrollable);
+  }, [isLoading, isUserAtBottom, containerRef, messages.length]);
 
   const scrollToBottom = useCallback(() => {
     const container = containerRef.current;
