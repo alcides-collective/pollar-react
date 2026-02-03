@@ -378,6 +378,39 @@ export function useTotalUnreadCount() {
 }
 
 /**
+ * Safely converts various timestamp formats to Date
+ */
+function toDate(timestamp: unknown): Date {
+  if (!timestamp) return new Date(0);
+
+  // Firestore Timestamp with toDate() method
+  if (typeof timestamp === 'object' && 'toDate' in timestamp && typeof (timestamp as { toDate: () => Date }).toDate === 'function') {
+    return (timestamp as { toDate: () => Date }).toDate();
+  }
+
+  // Serialized Firestore Timestamp (from JSON API) with seconds/nanoseconds
+  if (typeof timestamp === 'object' && '_seconds' in timestamp) {
+    return new Date((timestamp as { _seconds: number })._seconds * 1000);
+  }
+
+  if (typeof timestamp === 'object' && 'seconds' in timestamp) {
+    return new Date((timestamp as { seconds: number }).seconds * 1000);
+  }
+
+  // Already a Date
+  if (timestamp instanceof Date) {
+    return timestamp;
+  }
+
+  // ISO string or other string format
+  if (typeof timestamp === 'string') {
+    return new Date(timestamp);
+  }
+
+  return new Date(0);
+}
+
+/**
  * Returns combined alerts sorted by createdAt descending
  */
 export function useCombinedAlerts(): CombinedAlert[] {
@@ -391,8 +424,8 @@ export function useCombinedAlerts(): CombinedAlert[] {
 
   // Sort by createdAt descending
   return combined.sort((a, b) => {
-    const dateA = a.createdAt?.toDate?.() || new Date(0);
-    const dateB = b.createdAt?.toDate?.() || new Date(0);
+    const dateA = toDate(a.createdAt);
+    const dateB = toDate(b.createdAt);
     return dateB.getTime() - dateA.getTime();
   });
 }
