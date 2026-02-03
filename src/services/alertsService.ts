@@ -24,6 +24,15 @@ export interface HistoricalVotingAlert {
 export type CombinedAlert = (VotingAlert & { isHistorical?: false }) | HistoricalVotingAlert;
 
 /**
+ * Response type for paginated historical alerts
+ */
+export interface HistoricalAlertsResponse {
+  alerts: HistoricalVotingAlert[];
+  count: number;
+  hasMore: boolean;
+}
+
+/**
  * Gets the authentication token
  */
 async function getAuthToken(): Promise<string | null> {
@@ -115,13 +124,14 @@ export async function markAllAlertsAsRead(): Promise<void> {
  */
 export async function getHistoricalVotingAlerts(
   days: number = 30,
-  limit: number = 100
-): Promise<HistoricalVotingAlert[]> {
+  limit: number = 10,
+  offset: number = 0
+): Promise<HistoricalAlertsResponse> {
   const token = await getAuthToken();
-  if (!token) return [];
+  if (!token) return { alerts: [], count: 0, hasMore: false };
 
   const response = await fetch(
-    buildApiUrl(`/voting-alerts/historical?days=${days}&limit=${limit}`),
+    buildApiUrl(`/voting-alerts/historical?days=${days}&limit=${limit}&offset=${offset}`),
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -134,5 +144,9 @@ export async function getHistoricalVotingAlerts(
   }
 
   const data = await response.json();
-  return data.alerts || [];
+  return {
+    alerts: data.alerts || [],
+    count: data.count || 0,
+    hasMore: data.hasMore || false,
+  };
 }

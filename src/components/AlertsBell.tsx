@@ -73,7 +73,7 @@ export function AlertsBell() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
+        <Button variant="ghost" size="icon" className="relative text-zinc-300 hover:text-white">
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <span className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full">

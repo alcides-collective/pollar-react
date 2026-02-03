@@ -66,6 +66,8 @@ function NotificationsContent() {
 
   const [historicalAlerts, setHistoricalAlerts] = useState<HistoricalVotingAlert[]>([]);
   const [isLoadingHistorical, setIsLoadingHistorical] = useState(false);
+  const [historicalOffset, setHistoricalOffset] = useState(0);
+  const [hasMoreHistorical, setHasMoreHistorical] = useState(true);
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [voteFilter, setVoteFilter] = useState<VoteFilter>('all');
   const [mpFilter, setMpFilter] = useState<number | 'all'>('all');
@@ -84,12 +86,32 @@ function NotificationsContent() {
   useEffect(() => {
     if (followedMPIds.length > 0) {
       setIsLoadingHistorical(true);
-      getHistoricalVotingAlerts(30, 100)
-        .then(setHistoricalAlerts)
+      setHistoricalAlerts([]);
+      setHistoricalOffset(0);
+      getHistoricalVotingAlerts(30, 10, 0)
+        .then(({ alerts, hasMore }) => {
+          setHistoricalAlerts(alerts);
+          setHasMoreHistorical(hasMore);
+          setHistoricalOffset(10);
+        })
         .catch(console.error)
         .finally(() => setIsLoadingHistorical(false));
     }
   }, [followedMPIds]);
+
+  const loadMoreHistorical = async () => {
+    setIsLoadingHistorical(true);
+    try {
+      const { alerts, hasMore } = await getHistoricalVotingAlerts(30, 10, historicalOffset);
+      setHistoricalAlerts((prev) => [...prev, ...alerts]);
+      setHasMoreHistorical(hasMore);
+      setHistoricalOffset((prev) => prev + 10);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoadingHistorical(false);
+    }
+  };
 
   // Combine and filter alerts
   const combinedAlerts = useMemo(() => {
@@ -381,6 +403,17 @@ function NotificationsContent() {
                   </Link>
                 );
               })}
+
+              {/* Load more button */}
+              {showHistorical && hasMoreHistorical && (
+                <button
+                  onClick={loadMoreHistorical}
+                  disabled={isLoadingHistorical}
+                  className="w-full mt-4 py-3 text-sm text-zinc-600 hover:text-zinc-900 border border-zinc-200 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoadingHistorical ? 'Ładowanie...' : 'Załaduj więcej historycznych'}
+                </button>
+              )}
             </div>
           )}
         </section>
