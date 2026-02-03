@@ -166,7 +166,7 @@ app.get('/api/og', async (req, res) => {
     : '';
 
   // Description element - gray text below title with gradient fade
-  const descriptionY = textY + displayLines.length * lineHeight + 16;
+  const descriptionY = textY + displayLines.length * lineHeight + 6;
   const descriptionFontSize = 30;
   const descriptionLineHeight = 38;
   const logoRightMargin = 180; // Space for logo on the right
