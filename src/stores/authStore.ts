@@ -18,7 +18,7 @@ import {
   type User,
 } from 'firebase/auth';
 import { doc, deleteDoc } from 'firebase/firestore';
-import { auth, db } from '@/config/firebase';
+import { auth, db, isFirebaseConfigured } from '@/config/firebase';
 import { createOrUpdateUserProfile } from '@/services/userService';
 import { getAuthErrorMessage } from '@/lib/auth-errors';
 import { trackLogin, trackSignUp, trackLogout } from '@/lib/analytics';
@@ -345,6 +345,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
   clearError: () => set({ error: null }),
 
   initialize: () => {
+    // If Firebase is not configured, mark as initialized with no user
+    if (!isFirebaseConfigured || !auth) {
+      set({ isInitialized: true, isLoading: false, user: null });
+      return () => {}; // No-op unsubscribe
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       set({
         user: user ? transformUser(user) : null,

@@ -19,31 +19,44 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
+// Check if Firebase is configured
+const isFirebaseConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId);
+
+if (!isFirebaseConfigured) {
+  console.warn(
+    'Firebase is not configured. Add VITE_FIREBASE_* environment variables to enable authentication.'
+  );
+}
+
 // Singleton pattern - initialize only once
-let app: FirebaseApp;
-let auth: Auth;
-let db: Firestore;
-let storage: FirebaseStorage;
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let db: Firestore | null = null;
+let storage: FirebaseStorage | null = null;
 let analytics: Analytics | null = null;
 
-if (getApps().length === 0) {
-  app = initializeApp(firebaseConfig);
-} else {
-  app = getApps()[0];
+if (isFirebaseConfigured) {
+  if (getApps().length === 0) {
+    app = initializeApp(firebaseConfig);
+  } else {
+    app = getApps()[0];
+  }
 }
 
-auth = getAuth(app);
-db = getFirestore(app);
-storage = getStorage(app);
+if (app) {
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
 
-// Set persistence to local (survives browser restart)
-setPersistence(auth, browserLocalPersistence).catch((error) => {
-  console.error('Failed to set auth persistence:', error);
-});
+  // Set persistence to local (survives browser restart)
+  setPersistence(auth, browserLocalPersistence).catch((error) => {
+    console.error('Failed to set auth persistence:', error);
+  });
 
-// Initialize analytics only in browser and production
-if (typeof window !== 'undefined' && import.meta.env.PROD) {
-  analytics = getAnalytics(app);
+  // Initialize analytics only in browser and production
+  if (typeof window !== 'undefined' && import.meta.env.PROD) {
+    analytics = getAnalytics(app);
+  }
 }
 
-export { app, auth, db, storage, analytics };
+export { app, auth, db, storage, analytics, isFirebaseConfigured };

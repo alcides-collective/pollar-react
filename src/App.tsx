@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Toaster } from 'sonner'
 import { Header } from './components/Header'
 import { AuthModal, EmailVerificationBanner } from './components/auth'
+import { ProModal } from './components/ProModal'
 import { useAuthStore } from './stores/authStore'
 import { useUserStore } from './stores/userStore'
 import { NewsGrid } from './components/NewsGrid'
@@ -200,6 +201,7 @@ function App() {
       <BrowserRouter>
         <AppContent />
         <AuthModal />
+        <ProModal />
         <CookiePopup />
         <Toaster position="bottom-right" richColors closeButton />
       </BrowserRouter>

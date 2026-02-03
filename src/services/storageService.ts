@@ -6,7 +6,7 @@ import {
 } from 'firebase/storage';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
-import { storage, db, auth } from '@/config/firebase';
+import { storage, db, auth, isFirebaseConfigured } from '@/config/firebase';
 
 /**
  * Upload avatar image to Firebase Storage
@@ -15,6 +15,10 @@ import { storage, db, auth } from '@/config/firebase';
  * @returns Download URL of uploaded image
  */
 export async function uploadAvatar(uid: string, file: File): Promise<string> {
+  if (!isFirebaseConfigured || !storage || !db) {
+    throw new Error('Firebase nie jest skonfigurowany');
+  }
+
   // Validate file type
   if (!file.type.startsWith('image/')) {
     throw new Error('Plik musi być obrazem');
@@ -58,6 +62,10 @@ export async function uploadAvatar(uid: string, file: File): Promise<string> {
  * @param photoURL Current photo URL to delete
  */
 export async function deleteAvatar(uid: string, photoURL: string): Promise<void> {
+  if (!isFirebaseConfigured || !storage || !db) {
+    throw new Error('Firebase nie jest skonfigurowany');
+  }
+
   // Only delete if it's a Firebase Storage URL
   if (!photoURL.includes('firebasestorage.googleapis.com')) {
     return;
@@ -73,7 +81,7 @@ export async function deleteAvatar(uid: string, photoURL: string): Promise<void>
   }
 
   // Clear photoURL in Firebase Auth
-  const currentUser = auth.currentUser;
+  const currentUser = auth?.currentUser;
   if (currentUser) {
     await updateProfile(currentUser, { photoURL: null });
   }
