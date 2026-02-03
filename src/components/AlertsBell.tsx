@@ -152,7 +152,7 @@ export function AlertsBell() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
-        <button className="relative text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg p-2 border border-zinc-700/50 hover:border-zinc-600 transition-colors">
+        <button className="relative h-9 w-9 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors">
           <Bell className="h-5 w-5" />
           {totalUnreadCount > 0 && (
             <span className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full">

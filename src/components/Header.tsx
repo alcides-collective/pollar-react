@@ -30,19 +30,19 @@ function AuthButton() {
 
     return (
       <DropdownMenu>
-        <DropdownMenuTrigger className="group flex items-center overflow-hidden rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors outline-none">
+        <DropdownMenuTrigger className="group h-9 flex items-center overflow-hidden rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors outline-none">
           {user.photoURL ? (
             <img
               src={user.photoURL}
               alt=""
-              className="h-[34px] w-[34px] object-cover"
+              className="h-full aspect-square object-cover"
             />
           ) : (
-            <div className="h-[34px] w-[34px] bg-zinc-600 flex items-center justify-center text-sm font-medium text-white">
+            <div className="h-full aspect-square bg-zinc-600 flex items-center justify-center text-sm font-medium text-white">
               {initials}
             </div>
           )}
-          <span className="hidden sm:flex items-center text-sm text-zinc-300 group-hover:text-white h-[34px] px-3 max-w-[120px] truncate bg-gradient-to-r from-zinc-800 to-zinc-800/50 group-hover:from-zinc-700 group-hover:to-zinc-700/50 transition-colors">
+          <span className="hidden sm:flex items-center text-sm text-zinc-300 group-hover:text-white h-full px-3 max-w-[120px] truncate bg-gradient-to-r from-zinc-800 to-zinc-800/50 group-hover:from-zinc-700 group-hover:to-zinc-700/50 transition-colors">
             {displayName}
           </span>
         </DropdownMenuTrigger>
@@ -74,7 +74,7 @@ function AuthButton() {
   return (
     <button
       onClick={() => openAuthModal('login')}
-      className="text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 py-1.5 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
+      className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
     >
       Zaloguj się
     </button>
@@ -179,7 +179,7 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link
               to="/polityka-prywatnosci"
-              className="text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 py-1.5 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
+              className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
             >
               Prywatność
             </Link>
@@ -193,7 +193,7 @@ export function Header() {
             </button> */}
             <button
               onClick={openSearch}
-              className="text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg p-2 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
+              className="h-9 w-9 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors"
               aria-label="Szukaj"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
