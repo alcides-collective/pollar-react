@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { tabContentAnimation } from "@/lib/animations";
+import { AnimateHeight } from "@/components/common/AnimateHeight";
 
 const tabs = [
   {
@@ -59,14 +59,14 @@ export function AboutSection() {
       </div>
 
       {/* Content */}
-      <motion.div layout transition={{ duration: 0.3, ease: "easeInOut" }}>
-        <AnimatePresence mode="wait">
+      <AnimateHeight>
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={activeTab}
-            variants={tabContentAnimation}
-            initial="initial"
-            animate="animate"
-            exit="exit"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             className="space-y-2"
           >
             <p className="text-zinc-900 font-semibold text-sm">
@@ -77,7 +77,7 @@ export function AboutSection() {
             </p>
           </motion.div>
         </AnimatePresence>
-      </motion.div>
+      </AnimateHeight>
     </div>
   );
 }

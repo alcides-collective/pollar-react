@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Event } from '../../types/events';
-import { tabContentAnimation } from '@/lib/animations';
 import { EventImage } from '../common/EventImage';
+import { AnimateHeight } from '../common/AnimateHeight';
 
 interface CategoryTabsProps {
   groups: Array<[string, Event[]]>;
@@ -40,16 +40,16 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
         ))}
       </div>
 
-      <motion.div layout transition={{ duration: 0.3, ease: "easeInOut" }}>
-        <AnimatePresence mode="wait">
+      <AnimateHeight>
+        <AnimatePresence mode="wait" initial={false}>
           {selectedGroup && (
             <motion.div
               key={selectedTab}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
               className="flex flex-col md:flex-row"
-              variants={tabContentAnimation}
-              initial="initial"
-              animate="animate"
-              exit="exit"
             >
               {selectedGroup[1][0] && (
                 <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
@@ -89,7 +89,7 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </AnimateHeight>
     </div>
   );
 }

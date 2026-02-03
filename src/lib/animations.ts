@@ -108,6 +108,30 @@ export const tabContentAnimation: Variants = {
   },
 }
 
+// Tab content with height animation - for smooth container height transitions
+export const tabContentWithHeight: Variants = {
+  initial: {
+    opacity: 0,
+    height: 0,
+  },
+  animate: {
+    opacity: 1,
+    height: 'auto',
+    transition: {
+      height: { duration: 0.3, ease: 'easeOut' },
+      opacity: { duration: 0.25, delay: 0.1, ease: 'easeOut' },
+    },
+  },
+  exit: {
+    opacity: 0,
+    height: 0,
+    transition: {
+      height: { duration: 0.3, ease: 'easeIn' },
+      opacity: { duration: 0.15, ease: 'easeIn' },
+    },
+  },
+}
+
 // Card hover
 export const cardHover = {
   whileHover: {
