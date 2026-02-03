@@ -1,0 +1,111 @@
+import { useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AIHeader } from './AIHeader';
+import { AIMessageList } from './AIMessageList';
+import { AIInput } from './AIInput';
+import { AIDebugPanel } from './AIDebugPanel';
+import { useAICompanion } from '../../hooks/useAICompanion';
+import { useWordAnimation } from '../../hooks/useWordAnimation';
+import { useAIError, useAIStore } from '../../stores/aiStore';
+
+interface AIChatProps {
+  variant?: 'page' | 'modal';
+  onClose?: () => void;
+}
+
+export function AIChat({ variant = 'page', onClose }: AIChatProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const error = useAIError();
+  const setError = useAIStore((s) => s.setError);
+
+  // Scroll helper
+  const scrollToBottom = useCallback(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight;
+    }
+  }, []);
+
+  // Word animation hook
+  const { animateMessage } = useWordAnimation({
+    onScrollToBottom: scrollToBottom,
+    isUserAtBottom: true,
+  });
+
+  // AI companion hook
+  const { sendMessage, checkStatus, fetchSuggestions } = useAICompanion({
+    onAnimationStart: animateMessage,
+  });
+
+  // Fetch status and suggestions on mount
+  useEffect(() => {
+    checkStatus();
+    fetchSuggestions();
+  }, [checkStatus, fetchSuggestions]);
+
+  // Handle sending message
+  const handleSend = useCallback(
+    (message: string) => {
+      sendMessage(message);
+      // Scroll to bottom after sending
+      setTimeout(scrollToBottom, 50);
+    },
+    [sendMessage, scrollToBottom]
+  );
+
+  // Handle suggestion click
+  const handleSuggestionSelect = useCallback(
+    (suggestion: string) => {
+      handleSend(suggestion);
+    },
+    [handleSend]
+  );
+
+  // Dismiss error on click
+  const handleDismissError = useCallback(() => {
+    setError(null);
+  }, [setError]);
+
+  return (
+    <div className="flex flex-col h-full bg-white dark:bg-zinc-950">
+      {/* Header */}
+      <AIHeader
+        showBackButton={variant === 'page'}
+        onBack={variant === 'modal' ? onClose : undefined}
+      />
+
+      {/* Messages area - scrollable */}
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 overflow-y-auto min-h-0"
+      >
+        <AIMessageList
+          onSuggestionSelect={handleSuggestionSelect}
+          scrollContainerRef={scrollContainerRef}
+        />
+      </div>
+
+      {/* Error message */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            onClick={handleDismissError}
+            className="px-4 py-3 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400
+                       text-sm text-center cursor-pointer shrink-0"
+          >
+            {error}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Debug panel (dev mode only) */}
+      <AIDebugPanel />
+
+      {/* Input area - fixed at bottom */}
+      <AIInput onSend={handleSend} autoFocus={variant === 'page'} />
+    </div>
+  );
+}

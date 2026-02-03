@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { usePowiazaniaStore } from '@/stores/powiazaniaStore';
 import {
@@ -41,8 +42,6 @@ export function PowiazaniaPage() {
     .sort((a, b) => (a.category?.difficulty ?? 0) - (b.category?.difficulty ?? 0));
 
   // Animation states
-  const [showMessage, setShowMessage] = useState(false);
-  const [message, setMessage] = useState('');
   const [shakeGrid, setShakeGrid] = useState(false);
   const [successAnimationWordIds, setSuccessAnimationWordIds] = useState<string[]>([]);
   const [successAnimationColor, setSuccessAnimationColor] = useState('');
@@ -153,16 +152,16 @@ export function PowiazaniaPage() {
         setIsAnimating(false);
       }, 570);
 
-      setShowMessage(false);
       return;
     } else if (result.isOneAway) {
-      setMessage('Prawie! Jedno słowo od rozwiązania.');
-      setShowMessage(true);
+      toast('Prawie! Jedno słowo od rozwiązania.', {
+        position: 'top-center',
+        duration: 2000,
+        className: 'text-orange-500',
+      });
       setShakeGrid(true);
       setTimeout(() => setShakeGrid(false), 500);
-      setTimeout(() => setShowMessage(false), 2000);
     } else {
-      setShowMessage(false);
       setShakeGrid(true);
       setTimeout(() => setShakeGrid(false), 500);
     }
@@ -239,13 +238,6 @@ export function PowiazaniaPage() {
             />
           </div>
         </div>
-
-        {/* Feedback message */}
-        {showMessage && (
-          <div className="text-center py-2 text-sm tracking-[0.05em] text-orange-500">
-            {message}
-          </div>
-        )}
 
         {/* Controls */}
         <PowiazaniaControls

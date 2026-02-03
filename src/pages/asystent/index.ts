@@ -1,0 +1,1 @@
+export { AsystentPage } from './AsystentPage';

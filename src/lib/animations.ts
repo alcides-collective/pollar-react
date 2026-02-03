@@ -152,3 +152,55 @@ export const imageHover = {
 // Użyj: className="group" na kontenerze
 // oraz: className="transition-transform duration-500 ease-out group-hover:scale-[1.02]" na obrazku
 export const imageHoverClass = 'transition-transform duration-500 ease-out group-hover:scale-[1.02]'
+
+// AI Chat animations
+
+// Message enters the chat
+export const messageEnter: Variants = {
+  initial: { opacity: 0, y: 8 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.25, ease: 'easeOut' },
+  },
+}
+
+// Word reveal animation (for word-by-word appearance)
+export const wordReveal: Variants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: { duration: 0.15 },
+  },
+}
+
+// Suggestion chips stagger
+export const suggestionStagger: Variants = {
+  initial: {},
+  animate: {
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+}
+
+export const suggestionItem: Variants = {
+  initial: { opacity: 0, y: 10 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.2 },
+  },
+}
+
+// Typing dots animation
+export const typingDot: Variants = {
+  animate: {
+    opacity: [0, 1, 0],
+    transition: {
+      duration: 1.4,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    },
+  },
+}

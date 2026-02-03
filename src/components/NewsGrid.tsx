@@ -11,6 +11,7 @@ import { FelietonySection } from './news/FelietonySection';
 import { DiscoverSection } from './news/DiscoverSection';
 import { CategoryCarousel } from './news/CategoryCarousel';
 import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection, VersionSection } from './news/sidebar';
+import { AISidebarWidget } from './ai';
 
 export function NewsGrid() {
   const selectedCategory = useSelectedCategory();
@@ -70,6 +71,7 @@ export function NewsGrid() {
 
         {/* Sidebar */}
         <aside className="divide-y divide-zinc-200">
+          <AISidebarWidget />
           <LatestEvents events={latestEvents} />
           <NewsletterSection />
           <MapSection />

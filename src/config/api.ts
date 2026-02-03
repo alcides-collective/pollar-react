@@ -8,9 +8,10 @@
 /**
  * Base URL for the Pollar API
  * - Uses VITE_API_BASE environment variable if set
- * - Falls back to Railway production URL
+ * - In development, uses /api to go through Vite proxy
+ * - In production, falls back to Railway URL
  */
-export const API_BASE = import.meta.env.VITE_API_BASE || 'https://pollar.up.railway.app/api';
+export const API_BASE = import.meta.env.VITE_API_BASE || (import.meta.env.DEV ? '/api' : 'https://pollar.up.railway.app/api');
 
 /**
  * Base URL for the Sejm API (Polish Parliament)
