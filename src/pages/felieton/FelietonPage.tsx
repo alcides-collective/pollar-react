@@ -4,6 +4,7 @@ import { useEvent } from '../../hooks/useEvent';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
 import { preventWidows, sanitizeAndProcessHtml, prepareOgDescription } from '../../utils/text';
+import { GrainImage } from '../../components/common/GrainImage';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.webp';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.webp';
@@ -216,9 +217,8 @@ export function FelietonPage() {
               {felieton.lead}
             </p>
 
-            <img
+            <GrainImage
               src={imageSrc}
-              alt=""
               className="w-full aspect-[21/9] object-cover rounded-lg"
             />
           </header>

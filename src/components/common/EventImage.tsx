@@ -9,9 +9,10 @@ interface EventImageProps {
   className?: string;
   style?: React.CSSProperties;
   hoverScale?: number;
+  grainOpacity?: number;
 }
 
-export function EventImage({ event, className, style, hoverScale = 1.02 }: EventImageProps) {
+export function EventImage({ event, className, style, hoverScale = 1.02, grainOpacity = 0.25 }: EventImageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [allFailed, setAllFailed] = useState(false);
 
@@ -50,15 +51,29 @@ export function EventImage({ event, className, style, hoverScale = 1.02 }: Event
     : imageUrls[currentIndex];
 
   return (
-    <motion.img
-      key={`${event.id}-${currentIndex}-${allFailed}`}
-      src={currentImageUrl}
-      alt=""
-      className={className}
+    <motion.div
+      className={`relative overflow-hidden ${className || ''}`}
       style={style}
-      onError={allFailed ? undefined : handleError}
       whileHover={{ scale: hoverScale }}
       transition={{ duration: 0.4 }}
-    />
+    >
+      <img
+        key={`${event.id}-${currentIndex}-${allFailed}`}
+        src={currentImageUrl}
+        alt=""
+        className="w-full h-full object-cover"
+        onError={allFailed ? undefined : handleError}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'url(/grain.webp)',
+          backgroundRepeat: 'repeat',
+          backgroundSize: '256px 256px',
+          opacity: grainOpacity,
+          mixBlendMode: 'overlay',
+        }}
+      />
+    </motion.div>
   );
 }

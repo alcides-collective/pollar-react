@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import type { Felieton, FelietonCategory } from '../../types/felieton';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
 import { staggerContainer, staggerItem } from '@/lib/animations';
+import { GrainImage } from '../common/GrainImage';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.webp';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.webp';
@@ -24,11 +25,11 @@ function FelietonCard({ felieton }: { felieton: Felieton }) {
   return (
     <Link to={`/felieton/${felieton.id}`} className="group block p-6 hover:bg-sky-100 transition-colors h-full">
       <article>
-        <div className="overflow-hidden mb-4">
-          <img
+        <div className="mb-4">
+          <GrainImage
             src={imageSrc}
-            alt=""
-            className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+            className="w-full aspect-video object-cover"
+            hoverScale
           />
         </div>
         <span className="text-zinc-400 text-xs">{categoryName}</span>
@@ -50,11 +51,12 @@ function PlaceholderCard({ category }: { category: FelietonCategory }) {
   return (
     <div className="p-6 opacity-50 h-full">
       <article>
-        <img
-          src={imageSrc}
-          alt=""
-          className="w-full aspect-video object-cover mb-4 grayscale"
-        />
+        <div className="mb-4 grayscale">
+          <GrainImage
+            src={imageSrc}
+            className="w-full aspect-video object-cover"
+          />
+        </div>
         <span className="text-zinc-400 text-xs">{categoryName}</span>
         <h3 className="text-zinc-400 font-semibold text-xl leading-tight">
           Felieton w przygotowaniu...

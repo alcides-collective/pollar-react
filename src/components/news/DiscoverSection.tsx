@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { staggerContainer, staggerItem } from '@/lib/animations';
+import { GrainImage } from '../common/GrainImage';
 import powiazaniaImg from '../../assets/images/discover/powiazania.webp';
 import sejmImg from '../../assets/images/discover/sejm.webp';
 import gieldaImg from '../../assets/images/discover/gielda.webp';
@@ -41,12 +42,12 @@ function DiscoverCard({ link }: { link: DiscoverLink }) {
   return (
     <Link to={link.path} className="group block p-6 hover:bg-amber-100 transition-colors h-full">
       <article>
-        <div className="overflow-hidden mb-4">
+        <div className="mb-4">
           {link.image ? (
-            <img
+            <GrainImage
               src={link.image}
-              alt=""
-              className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              className="w-full aspect-video object-cover"
+              hoverScale
             />
           ) : (
             <div className={`bg-gradient-to-br ${link.gradient} aspect-video flex items-center justify-center`}>
