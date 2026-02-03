@@ -121,13 +121,16 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
       const newCache = { ...state.cache };
       let newEventIds = state.newEventIds;
 
-      // If this is a new event, add to newEventIds
+      // If this is a new event, add to newEventIds (for highlight)
       if (isNew) {
         newEventIds = new Set(state.newEventIds);
         newEventIds.add(partialEvent.id);
       }
 
       // Update event in all cache entries
+      // IMPORTANT: Only UPDATE existing events, don't ADD new ones!
+      // SSE uses different ordering (updatedAt) than API (trendingScore),
+      // so adding new events would create "ghost" entries that disappear on refresh
       Object.keys(newCache).forEach((key) => {
         const entry = newCache[key];
         if (!entry?.data) return;
@@ -144,24 +147,8 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
             updatedAt: partialEvent.updatedAt || new Date().toISOString(),
           };
           newCache[key] = { ...entry, data: updatedEvents };
-        } else {
-          // Add new event at the beginning (it's the newest)
-          const newEvent: Event = {
-            id: partialEvent.id,
-            title: partialEvent.title || '',
-            lead: partialEvent.lead,
-            category: partialEvent.category || 'inne',
-            imageUrl: partialEvent.imageUrl,
-            updatedAt: partialEvent.updatedAt || new Date().toISOString(),
-            createdAt: partialEvent.createdAt || new Date().toISOString(),
-            sourceCount: partialEvent.sourceCount || 0,
-            articleCount: partialEvent.articleCount || 0,
-            trendingScore: partialEvent.trendingScore || 0,
-            viewCount: partialEvent.viewCount || 0,
-            metadata: partialEvent.metadata || {},
-          } as Event;
-          newCache[key] = { ...entry, data: [newEvent, ...entry.data] };
         }
+        // Don't add new events - they may not be in API results due to different sorting
       });
 
       return { cache: newCache, newEventIds };
