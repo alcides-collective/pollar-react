@@ -106,7 +106,7 @@ function escapeXml(str) {
 
 // OG Image generation endpoint
 app.get('/api/og', async (req, res) => {
-  const { title = 'Pollar News', type = 'default' } = req.query;
+  const { title = 'Pollar News', type = 'default', description = '' } = req.query;
 
   const typeLabels = {
     event: 'WYDARZENIE',
@@ -165,6 +165,12 @@ app.get('/api/og', async (req, res) => {
     ? `<text x="${padding}" y="100" font-size="24" font-weight="600" fill="#a1a1aa" letter-spacing="0.1em">${escapeXml(typeLabel)}</text>`
     : '';
 
+  // Description element - small gray text below title
+  const descriptionY = textY + displayLines.length * lineHeight + 30;
+  const descriptionElement = description
+    ? `<text x="${padding}" y="${descriptionY}" font-size="24" font-weight="400" fill="#71717a">${escapeXml(description)}</text>`
+    : '';
+
   // Font style - uses system fonts configured via fontconfig
   const fontStyle = `text { font-family: ${FONT_FAMILY}; }`;
 
@@ -174,6 +180,7 @@ app.get('/api/og', async (req, res) => {
       <rect width="100%" height="100%" fill="#09090b"/>
       ${typeLabelElement}
       ${textElements}
+      ${descriptionElement}
     </svg>
   `;
 
@@ -366,7 +373,7 @@ app.use(async (req, res, next) => {
     const isHomepage = req.path === '/';
     const ogTitle = isHomepage ? pageInfo.title : `Pollar News: ${pageInfo.title}`;
     const pageTitle = isHomepage ? 'Pollar — Wiesz więcej' : `${pageInfo.title} | Pollar`;
-    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}&description=${encodeURIComponent(pageInfo.description)}`;
 
     return res.send(generateSeoHtml({
       pageTitle,
