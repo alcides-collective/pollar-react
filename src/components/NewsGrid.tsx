@@ -10,7 +10,7 @@ import { DailyBriefSection } from './news/DailyBriefSection';
 import { FelietonySection } from './news/FelietonySection';
 import { DiscoverSection } from './news/DiscoverSection';
 import { CategoryCarousel } from './news/CategoryCarousel';
-import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection, VersionSection } from './news/sidebar';
+import { LatestEvents, /* NewsletterSection, */ MapSection, AboutSection, ContactSection, VersionSection } from './news/sidebar';
 import { AISidebarWidget } from './ai';
 
 export function NewsGrid() {
@@ -73,7 +73,7 @@ export function NewsGrid() {
         <aside className="divide-y divide-zinc-200">
           <AISidebarWidget />
           <LatestEvents events={latestEvents} />
-          <NewsletterSection />
+          {/* <NewsletterSection /> */}
           <MapSection />
           <AboutSection />
           <ContactSection />
