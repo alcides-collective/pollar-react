@@ -32,16 +32,13 @@ export function AlertsBell() {
   const isAuthenticated = useIsAuthenticated();
   const unreadCount = useUnreadAlertsCount();
   const alerts = useAlerts();
-  const fetchAlerts = useAlertsStore((s) => s.fetchAlerts);
-  const markAsRead = useAlertsStore((s) => s.markAsRead);
-  const markAllAsRead = useAlertsStore((s) => s.markAllAsRead);
-  const startPolling = useAlertsStore((s) => s.startPolling);
-  const stopPolling = useAlertsStore((s) => s.stopPolling);
 
   const [isOpen, setIsOpen] = useState(false);
 
-  // Start polling when authenticated
+  // Start polling when authenticated - use getState() to avoid dependency issues
   useEffect(() => {
+    const { startPolling, stopPolling } = useAlertsStore.getState();
+
     if (isAuthenticated) {
       startPolling();
     } else {
@@ -49,14 +46,22 @@ export function AlertsBell() {
     }
 
     return () => stopPolling();
-  }, [isAuthenticated, startPolling, stopPolling]);
+  }, [isAuthenticated]);
 
   // Fetch full alerts when dropdown opens
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
     if (open && isAuthenticated) {
-      fetchAlerts();
+      useAlertsStore.getState().fetchAlerts();
     }
+  };
+
+  const handleMarkAsRead = (alertId: string) => {
+    useAlertsStore.getState().markAsRead(alertId);
+  };
+
+  const handleMarkAllAsRead = () => {
+    useAlertsStore.getState().markAllAsRead();
   };
 
   if (!isAuthenticated) {
@@ -82,7 +87,7 @@ export function AlertsBell() {
           <span>Alerty o głosowaniach</span>
           {unreadCount > 0 && (
             <button
-              onClick={() => markAllAsRead()}
+              onClick={handleMarkAllAsRead}
               className="text-xs text-zinc-500 hover:text-zinc-700"
             >
               Oznacz jako przeczytane
@@ -106,7 +111,7 @@ export function AlertsBell() {
                   className={`flex flex-col items-start gap-1 py-3 cursor-pointer ${
                     !alert.read ? 'bg-blue-50' : ''
                   }`}
-                  onClick={() => markAsRead(alert.id)}
+                  onClick={() => handleMarkAsRead(alert.id)}
                 >
                   <Link to={`/sejm/glosowania/${alert.sitting}/${alert.votingNumber}`}>
                     <div className="flex items-center gap-2 w-full">

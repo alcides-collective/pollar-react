@@ -8,6 +8,8 @@ import { AuthModal, EmailVerificationBanner } from './components/auth'
 import { ProModal } from './components/ProModal'
 import { useAuthStore } from './stores/authStore'
 import { useUserStore } from './stores/userStore'
+import { useAlertsStore } from './stores/alertsStore'
+import { useReadHistoryStore } from './stores/readHistoryStore'
 import { NewsGrid } from './components/NewsGrid'
 import { Footer } from './components/Footer'
 import { CookiePopup } from './components/CookiePopup'
@@ -162,6 +164,8 @@ function AppContent() {
   const user = useAuthStore((s) => s.user)
   const fetchProfile = useUserStore((s) => s.fetchProfile)
   const clearProfile = useUserStore((s) => s.clearProfile)
+  const clearAlertsStore = useAlertsStore((s) => s.clearStore)
+  const clearReadHistoryStore = useReadHistoryStore((s) => s.clearStore)
 
   useEffect(() => {
     const unsubscribe = initializeAuth()
@@ -173,9 +177,12 @@ function AppContent() {
     if (user) {
       fetchProfile(user.uid)
     } else {
+      // Clear all user-related stores on logout
       clearProfile()
+      clearAlertsStore()
+      clearReadHistoryStore()
     }
-  }, [user, fetchProfile, clearProfile])
+  }, [user, fetchProfile, clearProfile, clearAlertsStore, clearReadHistoryStore])
 
   // Connect to SSE for real-time event notifications
   useEventStream({ enabled: true })
