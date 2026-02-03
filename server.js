@@ -165,10 +165,10 @@ app.get('/api/og', async (req, res) => {
     ? `<text x="${padding}" y="100" font-size="24" font-weight="600" fill="#a1a1aa" letter-spacing="0.1em">${escapeXml(typeLabel)}</text>`
     : '';
 
-  // Description element - small gray text below title with gradient fade
-  const descriptionY = textY + displayLines.length * lineHeight + 30;
-  const descriptionFontSize = 22;
-  const descriptionLineHeight = 30;
+  // Description element - gray text below title with gradient fade
+  const descriptionY = textY + displayLines.length * lineHeight + 40;
+  const descriptionFontSize = 30;
+  const descriptionLineHeight = 38;
   const logoRightMargin = 180; // Space for logo on the right
   const descriptionMaxWidth = width - padding - logoRightMargin;
   const descriptionMaxChars = Math.floor(descriptionMaxWidth / (descriptionFontSize * 0.5));
