@@ -337,7 +337,7 @@ app.use(async (req, res, next) => {
       const kp = event.metadata?.keyPoints?.[0];
       const description = truncate(stripHtml(kp?.description || event.lead || event.summary || ''), 160);
       // For OG image, use longer description (up to 300 chars for multi-line display)
-      const ogImageDescription = truncate(stripHtml(event.lead || event.summary || kp?.description || ''), 300);
+      const ogImageDescription = truncate(stripHtml(event.lead || kp?.description || event.summary || ''), 300);
       const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}`;
 
       return res.send(generateSeoHtml({
