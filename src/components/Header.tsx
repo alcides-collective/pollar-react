@@ -30,19 +30,19 @@ function AuthButton() {
 
     return (
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center gap-2 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-2 py-1.5 transition-colors outline-none">
+        <DropdownMenuTrigger className="group flex items-center overflow-hidden rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors outline-none">
           {user.photoURL ? (
             <img
               src={user.photoURL}
               alt=""
-              className="h-6 w-6 rounded-full object-cover"
+              className="h-[34px] w-[34px] object-cover"
             />
           ) : (
-            <div className="h-6 w-6 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-medium text-white">
+            <div className="h-[34px] w-[34px] bg-zinc-700 flex items-center justify-center text-xs font-medium text-white">
               {initials}
             </div>
           )}
-          <span className="hidden sm:inline max-w-[120px] truncate">
+          <span className="hidden sm:block text-sm text-zinc-300 group-hover:text-white px-3 max-w-[120px] truncate bg-gradient-to-r from-zinc-800 to-zinc-800/50 group-hover:from-zinc-700 group-hover:to-zinc-700/50 transition-colors">
             {displayName}
           </span>
         </DropdownMenuTrigger>
@@ -69,7 +69,7 @@ function AuthButton() {
   return (
     <button
       onClick={() => openAuthModal('login')}
-      className="text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 py-1.5 transition-colors"
+      className="text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 py-1.5 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
     >
       Zaloguj się
     </button>
@@ -176,13 +176,13 @@ export function Header() {
             <AuthButton />
             <button
               onClick={openProModal}
-              className="text-sm text-white bg-amber-500/10 hover:bg-amber-500/20 rounded-lg px-3 py-1.5 transition-colors"
+              className="text-sm text-white bg-amber-500/10 hover:bg-amber-500/20 rounded-lg px-3 py-1.5 border border-amber-500/30 hover:border-amber-500/50 transition-colors"
             >
               Pollar Pro
             </button>
             <button
               onClick={openSearch}
-              className="text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg p-2 transition-colors"
+              className="text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg p-2 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
               aria-label="Szukaj"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

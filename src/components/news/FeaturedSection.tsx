@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
 import { staggerContainer, staggerItem, scrollReveal } from '@/lib/animations';
+import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 
 interface FeaturedSectionProps {
@@ -13,6 +14,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
 
   const mainEvent = events[0];
   const secondaryEvents = events.slice(1, 3);
+  const imageSource = getImageSource(mainEvent);
 
   return (
     <motion.div
@@ -34,16 +36,24 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
             hoverScale={1.02}
           />
         </Link>
-        {mainEvent.lead && (
-          <motion.p
-            key={mainEvent.id}
-            className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200 mx-4 mb-4 -mt-16 relative z-10"
+        {(imageSource || mainEvent.lead) && (
+          <motion.div
+            className="mx-4 mb-4 -mt-16 relative z-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
-            {mainEvent.lead}
-          </motion.p>
+            {imageSource && (
+              <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2">
+                Źródło: {imageSource}
+              </span>
+            )}
+            {mainEvent.lead && (
+              <p className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200">
+                {mainEvent.lead}
+              </p>
+            )}
+          </motion.div>
         )}
       </div>
 
@@ -69,12 +79,19 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                   to={`/event/${event.id}`}
                   className="hover:bg-zinc-50 transition-colors flex gap-4 p-2 -mx-2 rounded"
                 >
-                  <div className="w-32 shrink-0 overflow-hidden">
-                    <EventImage
-                      event={event}
-                      className="w-full aspect-video object-cover"
-                      hoverScale={1.05}
-                    />
+                  <div className="w-40 shrink-0">
+                    <div className="relative overflow-hidden">
+                      <EventImage
+                        event={event}
+                        className="w-full aspect-video object-cover"
+                        hoverScale={1.05}
+                      />
+                      {getImageSource(event) && (
+                        <span className="absolute bottom-1 left-1 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-1.5 py-0.5 rounded z-10">
+                          Źródło: {getImageSource(event)}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex flex-col justify-center">
                     <span className="text-zinc-400 text-xs">{event.category}</span>

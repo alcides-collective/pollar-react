@@ -4,9 +4,9 @@ import { useEvent } from '../../hooks/useEvent';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
 import { preventWidows, sanitizeAndProcessHtml, prepareOgDescription } from '../../utils/text';
-import ekonomiaImg from '../../assets/images/felietony/ekonomia.png';
-import geopolitykaImg from '../../assets/images/felietony/geopolityka.png';
-import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.png';
+import ekonomiaImg from '../../assets/images/felietony/ekonomia.webp';
+import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
+import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.webp';
 import type { FelietonCategory, SourceEvent } from '../../types/felieton';
 
 const FELIETON_IMAGES: Record<FelietonCategory, string> = {

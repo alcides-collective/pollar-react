@@ -116,15 +116,15 @@ body {
 
 /* Section Box */
 .section-box {
-  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 p-4;
+  @apply mt-8 mb-4;
 }
 
 .section-title {
-  @apply text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-3 pb-2 border-b border-zinc-200;
+  @apply text-xl font-semibold text-zinc-900 mb-4;
 }
 
 .section-content {
-  @apply text-sm text-zinc-700 leading-relaxed;
+  @apply text-base text-zinc-700 leading-relaxed;
 }
 
 .section-content p {

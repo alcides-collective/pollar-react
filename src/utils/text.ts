@@ -606,8 +606,8 @@ export function sanitizeAndProcessHtml(text: string): string {
     })
     .join('');
 
-  // Remove event UUID/ID references like (ID: 123) or (event bd6b1f5c-9ca3-46fd-9e0c-6399f2b5e5c2)
-  return paragraphs.replace(/\s*\((?:ID:\s*\d+|event\s+[a-f0-9-]+)\)/gi, '');
+  // Remove event UUID/ID references like (ID: 123), (event bd6b1f5c-...), or just (bd6b1f5c-...)
+  return paragraphs.replace(/\s*\((?:ID:\s*\d+|(?:event\s+)?[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\)/gi, '');
 }
 
 /**

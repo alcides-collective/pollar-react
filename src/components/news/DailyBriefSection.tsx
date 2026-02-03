@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { DailyBrief } from '../../types/brief';
 import { scrollReveal } from '@/lib/animations';
-import dailyBriefImg from '../../assets/images/daily/day.png';
+import dailyBriefImg from '../../assets/images/daily/day.webp';
 
 interface DailyBriefSectionProps {
   brief: DailyBrief;
