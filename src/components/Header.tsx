@@ -148,10 +148,10 @@ export function Header() {
     <>
     <motion.header
       ref={headerRef}
-      className="bg-black fixed top-0 left-0 right-0 z-50"
+      className="bg-black fixed z-50 -top-3 -left-3 -right-3 pt-3 pl-3 pr-3"
       initial={false}
-      animate={{ y: isVisible ? 0 : '-100%' }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      animate={{ y: isVisible ? 0 : '-100%', opacity: isVisible ? 1 : 0, filter: isVisible ? 'blur(0px)' : 'blur(8px)' }}
+      transition={{ type: 'spring', stiffness: isVisible ? 150 : 300, damping: isVisible ? 20 : 30 }}
     >
       <div className="max-w-[1400px] mx-auto px-6">
         {/* Top bar */}

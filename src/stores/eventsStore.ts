@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { useEffect, useMemo, useCallback, useRef } from 'react';
 import type { Event, EventsResponse } from '../types/events';
 import { API_BASE, apiConfig } from '../config/api';
 import { sanitizeEvent } from '../utils/sanitize';
@@ -229,30 +230,34 @@ export function useEvents(params: UseEventsOptions = {}) {
   const prefetchArchive = useEventsStore((s) => s.prefetchArchive);
   const fetchingKeys = useEventsStore((s) => s.fetchingKeys);
 
-  const searchParams = new URLSearchParams();
-  if (params.limit) searchParams.set('limit', String(params.limit));
-  if (params.lang) searchParams.set('lang', params.lang);
-  if (params.category) searchParams.set('category', params.category);
+  // Memoize URL and cache keys to prevent unnecessary recalculations
+  const { url, cacheKey, archiveCacheKey } = useMemo(() => {
+    const searchParams = new URLSearchParams();
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.lang) searchParams.set('lang', params.lang);
+    if (params.category) searchParams.set('category', params.category);
 
-  const url = `${API_BASE}/events?${searchParams.toString()}`;
-  const cacheKey = url; // Simplified key - archive handled separately
+    const url = `${API_BASE}/events?${searchParams.toString()}`;
+    const cacheKey = url;
 
-  // Archive cache key
-  const archiveSearchParams = new URLSearchParams();
-  archiveSearchParams.set('limit', String(params.limit || 100));
-  archiveSearchParams.set('lang', params.lang || 'pl');
-  const archiveUrl = `${API_BASE}/events/archive?${archiveSearchParams.toString()}`;
-  const archiveCacheKey = `archive:${archiveUrl}`;
+    const archiveSearchParams = new URLSearchParams();
+    archiveSearchParams.set('limit', String(params.limit || 100));
+    archiveSearchParams.set('lang', params.lang || 'pl');
+    const archiveUrl = `${API_BASE}/events/archive?${archiveSearchParams.toString()}`;
+    const archiveCacheKey = `archive:${archiveUrl}`;
 
-  const fetchEventsFn = async (): Promise<Event[]> => {
+    return { url, cacheKey, archiveCacheKey };
+  }, [params.limit, params.lang, params.category]);
+
+  // Memoize fetch function with useCallback
+  const fetchEventsFn = useCallback(async (): Promise<Event[]> => {
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
     const responseData: EventsResponse = await response.json();
     return responseData.data.map(sanitizeEvent);
-  };
+  }, [url]);
 
   // Get events directly from subscribed cache state
   const cached = cache[cacheKey];
@@ -268,33 +273,51 @@ export function useEvents(params: UseEventsOptions = {}) {
   const archiveLoading = loading[archiveCacheKey] ?? false;
   const archiveError = errors[archiveCacheKey] ?? null;
 
-  // Trigger fetch if not fresh and not already fetching
-  if (!isFresh && !loadingState && !fetchingKeys.has(cacheKey)) {
-    fetchEvents(cacheKey, fetchEventsFn);
-  }
+  // Check if currently fetching this key (stable boolean instead of Set comparison)
+  const isFetching = fetchingKeys.has(cacheKey);
 
-  // Prefetch archive in background after main events load
-  if (isFresh && !params.includeArchive) {
-    prefetchArchive({ limit: params.limit, lang: params.lang });
-  }
+  // Track if we've initiated fetch to prevent double-fetch in StrictMode
+  const fetchInitiatedRef = useRef<string | null>(null);
 
-  // Combine with archive if requested
-  let finalEvents = events;
-  if (params.includeArchive && archiveEvents.length > 0) {
-    // Dedupe by id
-    const eventIds = new Set(events.map(e => e.id));
-    const uniqueArchive = archiveEvents.filter(e => !eventIds.has(e.id));
-    finalEvents = [...events, ...uniqueArchive];
-  }
+  // Trigger fetch in useEffect (NOT during render!)
+  useEffect(() => {
+    const shouldFetch = !isFresh && !loadingState && !isFetching;
+
+    // Only fetch if we haven't already initiated a fetch for this exact cache key
+    if (shouldFetch && fetchInitiatedRef.current !== cacheKey) {
+      fetchInitiatedRef.current = cacheKey;
+      fetchEvents(cacheKey, fetchEventsFn);
+    }
+  }, [cacheKey, isFresh, loadingState, isFetching, fetchEvents, fetchEventsFn]);
+
+  // Prefetch archive in useEffect after main events load
+  useEffect(() => {
+    if (isFresh && !params.includeArchive) {
+      prefetchArchive({ limit: params.limit, lang: params.lang });
+    }
+  }, [isFresh, params.includeArchive, params.limit, params.lang, prefetchArchive]);
+
+  // Combine with archive if requested (memoized)
+  const finalEvents = useMemo(() => {
+    if (params.includeArchive && archiveEvents.length > 0) {
+      const eventIds = new Set(events.map(e => e.id));
+      const uniqueArchive = archiveEvents.filter(e => !eventIds.has(e.id));
+      return [...events, ...uniqueArchive];
+    }
+    return events;
+  }, [events, archiveEvents, params.includeArchive]);
 
   const isLoading = loadingState || (!isFresh && events.length === 0);
   const isArchiveLoading = params.includeArchive && archiveLoading && archiveEvents.length === 0;
 
   // Filter out hidden categories (only if user is logged in and has hidden categories)
   const hiddenCategories = useUserStore((s) => s.hiddenCategories);
-  const filteredEvents = params.skipHiddenFilter || hiddenCategories.length === 0
-    ? finalEvents
-    : finalEvents.filter((event) => !hiddenCategories.includes(event.category));
+  const filteredEvents = useMemo(() => {
+    if (params.skipHiddenFilter || hiddenCategories.length === 0) {
+      return finalEvents;
+    }
+    return finalEvents.filter((event) => !hiddenCategories.includes(event.category));
+  }, [finalEvents, hiddenCategories, params.skipHiddenFilter]);
 
   return {
     events: filteredEvents,

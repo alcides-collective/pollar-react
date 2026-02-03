@@ -29,7 +29,7 @@ export function NewsGrid() {
 
   if (loading && featured.length === 0) {
     return (
-      <section className="max-w-[1400px] mx-auto px-4 py-6">
+      <section className="max-w-[1400px] mx-auto px-4 pb-6">
         <div className="text-zinc-500 text-center py-12">Ładowanie...</div>
       </section>
     );
@@ -37,14 +37,14 @@ export function NewsGrid() {
 
   if (error) {
     return (
-      <section className="max-w-[1400px] mx-auto px-4 py-6">
+      <section className="max-w-[1400px] mx-auto px-4 pb-6">
         <div className="text-red-500 text-center py-12">Błąd: {error.message}</div>
       </section>
     );
   }
 
   return (
-    <section className="max-w-[1400px] mx-auto px-0 lg:px-6 pb-10">
+    <section className="max-w-[1400px] mx-auto px-0 lg:px-6 pb-10 -mt-3">
       <div className="border border-zinc-200">
         {/* Market Ticker */}
         <MarketTicker />
