@@ -165,11 +165,42 @@ app.get('/api/og', async (req, res) => {
     ? `<text x="${padding}" y="100" font-size="24" font-weight="600" fill="#a1a1aa" letter-spacing="0.1em">${escapeXml(typeLabel)}</text>`
     : '';
 
-  // Description element - small gray text below title
+  // Description element - small gray text below title with gradient fade
   const descriptionY = textY + displayLines.length * lineHeight + 30;
-  const descriptionElement = description
-    ? `<text x="${padding}" y="${descriptionY}" font-size="24" font-weight="400" fill="#71717a">${escapeXml(description)}</text>`
-    : '';
+  const descriptionFontSize = 22;
+  const descriptionLineHeight = 30;
+  const logoRightMargin = 180; // Space for logo on the right
+  const descriptionMaxWidth = width - padding - logoRightMargin;
+  const descriptionMaxChars = Math.floor(descriptionMaxWidth / (descriptionFontSize * 0.5));
+
+  // Wrap description into lines
+  let descriptionLines = [];
+  if (description) {
+    const descWords = description.split(' ');
+    let descCurrentLine = '';
+    for (const word of descWords) {
+      const testLine = descCurrentLine ? `${descCurrentLine} ${word}` : word;
+      if (testLine.length <= descriptionMaxChars) {
+        descCurrentLine = testLine;
+      } else {
+        if (descCurrentLine) descriptionLines.push(descCurrentLine);
+        descCurrentLine = word;
+      }
+    }
+    if (descCurrentLine) descriptionLines.push(descCurrentLine);
+    // Limit to 4 lines max for description
+    descriptionLines = descriptionLines.slice(0, 4);
+  }
+
+  // Build description text elements with gradient opacity
+  const descriptionElements = descriptionLines
+    .map((line, i) => {
+      const y = descriptionY + i * descriptionLineHeight;
+      // Opacity decreases for each line (1 -> 0.7 -> 0.4 -> 0.2)
+      const opacity = Math.max(0.2, 1 - (i * 0.3));
+      return `<text x="${padding}" y="${y}" font-size="${descriptionFontSize}" font-weight="400" fill="#a1a1aa" opacity="${opacity}">${escapeXml(line)}</text>`;
+    })
+    .join('\n');
 
   // Font style - uses system fonts configured via fontconfig
   const fontStyle = `text { font-family: ${FONT_FAMILY}; }`;
@@ -180,7 +211,7 @@ app.get('/api/og', async (req, res) => {
       <rect width="100%" height="100%" fill="#09090b"/>
       ${typeLabelElement}
       ${textElements}
-      ${descriptionElement}
+      ${descriptionElements}
     </svg>
   `;
 
@@ -305,7 +336,9 @@ app.use(async (req, res, next) => {
       const fullTitle = event.title || 'Pollar';
       const kp = event.metadata?.keyPoints?.[0];
       const description = truncate(stripHtml(kp?.description || event.lead || event.summary || ''), 160);
-      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event`;
+      // For OG image, use longer description (up to 300 chars for multi-line display)
+      const ogImageDescription = truncate(stripHtml(event.lead || event.summary || kp?.description || ''), 300);
+      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}`;
 
       return res.send(generateSeoHtml({
         pageTitle: `${shortTitle} | Pollar`,
@@ -323,6 +356,7 @@ app.use(async (req, res, next) => {
     let briefTitle = 'Daily Brief';
     let description = 'Podsumowanie najważniejszych wydarzeń dnia.';
     let imageTitle = briefTitle;
+    let ogImageDescription = description;
 
     if (brief) {
       const date = brief.date ? new Date(brief.date).toLocaleDateString('pl-PL', {
@@ -331,10 +365,11 @@ app.use(async (req, res, next) => {
       briefTitle = date ? `Daily Brief – ${date}` : 'Daily Brief';
       imageTitle = brief.headline || briefTitle;
       description = truncate(stripHtml(brief.lead || brief.executiveSummary || ''), 160);
+      ogImageDescription = truncate(stripHtml(brief.lead || brief.executiveSummary || ''), 300);
     }
 
     const ogTitle = `Pollar News: ${briefTitle}`;
-    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(imageTitle)}&type=brief`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(imageTitle)}&type=brief&description=${encodeURIComponent(ogImageDescription)}`;
     return res.send(generateSeoHtml({
       pageTitle: `${briefTitle} | Pollar`,
       ogTitle,
@@ -350,14 +385,16 @@ app.use(async (req, res, next) => {
     const felieton = await fetchFelietonData(felietonMatch[1]);
     let felietonTitle = 'Felieton';
     let description = 'Felieton Pollar News.';
+    let ogImageDescription = description;
 
     if (felieton) {
       felietonTitle = felieton.title || felietonTitle;
       description = truncate(stripHtml(felieton.lead || ''), 160);
+      ogImageDescription = truncate(stripHtml(felieton.lead || ''), 300);
     }
 
     const ogTitle = `Pollar News: ${felietonTitle}`;
-    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(felietonTitle)}&type=felieton`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(felietonTitle)}&type=felieton&description=${encodeURIComponent(ogImageDescription)}`;
     return res.send(generateSeoHtml({
       pageTitle: `${felietonTitle} | Pollar`,
       ogTitle,
