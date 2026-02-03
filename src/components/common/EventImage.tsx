@@ -8,11 +8,14 @@ interface EventImageProps {
   event: Event;
   className?: string;
   style?: React.CSSProperties;
+  /** Scale factor on direct hover (uses motion.whileHover). Set to 1 to disable. */
   hoverScale?: number;
   grainOpacity?: number;
+  /** Enable scale on parent group hover (requires parent with 'group' class) */
+  groupHover?: boolean;
 }
 
-export function EventImage({ event, className, style, hoverScale = 1.02, grainOpacity = 0.25 }: EventImageProps) {
+export function EventImage({ event, className, style, hoverScale = 1.02, grainOpacity = 0.25, groupHover = false }: EventImageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [allFailed, setAllFailed] = useState(false);
 
@@ -50,12 +53,16 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
     ? PLACEHOLDER_IMAGE
     : imageUrls[currentIndex];
 
+  // Use CSS group-hover when groupHover is enabled, otherwise use motion.whileHover
+  const useGroupHover = groupHover;
+  const groupHoverClass = useGroupHover ? 'transition-transform duration-500 ease-out group-hover:scale-[1.02]' : '';
+
   return (
     <motion.div
-      className={`relative overflow-hidden ${className || ''}`}
+      className={`relative overflow-hidden ${className || ''} ${groupHoverClass}`}
       style={style}
-      whileHover={{ scale: hoverScale }}
-      transition={{ duration: 0.4 }}
+      whileHover={useGroupHover ? undefined : { scale: hoverScale }}
+      transition={useGroupHover ? undefined : { duration: 0.4 }}
     >
       <img
         key={`${event.id}-${currentIndex}-${allFailed}`}

@@ -4,7 +4,10 @@ interface GrainImageProps {
   className?: string;
   style?: React.CSSProperties;
   grainOpacity?: number;
+  /** @deprecated Use groupHover instead for parent-based hover */
   hoverScale?: boolean;
+  /** Enable scale on parent group hover (requires parent with 'group' class) */
+  groupHover?: boolean;
 }
 
 export function GrainImage({
@@ -14,13 +17,17 @@ export function GrainImage({
   style,
   grainOpacity = 0.25,
   hoverScale = false,
+  groupHover = false,
 }: GrainImageProps) {
+  // groupHover uses parent's group class, hoverScale (legacy) creates own group
+  const useParentGroup = groupHover || hoverScale;
+
   return (
-    <div className={`relative overflow-hidden ${hoverScale ? 'group' : ''}`}>
+    <div className="relative overflow-hidden">
       <img
         src={src}
         alt={alt}
-        className={`${className} ${hoverScale ? 'transition-transform duration-500 ease-out group-hover:scale-[1.02]' : ''}`}
+        className={`${className} ${useParentGroup ? 'transition-transform duration-500 ease-out group-hover:scale-[1.02]' : ''}`}
         style={style}
       />
       <div

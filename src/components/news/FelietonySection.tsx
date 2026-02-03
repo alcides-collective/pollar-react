@@ -29,7 +29,7 @@ function FelietonCard({ felieton }: { felieton: Felieton }) {
           <GrainImage
             src={imageSrc}
             className="w-full aspect-video object-cover"
-            hoverScale
+            groupHover
           />
         </div>
         <span className="text-zinc-400 text-xs">{categoryName}</span>

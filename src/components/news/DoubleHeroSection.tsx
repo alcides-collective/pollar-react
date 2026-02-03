@@ -28,11 +28,11 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
     >
       <Link to={`/event/${leftEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors border-b md:border-b-0 md:border-r border-zinc-200">
         <article>
-          <div className="overflow-hidden mb-4 relative">
+          <div className="mb-4 relative">
             <EventImage
               event={leftEvent}
-              className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-              hoverScale={1}
+              className="w-full aspect-video object-cover"
+              groupHover
             />
             {getImageSource(leftEvent) && (
               <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded">
@@ -52,11 +52,11 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
 
       <Link to={`/event/${rightEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors">
         <article>
-          <div className="overflow-hidden mb-4 relative">
+          <div className="mb-4 relative">
             <EventImage
               event={rightEvent}
-              className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-              hoverScale={1}
+              className="w-full aspect-video object-cover"
+              groupHover
             />
             {getImageSource(rightEvent) && (
               <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded">

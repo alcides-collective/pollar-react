@@ -56,11 +56,11 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                 <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
                   <article className="flex flex-col md:flex-row gap-4">
                     <div className="w-full md:w-80 md:shrink-0">
-                      <div className="relative overflow-hidden">
+                      <div className="relative">
                         <EventImage
                           event={selectedGroup[1][0]}
                           className="w-full aspect-video object-cover"
-                          hoverScale={1.03}
+                          groupHover
                         />
                         {getImageSource(selectedGroup[1][0]) && (
                           <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded z-10">

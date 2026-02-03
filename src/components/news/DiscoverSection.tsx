@@ -18,7 +18,7 @@ const DISCOVER_LINKS: DiscoverLink[] = [
   {
     path: '/powiazania',
     title: 'Powiązania',
-    description: 'Odkryj sieć połączeń między politykami, firmami i organizacjami. Interaktywna mapa wpływów.',
+    description: 'Codzienna gra słowna. Znajdź ukryte połączenia między słowami i pogrupuj je w kategorie.',
     gradient: 'from-violet-500 to-purple-600',
     image: powiazaniaImg,
   },
@@ -47,7 +47,7 @@ function DiscoverCard({ link }: { link: DiscoverLink }) {
             <GrainImage
               src={link.image}
               className="w-full aspect-video object-cover"
-              hoverScale
+              groupHover
             />
           ) : (
             <div className={`bg-gradient-to-br ${link.gradient} aspect-video flex items-center justify-center`}>

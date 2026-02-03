@@ -25,7 +25,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
       transition={scrollReveal.transition}
     >
       <div className="md:border-r border-zinc-200 relative">
-        <Link to={`/event/${mainEvent.id}`} className="block overflow-hidden">
+        <Link to={`/event/${mainEvent.id}`} className="group block">
           <EventImage
             event={mainEvent}
             className="w-full aspect-[4/3] object-cover"
@@ -33,7 +33,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
               maskImage: 'radial-gradient(ellipse 150% 100% at 0% 0%, black 50%, transparent 100%)',
               WebkitMaskImage: 'radial-gradient(ellipse 150% 100% at 0% 0%, black 50%, transparent 100%)',
             }}
-            hoverScale={1.02}
+            groupHover
           />
         </Link>
         {(imageSource || mainEvent.lead) && (
@@ -77,14 +77,14 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
               <motion.div key={event.id} variants={staggerItem}>
                 <Link
                   to={`/event/${event.id}`}
-                  className="hover:bg-zinc-50 transition-colors flex gap-4 p-2 -mx-2 rounded"
+                  className="group hover:bg-zinc-50 transition-colors flex gap-4 p-2 -mx-2 rounded"
                 >
                   <div className="w-40 shrink-0">
-                    <div className="relative overflow-hidden">
+                    <div className="relative">
                       <EventImage
                         event={event}
                         className="w-full aspect-video object-cover"
-                        hoverScale={1.05}
+                        groupHover
                       />
                       {getImageSource(event) && (
                         <span className="absolute bottom-1 left-1 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-1.5 py-0.5 rounded z-10">

@@ -28,7 +28,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
   });
 
   return (
-    <Link to="/brief" className="block group">
+    <Link to="/brief" className="group block">
       <motion.div
         className="bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer"
         initial={scrollReveal.initial}
@@ -44,7 +44,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
           <GrainImage
             src={dailyBriefImg}
             className="w-full aspect-video object-cover"
-            hoverScale
+            groupHover
           />
           <div className="flex gap-4">
             <div className="flex-1">

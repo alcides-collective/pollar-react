@@ -34,11 +34,11 @@ export function EventCard({
     <Link to={`/event/${event.id}`} className={`group block ${className}`}>
       <article>
         {showImage && (
-          <div className="overflow-hidden mb-4">
+          <div className="mb-4">
             <EventImage
               event={event}
-              className="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-              hoverScale={1}
+              className="w-full aspect-video object-cover"
+              groupHover
             />
           </div>
         )}
