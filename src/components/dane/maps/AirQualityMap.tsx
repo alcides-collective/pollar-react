@@ -5,6 +5,11 @@ import type { AirQualityData } from '@/types/dane';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFrdWJkdWRlayIsImEiOiJjbWRyMWx1Z3EwOTR6MmtzYjJvYzJncmZhIn0.5Fn6PxkRaqVkEwJLhP-8_Q';
 
+// Disable Mapbox telemetry to prevent CORS errors in production
+// @ts-expect-error - workerUrl is not in types but exists
+mapboxgl.workerClass = null;
+(mapboxgl as unknown as { collectResourceTiming: boolean }).collectResourceTiming = false;
+
 interface AirQualityMapProps {
   stations: AirQualityData[];
   selectedProvince?: string | null;
@@ -34,6 +39,8 @@ export function AirQualityMap({
       center: [19.0, 52.0], // Center of Poland
       zoom: 5.5,
       attributionControl: false,
+      collectResourceTiming: false,
+      trackResize: true,
     });
 
     map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');

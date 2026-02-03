@@ -9,6 +9,11 @@ import type { Event } from '../../types/events';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFrdWJkdWRlayIsImEiOiJjbWRyMWx1Z3EwOTR6MmtzYjJvYzJncmZhIn0.5Fn6PxkRaqVkEwJLhP-8_Q';
 
+// Disable Mapbox telemetry to prevent CORS errors in production
+// @ts-expect-error - workerUrl is not in types but exists
+mapboxgl.workerClass = null;
+(mapboxgl as unknown as { collectResourceTiming: boolean }).collectResourceTiming = false;
+
 export function EventsMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -28,6 +33,8 @@ export function EventsMap() {
       center: [19.0122, 52.2297], // Poland center
       zoom: 5,
       attributionControl: false,
+      collectResourceTiming: false,
+      trackResize: true,
     });
 
     map.current.on('load', () => {

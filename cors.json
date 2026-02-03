@@ -1,0 +1,17 @@
+[
+  {
+    "origin": [
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "https://pollar-react-production.up.railway.app",
+      "https://pollarapp-743dd.firebaseapp.com",
+      "https://pollar.news",
+      "https://www.pollar.news",
+      "https://pollar.pl",
+      "https://www.pollar.pl"
+    ],
+    "method": ["GET", "POST", "PUT", "DELETE", "HEAD"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["Content-Type", "Content-Length", "Content-Disposition"]
+  }
+]
