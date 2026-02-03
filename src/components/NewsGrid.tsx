@@ -8,6 +8,7 @@ import { CategoryTabs } from './news/CategoryTabs';
 import { DoubleHeroSection } from './news/DoubleHeroSection';
 import { DailyBriefSection } from './news/DailyBriefSection';
 import { FelietonySection } from './news/FelietonySection';
+import { DiscoverSection } from './news/DiscoverSection';
 import { CategoryCarousel } from './news/CategoryCarousel';
 import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection, VersionSection } from './news/sidebar';
 
@@ -59,6 +60,8 @@ export function NewsGrid() {
           <DoubleHeroSection events={doubleHero1} />
 
           {!isFiltered && brief && <DailyBriefSection brief={brief} />}
+
+          {!isFiltered && <DiscoverSection />}
 
           <DoubleHeroSection events={doubleHero2} reversed />
 
