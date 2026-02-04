@@ -194,6 +194,8 @@ export function Header() {
                 src={logoImg}
                 alt="Pollar"
                 className="h-5 invert"
+                width={172}
+                height={20}
               />
             </Link>
           </div>

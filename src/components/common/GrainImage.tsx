@@ -17,6 +17,10 @@ interface GrainImageProps {
   width?: number;
   /** Image height for preventing CLS */
   height?: number;
+  /** Fetch priority for LCP images */
+  fetchPriority?: 'high' | 'low' | 'auto';
+  /** Override loading strategy */
+  loading?: 'eager' | 'lazy';
 }
 
 export function GrainImage({
@@ -30,6 +34,8 @@ export function GrainImage({
   hoverShadow,
   width,
   height,
+  fetchPriority,
+  loading: loadingProp,
 }: GrainImageProps) {
   // Section image tracking
   const uniqueId = useId();
@@ -50,7 +56,8 @@ export function GrainImage({
         src={src}
         alt={alt}
         className="w-full h-full object-cover"
-        loading={priority === 'high' ? 'eager' : 'lazy'}
+        loading={loadingProp ?? (priority === 'high' ? 'eager' : 'lazy')}
+        fetchPriority={fetchPriority}
         onLoad={onLoad}
         onError={onError}
         width={width}

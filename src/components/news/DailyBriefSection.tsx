@@ -38,7 +38,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
   return (
     <SectionWrapper
       sectionId={`daily-brief-${brief.date}`}
-      priority="low"
+      priority="high"
     >
       <Link to="/brief" className="group block">
         <div className="bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer p-6">
@@ -54,6 +54,8 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
               groupHover
               width={800}
               height={450}
+              fetchPriority="high"
+              loading="eager"
             />
             <h2 className="text-3xl font-bold text-zinc-900 mb-4 mt-4 leading-tight hover:underline">
               {brief.headline}
@@ -77,6 +79,8 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
                 groupHover
                 width={800}
                 height={450}
+                fetchPriority="high"
+                loading="eager"
               />
             </div>
             {/* Right column: date + headline + lead */}
