@@ -29,6 +29,8 @@ function FelietonCard({ felieton }: { felieton: Felieton }) {
             src={imageSrc}
             className="w-full aspect-video object-cover"
             groupHover
+            width={400}
+            height={225}
           />
         </div>
         <span className="text-zinc-400 text-xs">{categoryName}</span>
@@ -54,6 +56,8 @@ function PlaceholderCard({ category }: { category: FelietonCategory }) {
           <GrainImage
             src={imageSrc}
             className="w-full aspect-video object-cover"
+            width={400}
+            height={225}
           />
         </div>
         <span className="text-zinc-400 text-xs">{categoryName}</span>

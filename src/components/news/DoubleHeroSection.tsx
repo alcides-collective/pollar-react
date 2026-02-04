@@ -30,6 +30,8 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
               event={leftEvent}
               className="w-full aspect-video object-cover"
               groupHover
+              width={800}
+              height={450}
             />
             {getImageSource(leftEvent) && (
               <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">
@@ -54,6 +56,8 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
               event={rightEvent}
               className="w-full aspect-video object-cover"
               groupHover
+              width={800}
+              height={450}
             />
             {getImageSource(rightEvent) && (
               <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">

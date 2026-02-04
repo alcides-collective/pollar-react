@@ -34,6 +34,8 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
             }}
             groupHover
             hoverShadow={false}
+            width={800}
+            height={600}
           />
         </Link>
         {/* Leadbox - only on desktop (overlaid on image) */}
@@ -111,6 +113,8 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                         event={event}
                         className="w-full aspect-video object-cover"
                         groupHover
+                        width={320}
+                        height={180}
                       />
                       {getImageSource(event) && (
                         <span className="absolute bottom-1 left-1 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-1.5 py-0.5 rounded z-10 max-w-[calc(100%-0.5rem)] truncate">

@@ -5,6 +5,14 @@ import { useImageInSection } from '../../hooks/useSectionImages';
 
 const PLACEHOLDER_IMAGE = '/opengraph-image.jpg';
 
+// Force HTTPS for external images to avoid mixed content warnings
+function enforceHttps(url: string): string {
+  if (url.startsWith('http://')) {
+    return url.replace('http://', 'https://');
+  }
+  return url;
+}
+
 interface EventImageProps {
   event: Event;
   className?: string;
@@ -31,15 +39,15 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
   const imageId = `event-${event.id}-${uniqueId}`;
   const { priority, onLoad, onError } = useImageInSection(imageId);
 
-  // Stabilna lista URLi - tylko niepuste stringi
+  // Stabilna lista URLi - tylko niepuste stringi, wymuszamy HTTPS
   const imageUrls = useMemo(() => {
     const urls: string[] = [];
     if (event.imageUrl && event.imageUrl.trim()) {
-      urls.push(event.imageUrl);
+      urls.push(enforceHttps(event.imageUrl));
     }
     event.articles?.forEach(article => {
       if (article.imageUrl && article.imageUrl.trim()) {
-        urls.push(article.imageUrl);
+        urls.push(enforceHttps(article.imageUrl));
       }
     });
     return urls;

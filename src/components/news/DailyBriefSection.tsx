@@ -28,7 +28,7 @@ function getTimeBasedGreeting(): string {
 
 export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
   const timeGreeting = getTimeBasedGreeting();
-  const formattedDate = new Date(brief.date).toLocaleDateString('pl-PL', {
+  const formattedDate = new Date().toLocaleDateString('pl-PL', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -52,6 +52,8 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
               src={dailyBriefImg}
               className="w-full aspect-video object-cover mt-4"
               groupHover
+              width={800}
+              height={450}
             />
             <h2 className="text-3xl font-bold text-zinc-900 mb-4 mt-4 leading-tight hover:underline">
               {brief.headline}
@@ -73,6 +75,8 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
                 src={dailyBriefImg}
                 className="w-full aspect-video object-cover mt-4"
                 groupHover
+                width={800}
+                height={450}
               />
             </div>
             {/* Right column: date + headline + lead */}
