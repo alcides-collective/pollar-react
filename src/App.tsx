@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 import { motion } from 'framer-motion'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { Toaster } from 'sonner'
 import { Header } from './components/Header'
 import { AuthModal, EmailVerificationBanner } from './components/auth'
@@ -13,62 +13,69 @@ import { useReadHistoryStore } from './stores/readHistoryStore'
 import { NewsGrid } from './components/NewsGrid'
 import { Footer } from './components/Footer'
 import { CookiePopup } from './components/CookiePopup'
-import { EventPage } from './pages/event'
-import { BriefPage } from './pages/brief'
-import { FelietonPage } from './pages/felieton'
-import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage'
-import { CookieSettingsPage } from './pages/CookieSettingsPage'
-import { MapPage } from './pages/mapa'
-import { TerminalPage } from './pages/terminal'
 import { ScrollToTop } from './components/ScrollToTop'
-import {
-  SejmLayout,
-  SejmDashboard,
-  MPsPage,
-  MPDetailPage,
-  VotingsPage,
-  VotingDetailPage,
-  ClubsPage,
-  ClubDetailPage,
-  CommitteesPage,
-  CommitteeDetailPage,
-  ProceedingsPage,
-  ProceedingDetailPage,
-  PrintsPage,
-  PrintDetailPage,
-  ProcessesPage,
-  InterpellationsPage,
-  QuestionsPage,
-  VideosPage,
-} from './pages/sejm'
-import { DaneLayout, DanePage } from './pages/dane'
-import { PowietrzePage } from './pages/dane/srodowisko/PowietrzePage'
-import { ImionaPage } from './pages/dane/spoleczenstwo/ImionaPage'
-import { NazwiskaPage } from './pages/dane/spoleczenstwo/NazwiskaPage'
-import { EnergiaPage } from './pages/dane/ekonomia/EnergiaPage'
-import { EurostatPage } from './pages/dane/ekonomia/EurostatPage'
-import { MieszkaniaPage } from './pages/dane/ekonomia/MieszkaniaPage'
-import { KolejPage } from './pages/dane/transport/KolejPage'
-import { PortyPage } from './pages/dane/transport/PortyPage'
-import { PrzestepczoscPage } from './pages/dane/bezpieczenstwo/PrzestepczoscPage'
-import {
-  GieldaLayout,
-  GieldaPage,
-  StocksPage,
-  IndicesPage,
-  WatchlistPage,
-  StockDetailPage,
-  IndexDetailPage,
-} from './pages/gielda'
-import { PowiazaniaPage } from './pages/powiazania'
-import { ProfilePage } from './pages/profile/ProfilePage'
-import { DashboardPage } from './pages/dashboard/DashboardPage'
-import { NotificationsPage } from './pages/notifications'
-import { ArchivePage, CategoryArchivePage } from './pages/archiwum'
-import { AsystentPage } from './pages/asystent'
-import { InfoPage } from './pages/info'
+import { PageLoader } from './components/common/PageLoader'
 import { useEventStream } from './hooks/useEventStream'
 import { useAllSectionsReady } from './stores/imageLoadingStore'
+
+// Lazy load all page components for code splitting
+const EventPage = lazy(() => import('./pages/event').then(m => ({ default: m.EventPage })))
+const BriefPage = lazy(() => import('./pages/brief').then(m => ({ default: m.BriefPage })))
+const FelietonPage = lazy(() => import('./pages/felieton').then(m => ({ default: m.FelietonPage })))
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(m => ({ default: m.PrivacyPolicyPage })))
+const CookieSettingsPage = lazy(() => import('./pages/CookieSettingsPage').then(m => ({ default: m.CookieSettingsPage })))
+const MapPage = lazy(() => import('./pages/mapa').then(m => ({ default: m.MapPage })))
+const TerminalPage = lazy(() => import('./pages/terminal').then(m => ({ default: m.TerminalPage })))
+const InfoPage = lazy(() => import('./pages/info').then(m => ({ default: m.InfoPage })))
+const AsystentPage = lazy(() => import('./pages/asystent').then(m => ({ default: m.AsystentPage })))
+const PowiazaniaPage = lazy(() => import('./pages/powiazania').then(m => ({ default: m.PowiazaniaPage })))
+const ProfilePage = lazy(() => import('./pages/profile/ProfilePage').then(m => ({ default: m.ProfilePage })))
+const DashboardPage = lazy(() => import('./pages/dashboard/DashboardPage').then(m => ({ default: m.DashboardPage })))
+const NotificationsPage = lazy(() => import('./pages/notifications').then(m => ({ default: m.NotificationsPage })))
+const ArchivePage = lazy(() => import('./pages/archiwum').then(m => ({ default: m.ArchivePage })))
+const CategoryArchivePage = lazy(() => import('./pages/archiwum').then(m => ({ default: m.CategoryArchivePage })))
+
+// Sejm section (heavy - lots of data visualization)
+const SejmLayout = lazy(() => import('./pages/sejm').then(m => ({ default: m.SejmLayout })))
+const SejmDashboard = lazy(() => import('./pages/sejm').then(m => ({ default: m.SejmDashboard })))
+const MPsPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.MPsPage })))
+const MPDetailPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.MPDetailPage })))
+const VotingsPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.VotingsPage })))
+const VotingDetailPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.VotingDetailPage })))
+const ClubsPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.ClubsPage })))
+const ClubDetailPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.ClubDetailPage })))
+const CommitteesPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.CommitteesPage })))
+const CommitteeDetailPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.CommitteeDetailPage })))
+const ProceedingsPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.ProceedingsPage })))
+const ProceedingDetailPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.ProceedingDetailPage })))
+const PrintsPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.PrintsPage })))
+const PrintDetailPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.PrintDetailPage })))
+const ProcessesPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.ProcessesPage })))
+const InterpellationsPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.InterpellationsPage })))
+const QuestionsPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.QuestionsPage })))
+const VideosPage = lazy(() => import('./pages/sejm').then(m => ({ default: m.VideosPage })))
+
+// Dane section (data visualization)
+const DaneLayout = lazy(() => import('./pages/dane').then(m => ({ default: m.DaneLayout })))
+const DanePage = lazy(() => import('./pages/dane').then(m => ({ default: m.DanePage })))
+const PowietrzePage = lazy(() => import('./pages/dane/srodowisko/PowietrzePage').then(m => ({ default: m.PowietrzePage })))
+const ImionaPage = lazy(() => import('./pages/dane/spoleczenstwo/ImionaPage').then(m => ({ default: m.ImionaPage })))
+const NazwiskaPage = lazy(() => import('./pages/dane/spoleczenstwo/NazwiskaPage').then(m => ({ default: m.NazwiskaPage })))
+const EnergiaPage = lazy(() => import('./pages/dane/ekonomia/EnergiaPage').then(m => ({ default: m.EnergiaPage })))
+const EurostatPage = lazy(() => import('./pages/dane/ekonomia/EurostatPage').then(m => ({ default: m.EurostatPage })))
+const MieszkaniaPage = lazy(() => import('./pages/dane/ekonomia/MieszkaniaPage').then(m => ({ default: m.MieszkaniaPage })))
+const KolejPage = lazy(() => import('./pages/dane/transport/KolejPage').then(m => ({ default: m.KolejPage })))
+const PortyPage = lazy(() => import('./pages/dane/transport/PortyPage').then(m => ({ default: m.PortyPage })))
+const PrzestepczoscPage = lazy(() => import('./pages/dane/bezpieczenstwo/PrzestepczoscPage').then(m => ({ default: m.PrzestepczoscPage })))
+
+// Gielda section (heavy - Chart.js)
+const GieldaLayout = lazy(() => import('./pages/gielda').then(m => ({ default: m.GieldaLayout })))
+const GieldaPage = lazy(() => import('./pages/gielda').then(m => ({ default: m.GieldaPage })))
+const StocksPage = lazy(() => import('./pages/gielda').then(m => ({ default: m.StocksPage })))
+const IndicesPage = lazy(() => import('./pages/gielda').then(m => ({ default: m.IndicesPage })))
+const WatchlistPage = lazy(() => import('./pages/gielda').then(m => ({ default: m.WatchlistPage })))
+const StockDetailPage = lazy(() => import('./pages/gielda').then(m => ({ default: m.StockDetailPage })))
+const IndexDetailPage = lazy(() => import('./pages/gielda').then(m => ({ default: m.IndexDetailPage })))
 
 function HomePage() {
   return <NewsGrid />
