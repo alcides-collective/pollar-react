@@ -24,15 +24,15 @@ function VotingAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { ale
   const formatVote = (vote: string): { text: string; color: string } => {
     switch (vote) {
       case 'yes':
-        return { text: t('voting.for'), color: 'text-green-600' };
+        return { text: t('voting.for'), color: 'text-green-400' };
       case 'no':
-        return { text: t('voting.against'), color: 'text-red-600' };
+        return { text: t('voting.against'), color: 'text-red-400' };
       case 'abstain':
-        return { text: t('voting.abstained'), color: 'text-amber-600' };
+        return { text: t('voting.abstained'), color: 'text-amber-400' };
       case 'absent':
         return { text: t('voting.absent'), color: 'text-zinc-500' };
       default:
-        return { text: vote, color: 'text-zinc-600' };
+        return { text: vote, color: 'text-zinc-400' };
     }
   };
 
@@ -41,20 +41,20 @@ function VotingAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { ale
   return (
     <DropdownMenuItem
       asChild
-      className={`py-2 cursor-pointer ${!alert.read ? 'bg-blue-50' : ''}`}
+      className={`py-2 cursor-pointer ${!alert.read ? 'bg-blue-500/20' : ''}`}
       onClick={onMarkAsRead}
     >
       <Link to={`/sejm/glosowania/${alert.sitting}/${alert.votingNumber}`}>
         <div className="flex items-start gap-1.5 w-full">
-          <p className="text-xs text-zinc-600 line-clamp-2 flex-1">
+          <p className="text-xs text-zinc-300 line-clamp-2 flex-1">
             <span className="inline-flex items-baseline gap-1 mr-1 text-xs font-medium">
-              <span className="text-zinc-900">{alert.mpName}</span>
+              <span className="text-white">{alert.mpName}</span>
               <span className={voteInfo.color}>{voteInfo.text}</span>
             </span>
             {alert.votingTitle}
           </p>
           {!alert.read && (
-            <span className="shrink-0 h-1.5 w-1.5 bg-blue-500 rounded-full mt-1" />
+            <span className="shrink-0 h-1.5 w-1.5 bg-blue-400 rounded-full mt-1" />
           )}
         </div>
       </Link>
@@ -69,19 +69,19 @@ function CategoryAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { a
   return (
     <DropdownMenuItem
       asChild
-      className={`py-2 cursor-pointer ${!alert.read ? 'bg-blue-50' : ''}`}
+      className={`py-2 cursor-pointer ${!alert.read ? 'bg-blue-500/20' : ''}`}
       onClick={onMarkAsRead}
     >
       <Link to={`/event/${alert.eventId}`}>
         <div className="flex items-start gap-1.5 w-full">
-          <p className="text-xs text-zinc-900 line-clamp-2 flex-1">
-            <span className="inline text-[10px] px-1 bg-amber-100 text-amber-700 rounded font-medium mr-1">
+          <p className="text-xs text-zinc-200 line-clamp-2 flex-1">
+            <span className="inline text-[10px] px-1.5 py-0.5 bg-amber-500/20 text-amber-300 rounded font-medium mr-1">
               {categoryLabel}
             </span>
             {alert.eventTitle}
           </p>
           {!alert.read && (
-            <span className="shrink-0 h-1.5 w-1.5 bg-blue-500 rounded-full mt-1" />
+            <span className="shrink-0 h-1.5 w-1.5 bg-blue-400 rounded-full mt-1" />
           )}
         </div>
       </Link>
@@ -150,11 +150,11 @@ export function AlertsBell() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
         <DropdownMenuLabel className="flex items-center justify-between">
-          <span>{t('title')}</span>
+          <span className="text-zinc-300">{t('title')}</span>
           {totalUnreadCount > 0 && (
             <button
               onClick={handleMarkAllAsRead}
-              className="text-xs text-zinc-500 hover:text-zinc-700"
+              className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
             >
               {t('markAsRead')}
             </button>
@@ -164,10 +164,10 @@ export function AlertsBell() {
 
         {displayAlerts.length === 0 ? (
           <div className="px-2 py-4 text-center">
-            <p className="text-sm text-zinc-500 mb-2">{t('noNew')}</p>
+            <p className="text-sm text-zinc-400 mb-2">{t('noNew')}</p>
             <Link
               to="/powiadomienia"
-              className="text-xs text-blue-600 hover:underline"
+              className="text-xs text-blue-400 hover:text-blue-300 hover:underline"
             >
               {t('viewHistory')}
             </Link>
@@ -198,7 +198,7 @@ export function AlertsBell() {
             <DropdownMenuItem asChild className="justify-center">
               <Link
                 to="/powiadomienia"
-                className="text-sm text-zinc-600 hover:text-zinc-900"
+                className="text-sm text-zinc-400 hover:text-white"
               >
                 {t('viewAll')}
               </Link>
