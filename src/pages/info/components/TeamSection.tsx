@@ -11,7 +11,7 @@ const team = [
   {
     name: 'Bartosz Kasprzycki',
     role: 'Produkt i Marketing',
-    location: 'Warszawa',
+    location: 'Berlin',
     description: 'Pilnuje intuicyjności i dba o to, żeby Pollar nie zabierał zbyt dużo Twojego czasu, jednocześnie dostarczając wartość.',
     email: 'bartosz@pollar.pl',
   },
