@@ -16,6 +16,9 @@ if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
         maskAllText: false,
         blockAllMedia: false,
       }),
+      Sentry.captureConsoleIntegration({
+        levels: ['error'],
+      }),
     ],
     tracesSampleRate: 0.1,
     replaysSessionSampleRate: 0.0,
