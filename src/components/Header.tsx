@@ -193,7 +193,7 @@ export function Header() {
               <img
                 src={logoImg}
                 alt="Pollar"
-                className="h-5 invert"
+                className="h-5 w-auto invert"
                 width={172}
                 height={20}
               />
