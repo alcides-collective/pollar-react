@@ -467,6 +467,7 @@ app.use(helmet({
         "https://www.googletagmanager.com",
         "https://www.google-analytics.com",
         "https://apis.google.com",
+        "https://static.ads-twitter.com",
       ],
       styleSrc: ["'self'", "'unsafe-inline'", "https://api.mapbox.com"],
       imgSrc: [
@@ -482,6 +483,8 @@ app.use(helmet({
         "https://*.google.pl",
         "https://*.gstatic.com",
         "https://*.doubleclick.net",
+        "https://t.co",
+        "https://analytics.twitter.com",
       ],
       fontSrc: ["'self'", "data:"],
       connectSrc: [
@@ -505,6 +508,9 @@ app.use(helmet({
         "https://www.googletagmanager.com",
         "https://stats.g.doubleclick.net",
         "https://*.sentry.io",
+        "https://static.ads-twitter.com",
+        "https://analytics.twitter.com",
+        "https://t.co",
         "wss://*.firebaseio.com",
       ],
       frameSrc: [
