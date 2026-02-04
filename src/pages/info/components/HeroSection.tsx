@@ -1,8 +1,38 @@
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
+import { useEvents } from '@/stores/eventsStore';
+import { useArchiveEvents } from '@/hooks/useArchiveEvents';
 import logoImg from '@/assets/logo-white.png';
+
+function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    let startTime: number;
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(easeOut * value));
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    requestAnimationFrame(animate);
+  }, [isInView, value, duration]);
+
+  return (
+    <span ref={ref}>
+      {count.toLocaleString('pl-PL')}{suffix}
+    </span>
+  );
+}
 
 export function HeroSection() {
   const ref = useRef(null);
@@ -15,8 +45,33 @@ export function HeroSection() {
   const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
+  // Fetch stats
+  const { events: currentEvents } = useEvents({ limit: 100, lang: 'pl', skipHiddenFilter: true });
+  const { events: archiveEvents } = useArchiveEvents({ limit: 500, lang: 'pl' });
+
+  const stats = useMemo(() => {
+    const eventMap = new Map<string, typeof currentEvents[0]>();
+    currentEvents.forEach((event) => eventMap.set(event.id, event));
+    archiveEvents.forEach((event) => {
+      if (!eventMap.has(event.id)) eventMap.set(event.id, event);
+    });
+
+    const allEvents = Array.from(eventMap.values());
+    const allSources = new Set<string>();
+    allEvents.forEach((event) => {
+      event.sources?.forEach((source) => allSources.add(source));
+    });
+
+    return [
+      { value: allEvents.length || 500, suffix: '+', label: 'Wydarzeń' },
+      { value: allSources.size || 50, suffix: '+', label: 'Źródeł' },
+      { value: 0, suffix: '', label: 'Reklam' },
+      { value: 24, suffix: '/7', label: 'Online' },
+    ];
+  }, [currentEvents, archiveEvents]);
+
   return (
-    <section ref={ref} className="relative h-screen overflow-hidden">
+    <section ref={ref} className="relative min-h-screen overflow-hidden">
       {/* Video background with parallax */}
       <motion.div className="absolute inset-0" style={{ y: videoY }}>
         <video
@@ -31,7 +86,7 @@ export function HeroSection() {
       </motion.div>
 
       {/* Overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/70" />
 
       {/* Grain texture */}
       <div
@@ -41,7 +96,7 @@ export function HeroSection() {
 
       {/* Content with parallax */}
       <motion.div
-        className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-6"
+        className="relative z-10 flex flex-col items-center justify-center min-h-screen text-white text-center px-6 py-20"
         style={{ y: contentY, opacity }}
       >
         <motion.img
@@ -81,12 +136,31 @@ export function HeroSection() {
           </Button>
         </motion.div>
 
+        {/* Stats */}
+        <motion.div
+          className="mt-16 lg:mt-20 grid grid-cols-4 gap-6 lg:gap-12 w-full max-w-3xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5, ease: 'easeOut' }}
+        >
+          {stats.map((stat) => (
+            <div key={stat.label} className="text-center">
+              <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-1">
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+              </div>
+              <div className="text-xs md:text-sm text-zinc-400 uppercase tracking-wider">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
         {/* Scroll indicator */}
         <motion.div
           className="absolute bottom-8 flex flex-col items-center gap-2 text-zinc-400"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.7 }}
         >
           <span className="text-xs uppercase tracking-widest">Przewiń</span>
           <motion.div
