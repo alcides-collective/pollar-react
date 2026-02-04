@@ -20,6 +20,15 @@ import { useTranslatedEventTitles } from '@/hooks/useTranslatedEventTitles';
 type FilterType = 'all' | 'voting' | 'category';
 type VoteFilter = 'all' | 'yes' | 'no' | 'abstain' | 'absent';
 
+// Normalize category key for translation lookup (lowercase, no diacritics)
+function normalizeCategoryKey(category: string): string {
+  return category
+    ?.toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+    .replace(/ł/g, 'l'); // Handle Polish ł
+}
+
 function formatVote(vote: string, t: (key: string) => string): { text: string; color: string; bg: string } {
   switch (vote) {
     case 'yes':
@@ -412,7 +421,8 @@ function NotificationsContent() {
                 const translated = translatedTitles[alert.eventId];
                 const displayTitle = translated?.title || alert.eventTitle;
                 const displayLead = translated?.lead || alert.eventLead;
-                const categoryLabel = t(`categoryLabels.${alert.category}`, alert.category);
+                const categoryKey = normalizeCategoryKey(alert.category);
+                const categoryLabel = t(`categoryLabels.${categoryKey}`, alert.category);
                 const isUnread = !alert.read;
 
                 return (

@@ -63,6 +63,15 @@ function VotingAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { ale
   );
 }
 
+// Normalize category key for translation lookup (lowercase, no diacritics)
+function normalizeCategoryKey(category: string): string {
+  return category
+    ?.toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+    .replace(/ł/g, 'l'); // Handle Polish ł
+}
+
 function CategoryAlertItem({
   alert,
   onMarkAsRead,
@@ -73,7 +82,8 @@ function CategoryAlertItem({
   translatedTitle?: string;
 }) {
   const { t } = useTranslation('notifications');
-  const categoryLabel = t(`categoryLabels.${alert.category}`, alert.category);
+  const categoryKey = normalizeCategoryKey(alert.category);
+  const categoryLabel = t(`categoryLabels.${categoryKey}`, alert.category);
   const displayTitle = translatedTitle || alert.eventTitle;
 
   return (
