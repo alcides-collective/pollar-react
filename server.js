@@ -575,7 +575,8 @@ app.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
     console.log('[RSS] API response status:', response.status);
     if (response.ok) {
       const data = await response.json();
-      events = data.events || data || [];
+      // API returns { events: [...] } or direct array
+      events = Array.isArray(data) ? data : (data.events || []);
       console.log('[RSS] Got', events.length, 'events');
     } else {
       console.error('[RSS] API error:', response.status, response.statusText);
