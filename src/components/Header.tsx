@@ -305,7 +305,7 @@ export function Header() {
           <div className="bg-black pl-2 shrink-0 relative z-10">
             <DropdownMenu>
               <DropdownMenuTrigger className="text-sm text-zinc-400 hover:text-white flex items-center gap-1 transition-colors outline-none pb-3">
-              <span className="hidden sm:inline">Narzędzia</span>
+              <span className="hidden sm:inline">Odkrywaj</span>
               {/* Mobile: hamburger icon */}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
