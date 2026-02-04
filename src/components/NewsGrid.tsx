@@ -13,6 +13,7 @@ import { CategoryCarousel } from './news/CategoryCarousel';
 import { LatestEvents, /* NewsletterSection, */ MapSection, AboutSection, ContactSection, VersionSection } from './news/sidebar';
 import { AISidebarWidget } from './ai';
 import { LoadingSpinner } from './common/LoadingSpinner';
+import { LazySection } from './common/LazySection';
 
 export function NewsGrid() {
   const selectedCategory = useSelectedCategory();
@@ -63,13 +64,25 @@ export function NewsGrid() {
 
           <CategoryTabs groups={categoryGroups} />
 
-          <DoubleHeroSection events={doubleHero1} />
+          <LazySection height="300px">
+            <DoubleHeroSection events={doubleHero1} />
+          </LazySection>
 
-          {!isFiltered && <DiscoverSection />}
+          {!isFiltered && (
+            <LazySection height="200px">
+              <DiscoverSection />
+            </LazySection>
+          )}
 
-          <DoubleHeroSection events={doubleHero2} reversed />
+          <LazySection height="300px">
+            <DoubleHeroSection events={doubleHero2} reversed />
+          </LazySection>
 
-          {!isFiltered && <FelietonySection felietony={felietony} />}
+          {!isFiltered && (
+            <LazySection height="400px">
+              <FelietonySection felietony={felietony} />
+            </LazySection>
+          )}
         </div>
 
         {/* Sidebar */}
@@ -77,7 +90,9 @@ export function NewsGrid() {
           <AISidebarWidget />
           <LatestEvents events={latestEvents} />
           {/* <NewsletterSection /> */}
-          <MapSection />
+          <LazySection height="300px" rootMargin="100px">
+            <MapSection />
+          </LazySection>
           <AboutSection />
           <ContactSection />
           <VersionSection />
@@ -88,7 +103,9 @@ export function NewsGrid() {
       {/* More News - Full Width, grouped by category with carousel */}
       <div className="border border-t-0 border-zinc-200">
         {eventsByCategory.map(({ category, events }) => (
-          <CategoryCarousel key={category} category={category} events={events} />
+          <LazySection key={category} height="280px">
+            <CategoryCarousel category={category} events={events} />
+          </LazySection>
         ))}
       </div>
     </section>
