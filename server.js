@@ -479,7 +479,9 @@ app.use(helmet({
         "https://storage.googleapis.com",
         "https://lh3.googleusercontent.com",
         "https://*.google.com",
+        "https://*.google.pl",
         "https://*.gstatic.com",
+        "https://*.doubleclick.net",
       ],
       fontSrc: ["'self'", "data:"],
       connectSrc: [
@@ -495,8 +497,12 @@ app.use(helmet({
         "https://identitytoolkit.googleapis.com",
         "https://securetoken.googleapis.com",
         "https://cloud.umami.is",
+        "https://api-gateway.umami.dev",
         "https://www.google-analytics.com",
+        "https://*.google-analytics.com",
         "https://www.googletagmanager.com",
+        "https://stats.g.doubleclick.net",
+        "https://*.sentry.io",
         "wss://*.firebaseio.com",
       ],
       frameSrc: [
