@@ -1,0 +1,26 @@
+{
+  "bookmark": {
+    "save": "Save",
+    "saved": "Saved",
+    "removed": "Event removed from saved",
+    "added": "Event saved",
+    "failed": "Failed to save event",
+    "ariaRemove": "Remove from saved",
+    "ariaSave": "Save event"
+  },
+  "follow": {
+    "follow": "Follow",
+    "following": "Following",
+    "stopped": "Stopped following",
+    "stoppedMessage": "You are no longer following MP {{name}}",
+    "started": "Started following",
+    "startedMessage": "You are now following MP {{name}}",
+    "error": "Error",
+    "errorMessage": "Failed to update followed MPs"
+  },
+  "share": {
+    "share": "Share",
+    "linkCopied": "Link copied to clipboard",
+    "failedToCopy": "Failed to copy link"
+  }
+}

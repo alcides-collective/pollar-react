@@ -3,11 +3,12 @@ import { useEventsStore } from '../stores/eventsStore';
 import { API_BASE } from '../config/api';
 import { sanitizeEvent } from '../utils/sanitize';
 import { CATEGORY_ORDER } from '../constants/categories';
+import { useLanguage, type Language } from '../stores/languageStore';
 import type { Event, EventsResponse } from '../types/events';
 
 interface UseArchiveEventsOptions {
   limit?: number;
-  lang?: string;
+  lang?: Language;
 }
 
 interface CategoryGroup {
@@ -16,7 +17,9 @@ interface CategoryGroup {
 }
 
 export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
-  const { limit = 200, lang = 'pl' } = options;
+  const storeLanguage = useLanguage();
+  const { limit = 200 } = options;
+  const lang = options.lang ?? storeLanguage;
 
   const cache = useEventsStore((s) => s.cache);
   const loading = useEventsStore((s) => s.loading);

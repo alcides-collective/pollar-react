@@ -2,7 +2,7 @@
  * Utility functions for Daily Brief display
  */
 
-export type AppLanguage = 'pl' | 'en' | 'ua';
+export type AppLanguage = 'pl' | 'en' | 'de';
 
 // Time-based headlines for each hour of the day
 export const HOURLY_HEADLINES: Record<AppLanguage, Record<number, string>> = {
@@ -58,31 +58,31 @@ export const HOURLY_HEADLINES: Record<AppLanguage, Record<number, string>> = {
     22: 'Before Night',
     23: 'Night Summary'
   },
-  'ua': {
-    0: 'Опівнічний огляд',
-    1: 'Після півночі',
-    2: 'Глибока ніч',
-    3: 'Ніч з Pollar',
-    4: 'Перед світанком',
-    5: 'На світанку',
-    6: 'Ранній ранок',
-    7: 'Ранкові новини',
-    8: 'Ранок з Pollar',
-    9: 'Передобідній бріф',
-    10: 'Пізній ранок',
-    11: 'Перед полуднем',
-    12: 'Опівдні',
-    13: 'Початок дня',
-    14: 'Післяобідній бріф',
-    15: 'Післяобідній огляд',
-    16: 'Пізній день',
-    17: 'Кінець робочого дня',
-    18: 'Ранній вечір',
-    19: 'Вечірній бріф',
-    20: 'Вечір з Pollar',
-    21: 'Пізній вечір',
-    22: 'Перед ніччю',
-    23: 'Нічне резюме'
+  'de': {
+    0: 'Mitternachtsüberblick',
+    1: 'Nach Mitternacht',
+    2: 'Späte Nacht',
+    3: 'Nacht mit Pollar',
+    4: 'Vor der Dämmerung',
+    5: 'Morgendämmerung',
+    6: 'Früher Morgen',
+    7: 'Morgennachrichten',
+    8: 'Morgen mit Pollar',
+    9: 'Vormittagsüberblick',
+    10: 'Später Vormittag',
+    11: 'Vor dem Mittag',
+    12: 'Mittag',
+    13: 'Früher Nachmittag',
+    14: 'Nachmittagsüberblick',
+    15: 'Nachmittagsrückblick',
+    16: 'Später Nachmittag',
+    17: 'Feierabend',
+    18: 'Früher Abend',
+    19: 'Abendnachrichten',
+    20: 'Abend mit Pollar',
+    21: 'Später Abend',
+    22: 'Vor der Nacht',
+    23: 'Nachtzusammenfassung'
   }
 };
 
@@ -106,6 +106,6 @@ export function formatBriefDate(date: string | Date, lang: AppLanguage = 'pl'): 
     day: 'numeric'
   };
 
-  const locale = lang === 'en' ? 'en-US' : lang === 'ua' ? 'uk-UA' : 'pl-PL';
+  const locale = lang === 'en' ? 'en-US' : lang === 'de' ? 'de-DE' : 'pl-PL';
   return d.toLocaleDateString(locale, options);
 }

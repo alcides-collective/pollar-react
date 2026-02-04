@@ -1,0 +1,36 @@
+{
+  "title": "Dashboard",
+  "forYou": {
+    "title": "Dla Ciebie",
+    "basedOn": "Na podstawie: {{categories}}",
+    "empty": "Dodaj ulubione kategorie, żeby zobaczyć spersonalizowane wydarzenia.",
+    "setCategories": "Ustaw ulubione kategorie"
+  },
+  "recentlyRead": {
+    "title": "Ostatnio czytane",
+    "empty": "Nie masz jeszcze historii czytania."
+  },
+  "saved": {
+    "title": "Zapisane ({{count}})",
+    "viewAll": "Zobacz wszystkie",
+    "empty": "Nie masz zapisanych wydarzeń.",
+    "browseEvents": "Przeglądaj wydarzenia"
+  },
+  "followedMPs": {
+    "title": "Śledzeni posłowie ({{count}})",
+    "add": "Dodaj",
+    "empty": "Nie śledzisz żadnych posłów.",
+    "browseMPs": "Przeglądaj posłów"
+  },
+  "alerts": {
+    "title": "Ostatnie alerty",
+    "empty": "Brak alertów o głosowaniach.",
+    "hint": "Zacznij śledzić posłów, żeby otrzymywać alerty."
+  },
+  "voting": {
+    "for": "Za",
+    "against": "Przeciw",
+    "abstained": "Wstrzymał się",
+    "absent": "Nieobecny"
+  }
+}

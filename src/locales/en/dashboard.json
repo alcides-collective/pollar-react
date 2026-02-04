@@ -1,0 +1,36 @@
+{
+  "title": "Dashboard",
+  "forYou": {
+    "title": "For You",
+    "basedOn": "Based on: {{categories}}",
+    "empty": "Add favorite categories to see personalized events.",
+    "setCategories": "Set favorite categories"
+  },
+  "recentlyRead": {
+    "title": "Recently Read",
+    "empty": "You don't have any reading history yet."
+  },
+  "saved": {
+    "title": "Saved ({{count}})",
+    "viewAll": "View all",
+    "empty": "You don't have any saved events.",
+    "browseEvents": "Browse events"
+  },
+  "followedMPs": {
+    "title": "Followed MPs ({{count}})",
+    "add": "Add",
+    "empty": "You're not following any MPs.",
+    "browseMPs": "Browse MPs"
+  },
+  "alerts": {
+    "title": "Recent Alerts",
+    "empty": "No voting alerts.",
+    "hint": "Start following MPs to receive alerts."
+  },
+  "voting": {
+    "for": "For",
+    "against": "Against",
+    "abstained": "Abstained",
+    "absent": "Absent"
+  }
+}

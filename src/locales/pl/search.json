@@ -1,0 +1,15 @@
+{
+  "placeholder": "Szukaj wydarzeń, posłów, głosowań...",
+  "noResults": "Brak wyników dla",
+  "didYouMean": "Może chodziło Ci o:",
+  "searching": "Szukam...",
+  "popularSearches": "Popularne wyszukiwania",
+  "dialogTitle": "Wyszukiwanie",
+  "resultTypes": {
+    "event": "Wydarzenie",
+    "mp": "Poseł",
+    "voting": "Głosowanie",
+    "print": "Druk",
+    "committee": "Komisja"
+  }
+}

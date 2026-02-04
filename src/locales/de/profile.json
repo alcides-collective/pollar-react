@@ -1,0 +1,63 @@
+{
+  "title": "Dein Profil",
+  "emailNotVerified": "E-Mail nicht verifiziert",
+  "savedEvents": {
+    "title": "Gespeicherte Ereignisse",
+    "count": "Gespeicherte Ereignisse ({{count}})",
+    "empty": "Du hast noch keine Ereignisse gespeichert.",
+    "browse": "Ereignisse durchsuchen"
+  },
+  "favoriteCategories": {
+    "title": "Lieblingskategorien",
+    "description": "Ereignisse aus Lieblingskategorien werden auf der Startseite zuerst angezeigt."
+  },
+  "hiddenCategories": {
+    "title": "Ausgeblendete Kategorien",
+    "description": "Ereignisse aus ausgeblendeten Kategorien werden auf der Startseite nicht angezeigt."
+  },
+  "accountSettings": {
+    "title": "Kontoeinstellungen"
+  },
+  "changePassword": {
+    "title": "Passwort ändern",
+    "description": "Gib dein aktuelles Passwort und das neue Passwort ein, das du festlegen möchtest.",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Neues Passwort bestätigen",
+    "minChars": "Neues Passwort muss mindestens 6 Zeichen haben",
+    "passwordsDontMatch": "Passwörter stimmen nicht überein",
+    "success": "Passwort wurde geändert",
+    "cancel": "Abbrechen",
+    "submit": "Passwort ändern",
+    "loading": "Ändere..."
+  },
+  "deleteAccount": {
+    "title": "Konto löschen",
+    "warning": "Diese Aktion ist unwiderruflich. Alle deine Daten werden dauerhaft gelöscht.",
+    "willBeDeleted": "Folgendes wird gelöscht:",
+    "item1": "Dein Profil und persönliche Daten",
+    "item2": "Gespeicherte Ereignisse",
+    "item3": "Kategoriepräferenzen",
+    "item4": "Aktivitätsverlauf",
+    "confirmText": "KONTO LÖSCHEN",
+    "confirmPrompt": "Gib \"KONTO LÖSCHEN\" zur Bestätigung ein",
+    "enterPassword": "Passwort eingeben",
+    "typeToConfirm": "Gib <1>KONTO LÖSCHEN</1> zur Bestätigung ein:",
+    "success": "Konto wurde gelöscht",
+    "cancel": "Abbrechen",
+    "submit": "Konto löschen",
+    "loading": "Lösche..."
+  },
+  "avatar": {
+    "chooseFile": "Bilddatei auswählen",
+    "fileTooLarge": "Datei ist zu groß (maximal 5MB)",
+    "updated": "Avatar aktualisiert",
+    "deleted": "Avatar gelöscht",
+    "failedToUpload": "Avatar konnte nicht hochgeladen werden",
+    "failedToDelete": "Avatar konnte nicht gelöscht werden",
+    "change": "Avatar ändern",
+    "add": "Avatar hinzufügen",
+    "remove": "Avatar entfernen",
+    "hint": "JPG, PNG oder GIF. Max 5MB."
+  }
+}

@@ -17,7 +17,7 @@ import { LazySection } from './common/LazySection';
 
 export function NewsGrid() {
   const selectedCategory = useSelectedCategory();
-  const { brief } = useBrief({ lang: 'pl' });
+  const { brief } = useBrief();
   const { felietony } = useFelietony();
   const isFiltered = !!selectedCategory;
   const {

@@ -1,0 +1,75 @@
+{
+  "mpsPage": {
+    "title": "MPs",
+    "searchPlaceholder": "Search for an MP...",
+    "allClubs": "All clubs",
+    "sortByVotes": "By votes",
+    "sortByName": "By name",
+    "sortByClub": "By club",
+    "sortByVoivodeship": "By voivodeship",
+    "showInactive": "Show inactive",
+    "found": "Found: {{count}} MPs",
+    "noResults": "No MPs found matching the criteria"
+  },
+  "navigation": {
+    "overview": "Overview",
+    "people": "People",
+    "mps": "MPs",
+    "clubs": "Clubs",
+    "work": "Work",
+    "proceedings": "Sessions",
+    "committees": "Committees",
+    "votings": "Votings",
+    "videos": "Broadcasts",
+    "documents": "Documents",
+    "prints": "Prints",
+    "legislation": "Legislation",
+    "interpellations": "Interpellations",
+    "questions": "Questions"
+  },
+  "sort": {
+    "mostVotes": "Most votes",
+    "highestAttendance": "Highest attendance",
+    "lowestAttendance": "Lowest attendance",
+    "youngest": "Youngest",
+    "oldest": "Oldest"
+  },
+  "age": {
+    "years": "{{count}} years"
+  },
+  "dashboard": {
+    "followedMPs": "Followed MPs ({{count}})",
+    "addMore": "Add more",
+    "andMore": "+{{count}} more",
+    "polls": "Polls",
+    "live": "Live",
+    "proceedingNumber": "{{number}}. Sejm session",
+    "mps": "MPs",
+    "all": "All",
+    "recentVotings": "Recent votings",
+    "allVotings": "All",
+    "prints": "Prints",
+    "interpellations": "Interpellations",
+    "committees": "Committees",
+    "broadcasts": "Broadcasts",
+    "recent": "{{count}} recent"
+  },
+  "mp": {
+    "title": "MP",
+    "attendance": "Attendance",
+    "votes": "Votes",
+    "club": "Club",
+    "constituency": "Constituency",
+    "birthDate": "Birth date",
+    "education": "Education",
+    "profession": "Profession"
+  },
+  "voting": {
+    "for": "For",
+    "against": "Against",
+    "abstain": "Abstained",
+    "absent": "Absent",
+    "passed": "Passed",
+    "rejected": "Rejected"
+  }
+}

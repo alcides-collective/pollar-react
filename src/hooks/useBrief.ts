@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import type { DailyBrief, BriefResponse } from '../types/brief';
 import { API_BASE } from '../config/api';
 import { sanitizeBrief } from '../utils/sanitize';
+import { useLanguage, type Language } from '../stores/languageStore';
 
 async function fetchBrief(url: string): Promise<DailyBrief | null> {
   const response = await fetch(url);
@@ -18,11 +19,12 @@ async function fetchBrief(url: string): Promise<DailyBrief | null> {
 }
 
 interface UseBriefOptions {
-  lang?: 'pl' | 'en' | 'ua';
+  lang?: Language;
 }
 
 export function useBrief(options: UseBriefOptions = {}) {
-  const { lang = 'pl' } = options;
+  const storeLanguage = useLanguage();
+  const lang = options.lang ?? storeLanguage;
   const url = `${API_BASE}/brief?lang=${lang}`;
 
   const { data, error, isLoading } = useSWR(url, fetchBrief, {

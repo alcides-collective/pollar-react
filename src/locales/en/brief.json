@@ -1,0 +1,30 @@
+{
+  "error": {
+    "title": "Failed to load brief",
+    "backHome": "Back to home page"
+  },
+  "empty": {
+    "title": "No brief for today",
+    "description": "Daily Brief has not been generated yet."
+  },
+  "wordOfTheDay": "Word of the Day",
+  "events": "Events",
+  "summary": "Summary",
+  "insights": {
+    "title": "Insights",
+    "trends": "Trends",
+    "correlations": "Correlations",
+    "anomalies": "Anomalies",
+    "implications": "Implications",
+    "metaCommentary": "Meta Commentary"
+  },
+  "mentions": {
+    "people": "Mentioned People",
+    "organizations": "Mentioned Organizations"
+  },
+  "timeHeadline": {
+    "morning": "Morning Edition",
+    "afternoon": "Afternoon Edition",
+    "evening": "Evening Edition"
+  }
+}

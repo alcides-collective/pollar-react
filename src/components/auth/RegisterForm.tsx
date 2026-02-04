@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuthStore, useAuthError } from '@/stores/authStore';
@@ -8,10 +9,11 @@ import {
   isValidEmail,
   isValidPassword,
   isValidName,
-  AuthErrorMessages,
 } from '@/lib/auth-errors';
 
 export function RegisterForm() {
+  const { t } = useTranslation('auth');
+  const { t: tErrors } = useTranslation('errors');
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,19 +30,19 @@ export function RegisterForm() {
 
   const validateForm = (): boolean => {
     if (!isValidName(displayName)) {
-      setLocalError(AuthErrorMessages.NAME_TOO_SHORT);
+      setLocalError(tErrors('auth.nameTooShort'));
       return false;
     }
     if (!isValidEmail(email)) {
-      setLocalError(AuthErrorMessages.INVALID_EMAIL);
+      setLocalError(tErrors('auth.invalidEmailFormat'));
       return false;
     }
     if (!isValidPassword(password)) {
-      setLocalError(AuthErrorMessages.PASSWORD_TOO_SHORT);
+      setLocalError(tErrors('auth.passwordTooShort'));
       return false;
     }
     if (password !== confirmPassword) {
-      setLocalError(AuthErrorMessages.PASSWORDS_DONT_MATCH);
+      setLocalError(tErrors('auth.passwordsDontMatch'));
       return false;
     }
     return true;
@@ -61,8 +63,8 @@ export function RegisterForm() {
   };
 
   const passwordRequirements = [
-    { met: password.length >= 6, text: 'Minimum 6 znaków' },
-    { met: password === confirmPassword && password.length > 0, text: 'Hasła są zgodne' },
+    { met: password.length >= 6, text: t('register.minChars') },
+    { met: password === confirmPassword && password.length > 0, text: t('register.passwordsMatch') },
   ];
 
   return (
@@ -80,7 +82,7 @@ export function RegisterForm() {
         <div className="space-y-3">
           <Input
             type="text"
-            placeholder="Imię"
+            placeholder={t('register.firstName')}
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             disabled={isLoading}
@@ -89,7 +91,7 @@ export function RegisterForm() {
           />
           <Input
             type="email"
-            placeholder="Email"
+            placeholder={t('register.email')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
@@ -98,7 +100,7 @@ export function RegisterForm() {
           />
           <Input
             type="password"
-            placeholder="Hasło"
+            placeholder={t('register.password')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={isLoading}
@@ -107,7 +109,7 @@ export function RegisterForm() {
           />
           <Input
             type="password"
-            placeholder="Powtórz hasło"
+            placeholder={t('register.repeatPassword')}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             disabled={isLoading}
@@ -136,17 +138,17 @@ export function RegisterForm() {
         )}
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? 'Rejestracja...' : 'Zarejestruj się'}
+          {isLoading ? t('register.loading') : t('register.title')}
         </Button>
 
         <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
-          Masz już konto?{' '}
+          {t('register.hasAccount')}{' '}
           <button
             type="button"
             onClick={() => setView('login')}
             className="font-medium text-zinc-900 hover:underline dark:text-zinc-200"
           >
-            Zaloguj się
+            {t('register.login')}
           </button>
         </p>
       </form>

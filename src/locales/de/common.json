@@ -1,0 +1,137 @@
+{
+  "nav": {
+    "all": "Alle",
+    "discover": "Entdecken",
+    "privacy": "Datenschutz",
+    "search": "Suchen",
+    "dailyBrief": "Daily Brief",
+    "aiAssistant": "KI-Assistent",
+    "sejm": "Parlament",
+    "stockExchange": "Börse",
+    "eventMap": "Ereigniskarte",
+    "openData": "Offene Daten",
+    "connectionGraph": "Verbindungsgraph",
+    "terminal": "Terminal",
+    "connections": "Verbindungen",
+    "archive": "Archiv",
+    "about": "Über Pollar"
+  },
+  "categories": {
+    "Świat": "Welt",
+    "Gospodarka": "Wirtschaft",
+    "Polityka": "Politik",
+    "Społeczeństwo": "Gesellschaft",
+    "Sport": "Sport",
+    "Kultura": "Kultur",
+    "Przestępczość": "Kriminalität",
+    "Styl Życia": "Lebensstil",
+    "Pogoda i Środowisko": "Wetter & Umwelt",
+    "Nauka i Technologia": "Wissenschaft & Technologie",
+    "Inne": "Sonstiges"
+  },
+  "actions": {
+    "save": "Speichern",
+    "saved": "Gespeichert",
+    "follow": "Folgen",
+    "following": "Du folgst",
+    "share": "Teilen",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "back": "Zurück",
+    "backToHome": "Zurück zur Startseite",
+    "search": "Suchen",
+    "close": "Schließen",
+    "open": "Öffnen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "send": "Senden",
+    "refresh": "Aktualisieren",
+    "copy": "Kopieren",
+    "copied": "Kopiert"
+  },
+  "time": {
+    "now": "jetzt",
+    "min": "Min",
+    "hours": "Std.",
+    "days": "Tage",
+    "secondsAgo": "vor {{count}} Sek.",
+    "minutesAgo": "vor {{count}} Min.",
+    "hoursAgo": "vor {{count}} Std.",
+    "update": "aktualisiert"
+  },
+  "states": {
+    "loading": "Laden...",
+    "searching": "Suche...",
+    "sending": "Senden...",
+    "saving": "Speichern...",
+    "deleting": "Löschen..."
+  },
+  "errors": {
+    "error": "Fehler",
+    "errorOccurred": "Ein Fehler ist aufgetreten",
+    "failedToLoad": "Laden fehlgeschlagen",
+    "tryAgain": "Erneut versuchen",
+    "refreshPage": "Versuche die Seite zu aktualisieren. Wenn das Problem weiterhin besteht, kontaktiere uns."
+  },
+  "user": {
+    "defaultName": "Benutzer",
+    "appleUser": "Apple-Benutzer",
+    "dashboard": "Dashboard",
+    "myProfile": "Mein Profil",
+    "notifications": "Benachrichtigungen",
+    "logout": "Abmelden"
+  },
+  "loginPrompt": {
+    "title": "Melde dich an, um Zugang zu erhalten:",
+    "feature1": "Abgeordnete und ihre Abstimmungen verfolgen",
+    "feature2": "Benachrichtigungen über neue Ereignisse",
+    "feature3": "Artikel speichern",
+    "feature4": "Kategorien personalisieren"
+  },
+  "footer": {
+    "description": "KI-gestützter Nachrichten-Aggregator. Verfolge Ereignisse, analysiere Parlamentsdaten und erkunde öffentliche Statistiken.",
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "navigation": "Navigation",
+    "home": "Startseite",
+    "legal": "Rechtliches",
+    "terms": "Nutzungsbedingungen",
+    "privacyPolicy": "Datenschutzerklärung",
+    "cookies": "Cookies"
+  },
+  "seo": {
+    "archiveTitle": "Ereignisarchiv",
+    "archiveDescription": "Durchsuche das Ereignisarchiv nach Kategorien",
+    "archiveAllEvents": "Alle Ereignisse nach Kategorien",
+    "mainHeading": "Pollar News - Alle wichtigen Nachrichten an einem Ort"
+  },
+  "discover": {
+    "title": "Entdecken",
+    "powiazania": {
+      "title": "Verbindungen",
+      "description": "Tägliches Wortspiel. Finde versteckte Verbindungen zwischen Wörtern und gruppiere sie in Kategorien."
+    },
+    "sejm": {
+      "title": "Parlament",
+      "description": "Verfolge Abstimmungen, Gesetzesentwürfe und Abgeordnetenaktivitäten. Volle Transparenz der Parlamentsarbeit."
+    },
+    "gielda": {
+      "title": "Börse",
+      "description": "Kurse, Analysen und Marktprognosen. Bleib auf dem Laufenden über die Börse."
+    }
+  },
+  "info": {
+    "events": "Ereignisse",
+    "sources": "Quellen",
+    "ads": "Werbung",
+    "online": "Online",
+    "newsWithoutNoise": "Nachrichten ohne Lärm",
+    "aiDescription": "KI organisiert und fasst die heutigen Ereignisse ohne Clickbait zusammen — nur verifizierte Fakten.",
+    "startReading": "Jetzt lesen",
+    "scroll": "Scrollen"
+  },
+  "greetings": {
+    "morning": "Guten Tag",
+    "evening": "Guten Abend",
+    "default": "Willkommen"
+  }
+}

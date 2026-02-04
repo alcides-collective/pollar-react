@@ -1,0 +1,75 @@
+{
+  "mpsPage": {
+    "title": "Posłowie",
+    "searchPlaceholder": "Szukaj posła...",
+    "allClubs": "Wszystkie kluby",
+    "sortByVotes": "Wg głosów",
+    "sortByName": "Wg nazwiska",
+    "sortByClub": "Wg klubu",
+    "sortByVoivodeship": "Wg województwa",
+    "showInactive": "Pokaż nieaktywnych",
+    "found": "Znaleziono: {{count}} posłów",
+    "noResults": "Nie znaleziono posłów spełniających kryteria"
+  },
+  "navigation": {
+    "overview": "Przegląd",
+    "people": "Osoby",
+    "mps": "Posłowie",
+    "clubs": "Kluby",
+    "work": "Prace",
+    "proceedings": "Posiedzenia",
+    "committees": "Komisje",
+    "votings": "Głosowania",
+    "videos": "Transmisje",
+    "documents": "Dokumenty",
+    "prints": "Druki",
+    "legislation": "Legislacja",
+    "interpellations": "Interpelacje",
+    "questions": "Zapytania"
+  },
+  "sort": {
+    "mostVotes": "Najwięcej głosów",
+    "highestAttendance": "Najwyższa frekwencja",
+    "lowestAttendance": "Najniższa frekwencja",
+    "youngest": "Najmłodsi",
+    "oldest": "Najstarsi"
+  },
+  "age": {
+    "years": "{{count}} lat"
+  },
+  "dashboard": {
+    "followedMPs": "Śledzeni posłowie ({{count}})",
+    "addMore": "Dodaj więcej",
+    "andMore": "+{{count}} więcej",
+    "polls": "Sondaże",
+    "live": "Na żywo",
+    "proceedingNumber": "{{number}}. posiedzenie Sejmu",
+    "mps": "Posłowie",
+    "all": "Wszyscy",
+    "recentVotings": "Ostatnie głosowania",
+    "allVotings": "Wszystkie",
+    "prints": "Druki",
+    "interpellations": "Interpelacje",
+    "committees": "Komisje",
+    "broadcasts": "Transmisje",
+    "recent": "{{count}} ostatnich"
+  },
+  "mp": {
+    "title": "Poseł",
+    "attendance": "Frekwencja",
+    "votes": "Głosy",
+    "club": "Klub",
+    "constituency": "Okręg",
+    "birthDate": "Data urodzenia",
+    "education": "Wykształcenie",
+    "profession": "Zawód"
+  },
+  "voting": {
+    "for": "Za",
+    "against": "Przeciw",
+    "abstain": "Wstrzymał się",
+    "absent": "Nieobecny",
+    "passed": "Przyjęta",
+    "rejected": "Odrzucona"
+  }
+}

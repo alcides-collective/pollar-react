@@ -1,0 +1,63 @@
+{
+  "title": "Twój profil",
+  "emailNotVerified": "Email niezweryfikowany",
+  "savedEvents": {
+    "title": "Zapisane wydarzenia",
+    "count": "Zapisane wydarzenia ({{count}})",
+    "empty": "Nie masz jeszcze zapisanych wydarzeń.",
+    "browse": "Przeglądaj wydarzenia"
+  },
+  "favoriteCategories": {
+    "title": "Ulubione kategorie",
+    "description": "Wydarzenia z ulubionych kategorii będą wyświetlane jako pierwsze na stronie głównej."
+  },
+  "hiddenCategories": {
+    "title": "Ukryte kategorie",
+    "description": "Wydarzenia z ukrytych kategorii nie będą wyświetlane na stronie głównej."
+  },
+  "accountSettings": {
+    "title": "Ustawienia konta"
+  },
+  "changePassword": {
+    "title": "Zmień hasło",
+    "description": "Wprowadź obecne hasło oraz nowe hasło, które chcesz ustawić.",
+    "currentPassword": "Obecne hasło",
+    "newPassword": "Nowe hasło",
+    "confirmPassword": "Potwierdź nowe hasło",
+    "minChars": "Nowe hasło musi mieć co najmniej 6 znaków",
+    "passwordsDontMatch": "Hasła nie są zgodne",
+    "success": "Hasło zostało zmienione",
+    "cancel": "Anuluj",
+    "submit": "Zmień hasło",
+    "loading": "Zmieniam..."
+  },
+  "deleteAccount": {
+    "title": "Usuń konto",
+    "warning": "Ta operacja jest nieodwracalna. Wszystkie Twoje dane zostaną trwale usunięte.",
+    "willBeDeleted": "Usunięte zostaną:",
+    "item1": "Twój profil i dane osobowe",
+    "item2": "Zapisane wydarzenia",
+    "item3": "Preferencje kategorii",
+    "item4": "Historia aktywności",
+    "confirmText": "USUŃ KONTO",
+    "confirmPrompt": "Wpisz \"USUŃ KONTO\" aby potwierdzić",
+    "enterPassword": "Wprowadź hasło",
+    "typeToConfirm": "Wpisz <1>USUŃ KONTO</1> aby potwierdzić:",
+    "success": "Konto zostało usunięte",
+    "cancel": "Anuluj",
+    "submit": "Usuń konto",
+    "loading": "Usuwam..."
+  },
+  "avatar": {
+    "chooseFile": "Wybierz plik obrazu",
+    "fileTooLarge": "Plik jest zbyt duży (maksymalnie 5MB)",
+    "updated": "Avatar zaktualizowany",
+    "deleted": "Avatar usunięty",
+    "failedToUpload": "Nie udało się przesłać avatara",
+    "failedToDelete": "Nie udało się usunąć avatara",
+    "change": "Zmień avatar",
+    "add": "Dodaj avatar",
+    "remove": "Usuń avatar",
+    "hint": "JPG, PNG lub GIF. Maks. 5MB."
+  }
+}

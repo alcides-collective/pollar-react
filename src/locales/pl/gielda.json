@@ -1,0 +1,26 @@
+{
+  "title": "Giełda",
+  "subtitle": "Notowania akcji i indeksów w czasie rzeczywistym",
+  "failedToLoad": "Nie udało się załadować danych giełdowych.",
+  "refreshHint": "Spróbuj odświeżyć stronę. Jeśli problem się powtarza, skontaktuj się z nami.",
+  "navigation": {
+    "overview": "Przegląd",
+    "stocks": "Akcje",
+    "indices": "Indeksy",
+    "watchlist": "Obserwowane"
+  },
+  "update": "aktualizacja",
+  "polishIndices": "Indeksy Polskie",
+  "globalIndices": "Indeksy Globalne",
+  "gainers": "Wzrosty",
+  "losers": "Spadki",
+  "noData": "Brak danych",
+  "wig20Stocks": "Akcje WIG20",
+  "seeAll": "Zobacz wszystkie",
+  "time": {
+    "now": "teraz",
+    "seconds": "{{count}} sek. temu",
+    "minutes": "{{count}} min. temu",
+    "hours": "{{count}} godz. temu"
+  }
+}

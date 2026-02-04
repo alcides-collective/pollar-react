@@ -1,0 +1,26 @@
+{
+  "bookmark": {
+    "save": "Speichern",
+    "saved": "Gespeichert",
+    "removed": "Ereignis aus Gespeicherten entfernt",
+    "added": "Ereignis gespeichert",
+    "failed": "Ereignis konnte nicht gespeichert werden",
+    "ariaRemove": "Aus Gespeicherten entfernen",
+    "ariaSave": "Ereignis speichern"
+  },
+  "follow": {
+    "follow": "Folgen",
+    "following": "Du folgst",
+    "stopped": "Nicht mehr folgend",
+    "stoppedMessage": "Du folgst dem Abgeordneten {{name}} nicht mehr",
+    "started": "Jetzt folgend",
+    "startedMessage": "Du folgst jetzt dem Abgeordneten {{name}}",
+    "error": "Fehler",
+    "errorMessage": "Gefolgte Abgeordnete konnten nicht aktualisiert werden"
+  },
+  "share": {
+    "share": "Teilen",
+    "linkCopied": "Link in Zwischenablage kopiert",
+    "failedToCopy": "Link konnte nicht kopiert werden"
+  }
+}

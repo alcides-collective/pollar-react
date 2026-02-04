@@ -1,0 +1,26 @@
+{
+  "bookmark": {
+    "save": "Zapisz",
+    "saved": "Zapisano",
+    "removed": "Event usunięty z zapisanych",
+    "added": "Event zapisany",
+    "failed": "Nie udało się zapisać eventu",
+    "ariaRemove": "Usuń z zapisanych",
+    "ariaSave": "Zapisz event"
+  },
+  "follow": {
+    "follow": "Śledź",
+    "following": "Śledzisz",
+    "stopped": "Przestano śledzić",
+    "stoppedMessage": "Nie śledzisz już posła {{name}}",
+    "started": "Zaczęto śledzić",
+    "startedMessage": "Śledzisz teraz posła {{name}}",
+    "error": "Błąd",
+    "errorMessage": "Nie udało się zaktualizować śledzonych posłów"
+  },
+  "share": {
+    "share": "Udostępnij",
+    "linkCopied": "Link skopiowany do schowka",
+    "failedToCopy": "Nie udało się skopiować linku"
+  }
+}

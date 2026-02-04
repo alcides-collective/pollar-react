@@ -1,13 +1,14 @@
+import { useTranslation } from 'react-i18next';
 import { Newspaper, User, Vote, FileText, Users } from 'lucide-react';
 import type { SearchResult, SearchResultType } from '@/types/search';
 import { cn } from '@/lib/utils';
 
-const TYPE_CONFIG: Record<SearchResultType, { icon: React.ElementType; label: string; color: string }> = {
-  event: { icon: Newspaper, label: 'Wydarzenie', color: 'text-blue-500' },
-  mp: { icon: User, label: 'Poseł', color: 'text-green-500' },
-  voting: { icon: Vote, label: 'Głosowanie', color: 'text-purple-500' },
-  print: { icon: FileText, label: 'Druk', color: 'text-orange-500' },
-  committee: { icon: Users, label: 'Komisja', color: 'text-teal-500' },
+const TYPE_CONFIG: Record<SearchResultType, { icon: React.ElementType; color: string }> = {
+  event: { icon: Newspaper, color: 'text-blue-500' },
+  mp: { icon: User, color: 'text-green-500' },
+  voting: { icon: Vote, color: 'text-purple-500' },
+  print: { icon: FileText, color: 'text-orange-500' },
+  committee: { icon: Users, color: 'text-teal-500' },
 };
 
 interface SearchResultItemProps {
@@ -16,6 +17,7 @@ interface SearchResultItemProps {
 }
 
 export function SearchResultItem({ result, onClick }: SearchResultItemProps) {
+  const { t } = useTranslation('search');
   const config = TYPE_CONFIG[result.type];
   const Icon = config.icon;
 
@@ -46,7 +48,7 @@ export function SearchResultItem({ result, onClick }: SearchResultItemProps) {
 
         <div className="flex items-center gap-2 mt-1">
           <span className="text-xs text-zinc-400 dark:text-zinc-500">
-            {config.label}
+            {t(`resultTypes.${result.type}`)}
           </span>
           {result.metadata?.category && (
             <>

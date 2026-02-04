@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/authStore';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ interface DeleteAccountDialogProps {
 }
 
 export function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogProps) {
+  const { t } = useTranslation('profile');
   const [password, setPassword] = useState('');
   const [confirmText, setConfirmText] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -26,20 +28,21 @@ export function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogP
   const deleteAccount = useAuthStore((s) => s.deleteAccount);
   const isLoading = useAuthStore((s) => s.isLoading);
 
-  const canDelete = confirmText === 'USUŃ KONTO';
+  const confirmTextRequired = t('deleteAccount.confirmText');
+  const canDelete = confirmText === confirmTextRequired;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
     if (!canDelete) {
-      setError('Wpisz "USUŃ KONTO" aby potwierdzić');
+      setError(t('deleteAccount.confirmPrompt'));
       return;
     }
 
     try {
       await deleteAccount(password);
-      toast.success('Konto zostało usunięte');
+      toast.success(t('deleteAccount.success'));
       navigate('/');
     } catch {
       // Error is handled in store
@@ -60,20 +63,20 @@ export function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogP
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-red-600">Usuń konto</DialogTitle>
+          <DialogTitle className="text-red-600">{t('deleteAccount.title')}</DialogTitle>
           <DialogDescription>
-            Ta operacja jest nieodwracalna. Wszystkie Twoje dane zostaną trwale usunięte.
+            {t('deleteAccount.warning')}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="rounded-md bg-red-50 p-4 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-200">
-            <p className="font-medium mb-2">Usunięte zostaną:</p>
+            <p className="font-medium mb-2">{t('deleteAccount.willBeDeleted')}</p>
             <ul className="list-disc list-inside space-y-1">
-              <li>Twój profil i dane osobowe</li>
-              <li>Zapisane wydarzenia</li>
-              <li>Preferencje kategorii</li>
-              <li>Historia aktywności</li>
+              <li>{t('deleteAccount.item1')}</li>
+              <li>{t('deleteAccount.item2')}</li>
+              <li>{t('deleteAccount.item3')}</li>
+              <li>{t('deleteAccount.item4')}</li>
             </ul>
           </div>
 
@@ -86,7 +89,7 @@ export function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogP
           <div className="space-y-3">
             <Input
               type="password"
-              placeholder="Wprowadź hasło"
+              placeholder={t('deleteAccount.enterPassword')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
@@ -95,7 +98,9 @@ export function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogP
             />
             <div>
               <label className="block text-sm text-zinc-600 mb-1.5">
-                Wpisz <span className="font-mono font-medium">USUŃ KONTO</span> aby potwierdzić:
+                {t('deleteAccount.typeToConfirm').split('<1>')[0]}
+                <span className="font-mono font-medium">{confirmTextRequired}</span>
+                {t('deleteAccount.typeToConfirm').split('</1>')[1]}
               </label>
               <Input
                 type="text"
@@ -115,14 +120,14 @@ export function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogP
               onClick={() => handleOpenChange(false)}
               disabled={isLoading}
             >
-              Anuluj
+              {t('deleteAccount.cancel')}
             </Button>
             <Button
               type="submit"
               variant="destructive"
               disabled={isLoading || !canDelete}
             >
-              {isLoading ? 'Usuwam...' : 'Usuń konto'}
+              {isLoading ? t('deleteAccount.loading') : t('deleteAccount.submit')}
             </Button>
           </div>
         </form>

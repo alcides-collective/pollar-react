@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore, useIsAuthenticated } from '@/stores/authStore';
 import { useUserStore, useIsEventSaved } from '@/stores/userStore';
 
@@ -16,6 +17,7 @@ export function BookmarkButton({
   size = 'md',
   showLabel = false,
 }: BookmarkButtonProps) {
+  const { t } = useTranslation('actions');
   const isAuthenticated = useIsAuthenticated();
   const openAuthModal = useAuthStore((s) => s.openAuthModal);
   const toggleSaveEvent = useUserStore((s) => s.toggleSaveEvent);
@@ -43,9 +45,9 @@ export function BookmarkButton({
     setIsLoading(true);
     try {
       await toggleSaveEvent(eventId);
-      toast.success(isSaved ? 'Event usunięty z zapisanych' : 'Event zapisany');
+      toast.success(isSaved ? t('bookmark.removed') : t('bookmark.added'));
     } catch {
-      toast.error('Nie udało się zapisać eventu');
+      toast.error(t('bookmark.failed'));
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +70,7 @@ export function BookmarkButton({
           <BookmarkIcon className={iconSizes[size]} />
         )}
         <span className="text-sm font-medium">
-          {isSaved ? 'Zapisano' : 'Zapisz'}
+          {isSaved ? t('bookmark.saved') : t('bookmark.save')}
         </span>
       </button>
     );
@@ -83,7 +85,7 @@ export function BookmarkButton({
           ? 'bg-zinc-900 text-white hover:bg-zinc-800'
           : 'bg-white/90 text-zinc-700 hover:bg-white border border-zinc-200'
       } disabled:opacity-50 ${className}`}
-      aria-label={isSaved ? 'Usuń z zapisanych' : 'Zapisz event'}
+      aria-label={isSaved ? t('bookmark.ariaRemove') : t('bookmark.ariaSave')}
     >
       {isSaved ? (
         <BookmarkFilledIcon className={iconSizes[size]} />

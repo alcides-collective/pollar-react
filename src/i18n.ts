@@ -1,0 +1,119 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import { useLanguageStore } from './stores/languageStore';
+
+// Polish translations
+import plCommon from './locales/pl/common.json';
+import plAuth from './locales/pl/auth.json';
+import plErrors from './locales/pl/errors.json';
+import plProfile from './locales/pl/profile.json';
+import plNotifications from './locales/pl/notifications.json';
+import plSearch from './locales/pl/search.json';
+import plCookies from './locales/pl/cookies.json';
+import plActions from './locales/pl/actions.json';
+import plAi from './locales/pl/ai.json';
+import plSejm from './locales/pl/sejm.json';
+import plGielda from './locales/pl/gielda.json';
+import plDashboard from './locales/pl/dashboard.json';
+import plBrief from './locales/pl/brief.json';
+import plEvent from './locales/pl/event.json';
+
+// English translations
+import enCommon from './locales/en/common.json';
+import enAuth from './locales/en/auth.json';
+import enErrors from './locales/en/errors.json';
+import enProfile from './locales/en/profile.json';
+import enNotifications from './locales/en/notifications.json';
+import enSearch from './locales/en/search.json';
+import enCookies from './locales/en/cookies.json';
+import enActions from './locales/en/actions.json';
+import enAi from './locales/en/ai.json';
+import enSejm from './locales/en/sejm.json';
+import enGielda from './locales/en/gielda.json';
+import enDashboard from './locales/en/dashboard.json';
+import enBrief from './locales/en/brief.json';
+import enEvent from './locales/en/event.json';
+
+// German translations
+import deCommon from './locales/de/common.json';
+import deAuth from './locales/de/auth.json';
+import deErrors from './locales/de/errors.json';
+import deProfile from './locales/de/profile.json';
+import deNotifications from './locales/de/notifications.json';
+import deSearch from './locales/de/search.json';
+import deCookies from './locales/de/cookies.json';
+import deActions from './locales/de/actions.json';
+import deAi from './locales/de/ai.json';
+import deSejm from './locales/de/sejm.json';
+import deGielda from './locales/de/gielda.json';
+import deDashboard from './locales/de/dashboard.json';
+import deBrief from './locales/de/brief.json';
+import deEvent from './locales/de/event.json';
+
+const resources = {
+  pl: {
+    common: plCommon,
+    auth: plAuth,
+    errors: plErrors,
+    profile: plProfile,
+    notifications: plNotifications,
+    search: plSearch,
+    cookies: plCookies,
+    actions: plActions,
+    ai: plAi,
+    sejm: plSejm,
+    gielda: plGielda,
+    dashboard: plDashboard,
+    brief: plBrief,
+    event: plEvent,
+  },
+  en: {
+    common: enCommon,
+    auth: enAuth,
+    errors: enErrors,
+    profile: enProfile,
+    notifications: enNotifications,
+    search: enSearch,
+    cookies: enCookies,
+    actions: enActions,
+    ai: enAi,
+    sejm: enSejm,
+    gielda: enGielda,
+    dashboard: enDashboard,
+    brief: enBrief,
+    event: enEvent,
+  },
+  de: {
+    common: deCommon,
+    auth: deAuth,
+    errors: deErrors,
+    profile: deProfile,
+    notifications: deNotifications,
+    search: deSearch,
+    cookies: deCookies,
+    actions: deActions,
+    ai: deAi,
+    sejm: deSejm,
+    gielda: deGielda,
+    dashboard: deDashboard,
+    brief: deBrief,
+    event: deEvent,
+  },
+};
+
+i18n.use(initReactI18next).init({
+  resources,
+  lng: useLanguageStore.getState().language,
+  fallbackLng: 'pl',
+  defaultNS: 'common',
+  interpolation: {
+    escapeValue: false,
+  },
+});
+
+// Sync with languageStore
+useLanguageStore.subscribe((state) => {
+  i18n.changeLanguage(state.language);
+});
+
+export default i18n;

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { BriefMentionedPerson } from '../../types/brief';
 
 interface BriefMentionsProps {
@@ -6,6 +7,7 @@ interface BriefMentionsProps {
 }
 
 export function BriefMentions({ people, organizations }: BriefMentionsProps) {
+  const { t } = useTranslation('brief');
   if (!people?.length && !organizations?.length) return null;
 
   return (
@@ -15,7 +17,7 @@ export function BriefMentions({ people, organizations }: BriefMentionsProps) {
         {people?.length > 0 && (
           <div>
             <h2 className="text-sm text-zinc-500 mb-3 pb-2 border-b border-zinc-200 font-medium">
-              Wspomniane osoby
+              {t('mentions.people')}
             </h2>
             <div className="flex flex-wrap gap-2">
               {people.map((person, i) => (
@@ -35,7 +37,7 @@ export function BriefMentions({ people, organizations }: BriefMentionsProps) {
         {organizations?.length > 0 && (
           <div>
             <h2 className="text-sm text-zinc-500 mb-3 pb-2 border-b border-zinc-200 font-medium">
-              Wspomniane organizacje
+              {t('mentions.organizations')}
             </h2>
             <div className="flex flex-wrap gap-2">
               {organizations.map((org, i) => (

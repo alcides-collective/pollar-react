@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuthStore, useAuthError } from '@/stores/authStore';
@@ -6,6 +7,7 @@ import { SocialLoginButtons } from './SocialLoginButtons';
 import { AuthDivider } from './AuthDivider';
 
 export function LoginForm() {
+  const { t } = useTranslation('auth');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -40,7 +42,7 @@ export function LoginForm() {
         <div className="space-y-3">
           <Input
             type="email"
-            placeholder="Email"
+            placeholder={t('login.email')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
@@ -49,7 +51,7 @@ export function LoginForm() {
           />
           <Input
             type="password"
-            placeholder="Hasło"
+            placeholder={t('login.password')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={isLoading}
@@ -64,22 +66,22 @@ export function LoginForm() {
             onClick={() => setView('reset')}
             className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           >
-            Nie pamiętasz hasła?
+            {t('login.forgotPassword')}
           </button>
         </div>
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? 'Logowanie...' : 'Zaloguj się'}
+          {isLoading ? t('login.loading') : t('login.title')}
         </Button>
 
         <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
-          Nie masz konta?{' '}
+          {t('login.noAccount')}{' '}
           <button
             type="button"
             onClick={() => setView('register')}
             className="font-medium text-zinc-900 hover:underline dark:text-zinc-200"
           >
-            Zarejestruj się
+            {t('login.register')}
           </button>
         </p>
       </form>

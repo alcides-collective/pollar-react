@@ -1,0 +1,22 @@
+{
+  "error": {
+    "title": "Ereignis nicht gefunden",
+    "description": "Dieses Ereignis existiert nicht oder wurde gelöscht.",
+    "backHome": "Zurück zur Startseite"
+  },
+  "header": {
+    "generatedBy": "Generiert von",
+    "emitting": "emittiert"
+  },
+  "keyPoints": "Kernpunkte",
+  "sidebar": {
+    "mentionedPeople": "Erwähnte Personen",
+    "sources": "Quellen ({{count}})",
+    "moreSources": "+ {{count}} weitere Quellen"
+  },
+  "navigation": {
+    "previous": "Vorherige",
+    "next": "Nächste",
+    "none": "Keine"
+  }
+}

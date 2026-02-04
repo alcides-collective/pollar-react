@@ -1,0 +1,15 @@
+{
+  "placeholder": "Ereignisse, Abgeordnete, Abstimmungen suchen...",
+  "noResults": "Keine Ergebnisse für",
+  "didYouMean": "Meinten Sie:",
+  "searching": "Suche...",
+  "popularSearches": "Beliebte Suchen",
+  "dialogTitle": "Suche",
+  "resultTypes": {
+    "event": "Ereignis",
+    "mp": "Abgeordneter",
+    "voting": "Abstimmung",
+    "print": "Drucksache",
+    "committee": "Ausschuss"
+  }
+}

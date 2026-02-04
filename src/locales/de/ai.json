@@ -1,0 +1,28 @@
+{
+  "input": {
+    "placeholder": "Frage zu Ereignissen...",
+    "send": "Senden",
+    "disclaimer": "KI kann Fehler machen. Überprüfe wichtige Informationen immer."
+  },
+  "header": {
+    "back": "Zurück",
+    "openPanel": "Panel öffnen",
+    "newConversation": "Neue Unterhaltung"
+  },
+  "pro": {
+    "title": "Das volle Potenzial der Plattform freischalten",
+    "features": {
+      "personalizedBrief": "Personalisierter Daily Brief",
+      "unlimitedSearches": "Unbegrenzte Suchen",
+      "trackMPs": "Abgeordnete und Parlament verfolgen",
+      "exportData": "Daten als CSV/PDF exportieren",
+      "fullArchive": "Vollständiges Ereignisarchiv",
+      "noAds": "Keine Werbung",
+      "darkMode": "Dark Mode",
+      "prioritySupport": "Prioritäts-Support"
+    },
+    "price": "13,99 PLN",
+    "perMonth": "/ Monat",
+    "comingSoon": "Demnächst"
+  }
+}

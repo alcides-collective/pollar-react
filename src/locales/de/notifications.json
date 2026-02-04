@@ -1,0 +1,55 @@
+{
+  "title": "Benachrichtigungen",
+  "markAsRead": "Als gelesen markieren",
+  "markAllAsRead": "Alle als gelesen markieren ({{count}})",
+  "noNew": "Keine neuen Benachrichtigungen",
+  "noNotifications": "Keine Benachrichtigungen.",
+  "viewHistory": "Benachrichtigungsverlauf anzeigen",
+  "viewAll": "Alle Benachrichtigungen anzeigen",
+  "noDate": "Kein Datum",
+  "loadingHistorical": "Lade historische...",
+  "loadMore": "Mehr historische laden",
+  "loading": "Laden...",
+  "historical": "Historisch",
+  "voting": {
+    "for": "Dafür",
+    "against": "Dagegen",
+    "abstained": "Enthaltung",
+    "absent": "Abwesend"
+  },
+  "categoryLabels": {
+    "polityka": "Politik",
+    "swiat": "Welt",
+    "gospodarka": "Wirtschaft",
+    "spoleczenstwo": "Gesellschaft",
+    "nauka": "Wissenschaft",
+    "sport": "Sport",
+    "kultura": "Kultur",
+    "technologia": "Technologie",
+    "inne": "Sonstiges"
+  },
+  "filters": {
+    "type": "Typ",
+    "all": "Alle",
+    "votings": "Abstimmungen",
+    "categories": "Kategorien",
+    "vote": "Stimme",
+    "mp": "Abgeordneter",
+    "allMPs": "Alle ({{count}})",
+    "category": "Kategorie",
+    "allCategories": "Alle ({{count}})",
+    "showHistorical": "Historische anzeigen"
+  },
+  "stats": {
+    "followedMPs": "Verfolgte Abgeordnete",
+    "favoriteCategories": "Lieblingskategorien",
+    "notifications": "Benachrichtigungen"
+  },
+  "noPreferences": {
+    "title": "Keine Präferenzen eingestellt",
+    "description": "Beginne Abgeordnete zu verfolgen oder füge Lieblingskategorien hinzu, um Benachrichtigungen zu erhalten.",
+    "browseMPs": "Abgeordnete durchsuchen",
+    "setCategories": "Kategorien einstellen",
+    "hint": "Füge Lieblingskategorien hinzu oder beginne Abgeordnete zu verfolgen"
+  }
+}

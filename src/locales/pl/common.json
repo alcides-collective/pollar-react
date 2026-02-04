@@ -1,0 +1,137 @@
+{
+  "nav": {
+    "all": "Wszystkie",
+    "discover": "Odkrywaj",
+    "privacy": "Prywatność",
+    "search": "Szukaj",
+    "dailyBrief": "Daily Brief",
+    "aiAssistant": "AI Asystent",
+    "sejm": "Sejm",
+    "stockExchange": "Giełda",
+    "eventMap": "Mapa wydarzeń",
+    "openData": "Otwarte Dane",
+    "connectionGraph": "Graf powiązań",
+    "terminal": "Terminal",
+    "connections": "Powiązania",
+    "archive": "Archiwum",
+    "about": "O Pollar"
+  },
+  "categories": {
+    "Świat": "Świat",
+    "Gospodarka": "Gospodarka",
+    "Polityka": "Polityka",
+    "Społeczeństwo": "Społeczeństwo",
+    "Sport": "Sport",
+    "Kultura": "Kultura",
+    "Przestępczość": "Przestępczość",
+    "Styl Życia": "Styl Życia",
+    "Pogoda i Środowisko": "Pogoda i Środowisko",
+    "Nauka i Technologia": "Nauka i Technologia",
+    "Inne": "Inne"
+  },
+  "actions": {
+    "save": "Zapisz",
+    "saved": "Zapisano",
+    "follow": "Śledź",
+    "following": "Śledzisz",
+    "share": "Udostępnij",
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź",
+    "back": "Wróć",
+    "backToHome": "Wróć do strony głównej",
+    "search": "Szukaj",
+    "close": "Zamknij",
+    "open": "Otwórz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "send": "Wyślij",
+    "refresh": "Odśwież",
+    "copy": "Kopiuj",
+    "copied": "Skopiowano"
+  },
+  "time": {
+    "now": "teraz",
+    "min": "min",
+    "hours": "godz.",
+    "days": "dni",
+    "secondsAgo": "{{count}} sek. temu",
+    "minutesAgo": "{{count}} min. temu",
+    "hoursAgo": "{{count}} godz. temu",
+    "update": "aktualizacja"
+  },
+  "states": {
+    "loading": "Wczytywanie...",
+    "searching": "Szukam...",
+    "sending": "Wysyłanie...",
+    "saving": "Zapisywanie...",
+    "deleting": "Usuwanie..."
+  },
+  "errors": {
+    "error": "Błąd",
+    "errorOccurred": "Wystąpił błąd",
+    "failedToLoad": "Nie udało się załadować",
+    "tryAgain": "Spróbuj ponownie",
+    "refreshPage": "Spróbuj odświeżyć stronę. Jeśli problem się powtarza, skontaktuj się z nami."
+  },
+  "user": {
+    "defaultName": "Użytkownik",
+    "appleUser": "Użytkownik Apple",
+    "dashboard": "Dashboard",
+    "myProfile": "Mój profil",
+    "notifications": "Powiadomienia",
+    "logout": "Wyloguj się"
+  },
+  "loginPrompt": {
+    "title": "Zaloguj się, aby uzyskać dostęp do:",
+    "feature1": "Śledzenia posłów i ich głosowań",
+    "feature2": "Powiadomień o nowych wydarzeniach",
+    "feature3": "Zapisywania artykułów",
+    "feature4": "Personalizacji kategorii"
+  },
+  "footer": {
+    "description": "Agregator wiadomości napędzany AI. Śledź wydarzenia, analizuj dane Sejmu i eksploruj statystyki publiczne.",
+    "allRightsReserved": "Wszelkie prawa zastrzeżone.",
+    "navigation": "Nawigacja",
+    "home": "Strona główna",
+    "legal": "Prawne",
+    "terms": "Regulamin",
+    "privacyPolicy": "Polityka prywatności",
+    "cookies": "Cookies"
+  },
+  "seo": {
+    "archiveTitle": "Archiwum wydarzeń",
+    "archiveDescription": "Przeglądaj archiwum wydarzeń pogrupowane według kategorii",
+    "archiveAllEvents": "Wszystkie wydarzenia pogrupowane według kategorii",
+    "mainHeading": "Pollar News - Wszystkie najważniejsze wiadomości w jednym miejscu"
+  },
+  "discover": {
+    "title": "Odkryj",
+    "powiazania": {
+      "title": "Powiązania",
+      "description": "Codzienna gra słowna. Znajdź ukryte połączenia między słowami i pogrupuj je w kategorie."
+    },
+    "sejm": {
+      "title": "Sejm",
+      "description": "Śledź głosowania, projekty ustaw i aktywność posłów. Pełna transparentność prac parlamentu."
+    },
+    "gielda": {
+      "title": "Giełda",
+      "description": "Notowania, analizy i prognozy rynkowe. Bądź na bieżąco z sytuacją na GPW."
+    }
+  },
+  "info": {
+    "events": "Wydarzeń",
+    "sources": "Źródeł",
+    "ads": "Reklam",
+    "online": "Online",
+    "newsWithoutNoise": "Wiadomości bez szumu",
+    "aiDescription": "AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.",
+    "startReading": "Zacznij czytać",
+    "scroll": "Przewiń"
+  },
+  "greetings": {
+    "morning": "Dzień dobry",
+    "evening": "Dobry wieczór",
+    "default": "Witaj"
+  }
+}

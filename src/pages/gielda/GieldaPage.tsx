@@ -1,24 +1,26 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useGieldaData } from '../../hooks/useGieldaData';
 import { IndexCard, StockCard, PriceChange } from '../../components/gielda';
 import { getStockDisplaySymbol } from '../../types/gielda';
 import { Skeleton } from '../../components/ui/skeleton';
 
-function formatRelativeTime(timestamp: number, currentTime: number): string {
+function formatRelativeTime(timestamp: number, currentTime: number, t: (key: string, options?: Record<string, unknown>) => string): string {
   const diff = Math.floor((currentTime - timestamp) / 1000);
 
-  if (diff < 5) return 'teraz';
-  if (diff < 60) return `${diff} sek. temu`;
+  if (diff < 5) return t('time.now');
+  if (diff < 60) return t('time.seconds', { count: diff });
 
   const minutes = Math.floor(diff / 60);
-  if (minutes < 60) return `${minutes} min. temu`;
+  if (minutes < 60) return t('time.minutes', { count: minutes });
 
   const hours = Math.floor(minutes / 60);
-  return `${hours} godz. temu`;
+  return t('time.hours', { count: hours });
 }
 
 export function GieldaPage() {
+  const { t } = useTranslation('gielda');
   const {
     stocks,
     loading,
@@ -36,18 +38,18 @@ export function GieldaPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const lastUpdateFormatted = stocks.length > 0 ? formatRelativeTime(Date.now(), now) : null;
+  const lastUpdateFormatted = stocks.length > 0 ? formatRelativeTime(Date.now(), now, t) : null;
 
   if (error) {
     return (
       <div className="gielda-dashboard">
         <header className="page-header mb-6">
-          <h1 className="text-2xl font-semibold text-black dark:text-white">Giełda</h1>
+          <h1 className="text-2xl font-semibold text-black dark:text-white">{t('title')}</h1>
         </header>
         <div className="rounded-lg p-4 border border-red-600/20 bg-red-600/5 text-red-700 dark:text-red-400">
-          <p className="font-medium">Nie udało się załadować danych giełdowych.</p>
+          <p className="font-medium">{t('failedToLoad')}</p>
           <p className="text-sm mt-2 opacity-70">
-            Spróbuj odświeżyć stronę. Jeśli problem się powtarza, skontaktuj się z nami.
+            {t('refreshHint')}
           </p>
         </div>
       </div>
@@ -59,15 +61,15 @@ export function GieldaPage() {
       {/* Header */}
       <header className="page-header mb-6">
         <div className="flex items-baseline gap-3 mb-1">
-          <h1 className="text-2xl font-semibold text-black dark:text-white">Giełda</h1>
+          <h1 className="text-2xl font-semibold text-black dark:text-white">{t('title')}</h1>
           {lastUpdateFormatted && (
             <span className="text-xs text-black/40 dark:text-white/40 font-mono">
-              aktualizacja: {lastUpdateFormatted}
+              {t('update')}: {lastUpdateFormatted}
             </span>
           )}
         </div>
         <p className="text-sm text-black/50 dark:text-white/50">
-          Notowania akcji i indeksów w czasie rzeczywistym
+          {t('subtitle')}
         </p>
       </header>
 
@@ -93,7 +95,7 @@ export function GieldaPage() {
               {/* Polish Indices */}
               <div className="section-block mb-6 p-5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/5 dark:border-white/5">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-black/60 dark:text-white/60 mb-4">
-                  Indeksy Polskie
+                  {t('polishIndices')}
                 </h2>
                 <div className="grid gap-3">
                   {polishIndices.map(index => (
@@ -105,7 +107,7 @@ export function GieldaPage() {
               {/* Global Indices */}
               <div className="section-block p-5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/5 dark:border-white/5">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-black/60 dark:text-white/60 mb-4">
-                  Indeksy Globalne
+                  {t('globalIndices')}
                 </h2>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {globalIndices.map(index => (
@@ -120,7 +122,7 @@ export function GieldaPage() {
               {/* Top Gainers */}
               <div className="section-block mb-6 p-5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/5 dark:border-white/5">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-green-600 dark:text-green-400 mb-4">
-                  <span className="mr-2">↑</span> Wzrosty
+                  <span className="mr-2">↑</span> {t('gainers')}
                 </h2>
                 <div className="space-y-2">
                   {topGainers.map((stock, i) => (
@@ -152,7 +154,7 @@ export function GieldaPage() {
                   ))}
                   {topGainers.length === 0 && (
                     <p className="text-sm text-black/40 dark:text-white/40 text-center py-4">
-                      Brak danych
+                      {t('noData')}
                     </p>
                   )}
                 </div>
@@ -161,7 +163,7 @@ export function GieldaPage() {
               {/* Top Losers */}
               <div className="section-block p-5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/5 dark:border-white/5">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-red-600 dark:text-red-400 mb-4">
-                  <span className="mr-2">↓</span> Spadki
+                  <span className="mr-2">↓</span> {t('losers')}
                 </h2>
                 <div className="space-y-2">
                   {topLosers.map((stock, i) => (
@@ -193,7 +195,7 @@ export function GieldaPage() {
                   ))}
                   {topLosers.length === 0 && (
                     <p className="text-sm text-black/40 dark:text-white/40 text-center py-4">
-                      Brak danych
+                      {t('noData')}
                     </p>
                   )}
                 </div>
@@ -206,13 +208,13 @@ export function GieldaPage() {
             <div className="section-block p-5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/5 dark:border-white/5">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-black/60 dark:text-white/60">
-                  Akcje WIG20
+                  {t('wig20Stocks')}
                 </h2>
                 <Link
                   to="/gielda/akcje"
                   className="text-xs text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors"
                 >
-                  Zobacz wszystkie →
+                  {t('seeAll')} →
                 </Link>
               </div>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

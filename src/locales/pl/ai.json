@@ -1,0 +1,28 @@
+{
+  "input": {
+    "placeholder": "Zapytaj o wydarzenia...",
+    "send": "Wyślij",
+    "disclaimer": "AI może popełniać błędy. Zawsze weryfikuj ważne informacje."
+  },
+  "header": {
+    "back": "Wróć",
+    "openPanel": "Otwórz panel",
+    "newConversation": "Nowa rozmowa"
+  },
+  "pro": {
+    "title": "Odblokuj pełny potencjał platformy",
+    "features": {
+      "personalizedBrief": "Spersonalizowany Daily Brief",
+      "unlimitedSearches": "Brak limitów wyszukiwania",
+      "trackMPs": "Śledzenie posłów i Sejmu",
+      "exportData": "Export danych CSV/PDF",
+      "fullArchive": "Pełne archiwum wydarzeń",
+      "noAds": "Brak reklam",
+      "darkMode": "Dark mode",
+      "prioritySupport": "Priorytetowe wsparcie"
+    },
+    "price": "13,99 zł",
+    "perMonth": "/ miesiąc",
+    "comingSoon": "Wkrótce"
+  }
+}

@@ -4,6 +4,7 @@ import { CATEGORY_ORDER } from '../constants/categories';
 import { useEvents } from '../stores/eventsStore';
 import { useSelectedCategory } from '../stores/uiStore';
 import { useFavoriteCategories } from '../stores/userStore';
+import { useLanguage } from '../stores/languageStore';
 
 // Fresh events can appear in all sections (featured, hero, tabs, latest)
 // OLD events are only shown in CategoryCarousel at the bottom
@@ -177,11 +178,12 @@ export function useEventGroups(
 ): EventGroups & { loading: boolean; error: Error | null } {
   const selectedCategory = useSelectedCategory();
   const favoriteCategories = useFavoriteCategories();
+  const language = useLanguage();
   const includeArchive = options.includeArchive ?? !!selectedCategory;
 
   const { events, loading, error } = useEvents({
     limit: 100,
-    lang: 'pl',
+    lang: language,
     includeArchive,
     articleFields: 'minimal',
   });

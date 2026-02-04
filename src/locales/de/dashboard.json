@@ -1,0 +1,36 @@
+{
+  "title": "Dashboard",
+  "forYou": {
+    "title": "Für dich",
+    "basedOn": "Basierend auf: {{categories}}",
+    "empty": "Füge Lieblingskategorien hinzu, um personalisierte Ereignisse zu sehen.",
+    "setCategories": "Lieblingskategorien festlegen"
+  },
+  "recentlyRead": {
+    "title": "Kürzlich gelesen",
+    "empty": "Du hast noch keinen Leseverlauf."
+  },
+  "saved": {
+    "title": "Gespeichert ({{count}})",
+    "viewAll": "Alle anzeigen",
+    "empty": "Du hast keine gespeicherten Ereignisse.",
+    "browseEvents": "Ereignisse durchsuchen"
+  },
+  "followedMPs": {
+    "title": "Verfolgte Abgeordnete ({{count}})",
+    "add": "Hinzufügen",
+    "empty": "Du verfolgst keine Abgeordneten.",
+    "browseMPs": "Abgeordnete durchsuchen"
+  },
+  "alerts": {
+    "title": "Letzte Benachrichtigungen",
+    "empty": "Keine Abstimmungsbenachrichtigungen.",
+    "hint": "Beginne Abgeordnete zu verfolgen, um Benachrichtigungen zu erhalten."
+  },
+  "voting": {
+    "for": "Dafür",
+    "against": "Dagegen",
+    "abstained": "Enthaltung",
+    "absent": "Abwesend"
+  }
+}

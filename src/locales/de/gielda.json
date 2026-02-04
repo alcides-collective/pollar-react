@@ -1,0 +1,26 @@
+{
+  "title": "Börse",
+  "subtitle": "Aktien- und Indexkurse in Echtzeit",
+  "failedToLoad": "Börsendaten konnten nicht geladen werden.",
+  "refreshHint": "Versuche die Seite zu aktualisieren. Wenn das Problem weiterhin besteht, kontaktiere uns.",
+  "navigation": {
+    "overview": "Übersicht",
+    "stocks": "Aktien",
+    "indices": "Indizes",
+    "watchlist": "Watchlist"
+  },
+  "update": "aktualisiert",
+  "polishIndices": "Polnische Indizes",
+  "globalIndices": "Globale Indizes",
+  "gainers": "Gewinner",
+  "losers": "Verlierer",
+  "noData": "Keine Daten",
+  "wig20Stocks": "WIG20-Aktien",
+  "seeAll": "Alle anzeigen",
+  "time": {
+    "now": "jetzt",
+    "seconds": "vor {{count}} Sek.",
+    "minutes": "vor {{count}} Min.",
+    "hours": "vor {{count}} Std."
+  }
+}

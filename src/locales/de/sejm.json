@@ -1,0 +1,75 @@
+{
+  "mpsPage": {
+    "title": "Abgeordnete",
+    "searchPlaceholder": "Abgeordneten suchen...",
+    "allClubs": "Alle Klubs",
+    "sortByVotes": "Nach Stimmen",
+    "sortByName": "Nach Name",
+    "sortByClub": "Nach Klub",
+    "sortByVoivodeship": "Nach Woiwodschaft",
+    "showInactive": "Inaktive anzeigen",
+    "found": "Gefunden: {{count}} Abgeordnete",
+    "noResults": "Keine Abgeordneten gefunden, die den Kriterien entsprechen"
+  },
+  "navigation": {
+    "overview": "Übersicht",
+    "people": "Personen",
+    "mps": "Abgeordnete",
+    "clubs": "Fraktionen",
+    "work": "Arbeit",
+    "proceedings": "Sitzungen",
+    "committees": "Ausschüsse",
+    "votings": "Abstimmungen",
+    "videos": "Übertragungen",
+    "documents": "Dokumente",
+    "prints": "Drucksachen",
+    "legislation": "Gesetzgebung",
+    "interpellations": "Interpellationen",
+    "questions": "Fragen"
+  },
+  "sort": {
+    "mostVotes": "Meiste Stimmen",
+    "highestAttendance": "Höchste Anwesenheit",
+    "lowestAttendance": "Niedrigste Anwesenheit",
+    "youngest": "Jüngste",
+    "oldest": "Älteste"
+  },
+  "age": {
+    "years": "{{count}} Jahre"
+  },
+  "dashboard": {
+    "followedMPs": "Verfolgte Abgeordnete ({{count}})",
+    "addMore": "Mehr hinzufügen",
+    "andMore": "+{{count}} mehr",
+    "polls": "Umfragen",
+    "live": "Live",
+    "proceedingNumber": "{{number}}. Sejm-Sitzung",
+    "mps": "Abgeordnete",
+    "all": "Alle",
+    "recentVotings": "Letzte Abstimmungen",
+    "allVotings": "Alle",
+    "prints": "Drucksachen",
+    "interpellations": "Interpellationen",
+    "committees": "Ausschüsse",
+    "broadcasts": "Übertragungen",
+    "recent": "{{count}} letzte"
+  },
+  "mp": {
+    "title": "Abgeordneter",
+    "attendance": "Anwesenheit",
+    "votes": "Stimmen",
+    "club": "Fraktion",
+    "constituency": "Wahlkreis",
+    "birthDate": "Geburtsdatum",
+    "education": "Ausbildung",
+    "profession": "Beruf"
+  },
+  "voting": {
+    "for": "Dafür",
+    "against": "Dagegen",
+    "abstain": "Enthaltung",
+    "absent": "Abwesend",
+    "passed": "Angenommen",
+    "rejected": "Abgelehnt"
+  }
+}

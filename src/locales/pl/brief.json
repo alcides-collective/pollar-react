@@ -1,0 +1,30 @@
+{
+  "error": {
+    "title": "Nie udało się załadować briefu",
+    "backHome": "Wróć do strony głównej"
+  },
+  "empty": {
+    "title": "Brak briefu na dzisiaj",
+    "description": "Daily Brief nie został jeszcze wygenerowany."
+  },
+  "wordOfTheDay": "Słowo dnia",
+  "events": "Wydarzenia",
+  "summary": "Podsumowanie",
+  "insights": {
+    "title": "Wnioski",
+    "trends": "Trendy",
+    "correlations": "Korelacje",
+    "anomalies": "Anomalie",
+    "implications": "Implikacje",
+    "metaCommentary": "Komentarz meta"
+  },
+  "mentions": {
+    "people": "Wspomniane osoby",
+    "organizations": "Wspomniane organizacje"
+  },
+  "timeHeadline": {
+    "morning": "Poranne wydanie",
+    "afternoon": "Popołudniowe wydanie",
+    "evening": "Wieczorne wydanie"
+  }
+}

@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import type { Event } from '../types/events';
 import { API_BASE } from '../config/api';
 import { sanitizeEvent } from '../utils/sanitize';
+import { useLanguage, type Language } from '../stores/languageStore';
 
-export function useEvent(eventId: string | undefined) {
+export function useEvent(eventId: string | undefined, langOverride?: Language) {
+  const storeLanguage = useLanguage();
+  const lang = langOverride ?? storeLanguage;
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -19,7 +22,7 @@ export function useEvent(eventId: string | undefined) {
       setError(null);
 
       try {
-        const response = await fetch(`${API_BASE}/events/${eventId}?lang=pl`);
+        const response = await fetch(`${API_BASE}/events/${eventId}?lang=${lang}`);
 
         if (!response.ok) {
           if (response.status === 404) {
@@ -38,7 +41,7 @@ export function useEvent(eventId: string | undefined) {
     };
 
     fetchEvent();
-  }, [eventId]);
+  }, [eventId, lang]);
 
   return { event, loading, error };
 }

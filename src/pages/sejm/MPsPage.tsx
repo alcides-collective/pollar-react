@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMPs } from '../../hooks/useMPs';
 import { MPCard, SejmApiError } from '../../components/sejm';
 
 type SortOption = 'name' | 'votes' | 'club' | 'voivodeship';
 
 export function MPsPage() {
+  const { t } = useTranslation('sejm');
   const { mps, clubs, loading, error } = useMPs();
   const [search, setSearch] = useState('');
   const [selectedClub, setSelectedClub] = useState<string | null>(null);
@@ -72,13 +74,13 @@ export function MPsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">Posłowie</h1>
+      <h1 className="text-xl font-semibold text-zinc-900">{t('mpsPage.title')}</h1>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center p-3 bg-zinc-50 rounded-lg">
         <input
           type="text"
-          placeholder="Szukaj posła..."
+          placeholder={t('mpsPage.searchPlaceholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="flex-1 min-w-[200px] px-3 py-2 text-sm border border-zinc-200 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300"
@@ -89,7 +91,7 @@ export function MPsPage() {
           onChange={(e) => setSelectedClub(e.target.value || null)}
           className="px-3 py-2 text-sm border border-zinc-200 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-zinc-300"
         >
-          <option value="">Wszystkie kluby</option>
+          <option value="">{t('mpsPage.allClubs')}</option>
           {clubs.map((club) => (
             <option key={club} value={club}>{club}</option>
           ))}
@@ -100,10 +102,10 @@ export function MPsPage() {
           onChange={(e) => setSortBy(e.target.value as SortOption)}
           className="px-3 py-2 text-sm border border-zinc-200 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-zinc-300"
         >
-          <option value="votes">Wg głosów</option>
-          <option value="name">Wg nazwiska</option>
-          <option value="club">Wg klubu</option>
-          <option value="voivodeship">Wg województwa</option>
+          <option value="votes">{t('mpsPage.sortByVotes')}</option>
+          <option value="name">{t('mpsPage.sortByName')}</option>
+          <option value="club">{t('mpsPage.sortByClub')}</option>
+          <option value="voivodeship">{t('mpsPage.sortByVoivodeship')}</option>
         </select>
 
         <label className="flex items-center gap-2 text-sm text-zinc-600">
@@ -113,13 +115,13 @@ export function MPsPage() {
             onChange={(e) => setShowInactive(e.target.checked)}
             className="rounded border-zinc-300"
           />
-          Pokaż nieaktywnych
+          {t('mpsPage.showInactive')}
         </label>
       </div>
 
       {/* Results count */}
       <p className="text-sm text-zinc-500">
-        Znaleziono: {filteredMPs.length} posłów
+        {t('mpsPage.found', { count: filteredMPs.length })}
       </p>
 
       {/* Grid */}
@@ -131,7 +133,7 @@ export function MPsPage() {
 
       {filteredMPs.length === 0 && (
         <p className="text-center text-zinc-500 py-8">
-          Nie znaleziono posłów spełniających kryteria
+          {t('mpsPage.noResults')}
         </p>
       )}
     </div>

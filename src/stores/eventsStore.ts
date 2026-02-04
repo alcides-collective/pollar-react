@@ -4,6 +4,7 @@ import type { Event, EventsResponse } from '../types/events';
 import { API_BASE, apiConfig } from '../config/api';
 import { sanitizeEvent } from '../utils/sanitize';
 import { useUserStore } from './userStore';
+import { useLanguageStore, useLanguage, type Language } from './languageStore';
 
 const CACHE_TTL = apiConfig.cacheTTL;
 
@@ -168,7 +169,8 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
   },
 
   prefetchArchive: (params = {}) => {
-    const { limit = 100, lang = 'pl' } = params;
+    const currentLang = useLanguageStore.getState().language;
+    const { limit = 100, lang = currentLang } = params;
     const searchParams = new URLSearchParams();
     searchParams.set('limit', String(limit));
     searchParams.set('lang', lang);
@@ -200,7 +202,7 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
 // Hook for fetching events (similar to old useEvents)
 interface UseEventsOptions {
   limit?: number;
-  lang?: string;
+  lang?: Language;
   includeArchive?: boolean;
   category?: string;
   articleFields?: 'minimal' | 'full';
@@ -216,12 +218,14 @@ export function useEvents(params: UseEventsOptions = {}) {
   const fetchEvents = useEventsStore((s) => s.fetchEvents);
   const prefetchArchive = useEventsStore((s) => s.prefetchArchive);
   const fetchingKeys = useEventsStore((s) => s.fetchingKeys);
+  const storeLanguage = useLanguage();
+  const lang = params.lang ?? storeLanguage;
 
   // Memoize URL and cache keys to prevent unnecessary recalculations
   const { url, cacheKey, archiveCacheKey } = useMemo(() => {
     const searchParams = new URLSearchParams();
     if (params.limit) searchParams.set('limit', String(params.limit));
-    if (params.lang) searchParams.set('lang', params.lang);
+    searchParams.set('lang', lang);
     if (params.category) searchParams.set('category', params.category);
 
     const url = `${API_BASE}/events?${searchParams.toString()}`;
@@ -229,12 +233,12 @@ export function useEvents(params: UseEventsOptions = {}) {
 
     const archiveSearchParams = new URLSearchParams();
     archiveSearchParams.set('limit', String(params.limit || 100));
-    archiveSearchParams.set('lang', params.lang || 'pl');
+    archiveSearchParams.set('lang', lang);
     const archiveUrl = `${API_BASE}/events/archive?${archiveSearchParams.toString()}`;
     const archiveCacheKey = `archive:${archiveUrl}`;
 
     return { url, cacheKey, archiveCacheKey };
-  }, [params.limit, params.lang, params.category]);
+  }, [params.limit, lang, params.category]);
 
   // Memoize fetch function with useCallback
   const fetchEventsFn = useCallback(async (): Promise<Event[]> => {
@@ -280,9 +284,9 @@ export function useEvents(params: UseEventsOptions = {}) {
   // Prefetch archive in useEffect after main events load
   useEffect(() => {
     if (isFresh && !params.includeArchive) {
-      prefetchArchive({ limit: params.limit, lang: params.lang });
+      prefetchArchive({ limit: params.limit, lang });
     }
-  }, [isFresh, params.includeArchive, params.limit, params.lang, prefetchArchive]);
+  }, [isFresh, params.includeArchive, params.limit, lang, prefetchArchive]);
 
   // Combine with archive if requested (memoized)
   const finalEvents = useMemo(() => {

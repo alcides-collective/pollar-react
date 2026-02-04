@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import {
   useAlertsStore,
@@ -13,58 +14,47 @@ import {
   getHistoricalVotingAlerts,
   type HistoricalVotingAlert,
 } from '@/services/alertsService';
+import { useLanguage } from '@/stores/languageStore';
 
 type FilterType = 'all' | 'voting' | 'category';
 type VoteFilter = 'all' | 'yes' | 'no' | 'abstain' | 'absent';
 
-const CATEGORY_LABELS: Record<string, string> = {
-  polityka: 'Polityka',
-  swiat: 'Świat',
-  gospodarka: 'Gospodarka',
-  spoleczenstwo: 'Społeczeństwo',
-  nauka: 'Nauka',
-  sport: 'Sport',
-  kultura: 'Kultura',
-  technologia: 'Technologia',
-  inne: 'Inne',
-};
-
-function formatVote(vote: string): { text: string; color: string; bg: string } {
+function formatVote(vote: string, t: (key: string) => string): { text: string; color: string; bg: string } {
   switch (vote) {
     case 'yes':
-      return { text: 'Za', color: 'text-green-700', bg: 'bg-green-100' };
+      return { text: t('voting.for'), color: 'text-green-700', bg: 'bg-green-100' };
     case 'no':
-      return { text: 'Przeciw', color: 'text-red-700', bg: 'bg-red-100' };
+      return { text: t('voting.against'), color: 'text-red-700', bg: 'bg-red-100' };
     case 'abstain':
-      return { text: 'Wstrzymał się', color: 'text-amber-700', bg: 'bg-amber-100' };
+      return { text: t('voting.abstained'), color: 'text-amber-700', bg: 'bg-amber-100' };
     case 'absent':
-      return { text: 'Nieobecny', color: 'text-zinc-600', bg: 'bg-zinc-100' };
+      return { text: t('voting.absent'), color: 'text-zinc-600', bg: 'bg-zinc-100' };
     default:
       return { text: vote, color: 'text-zinc-600', bg: 'bg-zinc-100' };
   }
 }
 
-function formatDate(dateStr: string | { seconds?: number; _seconds?: number }): string {
+function formatDate(dateStr: string | { seconds?: number; _seconds?: number }, locale: string, noDateText: string): string {
   let date: Date;
   if (typeof dateStr === 'object' && dateStr !== null) {
-    // Handle Firestore Timestamp (can be { seconds } or { _seconds })
     const seconds = dateStr.seconds ?? dateStr._seconds;
     if (seconds !== undefined) {
       date = new Date(seconds * 1000);
     } else {
-      return 'Brak daty';
+      return noDateText;
     }
   } else if (typeof dateStr === 'string' && dateStr) {
     date = new Date(dateStr);
   } else {
-    return 'Brak daty';
+    return noDateText;
   }
 
   if (isNaN(date.getTime())) {
-    return 'Brak daty';
+    return noDateText;
   }
 
-  return date.toLocaleDateString('pl-PL', {
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
+  return date.toLocaleDateString(localeMap[locale] || 'pl-PL', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -82,6 +72,8 @@ export function NotificationsPage() {
 }
 
 function NotificationsContent() {
+  const { t } = useTranslation('notifications');
+  const language = useLanguage();
   const combinedAlerts = useCombinedAlerts();
   const totalUnreadCount = useTotalUnreadCount();
 
@@ -246,13 +238,13 @@ function NotificationsContent() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-zinc-900">Powiadomienia</h1>
+        <h1 className="text-2xl font-bold text-zinc-900">{t('title')}</h1>
         {totalUnreadCount > 0 && (
           <button
             onClick={() => markAllAlertsAsRead()}
             className="text-sm text-zinc-500 hover:text-zinc-700"
           >
-            Oznacz wszystkie jako przeczytane ({totalUnreadCount})
+            {t('markAllAsRead', { count: totalUnreadCount })}
           </button>
         )}
       </div>
@@ -260,44 +252,44 @@ function NotificationsContent() {
       {/* Filters */}
       <div className="flex flex-wrap gap-3 mb-6 p-4 bg-zinc-50 rounded-lg">
         <div>
-          <label className="block text-xs text-zinc-500 mb-1">Typ</label>
+          <label className="block text-xs text-zinc-500 mb-1">{t('filters.type')}</label>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value as FilterType)}
             className="text-sm border border-zinc-200 rounded px-2 py-1"
           >
-            <option value="all">Wszystkie</option>
-            <option value="voting">Głosowania</option>
-            <option value="category">Kategorie</option>
+            <option value="all">{t('filters.all')}</option>
+            <option value="voting">{t('filters.votings')}</option>
+            <option value="category">{t('filters.categories')}</option>
           </select>
         </div>
 
         {filterType !== 'category' && (
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Głos</label>
+            <label className="block text-xs text-zinc-500 mb-1">{t('filters.vote')}</label>
             <select
               value={voteFilter}
               onChange={(e) => setVoteFilter(e.target.value as VoteFilter)}
               className="text-sm border border-zinc-200 rounded px-2 py-1"
             >
-              <option value="all">Wszystkie</option>
-              <option value="yes">Za</option>
-              <option value="no">Przeciw</option>
-              <option value="abstain">Wstrzymał się</option>
-              <option value="absent">Nieobecny</option>
+              <option value="all">{t('filters.all')}</option>
+              <option value="yes">{t('voting.for')}</option>
+              <option value="no">{t('voting.against')}</option>
+              <option value="abstain">{t('voting.abstained')}</option>
+              <option value="absent">{t('voting.absent')}</option>
             </select>
           </div>
         )}
 
         {filterType !== 'category' && followedMPs.length > 0 && (
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Poseł</label>
+            <label className="block text-xs text-zinc-500 mb-1">{t('filters.mp')}</label>
             <select
               value={mpFilter}
               onChange={(e) => setMpFilter(e.target.value === 'all' ? 'all' : Number(e.target.value))}
               className="text-sm border border-zinc-200 rounded px-2 py-1"
             >
-              <option value="all">Wszyscy ({followedMPs.length})</option>
+              <option value="all">{t('filters.allMPs', { count: followedMPs.length })}</option>
               {followedMPs.map((mp) => (
                 <option key={mp.id} value={mp.id}>
                   {mp.firstLastName}
@@ -309,16 +301,16 @@ function NotificationsContent() {
 
         {filterType !== 'voting' && favoriteCategories.length > 0 && (
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Kategoria</label>
+            <label className="block text-xs text-zinc-500 mb-1">{t('filters.category')}</label>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
               className="text-sm border border-zinc-200 rounded px-2 py-1"
             >
-              <option value="all">Wszystkie ({favoriteCategories.length})</option>
+              <option value="all">{t('filters.allCategories', { count: favoriteCategories.length })}</option>
               {favoriteCategories.map((cat) => (
                 <option key={cat} value={cat}>
-                  {CATEGORY_LABELS[cat] || cat}
+                  {t(`categoryLabels.${cat}`, cat)}
                 </option>
               ))}
             </select>
@@ -334,7 +326,7 @@ function NotificationsContent() {
                 onChange={(e) => setShowHistorical(e.target.checked)}
                 className="rounded"
               />
-              <span className="text-zinc-600">Pokaż historyczne</span>
+              <span className="text-zinc-600">{t('filters.showHistorical')}</span>
             </label>
           </div>
         )}
@@ -344,15 +336,15 @@ function NotificationsContent() {
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white border border-zinc-200 rounded-lg p-3 text-center">
           <div className="text-2xl font-bold text-zinc-900">{followedMPIds.length}</div>
-          <div className="text-xs text-zinc-500">Śledzonych posłów</div>
+          <div className="text-xs text-zinc-500">{t('stats.followedMPs')}</div>
         </div>
         <div className="bg-white border border-zinc-200 rounded-lg p-3 text-center">
           <div className="text-2xl font-bold text-zinc-900">{favoriteCategories.length}</div>
-          <div className="text-xs text-zinc-500">Ulubionych kategorii</div>
+          <div className="text-xs text-zinc-500">{t('stats.favoriteCategories')}</div>
         </div>
         <div className="bg-white border border-zinc-200 rounded-lg p-3 text-center">
           <div className="text-2xl font-bold text-zinc-900">{filteredAlerts.length}</div>
-          <div className="text-xs text-zinc-500">Powiadomień</div>
+          <div className="text-xs text-zinc-500">{t('stats.notifications')}</div>
         </div>
       </div>
 
@@ -360,22 +352,22 @@ function NotificationsContent() {
       {followedMPIds.length === 0 && favoriteCategories.length === 0 && (
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 text-center mb-6">
           <i className="ri-notification-off-line text-3xl text-amber-500 mb-2" />
-          <h3 className="font-medium text-zinc-900 mb-1">Brak ustawionych preferencji</h3>
+          <h3 className="font-medium text-zinc-900 mb-1">{t('noPreferences.title')}</h3>
           <p className="text-sm text-zinc-600 mb-4">
-            Zacznij śledzić posłów lub dodaj ulubione kategorie, żeby otrzymywać powiadomienia.
+            {t('noPreferences.description')}
           </p>
           <div className="flex gap-3 justify-center">
             <Link
               to="/sejm/poslowie"
               className="text-sm px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800"
             >
-              Przeglądaj posłów
+              {t('noPreferences.browseMPs')}
             </Link>
             <Link
               to="/profil"
               className="text-sm px-4 py-2 border border-zinc-300 rounded-lg hover:bg-zinc-50"
             >
-              Ustaw kategorie
+              {t('noPreferences.setCategories')}
             </Link>
           </div>
         </div>
@@ -384,20 +376,20 @@ function NotificationsContent() {
       {/* Alerts list */}
       <section>
         <h2 className="text-lg font-semibold text-zinc-900 mb-4">
-          Powiadomienia
+          {t('title')}
           {isLoadingHistorical && (
             <span className="ml-2 text-sm font-normal text-zinc-500">
-              (ładowanie historycznych...)
+              ({t('loadingHistorical')})
             </span>
           )}
         </h2>
 
         {filteredAlerts.length === 0 ? (
           <div className="bg-zinc-50 rounded-lg p-6 text-center">
-            <p className="text-zinc-500">Brak powiadomień.</p>
+            <p className="text-zinc-500">{t('noNotifications')}</p>
             {followedMPIds.length === 0 && favoriteCategories.length === 0 && (
               <p className="text-sm text-zinc-400 mt-2">
-                Dodaj ulubione kategorie lub zacznij śledzić posłów
+                {t('noPreferences.hint')}
               </p>
             )}
           </div>
@@ -406,7 +398,7 @@ function NotificationsContent() {
             {filteredAlerts.map((alert) => {
               if (alert.alertType === 'category') {
                 // Category alert
-                const categoryLabel = CATEGORY_LABELS[alert.category] || alert.category;
+                const categoryLabel = t(`categoryLabels.${alert.category}`, alert.category);
                 const isUnread = !alert.read;
 
                 return (
@@ -440,7 +432,7 @@ function NotificationsContent() {
                         )}
                       </div>
                       <div className="text-xs text-zinc-400 whitespace-nowrap">
-                        {formatDate(alert.createdAt as any)}
+                        {formatDate(alert.createdAt as any, language, t('noDate'))}
                       </div>
                     </div>
                   </Link>
@@ -448,7 +440,7 @@ function NotificationsContent() {
               } else {
                 // Voting alert (regular or historical)
                 const votingAlert = alert as any;
-                const voteInfo = formatVote(votingAlert.vote);
+                const voteInfo = formatVote(votingAlert.vote, t);
                 const isHistorical = alert.alertType === 'historical';
                 const isUnread = !isHistorical && !votingAlert.read;
                 const dateStr = 'createdAt' in votingAlert ? votingAlert.createdAt : votingAlert.date;
@@ -477,7 +469,7 @@ function NotificationsContent() {
                           </span>
                           {isHistorical && (
                             <span className="text-xs px-2 py-0.5 bg-zinc-200 text-zinc-600 rounded">
-                              Historyczne
+                              {t('historical')}
                             </span>
                           )}
                           {isUnread && (
@@ -489,7 +481,7 @@ function NotificationsContent() {
                         </p>
                       </div>
                       <div className="text-xs text-zinc-400 whitespace-nowrap">
-                        {formatDate(dateStr)}
+                        {formatDate(dateStr, language, t('noDate'))}
                       </div>
                     </div>
                   </Link>
@@ -504,7 +496,7 @@ function NotificationsContent() {
                 disabled={isLoadingHistorical}
                 className="w-full mt-4 py-3 text-sm text-zinc-600 hover:text-zinc-900 border border-zinc-200 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoadingHistorical ? 'Ładowanie...' : 'Załaduj więcej historycznych'}
+                {isLoadingHistorical ? t('loading') : t('loadMore')}
               </button>
             )}
           </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useUser, useAuthStore } from '@/stores/authStore';
 import {
   useUserProfile,
@@ -9,6 +10,7 @@ import {
   useUserStore,
 } from '@/stores/userStore';
 import { useEvents } from '@/stores/eventsStore';
+import { useLanguage } from '@/stores/languageStore';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { AvatarUpload } from '@/components/AvatarUpload';
 import { ChangePasswordDialog } from '@/components/profile/ChangePasswordDialog';
@@ -39,6 +41,9 @@ export function ProfilePage() {
 }
 
 function ProfileContent() {
+  const { t } = useTranslation('profile');
+  const { t: tCommon } = useTranslation('common');
+  const language = useLanguage();
   const user = useUser();
   const profile = useUserProfile();
   const savedEventIds = useSavedEventIds();
@@ -52,21 +57,21 @@ function ProfileContent() {
   const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
 
   // Fetch saved events details (skip hidden filter so all saved events show)
-  const { events } = useEvents({ limit: 100, lang: 'pl', skipHiddenFilter: true });
+  const { events } = useEvents({ limit: 100, lang: language, skipHiddenFilter: true });
   const savedEvents = events.filter((e) => savedEventIds.includes(e.id));
 
   if (!user) return null;
 
   const displayName = user.displayName ||
-    (isPrivateRelayEmail(user.email) ? 'Użytkownik Apple' : user.email) ||
-    'Użytkownik';
+    (isPrivateRelayEmail(user.email) ? tCommon('user.appleUser') : user.email) ||
+    tCommon('user.defaultName');
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Profile Header */}
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-zinc-900 mb-4">
-          Twój profil
+          {t('title')}
         </h2>
         <div className="bg-zinc-50 rounded-lg p-6">
           <AvatarUpload
@@ -81,7 +86,7 @@ function ProfileContent() {
             )}
             {!user.emailVerified && user.providerId === 'password' && (
               <p className="text-sm text-amber-600 mt-1">
-                Email niezweryfikowany
+                {t('emailNotVerified')}
               </p>
             )}
           </div>
@@ -91,13 +96,13 @@ function ProfileContent() {
       {/* Saved Events */}
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-zinc-900 mb-4">
-          Zapisane wydarzenia ({savedEvents.length})
+          {t('savedEvents.count', { count: savedEvents.length })}
         </h2>
         {savedEvents.length === 0 ? (
           <div className="bg-zinc-50 rounded-lg p-6 text-center">
-            <p className="text-zinc-500">Nie masz jeszcze zapisanych wydarzeń.</p>
+            <p className="text-zinc-500">{t('savedEvents.empty')}</p>
             <Link to="/" className="text-zinc-900 hover:underline text-sm mt-2 inline-block">
-              Przeglądaj wydarzenia
+              {t('savedEvents.browse')}
             </Link>
           </div>
         ) : (
@@ -121,7 +126,7 @@ function ProfileContent() {
                       {event.title}
                     </h3>
                     <p className="text-sm text-zinc-500 mt-1">
-                      {event.category}
+                      {tCommon(`categories.${event.category}`, event.category)}
                     </p>
                   </div>
                 </div>
@@ -134,10 +139,10 @@ function ProfileContent() {
       {/* Favorite Categories */}
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-zinc-900 mb-2">
-          Ulubione kategorie
+          {t('favoriteCategories.title')}
         </h2>
         <p className="text-sm text-zinc-500 mb-4">
-          Wydarzenia z ulubionych kategorii będą wyświetlane jako pierwsze na stronie głównej.
+          {t('favoriteCategories.description')}
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {ALL_CATEGORIES.map((category) => {
@@ -154,7 +159,7 @@ function ProfileContent() {
               >
                 <span className="flex items-center gap-2">
                   {isFavorite && <span className="text-amber-500">★</span>}
-                  {category}
+                  {tCommon(`categories.${category}`, category)}
                 </span>
               </button>
             );
@@ -165,10 +170,10 @@ function ProfileContent() {
       {/* Hidden Categories */}
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-zinc-900 mb-2">
-          Ukryte kategorie
+          {t('hiddenCategories.title')}
         </h2>
         <p className="text-sm text-zinc-500 mb-4">
-          Wydarzenia z ukrytych kategorii nie będą wyświetlane na stronie głównej.
+          {t('hiddenCategories.description')}
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {ALL_CATEGORIES.map((category) => {
@@ -183,7 +188,7 @@ function ProfileContent() {
                     : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
                 }`}
               >
-                {category}
+                {tCommon(`categories.${category}`, category)}
                 {isHidden && <span className="ml-2">✕</span>}
               </button>
             );
@@ -194,15 +199,15 @@ function ProfileContent() {
       {/* Account Settings */}
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-zinc-900 mb-4">
-          Ustawienia konta
+          {t('accountSettings.title')}
         </h2>
         <div className="space-y-3">
           {user.providerId === 'password' && (
             <div className="flex items-center justify-between py-3 border-b border-zinc-100">
               <div>
-                <p className="font-medium text-zinc-900">Zmień hasło</p>
+                <p className="font-medium text-zinc-900">{t('changePassword.title')}</p>
                 <p className="text-sm text-zinc-500">
-                  Zaktualizuj swoje hasło
+                  {t('changePassword.description')}
                 </p>
               </div>
               <Button
@@ -210,16 +215,16 @@ function ProfileContent() {
                 size="sm"
                 onClick={() => setChangePasswordOpen(true)}
               >
-                Zmień
+                {tCommon('actions.edit')}
               </Button>
             </div>
           )}
           {user.providerId === 'password' && (
             <div className="flex items-center justify-between py-3 border-b border-zinc-100">
               <div>
-                <p className="font-medium text-red-600">Usuń konto</p>
+                <p className="font-medium text-red-600">{t('deleteAccount.title')}</p>
                 <p className="text-sm text-zinc-500">
-                  Trwale usuń swoje konto i dane
+                  {t('deleteAccount.warning')}
                 </p>
               </div>
               <Button
@@ -228,7 +233,7 @@ function ProfileContent() {
                 className="text-red-600 border-red-200 hover:bg-red-50"
                 onClick={() => setDeleteAccountOpen(true)}
               >
-                Usuń
+                {tCommon('actions.delete')}
               </Button>
             </div>
           )}
@@ -258,7 +263,7 @@ function ProfileContent() {
           onClick={() => signOut()}
           className="w-full sm:w-auto"
         >
-          Wyloguj się
+          {tCommon('user.logout')}
         </Button>
       </div>
 

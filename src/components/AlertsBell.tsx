@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useIsAuthenticated } from '@/stores/authStore';
 import {
   useAlertsStore,
@@ -17,34 +18,24 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Bell } from 'lucide-react';
 
-const CATEGORY_LABELS: Record<string, string> = {
-  polityka: 'Polityka',
-  swiat: 'Świat',
-  gospodarka: 'Gospodarka',
-  spoleczenstwo: 'Społeczeństwo',
-  nauka: 'Nauka',
-  sport: 'Sport',
-  kultura: 'Kultura',
-  technologia: 'Technologia',
-  inne: 'Inne',
-};
-
-function formatVote(vote: string): { text: string; color: string } {
-  switch (vote) {
-    case 'yes':
-      return { text: 'Za', color: 'text-green-600' };
-    case 'no':
-      return { text: 'Przeciw', color: 'text-red-600' };
-    case 'abstain':
-      return { text: 'Wstrzymał się', color: 'text-amber-600' };
-    case 'absent':
-      return { text: 'Nieobecny', color: 'text-zinc-500' };
-    default:
-      return { text: vote, color: 'text-zinc-600' };
-  }
-}
-
 function VotingAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { alertType: 'voting' }; onMarkAsRead: () => void }) {
+  const { t } = useTranslation('notifications');
+
+  const formatVote = (vote: string): { text: string; color: string } => {
+    switch (vote) {
+      case 'yes':
+        return { text: t('voting.for'), color: 'text-green-600' };
+      case 'no':
+        return { text: t('voting.against'), color: 'text-red-600' };
+      case 'abstain':
+        return { text: t('voting.abstained'), color: 'text-amber-600' };
+      case 'absent':
+        return { text: t('voting.absent'), color: 'text-zinc-500' };
+      default:
+        return { text: vote, color: 'text-zinc-600' };
+    }
+  };
+
   const voteInfo = formatVote(alert.vote);
 
   return (
@@ -72,7 +63,8 @@ function VotingAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { ale
 }
 
 function CategoryAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { alertType: 'category' }; onMarkAsRead: () => void }) {
-  const categoryLabel = CATEGORY_LABELS[alert.category] || alert.category;
+  const { t } = useTranslation('notifications');
+  const categoryLabel = t(`categoryLabels.${alert.category}`, alert.category);
 
   return (
     <DropdownMenuItem
@@ -98,6 +90,7 @@ function CategoryAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { a
 }
 
 export function AlertsBell() {
+  const { t } = useTranslation('notifications');
   const isAuthenticated = useIsAuthenticated();
   const totalUnreadCount = useTotalUnreadCount();
   const combinedAlerts = useCombinedAlerts();
@@ -157,13 +150,13 @@ export function AlertsBell() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
         <DropdownMenuLabel className="flex items-center justify-between">
-          <span>Powiadomienia</span>
+          <span>{t('title')}</span>
           {totalUnreadCount > 0 && (
             <button
               onClick={handleMarkAllAsRead}
               className="text-xs text-zinc-500 hover:text-zinc-700"
             >
-              Oznacz jako przeczytane
+              {t('markAsRead')}
             </button>
           )}
         </DropdownMenuLabel>
@@ -171,12 +164,12 @@ export function AlertsBell() {
 
         {displayAlerts.length === 0 ? (
           <div className="px-2 py-4 text-center">
-            <p className="text-sm text-zinc-500 mb-2">Brak nowych powiadomień</p>
+            <p className="text-sm text-zinc-500 mb-2">{t('noNew')}</p>
             <Link
               to="/powiadomienia"
               className="text-xs text-blue-600 hover:underline"
             >
-              Zobacz historię powiadomień
+              {t('viewHistory')}
             </Link>
           </div>
         ) : (
@@ -207,7 +200,7 @@ export function AlertsBell() {
                 to="/powiadomienia"
                 className="text-sm text-zinc-600 hover:text-zinc-900"
               >
-                Zobacz wszystkie powiadomienia
+                {t('viewAll')}
               </Link>
             </DropdownMenuItem>
           </>

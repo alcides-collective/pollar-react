@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import type { Felieton, FelietonyResponse } from '../types/felieton';
 import { API_BASE } from '../config/api';
 import { sanitizeFelieton } from '../utils/sanitize';
+import { useLanguage, type Language } from '../stores/languageStore';
 
 async function fetchFelietony(url: string): Promise<Felieton[]> {
   const response = await fetch(url);
@@ -14,8 +15,10 @@ async function fetchFelietony(url: string): Promise<Felieton[]> {
   return data.felietony.map(sanitizeFelieton);
 }
 
-export function useFelietony() {
-  const url = `${API_BASE}/felietony/today`;
+export function useFelietony(langOverride?: Language) {
+  const storeLanguage = useLanguage();
+  const lang = langOverride ?? storeLanguage;
+  const url = `${API_BASE}/felietony/today?lang=${lang}`;
 
   const { data, error, isLoading } = useSWR(url, fetchFelietony, {
     revalidateOnFocus: false,

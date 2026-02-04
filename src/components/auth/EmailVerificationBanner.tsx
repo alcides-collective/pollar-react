@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore, useUser } from '@/stores/authStore';
 
 export function EmailVerificationBanner() {
+  const { t } = useTranslation('auth');
   const user = useUser();
   const resendVerificationEmail = useAuthStore((s) => s.resendVerificationEmail);
   const [sending, setSending] = useState(false);
@@ -45,7 +47,7 @@ export function EmailVerificationBanner() {
               />
             </svg>
             <p className="text-sm text-amber-800 dark:text-amber-200">
-              Twój adres email ({user.email}) nie został jeszcze zweryfikowany.
+              {t('emailVerification.notVerified', { email: user.email })}
             </p>
           </div>
           <button
@@ -53,7 +55,7 @@ export function EmailVerificationBanner() {
             disabled={sending || sent}
             className="text-sm font-medium text-amber-800 hover:text-amber-900 dark:text-amber-200 dark:hover:text-amber-100 underline disabled:opacity-50 disabled:no-underline"
           >
-            {sent ? 'Wysłano!' : sending ? 'Wysyłanie...' : 'Wyślij ponownie'}
+            {sent ? t('emailVerification.sent') : sending ? t('emailVerification.sending') : t('emailVerification.resend')}
           </button>
         </div>
       </div>

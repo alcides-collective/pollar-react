@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { DailyBrief } from '../../types/brief';
 import { GrainImage } from '../common/GrainImage';
 import { SectionWrapper } from '../common/SectionWrapper';
+import { useLanguage } from '../../stores/languageStore';
 import dailyBriefImg from '../../assets/images/daily/day.webp';
 
 interface DailyBriefSectionProps {
@@ -19,16 +21,20 @@ interface DailyBriefSectionProps {
   );
 } */
 
-function getTimeBasedGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour >= 5 && hour < 18) return 'Dzień Dobry';
-  if (hour >= 18 && hour < 22) return 'Dobry Wieczór';
-  return 'Witaj';
-}
-
 export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
+  const { t } = useTranslation('common');
+  const language = useLanguage();
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
+
+  const getTimeBasedGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 18) return t('greetings.morning');
+    if (hour >= 18 && hour < 22) return t('greetings.evening');
+    return t('greetings.default');
+  };
+
   const timeGreeting = getTimeBasedGreeting();
-  const formattedDate = new Date().toLocaleDateString('pl-PL', {
+  const formattedDate = new Date().toLocaleDateString(localeMap[language] || 'pl-PL', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',

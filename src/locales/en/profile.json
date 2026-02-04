@@ -1,0 +1,63 @@
+{
+  "title": "Your profile",
+  "emailNotVerified": "Email not verified",
+  "savedEvents": {
+    "title": "Saved events",
+    "count": "Saved events ({{count}})",
+    "empty": "You don't have any saved events yet.",
+    "browse": "Browse events"
+  },
+  "favoriteCategories": {
+    "title": "Favorite categories",
+    "description": "Events from favorite categories will be displayed first on the home page."
+  },
+  "hiddenCategories": {
+    "title": "Hidden categories",
+    "description": "Events from hidden categories will not be displayed on the home page."
+  },
+  "accountSettings": {
+    "title": "Account settings"
+  },
+  "changePassword": {
+    "title": "Change password",
+    "description": "Enter your current password and the new password you want to set.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "minChars": "New password must be at least 6 characters",
+    "passwordsDontMatch": "Passwords don't match",
+    "success": "Password has been changed",
+    "cancel": "Cancel",
+    "submit": "Change password",
+    "loading": "Changing..."
+  },
+  "deleteAccount": {
+    "title": "Delete account",
+    "warning": "This action is irreversible. All your data will be permanently deleted.",
+    "willBeDeleted": "The following will be deleted:",
+    "item1": "Your profile and personal data",
+    "item2": "Saved events",
+    "item3": "Category preferences",
+    "item4": "Activity history",
+    "confirmText": "DELETE ACCOUNT",
+    "confirmPrompt": "Type \"DELETE ACCOUNT\" to confirm",
+    "enterPassword": "Enter password",
+    "typeToConfirm": "Type <1>DELETE ACCOUNT</1> to confirm:",
+    "success": "Account has been deleted",
+    "cancel": "Cancel",
+    "submit": "Delete account",
+    "loading": "Deleting..."
+  },
+  "avatar": {
+    "chooseFile": "Choose image file",
+    "fileTooLarge": "File is too large (maximum 5MB)",
+    "updated": "Avatar updated",
+    "deleted": "Avatar deleted",
+    "failedToUpload": "Failed to upload avatar",
+    "failedToDelete": "Failed to delete avatar",
+    "change": "Change avatar",
+    "add": "Add avatar",
+    "remove": "Remove avatar",
+    "hint": "JPG, PNG or GIF. Max 5MB."
+  }
+}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Event } from '../../types/events';
 import { AudioPlayer } from './AudioPlayer';
 import { BookmarkButton } from '../../components/BookmarkButton';
@@ -12,6 +13,7 @@ interface EventHeaderProps {
 }
 
 export function EventHeader({ event, viewCount }: EventHeaderProps) {
+  const { t } = useTranslation('event');
   // Use tracked viewCount if provided, fallback to event.viewCount
   const displayViewCount = viewCount ?? event.viewCount;
   const [showCO2Tooltip, setShowCO2Tooltip] = useState(false);
@@ -29,7 +31,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
       <div className="flex items-center gap-3 mb-4 text-xs text-zinc-500">
         {modelId && (
           <span className="font-light">
-            Wygenerowany przez{' '}
+            {t('header.generatedBy')}{' '}
             <span
               className={`relative font-medium cursor-help border-b border-dotted border-current ${getModelColorClass(modelId)}`}
               onMouseEnter={() => setShowModelTooltip(true)}
@@ -42,7 +44,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
                 </span>
               )}
             </span>{' '}
-            emitując{' '}
+            {t('header.emitting')}{' '}
             <span
               className="relative cursor-help border-b border-dotted border-zinc-400"
               onMouseEnter={() => setShowCO2Tooltip(true)}

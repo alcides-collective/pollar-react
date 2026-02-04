@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useCookieConsentStore } from '@/stores/cookieConsentStore';
 import { Link } from 'react-router-dom';
 
 export function CookiePopup() {
+  const { t } = useTranslation('cookies');
   const { hasInteracted, acceptAll, rejectOptional, loadFromStorage } = useCookieConsentStore();
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export function CookiePopup() {
                   </div>
                   <div>
                     <h3 className="text-white font-semibold text-base">
-                      Twoja prywatność
+                      {t('popup.title')}
                     </h3>
                     <p className="text-zinc-500 text-xs">
                       Pollar P.S.A.
@@ -61,7 +63,7 @@ export function CookiePopup() {
 
               {/* Description */}
               <p className="text-zinc-300 text-sm leading-relaxed mb-4">
-                Używamy plików cookie, aby serwis działał prawidłowo, analizować ruch oraz personalizować treści. Prosimy o zgodę na ich wykorzystanie.
+                {t('popup.description')}
               </p>
 
               {/* Legal text box */}
@@ -69,7 +71,7 @@ export function CookiePopup() {
                 <p className="text-zinc-400 text-xs leading-relaxed">
                   Administratorem Twoich danych jest Pollar P.S.A. z siedzibą w Krakowie przy ul. Piastowskiej 46/12, 30-067 Kraków, zarejestrowaną w rejestrze przedsiębiorców Krajowego Rejestru Sądowego prowadzonym przez Sąd Rejonowy dla Krakowa - Śródmieścia w Krakowie, XI Wydział Gospodarczy KRS, pod numerem KRS 0001194489, o numerze NIP: 6772540681. Szczegółowe informacje znajdziesz w naszej{' '}
                   <Link to="/polityka-prywatnosci" className="text-zinc-300 underline hover:text-white">
-                    Polityce Prywatności
+                    {t('settings.privacyPolicy')}
                   </Link>
                   .
                 </p>
@@ -79,15 +81,15 @@ export function CookiePopup() {
               <div className="flex flex-wrap gap-2 mb-5">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 rounded text-xs text-zinc-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  Niezbędne
+                  {t('popup.essential')}
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 rounded text-xs text-zinc-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
-                  Analityczne
+                  {t('popup.analytics')}
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 rounded text-xs text-zinc-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
-                  Marketingowe
+                  {t('popup.marketing')}
                 </span>
               </div>
 
@@ -97,19 +99,19 @@ export function CookiePopup() {
                   onClick={rejectOptional}
                   className="flex-1 px-4 py-2.5 text-sm font-medium text-zinc-300 bg-zinc-900 hover:bg-zinc-800 rounded transition-colors"
                 >
-                  Tylko niezbędne
+                  {t('popup.essentialOnly')}
                 </button>
                 <button
                   onClick={acceptAll}
                   className="flex-1 px-4 py-2.5 text-sm font-medium text-black bg-zinc-100 hover:bg-white rounded transition-colors"
                 >
-                  Akceptuj wszystkie
+                  {t('popup.acceptAll')}
                 </button>
               </div>
 
               {/* Footer note */}
               <p className="text-zinc-600 text-[10px] mt-4 text-center">
-                Klikając poza banerem lub przewijając stronę, akceptujesz wszystkie cookies
+                {t('popup.footer')}
               </p>
             </div>
           </div>

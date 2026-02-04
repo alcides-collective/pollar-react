@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useEvent } from '../../hooks/useEvent';
 import type { WordOfTheDay, BriefSection } from '../../types/brief';
 import { decodeHtmlEntities } from '../../utils/sanitize';
 import { extractEventIds } from '../../utils/text';
+import { useLanguage } from '../../stores/languageStore';
 
 function stripIds(text: string): string {
   return text
@@ -19,7 +21,10 @@ interface BriefSidebarProps {
 }
 
 function SectionEventCard({ eventId }: { eventId: string }) {
+  const language = useLanguage();
   const { event, loading } = useEvent(eventId);
+
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
 
   if (loading) {
     return (
@@ -35,7 +40,7 @@ function SectionEventCard({ eventId }: { eventId: string }) {
 
   const date = new Date(event.createdAt);
 
-  const formattedDate = date.toLocaleDateString('pl-PL', {
+  const formattedDate = date.toLocaleDateString(localeMap[language] || 'pl-PL', {
     day: 'numeric',
     month: 'short',
     hour: '2-digit',
@@ -67,11 +72,12 @@ function SectionEventCard({ eventId }: { eventId: string }) {
 }
 
 function SidebarWordOfTheDay({ word }: { word: WordOfTheDay }) {
+  const { t } = useTranslation('brief');
   return (
     <div className="p-4 rounded-xl border border-zinc-200 bg-gradient-to-br from-indigo-50/50 to-purple-50/50">
       <h3 className="text-xs uppercase tracking-wider text-zinc-500 font-semibold mb-3 flex items-center gap-2">
         <i className="ri-book-2-line" />
-        Słowo dnia
+        {t('wordOfTheDay')}
       </h3>
 
       <div className="mb-3">
@@ -89,6 +95,7 @@ function SidebarWordOfTheDay({ word }: { word: WordOfTheDay }) {
 }
 
 function SidebarSectionEvents({ section }: { section: BriefSection }) {
+  const { t } = useTranslation('brief');
   // Use keyEvents if available, otherwise extract UUIDs from content
   // Filter out empty strings from keyEvents
   const keyEvents = (section.keyEvents ?? []).filter(id => id && id.trim());
@@ -110,7 +117,7 @@ function SidebarSectionEvents({ section }: { section: BriefSection }) {
       <div className="px-4 py-3 border-b border-zinc-200 bg-zinc-50">
         <h3 className="text-sm font-semibold text-zinc-900 flex items-center gap-2">
           <i className="ri-newspaper-line text-zinc-500" />
-          Wydarzenia
+          {t('events')}
         </h3>
         <p className="text-xs text-zinc-500 mt-0.5 line-clamp-1">
           {section.headline}

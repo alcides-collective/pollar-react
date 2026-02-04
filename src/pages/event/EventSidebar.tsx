@@ -1,13 +1,15 @@
+import { useTranslation } from 'react-i18next';
 import type { Event } from '../../types/events';
 import { EventMap } from './EventMap';
 import { AudioPlayer } from './AudioPlayer';
 import { extractKeyNumber, extractTimeline } from '../../utils/text';
+import { useLanguage } from '../../stores/languageStore';
 
 interface EventSidebarProps {
   event: Event;
 }
 
-function formatSourceDate(dateValue: string | { _seconds: number; _nanoseconds: number }): string {
+function formatSourceDate(dateValue: string | { _seconds: number; _nanoseconds: number }, language: string): string {
   let date: Date;
   if (typeof dateValue === 'object' && '_seconds' in dateValue) {
     // Firestore Timestamp format
@@ -20,11 +22,14 @@ function formatSourceDate(dateValue: string | { _seconds: number; _nanoseconds: 
     return '';
   }
 
-  const dateStr = date.toLocaleDateString('pl-PL', {
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
+  const locale = localeMap[language] || 'pl-PL';
+
+  const dateStr = date.toLocaleDateString(locale, {
     day: 'numeric',
     month: 'short',
   });
-  const timeStr = date.toLocaleTimeString('pl-PL', {
+  const timeStr = date.toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit',
   });
@@ -33,6 +38,8 @@ function formatSourceDate(dateValue: string | { _seconds: number; _nanoseconds: 
 }
 
 export function EventSidebar({ event }: EventSidebarProps) {
+  const { t } = useTranslation('event');
+  const language = useLanguage();
   const articles = event.articles || [];
   const location = event.metadata?.location;
 
@@ -98,7 +105,7 @@ export function EventSidebar({ event }: EventSidebarProps) {
       {event.metadata?.mentionedPeople?.length > 0 && (
         <div className="px-6 lg:px-0">
           <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-3">
-            Wspomniane osoby
+            {t('sidebar.mentionedPeople')}
           </h3>
           <ul className="space-y-2">
             {event.metadata.mentionedPeople.map((person, index) => (
@@ -144,7 +151,7 @@ export function EventSidebar({ event }: EventSidebarProps) {
       {articles.length > 0 && (
         <div className="px-6 lg:px-0">
           <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-3">
-            Źródła ({articles.length})
+            {t('sidebar.sources', { count: articles.length })}
           </h3>
           <ul className="space-y-2">
             {articles.slice(0, 10).map((article) => (
@@ -170,7 +177,7 @@ export function EventSidebar({ event }: EventSidebarProps) {
                       <div className="flex items-center gap-2 text-xs text-zinc-500">
                         <span>{article.source}</span>
                         <span>•</span>
-                        <span>{formatSourceDate(article.publishDate)}</span>
+                        <span>{formatSourceDate(article.publishDate, language)}</span>
                       </div>
                     </div>
                     <i className="ri-external-link-line text-zinc-400 shrink-0" />
@@ -181,7 +188,7 @@ export function EventSidebar({ event }: EventSidebarProps) {
           </ul>
           {articles.length > 10 && (
             <p className="text-xs text-zinc-500 mt-3 text-center">
-              + {articles.length - 10} więcej źródeł
+              {t('sidebar.moreSources', { count: articles.length - 10 })}
             </p>
           )}
         </div>

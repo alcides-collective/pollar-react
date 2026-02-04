@@ -1,0 +1,28 @@
+{
+  "input": {
+    "placeholder": "Ask about events...",
+    "send": "Send",
+    "disclaimer": "AI can make mistakes. Always verify important information."
+  },
+  "header": {
+    "back": "Back",
+    "openPanel": "Open panel",
+    "newConversation": "New conversation"
+  },
+  "pro": {
+    "title": "Unlock the full potential of the platform",
+    "features": {
+      "personalizedBrief": "Personalized Daily Brief",
+      "unlimitedSearches": "Unlimited searches",
+      "trackMPs": "Track MPs and Parliament",
+      "exportData": "Export data to CSV/PDF",
+      "fullArchive": "Full event archive",
+      "noAds": "No ads",
+      "darkMode": "Dark mode",
+      "prioritySupport": "Priority support"
+    },
+    "price": "PLN 13.99",
+    "perMonth": "/ month",
+    "comingSoon": "Coming soon"
+  }
+}

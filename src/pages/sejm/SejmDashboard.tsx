@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useSejmStats } from '../../hooks/useSejmStats';
 import { useMPs } from '../../hooks/useMPs';
 import { useVotings } from '../../hooks/useVotings';
@@ -12,15 +13,9 @@ import type { SejmMP } from '../../types/sejm';
 
 type SortOption = 'votes' | 'attendance_high' | 'attendance_low' | 'youngest' | 'oldest';
 
-const sortOptions: { value: SortOption; label: string }[] = [
-  { value: 'votes', label: 'Najwięcej głosów' },
-  { value: 'attendance_high', label: 'Najwyższa frekwencja' },
-  { value: 'attendance_low', label: 'Najniższa frekwencja' },
-  { value: 'youngest', label: 'Najmłodsi' },
-  { value: 'oldest', label: 'Najstarsi' },
-];
+const sortOptionKeys: SortOption[] = ['votes', 'attendance_high', 'attendance_low', 'youngest', 'oldest'];
 
-function getMpDisplayValue(mp: SejmMP, sortBy: SortOption): string {
+function getMpDisplayValue(mp: SejmMP, sortBy: SortOption, t: (key: string, options?: Record<string, unknown>) => string): string {
   switch (sortBy) {
     case 'votes':
       return (mp.numberOfVotes || 0).toLocaleString('pl-PL');
@@ -31,13 +26,14 @@ function getMpDisplayValue(mp: SejmMP, sortBy: SortOption): string {
     case 'oldest':
       if (!mp.birthDate) return '';
       const age = Math.floor((Date.now() - new Date(mp.birthDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000));
-      return `${age} lat`;
+      return t('age.years', { count: age });
     default:
       return '';
   }
 }
 
 export function SejmDashboard() {
+  const { t } = useTranslation('sejm');
   const { stats, loading: statsLoading, error: statsError } = useSejmStats();
   const { mps, loading: mpsLoading } = useMPs();
   const { votings, loading: votingsLoading } = useVotings();
@@ -45,6 +41,11 @@ export function SejmDashboard() {
   const [selectedSort, setSelectedSort] = useState<SortOption>('votes');
   const isAuthenticated = useIsAuthenticated();
   const followedMPIds = useFollowedMPIds();
+
+  const sortOptions = sortOptionKeys.map(key => ({
+    value: key,
+    label: t(`sort.${key === 'votes' ? 'mostVotes' : key === 'attendance_high' ? 'highestAttendance' : key === 'attendance_low' ? 'lowestAttendance' : key}`),
+  }));
 
   // Get followed MPs data
   const followedMPs = useMemo(() => {
@@ -110,13 +111,13 @@ export function SejmDashboard() {
         <div className="rounded-lg border-2 border-blue-200 bg-blue-50 p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-zinc-900">
-              Śledzeni posłowie ({followedMPs.length})
+              {t('dashboard.followedMPs', { count: followedMPs.length })}
             </h3>
             <Link
               to="/sejm/poslowie"
               className="text-xs text-zinc-500 hover:text-zinc-700"
             >
-              Dodaj więcej <i className="ri-arrow-right-s-line" />
+              {t('dashboard.addMore')} <i className="ri-arrow-right-s-line" />
             </Link>
           </div>
           <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
@@ -148,7 +149,7 @@ export function SejmDashboard() {
           </div>
           {followedMPs.length > 10 && (
             <p className="text-xs text-zinc-500 mt-3 text-center">
-              +{followedMPs.length - 10} więcej
+              {t('dashboard.andMore', { count: followedMPs.length - 10 })}
             </p>
           )}
         </div>
@@ -160,7 +161,7 @@ export function SejmDashboard() {
 
         {/* Polling */}
         <div className="rounded-lg border border-zinc-200 p-4">
-          <h3 className="text-sm font-medium text-zinc-900 mb-4">Sondaże</h3>
+          <h3 className="text-sm font-medium text-zinc-900 mb-4">{t('dashboard.polls')}</h3>
           <PollingChart />
         </div>
       </div>
@@ -173,10 +174,10 @@ export function SejmDashboard() {
         >
           <div className="flex items-center gap-3 mb-2">
             <span className="bg-green-500 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded animate-pulse">
-              Na żywo
+              {t('dashboard.live')}
             </span>
             <span className="text-sm text-zinc-600">
-              {currentProceeding.number}. posiedzenie Sejmu
+              {t('dashboard.proceedingNumber', { number: currentProceeding.number })}
             </span>
           </div>
           <h3 className="font-medium text-zinc-900">{currentProceeding.title}</h3>
@@ -186,7 +187,7 @@ export function SejmDashboard() {
       {/* Top MPs */}
       <div className="rounded-lg border border-zinc-200 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-medium text-zinc-900">Posłowie</h3>
+          <h3 className="text-sm font-medium text-zinc-900">{t('dashboard.mps')}</h3>
           <div className="flex items-center gap-3">
             <select
               value={selectedSort}
@@ -203,7 +204,7 @@ export function SejmDashboard() {
               to="/sejm/poslowie"
               className="text-[10px] text-zinc-400 hover:text-zinc-600 transition-colors"
             >
-              Wszyscy <i className="ri-arrow-right-s-line" />
+              {t('dashboard.all')} <i className="ri-arrow-right-s-line" />
             </Link>
           </div>
         </div>
@@ -234,7 +235,7 @@ export function SejmDashboard() {
                         style={{ backgroundColor: color.bg }}
                       />
                       <span className="text-white/70 text-[7px] font-mono">
-                        {getMpDisplayValue(mp, selectedSort)}
+                        {getMpDisplayValue(mp, selectedSort, t)}
                       </span>
                     </div>
                   </div>
@@ -248,12 +249,12 @@ export function SejmDashboard() {
       {/* Recent Votings */}
       <div className="rounded-lg border border-zinc-200 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-medium text-zinc-900">Ostatnie głosowania</h3>
+          <h3 className="text-sm font-medium text-zinc-900">{t('dashboard.recentVotings')}</h3>
           <Link
             to="/sejm/glosowania"
             className="text-xs text-zinc-500 hover:text-zinc-700"
           >
-            Wszystkie <i className="ri-arrow-right-s-line" />
+            {t('dashboard.allVotings')} <i className="ri-arrow-right-s-line" />
           </Link>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
@@ -270,30 +271,30 @@ export function SejmDashboard() {
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
           <i className="ri-file-text-line text-2xl text-zinc-600 mb-1" />
-          <div className="text-sm font-medium text-zinc-900">Druki</div>
-          <div className="text-xs text-zinc-500">{stats?.prints.recent || 0} ostatnich</div>
+          <div className="text-sm font-medium text-zinc-900">{t('dashboard.prints')}</div>
+          <div className="text-xs text-zinc-500">{t('dashboard.recent', { count: stats?.prints.recent || 0 })}</div>
         </Link>
         <Link
           to="/sejm/interpelacje"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
           <i className="ri-question-answer-line text-2xl text-zinc-600 mb-1" />
-          <div className="text-sm font-medium text-zinc-900">Interpelacje</div>
-          <div className="text-xs text-zinc-500">{stats?.interpellations.recent || 0} ostatnich</div>
+          <div className="text-sm font-medium text-zinc-900">{t('dashboard.interpellations')}</div>
+          <div className="text-xs text-zinc-500">{t('dashboard.recent', { count: stats?.interpellations.recent || 0 })}</div>
         </Link>
         <Link
           to="/sejm/komisje"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
           <i className="ri-team-line text-2xl text-zinc-600 mb-1" />
-          <div className="text-sm font-medium text-zinc-900">Komisje</div>
+          <div className="text-sm font-medium text-zinc-900">{t('dashboard.committees')}</div>
         </Link>
         <Link
           to="/sejm/transmisje"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
           <i className="ri-live-line text-2xl text-zinc-600 mb-1" />
-          <div className="text-sm font-medium text-zinc-900">Transmisje</div>
+          <div className="text-sm font-medium text-zinc-900">{t('dashboard.broadcasts')}</div>
         </Link>
       </div>
     </div>

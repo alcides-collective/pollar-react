@@ -1,0 +1,26 @@
+{
+  "title": "Stock Exchange",
+  "subtitle": "Real-time stock and index quotes",
+  "failedToLoad": "Failed to load stock data.",
+  "refreshHint": "Try refreshing the page. If the problem persists, contact us.",
+  "navigation": {
+    "overview": "Overview",
+    "stocks": "Stocks",
+    "indices": "Indices",
+    "watchlist": "Watchlist"
+  },
+  "update": "updated",
+  "polishIndices": "Polish Indices",
+  "globalIndices": "Global Indices",
+  "gainers": "Gainers",
+  "losers": "Losers",
+  "noData": "No data",
+  "wig20Stocks": "WIG20 Stocks",
+  "seeAll": "See all",
+  "time": {
+    "now": "now",
+    "seconds": "{{count}} sec. ago",
+    "minutes": "{{count}} min. ago",
+    "hours": "{{count}} hr. ago"
+  }
+}

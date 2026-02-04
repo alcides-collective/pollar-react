@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { KeyPoint } from '../../types/events';
 import { sanitizeAndProcessInlineHtml } from '../../utils/text';
 
@@ -6,12 +7,13 @@ interface EventKeyPointsProps {
 }
 
 export function EventKeyPoints({ keyPoints }: EventKeyPointsProps) {
+  const { t } = useTranslation('event');
   if (!keyPoints || keyPoints.length === 0) return null;
 
   return (
     <section className="key-points px-6 py-6 border-t border-zinc-200">
       <h2 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-4">
-        Kluczowe punkty
+        {t('keyPoints')}
       </h2>
       <ul className="space-y-4">
         {keyPoints.map((point, index) => (

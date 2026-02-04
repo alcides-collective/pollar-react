@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/authStore';
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,7 @@ interface ChangePasswordDialogProps {
 }
 
 export function ChangePasswordDialog({ open, onOpenChange }: ChangePasswordDialogProps) {
+  const { t } = useTranslation('profile');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -30,18 +32,18 @@ export function ChangePasswordDialog({ open, onOpenChange }: ChangePasswordDialo
     setError(null);
 
     if (newPassword.length < 6) {
-      setError('Nowe hasło musi mieć co najmniej 6 znaków');
+      setError(t('changePassword.minChars'));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError('Hasła nie są zgodne');
+      setError(t('changePassword.passwordsDontMatch'));
       return;
     }
 
     try {
       await changePassword(currentPassword, newPassword);
-      toast.success('Hasło zostało zmienione');
+      toast.success(t('changePassword.success'));
       onOpenChange(false);
       // Reset form
       setCurrentPassword('');
@@ -67,9 +69,9 @@ export function ChangePasswordDialog({ open, onOpenChange }: ChangePasswordDialo
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Zmień hasło</DialogTitle>
+          <DialogTitle>{t('changePassword.title')}</DialogTitle>
           <DialogDescription>
-            Wprowadź obecne hasło oraz nowe hasło, które chcesz ustawić.
+            {t('changePassword.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -83,7 +85,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: ChangePasswordDialo
           <div className="space-y-3">
             <Input
               type="password"
-              placeholder="Obecne hasło"
+              placeholder={t('changePassword.currentPassword')}
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               disabled={isLoading}
@@ -92,7 +94,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: ChangePasswordDialo
             />
             <Input
               type="password"
-              placeholder="Nowe hasło"
+              placeholder={t('changePassword.newPassword')}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               disabled={isLoading}
@@ -101,7 +103,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: ChangePasswordDialo
             />
             <Input
               type="password"
-              placeholder="Potwierdź nowe hasło"
+              placeholder={t('changePassword.confirmPassword')}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               disabled={isLoading}
@@ -117,10 +119,10 @@ export function ChangePasswordDialog({ open, onOpenChange }: ChangePasswordDialo
               onClick={() => handleOpenChange(false)}
               disabled={isLoading}
             >
-              Anuluj
+              {t('changePassword.cancel')}
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Zmieniam...' : 'Zmień hasło'}
+              {isLoading ? t('changePassword.loading') : t('changePassword.submit')}
             </Button>
           </div>
         </form>

@@ -279,10 +279,15 @@ export function sanitizeAndProcessHtml(text: string): string {
     .replace(/<kontekst>([\s\S]*?)<\/kontekst>/gi,
       '\n\n<div class="context-box"><p class="context-text">$1</p></div>\n\n')
     // Convert <bias left="..." right="..."> tags to styled bias comparison box
-    .replace(/<bias\s+left\s*=\s*["']([^"']+)["']\s+right\s*=\s*["']([^"']+)["']><\/bias>/gi,
+    // Use [^"]* for double-quoted and [^']* for single-quoted attrs to allow apostrophes/quotes inside
+    .replace(/<bias\s+left\s*=\s*"([^"]*)"\s+right\s*=\s*"([^"]*)"\s*(?:\/>|><\/bias>)/gi,
+      '\n\n<div class="bias-wrapper"><span class="bias-header">PERSPEKTYWY POLITYCZNE</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">Źródła liberalne</span><p class="bias-text">$1</p></div><div class="bias-column bias-right"><span class="bias-label">Źródła konserwatywne</span><p class="bias-text">$2</p></div></div></div>\n\n')
+    .replace(/<bias\s+left\s*=\s*'([^']*)'\s+right\s*=\s*'([^']*)'\s*(?:\/>|><\/bias>)/gi,
       '\n\n<div class="bias-wrapper"><span class="bias-header">PERSPEKTYWY POLITYCZNE</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">Źródła liberalne</span><p class="bias-text">$1</p></div><div class="bias-column bias-right"><span class="bias-label">Źródła konserwatywne</span><p class="bias-text">$2</p></div></div></div>\n\n')
     // Handle alternate attribute order: right first, then left
-    .replace(/<bias\s+right\s*=\s*["']([^"']+)["']\s+left\s*=\s*["']([^"']+)["']><\/bias>/gi,
+    .replace(/<bias\s+right\s*=\s*"([^"]*)"\s+left\s*=\s*"([^"]*)"\s*(?:\/>|><\/bias>)/gi,
+      '\n\n<div class="bias-wrapper"><span class="bias-header">PERSPEKTYWY POLITYCZNE</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">Źródła liberalne</span><p class="bias-text">$2</p></div><div class="bias-column bias-right"><span class="bias-label">Źródła konserwatywne</span><p class="bias-text">$1</p></div></div></div>\n\n')
+    .replace(/<bias\s+right\s*=\s*'([^']*)'\s+left\s*=\s*'([^']*)'\s*(?:\/>|><\/bias>)/gi,
       '\n\n<div class="bias-wrapper"><span class="bias-header">PERSPEKTYWY POLITYCZNE</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">Źródła liberalne</span><p class="bias-text">$2</p></div><div class="bias-column bias-right"><span class="bias-label">Źródła konserwatywne</span><p class="bias-text">$1</p></div></div></div>\n\n')
     // Convert <manipulacja autor="..." cytat="...">explanation</manipulacja> to styled manipulation callout
     .replace(/<manipulacja\s+autor\s*=\s*["']([^"']+)["']\s+cytat\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/manipulacja>/gi,
@@ -344,7 +349,9 @@ export function sanitizeAndProcessHtml(text: string): string {
     // Fallback: any remaining przypis tags - strip keeping content
     .replace(/<przypis[^>]*>([\s\S]*?)<\/przypis>/gi, '$1')
     // Remove <ankieta> tags - polls are temporarily disabled
-    .replace(/<ankieta\s+pytanie\s*=\s*["'][^"']+["']>[\s\S]*?<\/ankieta>/gi, '')
+    // Use separate patterns for double and single quoted attributes to allow apostrophes/quotes inside
+    .replace(/<ankieta\s+pytanie\s*=\s*"[^"]*">[\s\S]*?<\/ankieta>/gi, '')
+    .replace(/<ankieta\s+pytanie\s*=\s*'[^']*'>[\s\S]*?<\/ankieta>/gi, '')
     // Convert <timeline tytuł="...">JSON</timeline> to timeline
     .replace(/<timeline\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/timeline>/gi,
       (_, title, jsonData) => {

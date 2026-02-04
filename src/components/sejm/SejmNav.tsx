@@ -1,34 +1,35 @@
 import { NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-type NavItem = { href: string; label: string };
-type NavGroup = { label: string; items: NavItem[] };
+type NavItem = { href: string; labelKey: string };
+type NavGroup = { labelKey: string; items: NavItem[] };
 type NavEntry = NavItem | NavGroup;
 
-const navigation: NavEntry[] = [
-  { href: '/sejm', label: 'Przegląd' },
+const navigationConfig: NavEntry[] = [
+  { href: '/sejm', labelKey: 'overview' },
   {
-    label: 'Osoby',
+    labelKey: 'people',
     items: [
-      { href: '/sejm/poslowie', label: 'Posłowie' },
-      { href: '/sejm/kluby', label: 'Kluby' },
+      { href: '/sejm/poslowie', labelKey: 'mps' },
+      { href: '/sejm/kluby', labelKey: 'clubs' },
     ],
   },
   {
-    label: 'Prace',
+    labelKey: 'work',
     items: [
-      { href: '/sejm/posiedzenia', label: 'Posiedzenia' },
-      { href: '/sejm/komisje', label: 'Komisje' },
-      { href: '/sejm/glosowania', label: 'Głosowania' },
-      { href: '/sejm/transmisje', label: 'Transmisje' },
+      { href: '/sejm/posiedzenia', labelKey: 'proceedings' },
+      { href: '/sejm/komisje', labelKey: 'committees' },
+      { href: '/sejm/glosowania', labelKey: 'votings' },
+      { href: '/sejm/transmisje', labelKey: 'videos' },
     ],
   },
   {
-    label: 'Dokumenty',
+    labelKey: 'documents',
     items: [
-      { href: '/sejm/druki', label: 'Druki' },
-      { href: '/sejm/procesy', label: 'Legislacja' },
-      { href: '/sejm/interpelacje', label: 'Interpelacje' },
-      { href: '/sejm/zapytania', label: 'Zapytania' },
+      { href: '/sejm/druki', labelKey: 'prints' },
+      { href: '/sejm/procesy', labelKey: 'legislation' },
+      { href: '/sejm/interpelacje', labelKey: 'interpellations' },
+      { href: '/sejm/zapytania', labelKey: 'questions' },
     ],
   },
 ];
@@ -45,6 +46,7 @@ function isActiveLink(href: string, pathname: string): boolean {
 }
 
 export function SejmNav() {
+  const { t } = useTranslation('sejm');
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -52,7 +54,7 @@ export function SejmNav() {
     <>
       {/* Mobile: Horizontal scroll */}
       <nav className="lg:hidden flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
-        {navigation.map((entry) => {
+        {navigationConfig.map((entry) => {
           if (isGroup(entry)) {
             return entry.items.map((item) => (
               <NavLink
@@ -64,7 +66,7 @@ export function SejmNav() {
                     : 'text-zinc-600 border-zinc-200 hover:border-zinc-300'
                 }`}
               >
-                {item.label}
+                {t(`navigation.${item.labelKey}`)}
               </NavLink>
             ));
           }
@@ -78,7 +80,7 @@ export function SejmNav() {
                   : 'text-zinc-600 border-zinc-200 hover:border-zinc-300'
               }`}
             >
-              {entry.label}
+              {t(`navigation.${entry.labelKey}`)}
             </NavLink>
           );
         })}
@@ -86,12 +88,12 @@ export function SejmNav() {
 
       {/* Desktop: Vertical sidebar */}
       <nav className="hidden lg:flex flex-col gap-6">
-        {navigation.map((entry) => {
+        {navigationConfig.map((entry) => {
           if (isGroup(entry)) {
             return (
-              <div key={entry.label} className="flex flex-col gap-1">
+              <div key={entry.labelKey} className="flex flex-col gap-1">
                 <div className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider px-2 mb-1">
-                  {entry.label}
+                  {t(`navigation.${entry.labelKey}`)}
                 </div>
                 {entry.items.map((item) => (
                   <NavLink
@@ -103,7 +105,7 @@ export function SejmNav() {
                         : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
                     }`}
                   >
-                    {item.label}
+                    {t(`navigation.${item.labelKey}`)}
                   </NavLink>
                 ))}
               </div>
@@ -119,7 +121,7 @@ export function SejmNav() {
                   : 'text-zinc-600 hover:text-zinc-900'
               }`}
             >
-              {entry.label}
+              {t(`navigation.${entry.labelKey}`)}
             </NavLink>
           );
         })}

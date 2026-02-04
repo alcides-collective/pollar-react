@@ -1,0 +1,15 @@
+{
+  "placeholder": "Search events, MPs, votings...",
+  "noResults": "No results for",
+  "didYouMean": "Did you mean:",
+  "searching": "Searching...",
+  "popularSearches": "Popular searches",
+  "dialogTitle": "Search",
+  "resultTypes": {
+    "event": "Event",
+    "mp": "MP",
+    "voting": "Voting",
+    "print": "Print",
+    "committee": "Committee"
+  }
+}

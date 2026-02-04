@@ -1,10 +1,13 @@
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuthStore, useAuthError } from '@/stores/authStore';
-import { isValidEmail, AuthErrorMessages } from '@/lib/auth-errors';
+import { isValidEmail } from '@/lib/auth-errors';
 
 export function PasswordResetForm() {
+  const { t } = useTranslation('auth');
+  const { t: tErrors } = useTranslation('errors');
   const [email, setEmail] = useState('');
   const [localError, setLocalError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -24,7 +27,7 @@ export function PasswordResetForm() {
     setSuccess(false);
 
     if (!isValidEmail(email)) {
-      setLocalError(AuthErrorMessages.INVALID_EMAIL);
+      setLocalError(tErrors('auth.invalidEmailFormat'));
       return;
     }
 
@@ -56,14 +59,14 @@ export function PasswordResetForm() {
         </div>
         <div>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Wysłaliśmy link do resetowania hasła na adres:
+            {t('reset.emailSent')}
           </p>
           <p className="mt-1 font-medium text-zinc-900 dark:text-zinc-100">
             {email}
           </p>
         </div>
         <p className="text-xs text-zinc-500">
-          Sprawdź również folder spam, jeśli nie widzisz wiadomości.
+          {t('reset.checkSpam')}
         </p>
         <Button
           type="button"
@@ -71,7 +74,7 @@ export function PasswordResetForm() {
           className="w-full"
           onClick={() => setView('login')}
         >
-          Powrót do logowania
+          {t('reset.backToLogin')}
         </Button>
       </div>
     );
@@ -80,8 +83,7 @@ export function PasswordResetForm() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        Wprowadź adres email powiązany z Twoim kontem. Wyślemy Ci link do
-        zresetowania hasła.
+        {t('reset.instructions')}
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -93,7 +95,7 @@ export function PasswordResetForm() {
 
         <Input
           type="email"
-          placeholder="Email"
+          placeholder={t('login.email')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={isLoading}
@@ -102,7 +104,7 @@ export function PasswordResetForm() {
         />
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? 'Wysyłanie...' : 'Wyślij link'}
+          {isLoading ? t('reset.sending') : t('reset.sendLink')}
         </Button>
 
         <button
@@ -110,7 +112,7 @@ export function PasswordResetForm() {
           onClick={() => setView('login')}
           className="w-full text-center text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
         >
-          Powrót do logowania
+          {t('reset.backToLogin')}
         </button>
       </form>
     </div>

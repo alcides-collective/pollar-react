@@ -1,0 +1,18 @@
+{
+  "popup": {
+    "title": "Twoja prywatność",
+    "description": "Używamy plików cookie, aby serwis działał prawidłowo, analizować ruch oraz personalizować treści. Prosimy o zgodę na ich wykorzystanie.",
+    "essential": "Niezbędne",
+    "analytics": "Analityczne",
+    "marketing": "Marketingowe",
+    "essentialOnly": "Tylko niezbędne",
+    "acceptAll": "Akceptuj wszystkie",
+    "footer": "Klikając poza banerem lub przewijając stronę, akceptujesz wszystkie cookies"
+  },
+  "settings": {
+    "title": "Ustawienia cookies",
+    "description": "Zarządzaj swoimi preferencjami dotyczącymi plików cookie. Więcej informacji znajdziesz w naszej",
+    "privacyPolicy": "Polityce Prywatności",
+    "alwaysEnabled": "Zawsze włączone"
+  }
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -16,6 +17,8 @@ export function SearchInput({
   isLoading,
   autoFocus = true,
 }: SearchInputProps) {
+  const { t } = useTranslation('search');
+
   return (
     <div className="relative">
       <Search
@@ -29,7 +32,7 @@ export function SearchInput({
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Szukaj wydarzeń, posłów, głosowań..."
+        placeholder={t('placeholder')}
         autoFocus={autoFocus}
         className={cn(
           'w-full pl-12 pr-12 py-4 text-lg',

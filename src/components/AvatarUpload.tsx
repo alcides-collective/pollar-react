@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { uploadAvatar, deleteAvatar } from '@/services/storageService';
 import { useAuthStore } from '@/stores/authStore';
@@ -17,6 +18,7 @@ export function AvatarUpload({
   uid,
   onUploadComplete,
 }: AvatarUploadProps) {
+  const { t } = useTranslation('profile');
   const [isUploading, setIsUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -31,13 +33,13 @@ export function AvatarUpload({
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Wybierz plik obrazu');
+      toast.error(t('avatar.chooseFile'));
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('Plik jest zbyt duży (maksymalnie 5MB)');
+      toast.error(t('avatar.fileTooLarge'));
       return;
     }
 
@@ -53,12 +55,12 @@ export function AvatarUpload({
     try {
       const newPhotoURL = await uploadAvatar(uid, file);
       await refreshUser();
-      toast.success('Avatar zaktualizowany');
+      toast.success(t('avatar.updated'));
       onUploadComplete?.(newPhotoURL);
       setPreviewUrl(null); // Clear preview, use actual URL now
     } catch (error) {
       console.error('Upload error:', error);
-      toast.error('Nie udało się przesłać avatara');
+      toast.error(t('avatar.failedToUpload'));
       setPreviewUrl(null); // Revert preview on error
     } finally {
       setIsUploading(false);
@@ -76,11 +78,11 @@ export function AvatarUpload({
     try {
       await deleteAvatar(uid, currentPhotoURL);
       await refreshUser();
-      toast.success('Avatar usunięty');
+      toast.success(t('avatar.deleted'));
       onUploadComplete?.(null);
     } catch (error) {
       console.error('Delete error:', error);
-      toast.error('Nie udało się usunąć avatara');
+      toast.error(t('avatar.failedToDelete'));
     } finally {
       setIsUploading(false);
     }
@@ -127,7 +129,7 @@ export function AvatarUpload({
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
         >
-          {currentPhotoURL ? 'Zmień avatar' : 'Dodaj avatar'}
+          {currentPhotoURL ? t('avatar.change') : t('avatar.add')}
         </Button>
         {currentPhotoURL && (
           <button
@@ -136,11 +138,11 @@ export function AvatarUpload({
             disabled={isUploading}
             className="text-xs text-zinc-500 hover:text-red-600 transition-colors disabled:opacity-50"
           >
-            Usuń avatar
+            {t('avatar.remove')}
           </button>
         )}
         <p className="text-xs text-zinc-400">
-          JPG, PNG lub GIF. Maks. 5MB.
+          {t('avatar.hint')}
         </p>
       </div>
     </div>

@@ -1,10 +1,12 @@
 import { useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useEvent } from '../../hooks/useEvent';
 import { useEvents } from '../../stores/eventsStore';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { useUser } from '../../stores/authStore';
+import { useLanguage } from '../../stores/languageStore';
 import { useReadHistoryStore } from '../../stores/readHistoryStore';
 import { useViewTracking } from '../../hooks/useViewTracking';
 import { prepareOgDescription } from '../../utils/text';
@@ -17,9 +19,11 @@ import { EventSidebar } from './EventSidebar';
 import { EventNavigation } from './EventNavigation';
 
 export function EventPage() {
+  const { t } = useTranslation('event');
+  const language = useLanguage();
   const { id } = useParams<{ id: string }>();
   const { event, loading, error } = useEvent(id);
-  const { events: allEvents } = useEvents({ limit: 100, lang: 'pl' });
+  const { events: allEvents } = useEvents({ limit: 100, lang: language });
   const user = useUser();
 
   // View tracking - for all users (logged in and anonymous)
@@ -163,17 +167,17 @@ export function EventPage() {
             <i className="ri-error-warning-line text-2xl text-zinc-400" />
           </div>
           <h1 className="text-xl font-medium text-zinc-900 mb-2">
-            Nie znaleziono wydarzenia
+            {t('error.title')}
           </h1>
           <p className="text-zinc-600 mb-6">
-            To wydarzenie nie istnieje lub zostało usunięte.
+            {t('error.description')}
           </p>
           <Link
             to="/"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
-            Wróć do strony głównej
+            {t('error.backHome')}
           </Link>
         </div>
       </div>

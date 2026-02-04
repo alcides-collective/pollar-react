@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useUser } from '@/stores/authStore';
 import { EventImage } from '@/components/common/EventImage';
@@ -22,6 +23,7 @@ export function DashboardPage() {
 }
 
 function DashboardContent() {
+  const { t } = useTranslation('dashboard');
   const user = useUser();
   const savedEventIds = useSavedEventIds();
   const favoriteCategories = useFavoriteCategories();
@@ -59,10 +61,10 @@ function DashboardContent() {
   // Format vote for display
   const formatVote = (vote: string) => {
     switch (vote) {
-      case 'yes': return { text: 'Za', color: 'text-green-600 bg-green-50' };
-      case 'no': return { text: 'Przeciw', color: 'text-red-600 bg-red-50' };
-      case 'abstain': return { text: 'Wstrzymał się', color: 'text-amber-600 bg-amber-50' };
-      case 'absent': return { text: 'Nieobecny', color: 'text-zinc-500 bg-zinc-100' };
+      case 'yes': return { text: t('voting.for'), color: 'text-green-600 bg-green-50' };
+      case 'no': return { text: t('voting.against'), color: 'text-red-600 bg-red-50' };
+      case 'abstain': return { text: t('voting.abstained'), color: 'text-amber-600 bg-amber-50' };
+      case 'absent': return { text: t('voting.absent'), color: 'text-zinc-500 bg-zinc-100' };
       default: return { text: vote, color: 'text-zinc-600 bg-zinc-50' };
     }
   };
@@ -71,7 +73,7 @@ function DashboardContent() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-zinc-900 mb-8">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-zinc-900 mb-8">{t('title')}</h1>
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Main content - 2 columns */}
@@ -80,19 +82,19 @@ function DashboardContent() {
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-zinc-900">
-                Dla Ciebie
+                {t('forYou.title')}
               </h2>
               {favoriteCategories.length > 0 && (
                 <span className="text-xs text-zinc-500">
-                  Na podstawie: {favoriteCategories.slice(0, 3).join(', ')}
+                  {t('forYou.basedOn', { categories: favoriteCategories.slice(0, 3).join(', ') })}
                 </span>
               )}
             </div>
             {forYouEvents.length === 0 ? (
               <div className="bg-zinc-50 rounded-lg p-6 text-center">
-                <p className="text-zinc-500">Dodaj ulubione kategorie, żeby zobaczyć spersonalizowane wydarzenia.</p>
+                <p className="text-zinc-500">{t('forYou.empty')}</p>
                 <Link to="/profil" className="text-blue-600 hover:underline text-sm mt-2 inline-block">
-                  Ustaw ulubione kategorie
+                  {t('forYou.setCategories')}
                 </Link>
               </div>
             ) : (
@@ -123,11 +125,11 @@ function DashboardContent() {
           {/* Recently Read */}
           <section>
             <h2 className="text-lg font-semibold text-zinc-900 mb-4">
-              Ostatnio czytane
+              {t('recentlyRead.title')}
             </h2>
             {recentlyReadEvents.length === 0 ? (
               <div className="bg-zinc-50 rounded-lg p-6 text-center">
-                <p className="text-zinc-500">Nie masz jeszcze historii czytania.</p>
+                <p className="text-zinc-500">{t('recentlyRead.empty')}</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -158,19 +160,19 @@ function DashboardContent() {
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-zinc-900">
-                Zapisane ({savedEvents.length})
+                {t('saved.title', { count: savedEvents.length })}
               </h2>
               {savedEvents.length > 0 && (
                 <Link to="/profil" className="text-xs text-zinc-500 hover:text-zinc-700">
-                  Zobacz wszystkie
+                  {t('saved.viewAll')}
                 </Link>
               )}
             </div>
             {savedEvents.length === 0 ? (
               <div className="bg-zinc-50 rounded-lg p-6 text-center">
-                <p className="text-zinc-500">Nie masz zapisanych wydarzeń.</p>
+                <p className="text-zinc-500">{t('saved.empty')}</p>
                 <Link to="/" className="text-blue-600 hover:underline text-sm mt-2 inline-block">
-                  Przeglądaj wydarzenia
+                  {t('saved.browseEvents')}
                 </Link>
               </div>
             ) : (
@@ -205,20 +207,20 @@ function DashboardContent() {
           <section className="bg-white border border-zinc-200 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-semibold text-zinc-900">
-                Śledzeni posłowie ({followedMPs.length})
+                {t('followedMPs.title', { count: followedMPs.length })}
               </h2>
               <Link to="/sejm/poslowie" className="text-xs text-zinc-500 hover:text-zinc-700">
-                Dodaj
+                {t('followedMPs.add')}
               </Link>
             </div>
             {followedMPs.length === 0 ? (
               <div className="text-center py-4">
-                <p className="text-sm text-zinc-500 mb-2">Nie śledzisz żadnych posłów.</p>
+                <p className="text-sm text-zinc-500 mb-2">{t('followedMPs.empty')}</p>
                 <Link
                   to="/sejm/poslowie"
                   className="text-sm text-blue-600 hover:underline"
                 >
-                  Przeglądaj posłów
+                  {t('followedMPs.browseMPs')}
                 </Link>
               </div>
             ) : (
@@ -249,16 +251,16 @@ function DashboardContent() {
           {/* Recent Alerts */}
           <section className="bg-white border border-zinc-200 rounded-lg p-4">
             <h2 className="text-sm font-semibold text-zinc-900 mb-4">
-              Ostatnie alerty
+              {t('alerts.title')}
             </h2>
             {alerts.length === 0 ? (
               <div className="text-center py-4">
                 <p className="text-sm text-zinc-500">
-                  Brak alertów o głosowaniach.
+                  {t('alerts.empty')}
                 </p>
                 {followedMPs.length === 0 && (
                   <p className="text-xs text-zinc-400 mt-1">
-                    Zacznij śledzić posłów, żeby otrzymywać alerty.
+                    {t('alerts.hint')}
                   </p>
                 )}
               </div>

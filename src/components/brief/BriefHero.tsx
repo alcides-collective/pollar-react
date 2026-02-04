@@ -1,15 +1,27 @@
+import { useTranslation } from 'react-i18next';
 import type { DailyBrief } from '../../types/brief';
-import { getTimeBasedHeadline, formatBriefDate } from '../../utils/briefUtils';
+import { formatBriefDate } from '../../utils/briefUtils';
 import { preventWidows } from '../../utils/text';
 import { AudioPlayer } from '../../pages/event/AudioPlayer';
+import { useLanguage } from '../../stores/languageStore';
 
 interface BriefHeroProps {
   brief: DailyBrief;
 }
 
 export function BriefHero({ brief }: BriefHeroProps) {
-  const timeHeadline = getTimeBasedHeadline('pl');
-  const formattedDate = formatBriefDate(brief.date, 'pl');
+  const { t } = useTranslation('brief');
+  const language = useLanguage();
+
+  const getTimeBasedHeadline = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return t('timeHeadline.morning');
+    if (hour < 18) return t('timeHeadline.afternoon');
+    return t('timeHeadline.evening');
+  };
+
+  const timeHeadline = getTimeBasedHeadline();
+  const formattedDate = formatBriefDate(brief.date, language);
 
   return (
     <header className="mb-14">

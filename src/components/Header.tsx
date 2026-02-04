@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useEvents } from '../stores/eventsStore';
 import { useUIStore } from '../stores/uiStore';
 import { useSearchStore } from '../stores/searchStore';
 import { useAuthStore, useUser, useIsAuthenticated } from '../stores/authStore';
+import { useLanguage, useSetLanguage, type Language } from '../stores/languageStore';
 // import { useProStore } from '../stores/proStore';
 import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,15 +25,56 @@ import { SearchModal } from '@/components/search';
 import { AlertsBell } from '@/components/AlertsBell';
 import logoImg from '../assets/logo.png';
 
+// Language config
+const LANGUAGES: { code: Language; label: string }[] = [
+  { code: 'pl', label: 'Polski' },
+  { code: 'en', label: 'English' },
+  { code: 'de', label: 'Deutsch' },
+];
+
+// Language selector component
+function LanguageSelector() {
+  const language = useLanguage();
+  const setLanguage = useSetLanguage();
+  const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="h-9 flex items-center gap-1.5 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors outline-none">
+        <i className="ri-global-line text-base" />
+        <span className="hidden sm:inline">{currentLang.code.toUpperCase()}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-36">
+        {LANGUAGES.map((lang) => (
+          <DropdownMenuItem
+            key={lang.code}
+            onClick={() => setLanguage(lang.code)}
+            className={`flex items-center gap-2 cursor-pointer ${language === lang.code ? 'bg-zinc-800 text-white' : ''}`}
+          >
+            <span>{lang.label}</span>
+            {language === lang.code && (
+              <i className="ri-check-line ml-auto" />
+            )}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 // Auth button component
 function AuthButton() {
+  const { t } = useTranslation('common');
   const isAuthenticated = useIsAuthenticated();
   const user = useUser();
   const openAuthModal = useAuthStore((s) => s.openAuthModal);
   const signOut = useAuthStore((s) => s.signOut);
 
   if (isAuthenticated && user) {
-    const displayName = user.displayName || user.email || 'Uzytkownik';
+    const displayName = user.displayName || user.email || t('user.defaultName');
     const initials = displayName.charAt(0).toUpperCase();
 
     return (
@@ -55,22 +98,22 @@ function AuthButton() {
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem asChild>
             <Link to="/dashboard" className="w-full cursor-pointer">
-              Dashboard
+              {t('user.dashboard')}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/profil" className="w-full cursor-pointer">
-              Moj profil
+              {t('user.myProfile')}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/powiadomienia" className="w-full cursor-pointer">
-              Powiadomienia
+              {t('user.notifications')}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
-            Wyloguj się
+            {t('user.logout')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -85,16 +128,16 @@ function AuthButton() {
             onClick={() => openAuthModal('login')}
             className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
           >
-            Zaloguj się
+            {t('auth:login.title')}
           </button>
         </TooltipTrigger>
         <TooltipContent side="bottom" align="end" className="max-w-64">
-          <p className="font-medium mb-1.5">Zaloguj się, aby uzyskać dostęp do:</p>
+          <p className="font-medium mb-1.5">{t('loginPrompt.title')}</p>
           <ul className="space-y-1 text-zinc-400">
-            <li>• Śledzenia posłów i ich głosowań</li>
-            <li>• Powiadomień o nowych wydarzeniach</li>
-            <li>• Zapisywania artykułów</li>
-            <li>• Personalizacji kategorii</li>
+            <li>• {t('loginPrompt.feature1')}</li>
+            <li>• {t('loginPrompt.feature2')}</li>
+            <li>• {t('loginPrompt.feature3')}</li>
+            <li>• {t('loginPrompt.feature4')}</li>
           </ul>
         </TooltipContent>
       </Tooltip>
@@ -117,11 +160,15 @@ const CATEGORY_ORDER = [
 ];
 
 export function Header() {
-  const { events } = useEvents({ limit: 100, lang: 'pl' });
+  const { t } = useTranslation('common');
+  const language = useLanguage();
+  const { events } = useEvents({ limit: 100, lang: language });
   const selectedCategory = useUIStore((state) => state.selectedCategory);
   const setSelectedCategory = useUIStore((state) => state.setSelectedCategory);
   const openSearch = useSearchStore((state) => state.openSearch);
   // const openProModal = useProStore((state) => state.openProModal);
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isVisible, setIsVisible] = useState(true);
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLElement>(null);
@@ -175,6 +222,13 @@ export function Header() {
     });
   }, [events]);
 
+  // Handle category selection - navigate to home if not already there
+  const handleCategoryClick = (category: string | null) => {
+    setSelectedCategory(category);
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
+  };
 
   return (
     <>
@@ -209,7 +263,7 @@ export function Header() {
             />
           </div>
           <div className="flex items-center gap-10">
-            <Link to="/" onClick={() => setSelectedCategory(null)}>
+            <Link to="/" onClick={() => handleCategoryClick(null)}>
               <img
                 src={logoImg}
                 alt="Pollar"
@@ -224,9 +278,10 @@ export function Header() {
               to="/polityka-prywatnosci"
               className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
             >
-              Prywatność
+              {t('nav.privacy')}
             </Link>
             <AlertsBell />
+            <LanguageSelector />
             <AuthButton />
             {/* <button
               onClick={openProModal}
@@ -237,7 +292,7 @@ export function Header() {
             <button
               onClick={openSearch}
               className="h-9 w-9 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors"
-              aria-label="Szukaj"
+              aria-label={t('nav.search')}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -255,14 +310,14 @@ export function Header() {
             tabIndex={0}
           >
             <button
-              onClick={() => setSelectedCategory(null)}
+              onClick={() => handleCategoryClick(null)}
               className={`relative text-sm whitespace-nowrap transition-colors pb-3 ${
                 selectedCategory === null
                   ? 'text-white font-medium'
                   : 'text-zinc-300 hover:text-white'
               }`}
             >
-              Wszystkie
+              {t('nav.all')}
               <AnimatePresence>
                 {selectedCategory === null && (
                   <motion.div
@@ -279,14 +334,14 @@ export function Header() {
             {allCategories.map((category) => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => handleCategoryClick(category)}
                 className={`relative text-sm whitespace-nowrap transition-colors pb-3 ${
                   selectedCategory === category
                     ? 'text-white font-medium'
                     : 'text-zinc-300 hover:text-white'
                 }`}
               >
-                {category}
+                {t(`categories.${category}`, category)}
                 <AnimatePresence>
                   {selectedCategory === category && (
                     <motion.div
@@ -305,7 +360,7 @@ export function Header() {
           <div className="bg-black pl-2 shrink-0 relative z-10">
             <DropdownMenu>
               <DropdownMenuTrigger className="text-sm text-zinc-400 hover:text-white flex items-center gap-1 transition-colors outline-none pb-3">
-              <span className="hidden sm:inline">Odkrywaj</span>
+              <span className="hidden sm:inline">{t('nav.discover')}</span>
               {/* Mobile: hamburger icon */}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -319,67 +374,67 @@ export function Header() {
               <DropdownMenuItem asChild>
                 <Link to="/brief" className="w-full flex items-center gap-2">
                   <i className="ri-newspaper-line" />
-                  Daily Brief
+                  {t('nav.dailyBrief')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/asystent" className="w-full flex items-center gap-2">
                   <i className="ri-robot-2-line" />
-                  AI Asystent
+                  {t('nav.aiAssistant')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/sejm" className="w-full flex items-center gap-2">
                   <i className="ri-government-line" />
-                  Sejm
+                  {t('nav.sejm')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/gielda" className="w-full flex items-center gap-2">
                   <i className="ri-line-chart-line" />
-                  Giełda
+                  {t('nav.stockExchange')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/mapa" className="w-full flex items-center gap-2">
                   <i className="ri-map-pin-line" />
-                  Mapa wydarzeń
+                  {t('nav.eventMap')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/dane" className="w-full flex items-center gap-2">
                   <i className="ri-database-2-line" />
-                  Otwarte Dane
+                  {t('nav.openData')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/graf" className="w-full flex items-center gap-2">
                   <i className="ri-share-circle-line" />
-                  Graf powiązań
+                  {t('nav.connectionGraph')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/terminal" className="w-full flex items-center gap-2">
                   <i className="ri-terminal-line" />
-                  Terminal
+                  {t('nav.terminal')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/powiazania" className="w-full flex items-center gap-2">
                   <i className="ri-mind-map" />
-                  Powiązania
+                  {t('nav.connections')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/archiwum" className="w-full flex items-center gap-2">
                   <i className="ri-archive-line" />
-                  Archiwum
+                  {t('nav.archive')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/info" className="w-full flex items-center gap-2">
                   <i className="ri-information-line" />
-                  O Pollar
+                  {t('nav.about')}
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>

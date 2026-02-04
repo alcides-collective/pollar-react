@@ -1,0 +1,22 @@
+{
+  "error": {
+    "title": "Nie znaleziono wydarzenia",
+    "description": "To wydarzenie nie istnieje lub zostało usunięte.",
+    "backHome": "Wróć do strony głównej"
+  },
+  "header": {
+    "generatedBy": "Wygenerowany przez",
+    "emitting": "emitując"
+  },
+  "keyPoints": "Kluczowe punkty",
+  "sidebar": {
+    "mentionedPeople": "Wspomniane osoby",
+    "sources": "Źródła ({{count}})",
+    "moreSources": "+ {{count}} więcej źródeł"
+  },
+  "navigation": {
+    "previous": "Poprzednie",
+    "next": "Następne",
+    "none": "Brak"
+  }
+}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { formatTimeAgo } from '../../utils/formatTimeAgo';
 
 interface LiveTimeAgoProps {
@@ -16,19 +17,20 @@ export function LiveTimeAgo({
   className,
   updateInterval = 30000
 }: LiveTimeAgoProps) {
-  const [timeAgo, setTimeAgo] = useState(() => formatTimeAgo(date));
+  const { t } = useTranslation('common');
+  const [timeAgo, setTimeAgo] = useState(() => formatTimeAgo(date, t));
 
   useEffect(() => {
     // Update immediately when date changes
-    setTimeAgo(formatTimeAgo(date));
+    setTimeAgo(formatTimeAgo(date, t));
 
     // Set up interval for live updates
     const interval = setInterval(() => {
-      setTimeAgo(formatTimeAgo(date));
+      setTimeAgo(formatTimeAgo(date, t));
     }, updateInterval);
 
     return () => clearInterval(interval);
-  }, [date, updateInterval]);
+  }, [date, updateInterval, t]);
 
   return <span className={className}>{timeAgo}</span>;
 }

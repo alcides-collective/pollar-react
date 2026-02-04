@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { TrendingUp } from 'lucide-react';
 import type { PopularSearch } from '@/types/search';
 
@@ -7,6 +8,8 @@ interface PopularSearchesProps {
 }
 
 export function PopularSearches({ searches, onSelect }: PopularSearchesProps) {
+  const { t } = useTranslation('search');
+
   if (searches.length === 0) {
     return null;
   }
@@ -15,7 +18,7 @@ export function PopularSearches({ searches, onSelect }: PopularSearchesProps) {
     <div className="space-y-3">
       <div className="flex items-center gap-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
         <TrendingUp className="size-4" />
-        <span>Popularne wyszukiwania</span>
+        <span>{t('popularSearches')}</span>
       </div>
 
       <div className="flex flex-wrap gap-2">

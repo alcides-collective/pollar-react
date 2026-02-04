@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { BriefInsights as BriefInsightsType } from '../../types/brief';
 import { sanitizeAndProcessInlineHtml } from '../../utils/text';
 
@@ -6,6 +7,7 @@ interface BriefInsightsProps {
 }
 
 export function BriefInsights({ insights }: BriefInsightsProps) {
+  const { t } = useTranslation('brief');
   const hasInsights =
     insights.trends.length > 0 ||
     insights.correlations.length > 0 ||
@@ -18,35 +20,35 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
   return (
     <section className="mb-12">
       <h2 className="text-sm text-zinc-500 mb-3 pb-2 border-b border-zinc-200 font-medium">
-        Wnioski
+        {t('insights.title')}
       </h2>
 
       {/* Grid 2x2 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {insights.trends.length > 0 && (
           <InsightCard
-            label="Trendy"
+            label={t('insights.trends')}
             items={insights.trends}
             colorClass="border-blue-200 bg-blue-50/50"
           />
         )}
         {insights.correlations.length > 0 && (
           <InsightCard
-            label="Korelacje"
+            label={t('insights.correlations')}
             items={insights.correlations}
             colorClass="border-purple-200 bg-purple-50/50"
           />
         )}
         {insights.anomalies.length > 0 && (
           <InsightCard
-            label="Anomalie"
+            label={t('insights.anomalies')}
             items={insights.anomalies}
             colorClass="border-amber-200 bg-amber-50/50"
           />
         )}
         {insights.implications.length > 0 && (
           <InsightCard
-            label="Implikacje"
+            label={t('insights.implications')}
             items={insights.implications}
             colorClass="border-green-200 bg-green-50/50"
           />
@@ -57,7 +59,7 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
       {insights.metaCommentary && (
         <div className="mt-4 p-4 rounded-lg border border-zinc-200 bg-zinc-50/50">
           <p className="text-xs uppercase tracking-wider text-zinc-500 mb-2 font-semibold">
-            Komentarz meta
+            {t('insights.metaCommentary')}
           </p>
           <p
             className="text-sm text-zinc-700"

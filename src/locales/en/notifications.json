@@ -1,0 +1,55 @@
+{
+  "title": "Notifications",
+  "markAsRead": "Mark as read",
+  "markAllAsRead": "Mark all as read ({{count}})",
+  "noNew": "No new notifications",
+  "noNotifications": "No notifications.",
+  "viewHistory": "View notification history",
+  "viewAll": "View all notifications",
+  "noDate": "No date",
+  "loadingHistorical": "loading historical...",
+  "loadMore": "Load more historical",
+  "loading": "Loading...",
+  "historical": "Historical",
+  "voting": {
+    "for": "For",
+    "against": "Against",
+    "abstained": "Abstained",
+    "absent": "Absent"
+  },
+  "categoryLabels": {
+    "polityka": "Politics",
+    "swiat": "World",
+    "gospodarka": "Economy",
+    "spoleczenstwo": "Society",
+    "nauka": "Science",
+    "sport": "Sports",
+    "kultura": "Culture",
+    "technologia": "Technology",
+    "inne": "Other"
+  },
+  "filters": {
+    "type": "Type",
+    "all": "All",
+    "votings": "Votings",
+    "categories": "Categories",
+    "vote": "Vote",
+    "mp": "MP",
+    "allMPs": "All ({{count}})",
+    "category": "Category",
+    "allCategories": "All ({{count}})",
+    "showHistorical": "Show historical"
+  },
+  "stats": {
+    "followedMPs": "Followed MPs",
+    "favoriteCategories": "Favorite categories",
+    "notifications": "Notifications"
+  },
+  "noPreferences": {
+    "title": "No preferences set",
+    "description": "Start following MPs or add favorite categories to receive notifications.",
+    "browseMPs": "Browse MPs",
+    "setCategories": "Set categories",
+    "hint": "Add favorite categories or start following MPs"
+  }
+}

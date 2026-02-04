@@ -1,0 +1,30 @@
+{
+  "error": {
+    "title": "Brief konnte nicht geladen werden",
+    "backHome": "Zurück zur Startseite"
+  },
+  "empty": {
+    "title": "Kein Brief für heute",
+    "description": "Der Daily Brief wurde noch nicht erstellt."
+  },
+  "wordOfTheDay": "Wort des Tages",
+  "events": "Ereignisse",
+  "summary": "Zusammenfassung",
+  "insights": {
+    "title": "Erkenntnisse",
+    "trends": "Trends",
+    "correlations": "Korrelationen",
+    "anomalies": "Anomalien",
+    "implications": "Implikationen",
+    "metaCommentary": "Meta-Kommentar"
+  },
+  "mentions": {
+    "people": "Erwähnte Personen",
+    "organizations": "Erwähnte Organisationen"
+  },
+  "timeHeadline": {
+    "morning": "Morgenausgabe",
+    "afternoon": "Nachmittagsausgabe",
+    "evening": "Abendausgabe"
+  }
+}

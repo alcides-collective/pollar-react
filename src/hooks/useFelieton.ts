@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import type { Felieton } from '../types/felieton';
 import { API_BASE } from '../config/api';
 import { sanitizeFelieton } from '../utils/sanitize';
+import { useLanguage, type Language } from '../stores/languageStore';
 
-export function useFelieton(id: string | undefined) {
+export function useFelieton(id: string | undefined, langOverride?: Language) {
+  const storeLanguage = useLanguage();
+  const lang = langOverride ?? storeLanguage;
   const [felieton, setFelieton] = useState<Felieton | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -19,7 +22,7 @@ export function useFelieton(id: string | undefined) {
       setError(null);
 
       try {
-        const response = await fetch(`${API_BASE}/felietony/${id}`);
+        const response = await fetch(`${API_BASE}/felietony/${id}?lang=${lang}`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -35,7 +38,7 @@ export function useFelieton(id: string | undefined) {
     };
 
     fetchFelieton();
-  }, [id]);
+  }, [id, lang]);
 
   return { felieton, loading, error };
 }

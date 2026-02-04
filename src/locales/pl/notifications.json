@@ -1,0 +1,55 @@
+{
+  "title": "Powiadomienia",
+  "markAsRead": "Oznacz jako przeczytane",
+  "markAllAsRead": "Oznacz wszystkie jako przeczytane ({{count}})",
+  "noNew": "Brak nowych powiadomień",
+  "noNotifications": "Brak powiadomień.",
+  "viewHistory": "Zobacz historię powiadomień",
+  "viewAll": "Zobacz wszystkie powiadomienia",
+  "noDate": "Brak daty",
+  "loadingHistorical": "ładowanie historycznych...",
+  "loadMore": "Załaduj więcej historycznych",
+  "loading": "Ładowanie...",
+  "historical": "Historyczne",
+  "voting": {
+    "for": "Za",
+    "against": "Przeciw",
+    "abstained": "Wstrzymał się",
+    "absent": "Nieobecny"
+  },
+  "categoryLabels": {
+    "polityka": "Polityka",
+    "swiat": "Świat",
+    "gospodarka": "Gospodarka",
+    "spoleczenstwo": "Społeczeństwo",
+    "nauka": "Nauka",
+    "sport": "Sport",
+    "kultura": "Kultura",
+    "technologia": "Technologia",
+    "inne": "Inne"
+  },
+  "filters": {
+    "type": "Typ",
+    "all": "Wszystkie",
+    "votings": "Głosowania",
+    "categories": "Kategorie",
+    "vote": "Głos",
+    "mp": "Poseł",
+    "allMPs": "Wszyscy ({{count}})",
+    "category": "Kategoria",
+    "allCategories": "Wszystkie ({{count}})",
+    "showHistorical": "Pokaż historyczne"
+  },
+  "stats": {
+    "followedMPs": "Śledzonych posłów",
+    "favoriteCategories": "Ulubionych kategorii",
+    "notifications": "Powiadomień"
+  },
+  "noPreferences": {
+    "title": "Brak ustawionych preferencji",
+    "description": "Zacznij śledzić posłów lub dodaj ulubione kategorie, żeby otrzymywać powiadomienia.",
+    "browseMPs": "Przeglądaj posłów",
+    "setCategories": "Ustaw kategorie",
+    "hint": "Dodaj ulubione kategorie lub zacznij śledzić posłów"
+  }
+}

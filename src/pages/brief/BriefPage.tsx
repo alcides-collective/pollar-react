@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useBrief } from '../../hooks/useBrief';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { prepareOgDescription } from '../../utils/text';
+import { useLanguage } from '../../stores/languageStore';
 import {
   BriefHero,
   BriefExecutiveSummary,
@@ -13,14 +15,18 @@ import {
 } from '../../components/brief';
 
 export function BriefPage() {
-  const { brief, loading, error } = useBrief({ lang: 'pl' });
+  const { t } = useTranslation('brief');
+  const language = useLanguage();
+  const { brief, loading, error } = useBrief({ lang: language });
   const { activeItem: activeSection, setSectionRef } = useActiveSection(
     brief?.sections ?? []
   );
 
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
+
   // SEO meta tags
   const formattedDate = brief?.date
-    ? new Date(brief.date).toLocaleDateString('pl-PL', {
+    ? new Date(brief.date).toLocaleDateString(localeMap[language] || 'pl-PL', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -101,7 +107,7 @@ export function BriefPage() {
             <i className="ri-error-warning-line text-2xl text-zinc-400" />
           </div>
           <h1 className="text-xl font-medium text-zinc-900 mb-2">
-            Nie udało się załadować briefu
+            {t('error.title')}
           </h1>
           <p className="text-zinc-600 mb-6">
             {error.message}
@@ -111,7 +117,7 @@ export function BriefPage() {
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
-            Wróć do strony głównej
+            {t('error.backHome')}
           </Link>
         </div>
       </div>
@@ -126,17 +132,17 @@ export function BriefPage() {
             <i className="ri-file-text-line text-2xl text-zinc-400" />
           </div>
           <h1 className="text-xl font-medium text-zinc-900 mb-2">
-            Brak briefu na dzisiaj
+            {t('empty.title')}
           </h1>
           <p className="text-zinc-600 mb-6">
-            Daily Brief nie został jeszcze wygenerowany.
+            {t('empty.description')}
           </p>
           <Link
             to="/"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
-            Wróć do strony głównej
+            {t('error.backHome')}
           </Link>
         </div>
       </div>
@@ -163,7 +169,7 @@ export function BriefPage() {
             <section className="lg:hidden mt-10 pt-8 border-t border-zinc-200">
               <h2 className="text-sm text-zinc-500 mb-4 font-medium flex items-center gap-2">
                 <i className="ri-book-2-line" />
-                Słowo dnia
+                {t('wordOfTheDay')}
               </h2>
               <div className="p-4 rounded-xl border border-zinc-200 bg-gradient-to-br from-indigo-50/50 to-purple-50/50">
                 <div className="mb-3">

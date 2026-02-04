@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 interface ShareButtonProps {
   url?: string;
@@ -16,6 +17,7 @@ export function ShareButton({
   className = '',
   size = 'md',
 }: ShareButtonProps) {
+  const { t } = useTranslation('actions');
   const [isSharing, setIsSharing] = useState(false);
 
   const sizeClasses = {
@@ -56,9 +58,9 @@ export function ShareButton({
     // Fallback: copy to clipboard
     try {
       await navigator.clipboard.writeText(shareUrl);
-      toast.success('Link skopiowany do schowka');
+      toast.success(t('share.linkCopied'));
     } catch {
-      toast.error('Nie udało się skopiować linku');
+      toast.error(t('share.failedToCopy'));
     }
     setIsSharing(false);
   };
@@ -68,7 +70,7 @@ export function ShareButton({
       onClick={handleShare}
       disabled={isSharing}
       className={`${sizeClasses[size]} rounded-full flex items-center justify-center transition-colors bg-white/90 text-zinc-700 hover:bg-white border border-zinc-200 disabled:opacity-50 ${className}`}
-      aria-label="Udostępnij"
+      aria-label={t('share.share')}
     >
       <i className={`ri-share-line ${iconSizes[size]}`} />
     </button>

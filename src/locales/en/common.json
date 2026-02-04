@@ -1,0 +1,137 @@
+{
+  "nav": {
+    "all": "All",
+    "discover": "Discover",
+    "privacy": "Privacy",
+    "search": "Search",
+    "dailyBrief": "Daily Brief",
+    "aiAssistant": "AI Assistant",
+    "sejm": "Parliament",
+    "stockExchange": "Stock Exchange",
+    "eventMap": "Event Map",
+    "openData": "Open Data",
+    "connectionGraph": "Connection Graph",
+    "terminal": "Terminal",
+    "connections": "Connections",
+    "archive": "Archive",
+    "about": "About Pollar"
+  },
+  "categories": {
+    "Świat": "World",
+    "Gospodarka": "Economy",
+    "Polityka": "Politics",
+    "Społeczeństwo": "Society",
+    "Sport": "Sports",
+    "Kultura": "Culture",
+    "Przestępczość": "Crime",
+    "Styl Życia": "Lifestyle",
+    "Pogoda i Środowisko": "Weather & Environment",
+    "Nauka i Technologia": "Science & Technology",
+    "Inne": "Other"
+  },
+  "actions": {
+    "save": "Save",
+    "saved": "Saved",
+    "follow": "Follow",
+    "following": "Following",
+    "share": "Share",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "backToHome": "Back to home",
+    "search": "Search",
+    "close": "Close",
+    "open": "Open",
+    "delete": "Delete",
+    "edit": "Edit",
+    "send": "Send",
+    "refresh": "Refresh",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "time": {
+    "now": "now",
+    "min": "min",
+    "hours": "hrs",
+    "days": "days",
+    "secondsAgo": "{{count}} sec ago",
+    "minutesAgo": "{{count}} min ago",
+    "hoursAgo": "{{count}} hrs ago",
+    "update": "updated"
+  },
+  "states": {
+    "loading": "Loading...",
+    "searching": "Searching...",
+    "sending": "Sending...",
+    "saving": "Saving...",
+    "deleting": "Deleting..."
+  },
+  "errors": {
+    "error": "Error",
+    "errorOccurred": "An error occurred",
+    "failedToLoad": "Failed to load",
+    "tryAgain": "Try again",
+    "refreshPage": "Try refreshing the page. If the problem persists, contact us."
+  },
+  "user": {
+    "defaultName": "User",
+    "appleUser": "Apple User",
+    "dashboard": "Dashboard",
+    "myProfile": "My Profile",
+    "notifications": "Notifications",
+    "logout": "Log out"
+  },
+  "loginPrompt": {
+    "title": "Log in to access:",
+    "feature1": "Track MPs and their votes",
+    "feature2": "Notifications about new events",
+    "feature3": "Save articles",
+    "feature4": "Personalize categories"
+  },
+  "footer": {
+    "description": "AI-powered news aggregator. Track events, analyze Parliament data and explore public statistics.",
+    "allRightsReserved": "All rights reserved.",
+    "navigation": "Navigation",
+    "home": "Home",
+    "legal": "Legal",
+    "terms": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "cookies": "Cookies"
+  },
+  "seo": {
+    "archiveTitle": "Event Archive",
+    "archiveDescription": "Browse event archive grouped by category",
+    "archiveAllEvents": "All events grouped by category",
+    "mainHeading": "Pollar News - All the important news in one place"
+  },
+  "discover": {
+    "title": "Discover",
+    "powiazania": {
+      "title": "Connections",
+      "description": "Daily word game. Find hidden connections between words and group them into categories."
+    },
+    "sejm": {
+      "title": "Parliament",
+      "description": "Track votes, bills and MP activity. Full transparency of parliamentary work."
+    },
+    "gielda": {
+      "title": "Stock Exchange",
+      "description": "Quotes, analyses and market forecasts. Stay updated on the stock market."
+    }
+  },
+  "info": {
+    "events": "Events",
+    "sources": "Sources",
+    "ads": "Ads",
+    "online": "Online",
+    "newsWithoutNoise": "News without noise",
+    "aiDescription": "AI organizes and summarizes today's events without clickbait — only verified facts.",
+    "startReading": "Start reading",
+    "scroll": "Scroll"
+  },
+  "greetings": {
+    "morning": "Good day",
+    "evening": "Good evening",
+    "default": "Hello"
+  }
+}

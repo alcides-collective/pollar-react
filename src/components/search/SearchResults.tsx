@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { SearchResult } from '@/types/search';
 import { SearchResultItem } from './SearchResultItem';
 import { Loader2 } from 'lucide-react';
@@ -9,11 +10,13 @@ interface SearchResultsProps {
 }
 
 export function SearchResults({ results, isLoading, onSelect }: SearchResultsProps) {
+  const { t } = useTranslation('search');
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
         <Loader2 className="size-6 animate-spin text-zinc-400" />
-        <span className="ml-2 text-zinc-500">Szukam...</span>
+        <span className="ml-2 text-zinc-500">{t('searching')}</span>
       </div>
     );
   }

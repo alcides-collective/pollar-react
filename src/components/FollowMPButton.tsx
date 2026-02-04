@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useIsAuthenticated } from '@/stores/authStore';
 import { useUserStore, useIsFollowingMP } from '@/stores/userStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -20,6 +21,7 @@ export function FollowMPButton({
   size = 'sm',
   className,
 }: FollowMPButtonProps) {
+  const { t } = useTranslation('actions');
   const isAuthenticated = useIsAuthenticated();
   const isFollowing = useIsFollowingMP(mpId);
   const toggleFollowMP = useUserStore((s) => s.toggleFollowMP);
@@ -36,16 +38,16 @@ export function FollowMPButton({
     try {
       await toggleFollowMP(mpId);
       toast.success(
-        isFollowing ? 'Przestano śledzić' : 'Zaczęto śledzić',
+        isFollowing ? t('follow.stopped') : t('follow.started'),
         {
           description: isFollowing
-            ? `Nie śledzisz już posła ${mpName}`
-            : `Śledzisz teraz posła ${mpName}`,
+            ? t('follow.stoppedMessage', { name: mpName })
+            : t('follow.startedMessage', { name: mpName }),
         }
       );
     } catch {
-      toast.error('Błąd', {
-        description: 'Nie udało się zaktualizować śledzonych posłów',
+      toast.error(t('follow.error'), {
+        description: t('follow.errorMessage'),
       });
     } finally {
       setIsLoading(false);
@@ -65,12 +67,12 @@ export function FollowMPButton({
       ) : isFollowing ? (
         <>
           <i className="ri-user-follow-fill mr-1.5" />
-          Śledzisz
+          {t('follow.following')}
         </>
       ) : (
         <>
           <i className="ri-user-add-line mr-1.5" />
-          Śledź
+          {t('follow.follow')}
         </>
       )}
     </Button>
