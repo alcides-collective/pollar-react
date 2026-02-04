@@ -558,43 +558,61 @@ const RSS_DESCRIPTIONS = {
 
 // RSS Feed endpoint (supports /feed.xml, /en/feed.xml, /de/feed.xml)
 app.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
+  console.log('[RSS] Request received:', req.path, 'params:', req.params);
+
   const lang = req.params.lang || 'pl';
   const langPrefix = lang !== 'pl' ? `/${lang}` : '';
   const baseUrl = 'https://pollar.news';
 
+  console.log('[RSS] Lang:', lang, 'API_BASE:', API_BASE);
+
   // Fetch recent events from API
   let events = [];
   try {
-    const response = await fetch(`${API_BASE}/api/events?lang=${lang}&limit=50`);
+    const apiUrl = `${API_BASE}/api/events?lang=${lang}&limit=50`;
+    console.log('[RSS] Fetching from:', apiUrl);
+    const response = await fetch(apiUrl);
+    console.log('[RSS] API response status:', response.status);
     if (response.ok) {
       const data = await response.json();
       events = data.events || data || [];
+      console.log('[RSS] Got', events.length, 'events');
+    } else {
+      console.error('[RSS] API error:', response.status, response.statusText);
     }
   } catch (err) {
-    console.warn('Could not fetch events for RSS:', err.message);
+    console.error('[RSS] Fetch error:', err.message, err.stack);
   }
 
   // Sort by createdAt descending
   events.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  const now = new Date().toUTCString();
-  const items = events.map(e => {
-    const title = escapeXml(stripHtml(e.title || ''));
-    const lead = escapeXml(stripHtml(e.lead || e.summary || ''));
-    const link = `${baseUrl}${langPrefix}/event/${e.id}`;
-    const pubDate = e.createdAt ? new Date(e.createdAt).toUTCString() : now;
-    const guid = `${baseUrl}/event/${e.id}`; // guid stays canonical (without lang prefix)
+  try {
+    const now = new Date().toUTCString();
+    console.log('[RSS] Building XML for', events.length, 'events');
 
-    return `    <item>
+    const items = events.map((e, idx) => {
+      try {
+        const title = escapeXml(stripHtml(e.title || ''));
+        const lead = escapeXml(stripHtml(e.lead || e.summary || ''));
+        const link = `${baseUrl}${langPrefix}/event/${e.id}`;
+        const pubDate = e.createdAt ? new Date(e.createdAt).toUTCString() : now;
+        const guid = `${baseUrl}/event/${e.id}`; // guid stays canonical (without lang prefix)
+
+        return `    <item>
       <title>${title}</title>
       <description>${lead}</description>
       <link>${link}</link>
       <guid isPermaLink="true">${guid}</guid>
       <pubDate>${pubDate}</pubDate>
     </item>`;
-  }).join('\n');
+      } catch (itemErr) {
+        console.error('[RSS] Error processing event', idx, e.id, ':', itemErr.message);
+        return ''; // Skip this item
+      }
+    }).filter(Boolean).join('\n');
 
-  const rss = `<?xml version="1.0" encoding="UTF-8"?>
+    const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pollar News</title>
@@ -607,9 +625,16 @@ ${items}
   </channel>
 </rss>`;
 
-  res.set('Content-Type', 'application/rss+xml');
-  res.set('Cache-Control', 'public, max-age=1800'); // Cache for 30 minutes
-  res.send(rss);
+    console.log('[RSS] XML built successfully, length:', rss.length);
+
+    res.set('Content-Type', 'application/rss+xml');
+    res.set('Cache-Control', 'public, max-age=1800'); // Cache for 30 minutes
+    res.send(rss);
+    console.log('[RSS] Response sent');
+  } catch (buildErr) {
+    console.error('[RSS] Error building XML:', buildErr.message, buildErr.stack);
+    res.status(500).send('Error generating RSS feed');
+  }
 });
 
 // Crawler middleware
