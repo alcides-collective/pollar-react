@@ -476,6 +476,18 @@ app.use((req, res, next) => {
 // Enable gzip compression for all responses
 app.use(compression());
 
+// robots.txt endpoint
+app.get('/robots.txt', (req, res) => {
+  const robots = `User-agent: *
+Allow: /
+
+Sitemap: https://pollar.news/sitemap.xml
+`;
+  res.set('Content-Type', 'text/plain');
+  res.set('Cache-Control', 'public, max-age=86400'); // Cache for 1 day
+  res.send(robots);
+});
+
 // Sitemap.xml endpoint with dynamic events and multilingual support
 app.get('/sitemap.xml', async (req, res) => {
   const baseUrl = 'https://pollar.news';
@@ -560,62 +572,45 @@ const RSS_DESCRIPTIONS = {
 
 // RSS Feed endpoint (supports /feed.xml, /en/feed.xml, /de/feed.xml)
 app.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
-  console.log('[RSS] Request received:', req.path, 'params:', req.params);
-
   const lang = req.params.lang || 'pl';
   const langPrefix = lang !== 'pl' ? `/${lang}` : '';
   const baseUrl = 'https://pollar.news';
 
-  console.log('[RSS] Lang:', lang, 'API_BASE:', API_BASE);
-
   // Fetch recent events from API
   let events = [];
   try {
-    const apiUrl = `${API_BASE}/api/events?lang=${lang}&limit=50`;
-    console.log('[RSS] Fetching from:', apiUrl);
-    const response = await fetch(apiUrl);
-    console.log('[RSS] API response status:', response.status);
+    const response = await fetch(`${API_BASE}/api/events?lang=${lang}&limit=50`);
     if (response.ok) {
       const data = await response.json();
       // API returns { data: [...] } or { events: [...] } or direct array
       events = Array.isArray(data) ? data : (data.data || data.events || []);
-      console.log('[RSS] Got', events.length, 'events');
-    } else {
-      console.error('[RSS] API error:', response.status, response.statusText);
     }
   } catch (err) {
-    console.error('[RSS] Fetch error:', err.message, err.stack);
+    console.warn('Could not fetch events for RSS:', err.message);
   }
 
   // Sort by createdAt descending
   events.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  try {
-    const now = new Date().toUTCString();
-    console.log('[RSS] Building XML for', events.length, 'events');
+  const now = new Date().toUTCString();
 
-    const items = events.map((e, idx) => {
-      try {
-        const title = escapeXml(stripHtml(e.title || ''));
-        const lead = escapeXml(stripHtml(e.lead || e.summary || ''));
-        const link = `${baseUrl}${langPrefix}/event/${e.id}`;
-        const pubDate = e.createdAt ? new Date(e.createdAt).toUTCString() : now;
-        const guid = `${baseUrl}/event/${e.id}`; // guid stays canonical (without lang prefix)
+  const items = events.map(e => {
+    const title = escapeXml(stripHtml(e.title || ''));
+    const lead = escapeXml(stripHtml(e.lead || e.summary || ''));
+    const link = `${baseUrl}${langPrefix}/event/${e.id}`;
+    const pubDate = e.createdAt ? new Date(e.createdAt).toUTCString() : now;
+    const guid = `${baseUrl}/event/${e.id}`; // guid stays canonical (without lang prefix)
 
-        return `    <item>
+    return `    <item>
       <title>${title}</title>
       <description>${lead}</description>
       <link>${link}</link>
       <guid isPermaLink="true">${guid}</guid>
       <pubDate>${pubDate}</pubDate>
     </item>`;
-      } catch (itemErr) {
-        console.error('[RSS] Error processing event', idx, e.id, ':', itemErr.message);
-        return ''; // Skip this item
-      }
-    }).filter(Boolean).join('\n');
+  }).join('\n');
 
-    const rss = `<?xml version="1.0" encoding="UTF-8"?>
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pollar News</title>
@@ -628,16 +623,9 @@ ${items}
   </channel>
 </rss>`;
 
-    console.log('[RSS] XML built successfully, length:', rss.length);
-
-    res.set('Content-Type', 'application/rss+xml');
-    res.set('Cache-Control', 'public, max-age=1800'); // Cache for 30 minutes
-    res.send(rss);
-    console.log('[RSS] Response sent');
-  } catch (buildErr) {
-    console.error('[RSS] Error building XML:', buildErr.message, buildErr.stack);
-    res.status(500).send('Error generating RSS feed');
-  }
+  res.set('Content-Type', 'application/rss+xml');
+  res.set('Cache-Control', 'public, max-age=1800'); // Cache for 30 minutes
+  res.send(rss);
 });
 
 // Crawler middleware
