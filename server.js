@@ -487,6 +487,7 @@ app.use(helmet({
       connectSrc: [
         "'self'",
         "https://pollar.up.railway.app",
+        "https://en.wikipedia.org",
         "https://api.mapbox.com",
         "https://events.mapbox.com",
         "https://*.tiles.mapbox.com",
