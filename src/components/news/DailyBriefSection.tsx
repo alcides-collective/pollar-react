@@ -72,10 +72,12 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
             </p>
           </div>
 
+          {/* ────────────────────────────────────────────────────────────────── */}
+
           {/* Desktop layout */}
           <div className="hidden md:grid md:grid-cols-[1fr_2fr] gap-6">
             {/* Left column: greeting + image */}
-            <div>
+            <div className="border-r border-sky-200 pr-6">
               <p className="text-2xl font-semibold text-zinc-900">Daily Brief</p>
               {brief.greeting && (
                 <p className="text-sm text-sky-700 mt-1">{brief.greeting}</p>
@@ -92,8 +94,8 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
             </div>
             {/* Right column: date + headline + lead */}
             <div>
-              <p className="text-sm text-sky-600 mb-2 text-right">{formattedDate}</p>
-              <h2 className="text-3xl font-bold text-zinc-900 mb-4 leading-tight hover:underline">
+              <p className="text-sm text-sky-600 mb-2">{formattedDate}</p>
+              <h2 className="text-4xl font-bold text-zinc-900 mb-4 leading-tight hover:underline">
                 {brief.headline}
               </h2>
               <p className="text-lg text-zinc-700 leading-snug">
