@@ -376,6 +376,12 @@ export function Header() {
                   Archiwum
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/info" className="w-full flex items-center gap-2">
+                  <i className="ri-information-line" />
+                  O Pollar
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>
           </div>
