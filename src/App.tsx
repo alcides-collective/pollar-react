@@ -77,12 +77,15 @@ const WatchlistPage = lazy(() => import('./pages/gielda').then(m => ({ default: 
 const StockDetailPage = lazy(() => import('./pages/gielda').then(m => ({ default: m.StockDetailPage })))
 const IndexDetailPage = lazy(() => import('./pages/gielda').then(m => ({ default: m.IndexDetailPage })))
 
+// Graf page (network visualization)
+const GrafPage = lazy(() => import('./pages/graf').then(m => ({ default: m.GrafPage })))
+
 function HomePage() {
   return <NewsGrid />
 }
 
 // Full-screen routes that don't need Header/Footer
-const FULLSCREEN_ROUTES = ['/mapa', '/terminal', '/asystent', '/info']
+const FULLSCREEN_ROUTES = ['/mapa', '/terminal', '/asystent', '/info', '/graf']
 
 function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () => void; onContentReady: () => void }) {
   const location = useLocation()
@@ -118,6 +121,7 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
           <Route path="/asystent" element={<AsystentPage />} />
           <Route path="/info" element={<InfoPage />} />
           <Route path="/powiazania" element={<PowiazaniaPage />} />
+          <Route path="/graf" element={<GrafPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profil" element={<ProfilePage />} />
           <Route path="/powiadomienia" element={<NotificationsPage />} />

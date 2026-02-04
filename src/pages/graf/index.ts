@@ -1,0 +1,1 @@
+export { GrafPage } from './GrafPage';

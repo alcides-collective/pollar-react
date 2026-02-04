@@ -1,0 +1,520 @@
+/* Graf Page - Full viewport graph visualization */
+
+.graf-container {
+  position: fixed;
+  inset: 0;
+  background: #09090b;
+  overflow: hidden;
+}
+
+.graf-loading {
+  position: fixed;
+  inset: 0;
+  background: #09090b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: #a1a1aa;
+  font-size: 14px;
+}
+
+/* Stats overlay */
+.graf-stats {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(24, 24, 27, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-size: 13px;
+  color: #a1a1aa;
+  z-index: 10;
+  border: 1px solid #27272a;
+}
+
+.graf-stats-separator {
+  margin: 0 10px;
+  color: #3f3f46;
+}
+
+/* Keyboard hint */
+.graf-hint {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  font-size: 11px;
+  color: #52525b;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.graf-hint span {
+  display: inline-block;
+  padding: 3px 7px;
+  background: rgba(39, 39, 42, 0.8);
+  border-radius: 4px;
+  font-family: ui-monospace, 'SF Mono', Monaco, monospace;
+  font-size: 10px;
+  color: #71717a;
+}
+
+.graf-hint-spacer {
+  margin-left: 12px;
+}
+
+/* Controls Panel */
+.graf-controls {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 280px;
+  background: rgba(24, 24, 27, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  padding: 16px;
+  z-index: 20;
+}
+
+.graf-controls-section {
+  margin-bottom: 20px;
+}
+
+.graf-controls-section:last-child {
+  margin-bottom: 0;
+}
+
+.graf-controls-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #52525b;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+/* Mode Buttons */
+.graf-mode-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.graf-mode-button {
+  padding: 8px 12px;
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  color: #a1a1aa;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.graf-mode-button:hover {
+  background: #27272a;
+  color: #fafafa;
+}
+
+.graf-mode-button.active {
+  background: #fafafa;
+  color: #09090b;
+  border-color: #fafafa;
+}
+
+/* Connection Toggles */
+.graf-connection-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.graf-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.graf-toggle input {
+  display: none;
+}
+
+.graf-toggle-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.graf-toggle-indicator svg {
+  width: 10px;
+  height: 10px;
+  color: #09090b;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.graf-toggle input:checked + .graf-toggle-indicator svg {
+  opacity: 1;
+}
+
+.graf-toggle-label {
+  font-size: 13px;
+  color: #a1a1aa;
+}
+
+/* Slider */
+.graf-slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.graf-slider {
+  width: 100%;
+  height: 4px;
+  background: #27272a;
+  border-radius: 2px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.graf-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fafafa;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.graf-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.graf-slider-value {
+  text-align: center;
+  font-size: 12px;
+  color: #71717a;
+  font-variant-numeric: tabular-nums;
+}
+
+.graf-reset-button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  color: #71717a;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.graf-reset-button:hover {
+  background: #27272a;
+  color: #fafafa;
+}
+
+/* Details Panel */
+.graf-details {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 360px;
+  max-height: calc(100vh - 32px);
+  background: rgba(24, 24, 27, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+.graf-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.graf-details-category {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.graf-details-close {
+  background: transparent;
+  border: none;
+  color: #52525b;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 20px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.graf-details-close:hover {
+  color: #fafafa;
+  background: #27272a;
+}
+
+.graf-details-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #fafafa;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.graf-details-lead {
+  font-size: 14px;
+  color: #a1a1aa;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.graf-details-section {
+  margin-bottom: 16px;
+}
+
+.graf-details-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #52525b;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.graf-details-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.graf-details-tag {
+  padding: 4px 10px;
+  background: #27272a;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #a1a1aa;
+}
+
+.graf-details-tag-more {
+  padding: 4px 10px;
+  background: transparent;
+  font-size: 12px;
+  color: #52525b;
+}
+
+.graf-details-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid #27272a;
+  border-bottom: 1px solid #27272a;
+  margin-bottom: 16px;
+}
+
+.graf-details-stat {
+  text-align: center;
+}
+
+.graf-details-stat-value {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  color: #22c55e;
+  font-variant-numeric: tabular-nums;
+}
+
+.graf-details-stat-label {
+  font-size: 10px;
+  color: #52525b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.graf-details-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.graf-details-button-primary {
+  flex: 1;
+  padding: 10px 16px;
+  background: #fafafa;
+  color: #09090b;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.graf-details-button-primary:hover {
+  opacity: 0.9;
+}
+
+/* Legend Panel */
+.graf-legend {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: rgba(24, 24, 27, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  padding: 16px;
+  z-index: 20;
+  max-width: 320px;
+}
+
+.graf-legend-section {
+  margin-bottom: 16px;
+}
+
+.graf-legend-section:last-child {
+  margin-bottom: 0;
+}
+
+.graf-legend-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #52525b;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.graf-legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.graf-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.graf-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.graf-legend-line {
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.graf-legend-label {
+  font-size: 11px;
+  color: #a1a1aa;
+  white-space: nowrap;
+}
+
+.graf-legend-size {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.graf-legend-size-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #a1a1aa;
+}
+
+.graf-legend-dot-small {
+  width: 8px;
+  height: 8px;
+  background: #71717a;
+  border-radius: 50%;
+}
+
+.graf-legend-dot-large {
+  width: 20px;
+  height: 20px;
+  background: #71717a;
+  border-radius: 50%;
+}
+
+/* Scrollbar styling */
+.graf-details::-webkit-scrollbar {
+  width: 6px;
+}
+
+.graf-details::-webkit-scrollbar-track {
+  background: #18181b;
+}
+
+.graf-details::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 3px;
+}
+
+.graf-details::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .graf-controls {
+    width: calc(100% - 32px);
+    max-width: 320px;
+  }
+
+  .graf-details {
+    width: calc(100% - 32px);
+    max-width: 360px;
+    right: 16px;
+    left: 16px;
+    margin: 0 auto;
+  }
+
+  .graf-legend {
+    max-width: calc(100% - 32px);
+  }
+
+  .graf-hint {
+    display: none;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .graf-controls,
+  .graf-details,
+  .graf-legend,
+  .graf-mode-button,
+  .graf-toggle-indicator {
+    transition: none;
+  }
+}
