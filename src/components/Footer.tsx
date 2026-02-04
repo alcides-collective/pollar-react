@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { LocalizedLink } from './LocalizedLink';
+import { useLanguage } from '@/stores/languageStore';
 
 const socialLinks = [
   { label: 'X', icon: 'ri-twitter-x-line', href: 'https://x.com/pollarpl' },
@@ -10,6 +11,10 @@ const socialLinks = [
 
 export function Footer() {
   const { t } = useTranslation('common');
+  const language = useLanguage();
+
+  // RSS feed URL based on language
+  const rssFeedUrl = language === 'pl' ? '/feed.xml' : `/${language}/feed.xml`;
 
   const footerSections = [
     {
@@ -157,6 +162,15 @@ export function Footer() {
                 <i className={`${link.icon} text-lg`} />
               </a>
             ))}
+            <a
+              href={rssFeedUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 flex items-center justify-center rounded-full bg-zinc-800 text-zinc-400 hover:bg-orange-500 hover:text-white transition-all"
+              aria-label="RSS Feed"
+            >
+              <i className="ri-rss-line text-lg" />
+            </a>
           </div>
         </motion.div>
       </div>
