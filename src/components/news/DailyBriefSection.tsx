@@ -28,6 +28,12 @@ function getTimeBasedGreeting(): string {
 
 export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
   const timeGreeting = getTimeBasedGreeting();
+  const formattedDate = new Date(brief.date).toLocaleDateString('pl-PL', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 
   return (
     <SectionWrapper
@@ -35,23 +41,43 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
       priority="low"
     >
       <Link to="/brief" className="group block">
-        <div className="bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer">
-        <div className="px-6 pt-6 pb-4">
-          <p className="text-2xl font-semibold text-zinc-900">{timeGreeting}</p>
-          {brief.greeting && (
-            <p className="text-sm text-sky-700 mt-1">
-              {brief.greeting}
+        <div className="bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer p-6">
+          {/* Mobile layout */}
+          <div className="md:hidden">
+            <p className="text-2xl font-semibold text-zinc-900">{timeGreeting}</p>
+            {brief.greeting && (
+              <p className="text-sm text-sky-700 mt-1">{brief.greeting}</p>
+            )}
+            <GrainImage
+              src={dailyBriefImg}
+              className="w-full aspect-video object-cover mt-4"
+              groupHover
+            />
+            <h2 className="text-3xl font-bold text-zinc-900 mb-4 mt-4 leading-tight hover:underline">
+              {brief.headline}
+            </h2>
+            <p className="text-lg text-zinc-700 leading-snug">
+              {brief.lead}
             </p>
-          )}
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6 px-6 pb-6">
-          <GrainImage
-            src={dailyBriefImg}
-            className="w-full aspect-video object-cover"
-            groupHover
-          />
-          <div className="flex gap-4">
-            <div className="flex-1">
+          </div>
+
+          {/* Desktop layout */}
+          <div className="hidden md:grid md:grid-cols-[1fr_2fr] gap-6">
+            {/* Left column: greeting + image */}
+            <div>
+              <p className="text-2xl font-semibold text-zinc-900">{timeGreeting}</p>
+              {brief.greeting && (
+                <p className="text-sm text-sky-700 mt-1">{brief.greeting}</p>
+              )}
+              <GrainImage
+                src={dailyBriefImg}
+                className="w-full aspect-video object-cover mt-4"
+                groupHover
+              />
+            </div>
+            {/* Right column: date + headline + lead */}
+            <div>
+              <p className="text-sm text-sky-600 mb-2 text-right">{formattedDate}</p>
               <h2 className="text-3xl font-bold text-zinc-900 mb-4 leading-tight hover:underline">
                 {brief.headline}
               </h2>
@@ -59,17 +85,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
                 {brief.lead}
               </p>
             </div>
-            {/* {brief.wordOfTheDay && (
-              <div className="hidden md:block w-48 shrink-0">
-                <_WordOfTheDayBox
-                  word={brief.wordOfTheDay.word}
-                  etymology={brief.wordOfTheDay.etymology}
-                  editorialDefinition={brief.wordOfTheDay.editorialDefinition}
-                />
-              </div>
-            )} */}
           </div>
-        </div>
         </div>
       </Link>
     </SectionWrapper>

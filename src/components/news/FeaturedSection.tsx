@@ -36,24 +36,27 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
             hoverShadow={false}
           />
         </Link>
+        {/* Leadbox - only on desktop (overlaid on image) */}
         {(imageSource || mainEvent.lead) && (
-          <motion.div
-            className="mx-4 mb-4 -mt-16 relative z-10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-          >
-            {imageSource && (
-              <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2 max-w-full truncate">
-                Źródło: {imageSource}
-              </span>
-            )}
-            {mainEvent.lead && (
-              <p className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200">
-                {mainEvent.lead}
-              </p>
-            )}
-          </motion.div>
+          <Link to={`/event/${mainEvent.id}`}>
+            <motion.div
+              className="hidden md:block mx-4 mb-4 -mt-16 relative z-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              {imageSource && (
+                <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2 max-w-full truncate">
+                  Źródło: {imageSource}
+                </span>
+              )}
+              {mainEvent.lead && (
+                <p className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200 hover:bg-zinc-50 transition-colors">
+                  {mainEvent.lead}
+                </p>
+              )}
+            </motion.div>
+          </Link>
         )}
       </div>
 
@@ -64,6 +67,29 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
             {mainEvent.title}
           </h2>
         </Link>
+
+        {/* Leadbox - only on mobile (after headline) */}
+        {(imageSource || mainEvent.lead) && (
+          <Link to={`/event/${mainEvent.id}`}>
+            <motion.div
+              className="md:hidden mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              {imageSource && (
+                <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2 max-w-full truncate">
+                  Źródło: {imageSource}
+                </span>
+              )}
+              {mainEvent.lead && (
+                <p className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200 hover:bg-zinc-50 transition-colors">
+                  {mainEvent.lead}
+                </p>
+              )}
+            </motion.div>
+          </Link>
+        )}
 
         {secondaryEvents.length > 0 && (
           <motion.div
