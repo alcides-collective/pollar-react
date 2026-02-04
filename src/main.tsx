@@ -32,6 +32,9 @@ if (import.meta.env.PROD) {
       'Network request failed',
       'Load failed',
       'ChunkLoadError',
+      // Firebase IndexedDB issues on iOS Safari
+      "Failed to execute 'transaction' on 'IDBDatabase'",
+      'The database connection is closing',
     ],
   })
 }
