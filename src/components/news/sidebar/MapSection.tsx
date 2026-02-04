@@ -25,7 +25,7 @@ export function MapSection() {
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
+      style: 'mapbox://styles/mapbox/satellite-v9',
       center: [15, 50], // Europe center
       zoom: 1.5,
       attributionControl: false,
