@@ -98,11 +98,38 @@
     "privacyPolicy": "Datenschutzerklärung",
     "cookies": "Cookies"
   },
+  "eventStream": {
+    "update": "Aktualisierung",
+    "view": "Ansehen",
+    "newEvents": "{{count}} neue Ereignisse",
+    "clickToSeeLatest": "Klicken Sie, um die neuesten zu sehen"
+  },
+  "aiErrors": {
+    "errorOccurred": "Ein Fehler ist aufgetreten",
+    "noResponse": "Keine Antwort",
+    "cannotConnect": "Verbindung zum Server nicht möglich"
+  },
+  "defaultDescription": "Alle wichtigen Nachrichten an einem Ort. KI organisiert und fasst die heutigen Ereignisse ohne Clickbait zusammen — nur verifizierte Fakten.",
   "seo": {
     "archiveTitle": "Ereignisarchiv",
     "archiveDescription": "Durchsuche das Ereignisarchiv nach Kategorien",
     "archiveAllEvents": "Alle Ereignisse nach Kategorien",
     "mainHeading": "Pollar News - Alle wichtigen Nachrichten an einem Ort"
+  },
+  "archive": {
+    "title": "Archiv",
+    "subtitle": "Alle Ereignisse nach Kategorien",
+    "failedToLoad": "Archiv konnte nicht geladen werden",
+    "backToArchive": "Zurück zum Archiv",
+    "noEventsInCategory": "Keine Ereignisse in Kategorie \"{{category}}\"",
+    "noEventsFound": "Keine Ereignisse in dieser Kategorie gefunden.",
+    "eventsInArchive": "{{count}} Ereignisse im Archiv",
+    "eventsInArchive_one": "{{count}} Ereignis im Archiv",
+    "source": "Quelle",
+    "sources": "Quellen",
+    "categoryArchiveTitle": "{{category}} - Archiv",
+    "categoryArchiveDescription": "Ereignisarchiv für Kategorie {{category}}",
+    "browseAllEvents": "Alle Ereignisse in Kategorie {{category}} durchsuchen"
   },
   "discover": {
     "title": "Entdecken",

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type OgImageType = 'event' | 'brief' | 'felieton';
 
@@ -27,7 +28,6 @@ export function generateOgImageUrl(title: string, type?: OgImageType): string {
 }
 
 const DEFAULT_TITLE = 'Pollar News';
-const DEFAULT_DESCRIPTION = 'Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.';
 const DEFAULT_IMAGE = '/opengraph-image.jpg';
 
 /**
@@ -35,6 +35,9 @@ const DEFAULT_IMAGE = '/opengraph-image.jpg';
  * Automatically resets to defaults when component unmounts.
  */
 export function useDocumentHead(options: DocumentHeadOptions) {
+  const { t } = useTranslation('common');
+  const defaultDescription = t('defaultDescription');
+
   useEffect(() => {
     const {
       title,
@@ -91,7 +94,7 @@ export function useDocumentHead(options: DocumentHeadOptions) {
       setMetaTag('meta[property="og:title"]', 'property', 'og:title', ogTitle || title || DEFAULT_TITLE);
     }
     if (ogDescription || description) {
-      setMetaTag('meta[property="og:description"]', 'property', 'og:description', ogDescription || description || DEFAULT_DESCRIPTION);
+      setMetaTag('meta[property="og:description"]', 'property', 'og:description', ogDescription || description || defaultDescription);
     }
     if (resolvedOgImage) {
       setMetaTag('meta[property="og:image"]', 'property', 'og:image', resolvedOgImage);
@@ -104,7 +107,7 @@ export function useDocumentHead(options: DocumentHeadOptions) {
       setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', ogTitle || title || DEFAULT_TITLE);
     }
     if (ogDescription || description) {
-      setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', ogDescription || description || DEFAULT_DESCRIPTION);
+      setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', ogDescription || description || defaultDescription);
     }
     if (resolvedOgImage) {
       setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', resolvedOgImage);
@@ -113,14 +116,14 @@ export function useDocumentHead(options: DocumentHeadOptions) {
     // Cleanup: reset to defaults on unmount
     return () => {
       document.title = originalTitle;
-      setMetaTag('meta[name="description"]', 'name', 'description', DEFAULT_DESCRIPTION);
+      setMetaTag('meta[name="description"]', 'name', 'description', defaultDescription);
       setMetaTag('meta[property="og:title"]', 'property', 'og:title', DEFAULT_TITLE);
-      setMetaTag('meta[property="og:description"]', 'property', 'og:description', DEFAULT_DESCRIPTION);
+      setMetaTag('meta[property="og:description"]', 'property', 'og:description', defaultDescription);
       setMetaTag('meta[property="og:image"]', 'property', 'og:image', DEFAULT_IMAGE);
       setMetaTag('meta[property="og:type"]', 'property', 'og:type', 'website');
       setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', DEFAULT_TITLE);
-      setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', DEFAULT_DESCRIPTION);
+      setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', defaultDescription);
       setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', DEFAULT_IMAGE);
     };
-  }, [options.title, options.description, options.ogTitle, options.ogDescription, options.ogImage, options.ogImageTitle, options.ogImageType, options.ogType, options.twitterCard]);
+  }, [options.title, options.description, options.ogTitle, options.ogDescription, options.ogImage, options.ogImageTitle, options.ogImageType, options.ogType, options.twitterCard, defaultDescription]);
 }

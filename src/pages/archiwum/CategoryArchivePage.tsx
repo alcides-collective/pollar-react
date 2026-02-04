@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useArchiveEvents } from '../../hooks/useArchiveEvents';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
@@ -7,27 +8,30 @@ import { LiveTimeAgo } from '../../components/common/LiveTimeAgo';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 
 export function CategoryArchivePage() {
+  const { t } = useTranslation('common');
   const { category } = useParams<{ category: string }>();
   const decodedCategory = category ? decodeURIComponent(category) : '';
 
   const { events, loading, error } = useArchiveEvents({ limit: 500 });
 
-  // Filtruj eventy po kategorii (case-insensitive)
-  const { categoryEvents, displayCategory } = useMemo(() => {
+  // Filter events by category (case-insensitive)
+  const { categoryEvents, translatedCategory } = useMemo(() => {
     const filtered = events.filter(
       (event) => event.category?.toLowerCase() === decodedCategory.toLowerCase()
     );
-    // Użyj oryginalnej nazwy kategorii z pierwszego eventu (z dużą literą)
+    // Use original category name from first event (with capital letter)
     const originalName = filtered[0]?.category || decodedCategory;
-    return { categoryEvents: filtered, displayCategory: originalName };
-  }, [events, decodedCategory]);
+    // Translate category name for display
+    const translated = t(`categories.${originalName}`, { defaultValue: originalName });
+    return { categoryEvents: filtered, translatedCategory: translated };
+  }, [events, decodedCategory, t]);
 
   // SEO
   useDocumentHead({
-    title: `${displayCategory} - Archiwum`,
-    description: `Archiwum wydarzeń z kategorii ${displayCategory}`,
-    ogTitle: `${displayCategory} - Archiwum wydarzeń`,
-    ogDescription: `Przeglądaj wszystkie wydarzenia z kategorii ${displayCategory}`,
+    title: t('archive.categoryArchiveTitle', { category: translatedCategory }),
+    description: t('archive.categoryArchiveDescription', { category: translatedCategory }),
+    ogTitle: t('archive.categoryArchiveTitle', { category: translatedCategory }),
+    ogDescription: t('archive.browseAllEvents', { category: translatedCategory }),
   });
 
   // Loading state
@@ -61,7 +65,7 @@ export function CategoryArchivePage() {
             <i className="ri-error-warning-line text-2xl text-zinc-400" />
           </div>
           <h1 className="text-xl font-medium text-zinc-900 mb-2">
-            Nie udało się załadować archiwum
+            {t('archive.failedToLoad')}
           </h1>
           <p className="text-zinc-600 mb-6">{error.message}</p>
           <Link
@@ -69,7 +73,7 @@ export function CategoryArchivePage() {
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
-            Wróć do archiwum
+            {t('archive.backToArchive')}
           </Link>
         </div>
       </div>
@@ -85,15 +89,15 @@ export function CategoryArchivePage() {
             <i className="ri-folder-open-line text-2xl text-zinc-400" />
           </div>
           <h1 className="text-xl font-medium text-zinc-900 mb-2">
-            Brak wydarzeń w kategorii "{displayCategory}"
+            {t('archive.noEventsInCategory', { category: translatedCategory })}
           </h1>
-          <p className="text-zinc-600 mb-6">Nie znaleziono żadnych wydarzeń w tej kategorii.</p>
+          <p className="text-zinc-600 mb-6">{t('archive.noEventsFound')}</p>
           <Link
             to="/archiwum"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
-            Wróć do archiwum
+            {t('archive.backToArchive')}
           </Link>
         </div>
       </div>
@@ -109,15 +113,15 @@ export function CategoryArchivePage() {
           className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
         >
           <i className="ri-arrow-left-s-line" />
-          Archiwum
+          {t('archive.title')}
         </Link>
       </div>
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-zinc-900 mb-1">{displayCategory}</h1>
+        <h1 className="text-2xl font-bold text-zinc-900 mb-1">{translatedCategory}</h1>
         <p className="text-zinc-500">
-          {categoryEvents.length} {categoryEvents.length === 1 ? 'wydarzenie' : 'wydarzeń'} w archiwum
+          {t('archive.eventsInArchive', { count: categoryEvents.length })}
         </p>
       </div>
 
@@ -139,7 +143,7 @@ export function CategoryArchivePage() {
                 <span className="text-zinc-300">•</span>
                 <span className="text-zinc-400">
                   {event.sourceCount || event.sources?.length || 0}{' '}
-                  {(event.sourceCount || event.sources?.length || 0) === 1 ? 'źródło' : 'źródeł'}
+                  {(event.sourceCount || event.sources?.length || 0) === 1 ? t('archive.source') : t('archive.sources')}
                 </span>
               </div>
               <h2 className="text-base font-medium text-zinc-900 group-hover:text-zinc-700 transition-colors mb-1">

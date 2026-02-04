@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { API_BASE } from '../config/api';
 import { useEventsStore } from '../stores/eventsStore';
@@ -21,15 +22,16 @@ interface UseEventStreamOptions {
   onNewEvent?: (event: StreamEvent) => void;
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
+// Map API category keys to translation keys
+const CATEGORY_TRANSLATION_KEYS: Record<string, string> = {
   polityka: 'Polityka',
   swiat: 'Świat',
   gospodarka: 'Gospodarka',
   spoleczenstwo: 'Społeczeństwo',
-  nauka: 'Nauka',
+  nauka: 'Nauka i Technologia',
   sport: 'Sport',
   kultura: 'Kultura',
-  technologia: 'Technologia',
+  technologia: 'Nauka i Technologia',
   inne: 'Inne',
 };
 
@@ -39,6 +41,7 @@ const CATEGORY_LABELS: Record<string, string> = {
  */
 export function useEventStream(options: UseEventStreamOptions = {}) {
   const { enabled = true, onNewEvent } = options;
+  const { t } = useTranslation('common');
   const eventSourceRef = useRef<EventSource | null>(null);
   const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reconnectAttempts = useRef(0);
@@ -47,20 +50,21 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
 
   // Show a single toast for an event
   const showEventToast = useCallback((event: StreamEvent) => {
-    const categoryLabel = CATEGORY_LABELS[event.category] || event.category;
+    const categoryKey = CATEGORY_TRANSLATION_KEYS[event.category] || event.category;
+    const categoryLabel = t(`categories.${categoryKey}`, { defaultValue: categoryKey });
     const isUpdate = event.type === 'updated';
 
     toast(event.title, {
-      description: isUpdate ? `${categoryLabel} • Aktualizacja` : categoryLabel,
+      description: isUpdate ? `${categoryLabel} • ${t('eventStream.update')}` : categoryLabel,
       action: {
-        label: 'Zobacz',
+        label: t('eventStream.view'),
         onClick: () => {
           window.location.href = `/event/${event.id}`;
         },
       },
       duration: 8000,
     });
-  }, []);
+  }, [t]);
 
   // Show buffered events when tab becomes visible
   const showBufferedEvents = useCallback(() => {
@@ -69,10 +73,10 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
 
     // If more than 5 events buffered, show summary toast
     if (events.length > 5) {
-      toast(`${events.length} nowych wydarzeń`, {
-        description: 'Kliknij aby zobaczyć najnowsze',
+      toast(t('eventStream.newEvents', { count: events.length }), {
+        description: t('eventStream.clickToSeeLatest'),
         action: {
-          label: 'Zobacz',
+          label: t('eventStream.view'),
           onClick: () => {
             window.location.href = '/';
           },
@@ -89,7 +93,7 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
     }
 
     bufferedEventsRef.current = [];
-  }, [showEventToast]);
+  }, [showEventToast, t]);
 
   // Handle visibility change
   useEffect(() => {

@@ -98,11 +98,38 @@
     "privacyPolicy": "Polityka prywatności",
     "cookies": "Cookies"
   },
+  "eventStream": {
+    "update": "Aktualizacja",
+    "view": "Zobacz",
+    "newEvents": "{{count}} nowych wydarzeń",
+    "clickToSeeLatest": "Kliknij aby zobaczyć najnowsze"
+  },
+  "aiErrors": {
+    "errorOccurred": "Wystąpił błąd",
+    "noResponse": "Brak odpowiedzi",
+    "cannotConnect": "Nie można połączyć z serwerem"
+  },
+  "defaultDescription": "Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.",
   "seo": {
     "archiveTitle": "Archiwum wydarzeń",
     "archiveDescription": "Przeglądaj archiwum wydarzeń pogrupowane według kategorii",
     "archiveAllEvents": "Wszystkie wydarzenia pogrupowane według kategorii",
     "mainHeading": "Pollar News - Wszystkie najważniejsze wiadomości w jednym miejscu"
+  },
+  "archive": {
+    "title": "Archiwum",
+    "subtitle": "Wszystkie wydarzenia pogrupowane według kategorii",
+    "failedToLoad": "Nie udało się załadować archiwum",
+    "backToArchive": "Wróć do archiwum",
+    "noEventsInCategory": "Brak wydarzeń w kategorii \"{{category}}\"",
+    "noEventsFound": "Nie znaleziono żadnych wydarzeń w tej kategorii.",
+    "eventsInArchive": "{{count}} wydarzeń w archiwum",
+    "eventsInArchive_one": "{{count}} wydarzenie w archiwum",
+    "source": "źródło",
+    "sources": "źródeł",
+    "categoryArchiveTitle": "{{category}} - Archiwum",
+    "categoryArchiveDescription": "Archiwum wydarzeń z kategorii {{category}}",
+    "browseAllEvents": "Przeglądaj wszystkie wydarzenia z kategorii {{category}}"
   },
   "discover": {
     "title": "Odkryj",

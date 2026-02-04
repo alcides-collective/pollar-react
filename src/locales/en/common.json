@@ -98,11 +98,38 @@
     "privacyPolicy": "Privacy Policy",
     "cookies": "Cookies"
   },
+  "eventStream": {
+    "update": "Update",
+    "view": "View",
+    "newEvents": "{{count}} new events",
+    "clickToSeeLatest": "Click to see the latest"
+  },
+  "aiErrors": {
+    "errorOccurred": "An error occurred",
+    "noResponse": "No response",
+    "cannotConnect": "Cannot connect to server"
+  },
+  "defaultDescription": "All the important news in one place. AI organizes and summarizes today's events without clickbait — only verified facts.",
   "seo": {
     "archiveTitle": "Event Archive",
     "archiveDescription": "Browse event archive grouped by category",
     "archiveAllEvents": "All events grouped by category",
     "mainHeading": "Pollar News - All the important news in one place"
+  },
+  "archive": {
+    "title": "Archive",
+    "subtitle": "All events grouped by category",
+    "failedToLoad": "Failed to load archive",
+    "backToArchive": "Back to archive",
+    "noEventsInCategory": "No events in category \"{{category}}\"",
+    "noEventsFound": "No events found in this category.",
+    "eventsInArchive": "{{count}} events in archive",
+    "eventsInArchive_one": "{{count}} event in archive",
+    "source": "source",
+    "sources": "sources",
+    "categoryArchiveTitle": "{{category}} - Archive",
+    "categoryArchiveDescription": "Event archive for category {{category}}",
+    "browseAllEvents": "Browse all events in category {{category}}"
   },
   "discover": {
     "title": "Discover",

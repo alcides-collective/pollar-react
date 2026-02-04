@@ -127,5 +127,81 @@
     "live": "Live",
     "proceeding": "{{number}}. Sitzung",
     "current": "Aktuell"
+  },
+  "votingDetail": {
+    "backToList": "Zurück zur Liste",
+    "allVotings": "Alle Abstimmungen",
+    "notFound": "Abstimmung nicht gefunden",
+    "sittingVoting": "Sitzung {{sitting}}, Abstimmung Nr. {{number}}",
+    "passed": "Angenommen",
+    "rejected": "Abgelehnt",
+    "for": "Dafür",
+    "against": "Dagegen",
+    "abstained": "Enthaltung",
+    "absent": "Abwesend",
+    "individualVotes": "Einzelstimmen",
+    "searchMP": "Abgeordneten suchen...",
+    "allClubs": "Alle Fraktionen",
+    "undefined": "Nicht definiert",
+    "mpLabel": "Abgeordneter {{id}}"
+  },
+  "processesPage": {
+    "title": "Gesetzgebungsverfahren",
+    "all": "Alle",
+    "passed": "Verabschiedet",
+    "pending": "In Bearbeitung",
+    "passedLabel": "Verabschiedet",
+    "pendingLabel": "In Bearbeitung",
+    "submitter": "Antragsteller",
+    "started": "Begonnen",
+    "prints": "Drucksachen",
+    "noResults": "Keine Verfahren anzuzeigen"
+  },
+  "videosPage": {
+    "title": "Übertragungen",
+    "noResults": "Keine Übertragungen anzuzeigen"
+  },
+  "questionsPage": {
+    "title": "Parlamentarische Fragen",
+    "all": "Alle",
+    "answered": "Beantwortet",
+    "pending": "Ausstehend",
+    "noResults": "Keine Fragen anzuzeigen",
+    "question": "Frage"
+  },
+  "printDetail": {
+    "backToList": "Zurück zur Liste",
+    "notFound": "Drucksache nicht gefunden",
+    "downloadPdf": "PDF herunterladen",
+    "relatedPrints": "Verwandte Drucksachen",
+    "attachments": "Anhänge"
+  },
+  "committeeDetail": {
+    "backToList": "Zurück zur Liste",
+    "notFound": "Ausschuss nicht gefunden",
+    "members": "Mitglieder",
+    "chairman": "Vorsitzender",
+    "viceChairman": "Stellvertretender Vorsitzender",
+    "sessions": "Sitzungen"
+  },
+  "clubDetail": {
+    "backToList": "Zurück zur Liste",
+    "notFound": "Fraktion nicht gefunden",
+    "members": "Mitglieder",
+    "chairman": "Vorsitzender",
+    "mandates": "der Mandate"
+  },
+  "proceedingDetail": {
+    "backToList": "Zurück zur Liste",
+    "notFound": "Sitzung nicht gefunden",
+    "day": "Tag {{number}}",
+    "agenda": "Tagesordnung",
+    "votings": "Abstimmungen",
+    "videos": "Übertragungen"
+  },
+  "apiError": {
+    "title": "Verbindungsfehler",
+    "defaultMessage": "Sejm-API ist vorübergehend nicht verfügbar",
+    "tryAgain": "Versuchen Sie, die Seite in einem Moment zu aktualisieren"
   }
 }

@@ -1,11 +1,15 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useProcesses } from '../../hooks/useProcesses';
 import { SejmApiError } from '../../components/sejm';
+import { useLanguageStore } from '../../stores/languageStore';
 
 type FilterOption = 'all' | 'passed' | 'pending';
 
 export function ProcessesPage() {
+  const { t } = useTranslation('sejm');
+  const language = useLanguageStore((s) => s.language);
   const { processes, loading, error } = useProcesses({ limit: 100 });
   const [filter, setFilter] = useState<FilterOption>('all');
 
@@ -38,9 +42,10 @@ export function ProcessesPage() {
     );
   }
 
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return '-';
-    return new Date(dateStr).toLocaleDateString('pl-PL', {
+    return new Date(dateStr).toLocaleDateString(localeMap[language] || 'pl-PL', {
       day: 'numeric',
       month: 'short',
       year: 'numeric',
@@ -49,14 +54,14 @@ export function ProcessesPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">Procesy legislacyjne</h1>
+      <h1 className="text-xl font-semibold text-zinc-900">{t('processesPage.title')}</h1>
 
       {/* Filters */}
       <div className="flex gap-2">
         {[
-          { value: 'all', label: 'Wszystkie' },
-          { value: 'passed', label: 'Uchwalone' },
-          { value: 'pending', label: 'W trakcie' },
+          { value: 'all', label: t('processesPage.all') },
+          { value: 'passed', label: t('processesPage.passed') },
+          { value: 'pending', label: t('processesPage.pending') },
         ].map((option) => (
           <button
             key={option.value}
@@ -98,20 +103,20 @@ export function ProcessesPage() {
                       ? 'bg-green-100 text-green-700'
                       : 'bg-amber-100 text-amber-700'
                   }`}>
-                    {process.passed ? 'Uchwalono' : 'W trakcie'}
+                    {process.passed ? t('processesPage.passedLabel') : t('processesPage.pendingLabel')}
                   </span>
                 </div>
                 <h3 className="font-medium text-zinc-900 line-clamp-2">{process.title}</h3>
                 {process.createdBy && (
                   <p className="text-sm text-zinc-500 mt-1">
-                    Wnioskodawca: {process.createdBy}
+                    {t('processesPage.submitter')}: {process.createdBy}
                   </p>
                 )}
                 <div className="flex items-center gap-4 mt-2 text-xs text-zinc-400">
-                  <span>Rozpoczęto: {formatDate(process.processStartDate)}</span>
+                  <span>{t('processesPage.started')}: {formatDate(process.processStartDate)}</span>
                   {process.printsNumbers && process.printsNumbers.length > 0 && (
                     <span className="flex items-center gap-1">
-                      Druki:
+                      {t('processesPage.prints')}:
                       {process.printsNumbers.slice(0, 3).map((num) => (
                         <Link
                           key={num}
@@ -135,7 +140,7 @@ export function ProcessesPage() {
 
       {filteredProcesses.length === 0 && (
         <p className="text-center text-zinc-500 py-8">
-          Brak procesów do wyświetlenia
+          {t('processesPage.noResults')}
         </p>
       )}
     </div>

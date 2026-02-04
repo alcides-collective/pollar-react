@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { GrainImage } from '../common/GrainImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import powiazaniaImg from '../../assets/images/discover/powiazania.webp';
@@ -7,8 +8,8 @@ import gieldaImg from '../../assets/images/discover/gielda.webp';
 
 interface DiscoverLink {
   path: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   gradient: string;
   image?: string;
 }
@@ -16,28 +17,31 @@ interface DiscoverLink {
 const DISCOVER_LINKS: DiscoverLink[] = [
   {
     path: '/powiazania',
-    title: 'Powiązania',
-    description: 'Codzienna gra słowna. Znajdź ukryte połączenia między słowami i pogrupuj je w kategorie.',
+    titleKey: 'discover.powiazania.title',
+    descriptionKey: 'discover.powiazania.description',
     gradient: 'from-violet-500 to-purple-600',
     image: powiazaniaImg,
   },
   {
     path: '/sejm',
-    title: 'Sejm',
-    description: 'Śledź głosowania, projekty ustaw i aktywność posłów. Pełna transparentność prac parlamentu.',
+    titleKey: 'discover.sejm.title',
+    descriptionKey: 'discover.sejm.description',
     gradient: 'from-red-500 to-rose-600',
     image: sejmImg,
   },
   {
     path: '/gielda',
-    title: 'Giełda',
-    description: 'Notowania, analizy i prognozy rynkowe. Bądź na bieżąco z sytuacją na GPW.',
+    titleKey: 'discover.gielda.title',
+    descriptionKey: 'discover.gielda.description',
     gradient: 'from-emerald-500 to-teal-600',
     image: gieldaImg,
   },
 ];
 
-function DiscoverCard({ link }: { link: DiscoverLink }) {
+function DiscoverCard({ link, t }: { link: DiscoverLink; t: (key: string) => string }) {
+  const title = t(link.titleKey);
+  const description = t(link.descriptionKey);
+
   return (
     <Link to={link.path} className="group block p-6 hover:bg-amber-100 transition-colors h-full">
       <article>
@@ -51,17 +55,17 @@ function DiscoverCard({ link }: { link: DiscoverLink }) {
           ) : (
             <div className={`bg-gradient-to-br ${link.gradient} aspect-video flex items-center justify-center`}>
               <span className="text-white text-4xl font-bold opacity-30 group-hover:opacity-50 transition-opacity">
-                {link.title.charAt(0)}
+                {title.charAt(0)}
               </span>
             </div>
           )}
         </div>
-        <span className="text-zinc-400 text-xs uppercase tracking-wide">Odkryj</span>
+        <span className="text-zinc-400 text-xs uppercase tracking-wide">{t('discover.title')}</span>
         <h3 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">
-          {link.title}
+          {title}
         </h3>
         <p className="text-sm text-zinc-600 mt-2 leading-snug line-clamp-3">
-          {link.description}
+          {description}
         </p>
       </article>
     </Link>
@@ -69,6 +73,8 @@ function DiscoverCard({ link }: { link: DiscoverLink }) {
 }
 
 export function DiscoverSection() {
+  const { t } = useTranslation('common');
+
   return (
     <SectionWrapper
       sectionId="discover-section"
@@ -82,7 +88,7 @@ export function DiscoverSection() {
               key={link.path}
               className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}
             >
-              <DiscoverCard link={link} />
+              <DiscoverCard link={link} t={t} />
             </div>
           );
         })}

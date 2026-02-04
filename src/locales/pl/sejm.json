@@ -127,5 +127,81 @@
     "live": "Na żywo",
     "proceeding": "{{number}}. posiedzenie",
     "current": "Bieżące"
+  },
+  "votingDetail": {
+    "backToList": "Wróć do listy",
+    "allVotings": "Wszystkie głosowania",
+    "notFound": "Nie znaleziono głosowania",
+    "sittingVoting": "Posiedzenie {{sitting}}, głosowanie nr {{number}}",
+    "passed": "Przyjęto",
+    "rejected": "Odrzucono",
+    "for": "Za",
+    "against": "Przeciw",
+    "abstained": "Wstrzymało się",
+    "absent": "Nieobecnych",
+    "individualVotes": "Głosy indywidualne",
+    "searchMP": "Szukaj posła...",
+    "allClubs": "Wszystkie kluby",
+    "undefined": "Nieokreślony",
+    "mpLabel": "Poseł {{id}}"
+  },
+  "processesPage": {
+    "title": "Procesy legislacyjne",
+    "all": "Wszystkie",
+    "passed": "Uchwalone",
+    "pending": "W trakcie",
+    "passedLabel": "Uchwalono",
+    "pendingLabel": "W trakcie",
+    "submitter": "Wnioskodawca",
+    "started": "Rozpoczęto",
+    "prints": "Druki",
+    "noResults": "Brak procesów do wyświetlenia"
+  },
+  "videosPage": {
+    "title": "Transmisje",
+    "noResults": "Brak transmisji do wyświetlenia"
+  },
+  "questionsPage": {
+    "title": "Zapytania poselskie",
+    "all": "Wszystkie",
+    "answered": "Odpowiedziane",
+    "pending": "Oczekujące",
+    "noResults": "Brak zapytań do wyświetlenia",
+    "question": "Zapytanie"
+  },
+  "printDetail": {
+    "backToList": "Wróć do listy",
+    "notFound": "Nie znaleziono druku",
+    "downloadPdf": "Pobierz PDF",
+    "relatedPrints": "Powiązane druki",
+    "attachments": "Załączniki"
+  },
+  "committeeDetail": {
+    "backToList": "Wróć do listy",
+    "notFound": "Nie znaleziono komisji",
+    "members": "Członkowie",
+    "chairman": "Przewodniczący",
+    "viceChairman": "Wiceprzewodniczący",
+    "sessions": "Posiedzenia"
+  },
+  "clubDetail": {
+    "backToList": "Wróć do listy",
+    "notFound": "Nie znaleziono klubu",
+    "members": "Członkowie",
+    "chairman": "Przewodniczący",
+    "mandates": "mandatów"
+  },
+  "proceedingDetail": {
+    "backToList": "Wróć do listy",
+    "notFound": "Nie znaleziono posiedzenia",
+    "day": "Dzień {{number}}",
+    "agenda": "Porządek obrad",
+    "votings": "Głosowania",
+    "videos": "Transmisje"
+  },
+  "apiError": {
+    "title": "Błąd połączenia",
+    "defaultMessage": "API Sejmu jest tymczasowo niedostępne",
+    "tryAgain": "Spróbuj odświeżyć stronę za chwilę"
   }
 }

@@ -127,5 +127,81 @@
     "live": "Live",
     "proceeding": "{{number}}. session",
     "current": "Current"
+  },
+  "votingDetail": {
+    "backToList": "Back to list",
+    "allVotings": "All votings",
+    "notFound": "Voting not found",
+    "sittingVoting": "Session {{sitting}}, voting no. {{number}}",
+    "passed": "Passed",
+    "rejected": "Rejected",
+    "for": "For",
+    "against": "Against",
+    "abstained": "Abstained",
+    "absent": "Absent",
+    "individualVotes": "Individual votes",
+    "searchMP": "Search MP...",
+    "allClubs": "All clubs",
+    "undefined": "Undefined",
+    "mpLabel": "MP {{id}}"
+  },
+  "processesPage": {
+    "title": "Legislative processes",
+    "all": "All",
+    "passed": "Passed",
+    "pending": "In progress",
+    "passedLabel": "Passed",
+    "pendingLabel": "In progress",
+    "submitter": "Submitter",
+    "started": "Started",
+    "prints": "Prints",
+    "noResults": "No processes to display"
+  },
+  "videosPage": {
+    "title": "Broadcasts",
+    "noResults": "No broadcasts to display"
+  },
+  "questionsPage": {
+    "title": "Parliamentary questions",
+    "all": "All",
+    "answered": "Answered",
+    "pending": "Pending",
+    "noResults": "No questions to display",
+    "question": "Question"
+  },
+  "printDetail": {
+    "backToList": "Back to list",
+    "notFound": "Print not found",
+    "downloadPdf": "Download PDF",
+    "relatedPrints": "Related prints",
+    "attachments": "Attachments"
+  },
+  "committeeDetail": {
+    "backToList": "Back to list",
+    "notFound": "Committee not found",
+    "members": "Members",
+    "chairman": "Chairman",
+    "viceChairman": "Vice Chairman",
+    "sessions": "Sessions"
+  },
+  "clubDetail": {
+    "backToList": "Back to list",
+    "notFound": "Club not found",
+    "members": "Members",
+    "chairman": "Chairman",
+    "mandates": "of mandates"
+  },
+  "proceedingDetail": {
+    "backToList": "Back to list",
+    "notFound": "Session not found",
+    "day": "Day {{number}}",
+    "agenda": "Agenda",
+    "votings": "Votings",
+    "videos": "Broadcasts"
+  },
+  "apiError": {
+    "title": "Connection error",
+    "defaultMessage": "Sejm API is temporarily unavailable",
+    "tryAgain": "Try refreshing the page in a moment"
   }
 }

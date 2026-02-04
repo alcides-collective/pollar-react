@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useArchiveEvents } from '../../hooks/useArchiveEvents';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
@@ -6,14 +7,15 @@ import { CategoryCard } from './CategoryCard';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 
 export function ArchivePage() {
+  const { t } = useTranslation('common');
   const { groupedByCategory, loading, error } = useArchiveEvents({ limit: 200 });
 
   // SEO
   useDocumentHead({
-    title: 'Archiwum wydarzeń',
-    description: 'Przeglądaj archiwum wydarzeń pogrupowane według kategorii',
-    ogTitle: 'Archiwum wydarzeń',
-    ogDescription: 'Kompletne archiwum wydarzeń z wszystkich kategorii',
+    title: t('seo.archiveTitle'),
+    description: t('seo.archiveDescription'),
+    ogTitle: t('seo.archiveTitle'),
+    ogDescription: t('seo.archiveAllEvents'),
   });
 
   // Loading state
@@ -52,7 +54,7 @@ export function ArchivePage() {
             <i className="ri-error-warning-line text-2xl text-zinc-400" />
           </div>
           <h1 className="text-xl font-medium text-zinc-900 mb-2">
-            Nie udało się załadować archiwum
+            {t('archive.failedToLoad')}
           </h1>
           <p className="text-zinc-600 mb-6">{error.message}</p>
           <Link
@@ -60,7 +62,7 @@ export function ArchivePage() {
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
-            Wróć do strony głównej
+            {t('actions.backToHome')}
           </Link>
         </div>
       </div>
@@ -73,10 +75,10 @@ export function ArchivePage() {
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <i className="ri-archive-line text-2xl text-zinc-400" />
-          <h1 className="text-2xl font-bold text-zinc-900">Archiwum</h1>
+          <h1 className="text-2xl font-bold text-zinc-900">{t('archive.title')}</h1>
         </div>
         <p className="text-zinc-500">
-          Wszystkie wydarzenia pogrupowane według kategorii
+          {t('archive.subtitle')}
         </p>
       </div>
 

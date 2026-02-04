@@ -1,4 +1,5 @@
 import { useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAIStore, useAIMessages, useAILoading } from '../stores/aiStore';
 import { API_BASE } from '../config/api';
 import type { SSEEvent, AIEventSource } from '../types/ai';
@@ -31,6 +32,7 @@ interface UseAICompanionOptions {
 
 export function useAICompanion(options: UseAICompanionOptions = {}) {
   const { language = 'pl', onAnimationStart } = options;
+  const { t } = useTranslation('common');
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Get messages from current conversation
@@ -129,7 +131,7 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.message || 'Wystapil blad');
+          throw new Error(errorData.message || t('aiErrors.errorOccurred'));
         }
 
         const contentType = response.headers.get('content-type') || '';
@@ -140,7 +142,7 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
           // SSE streaming response
           setStreaming(true);
           const reader = response.body?.getReader();
-          if (!reader) throw new Error('Brak odpowiedzi');
+          if (!reader) throw new Error(t('aiErrors.noResponse'));
 
           const decoder = new TextDecoder();
           let buffer = '';
@@ -221,11 +223,11 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
           return;
         }
 
-        let errorMsg = 'Wystapil blad';
+        let errorMsg = t('aiErrors.errorOccurred');
         if (e instanceof Error) {
           errorMsg = e.message;
           if (e.message === 'Failed to fetch') {
-            errorMsg = 'Nie mozna polaczyc z serwerem';
+            errorMsg = t('aiErrors.cannotConnect');
           }
         }
         console.error('[AICompanion] Error:', e);
