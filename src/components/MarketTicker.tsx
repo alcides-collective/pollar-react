@@ -1,6 +1,60 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useMarketData } from '../hooks/useMarketData';
+
+interface AnimatedValueProps {
+  value: number;
+  format: (n: number) => string;
+}
+
+function AnimatedValue({ value, format }: AnimatedValueProps) {
+  const [displayValue, setDisplayValue] = useState(value);
+  const [direction, setDirection] = useState<'up' | 'down' | null>(null);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    if (value !== displayValue) {
+      setDirection(value > displayValue ? 'up' : 'down');
+      setDisplayValue(value);
+      setKey(k => k + 1);
+    }
+  }, [value, displayValue]);
+
+  const variants = {
+    enter: (dir: 'up' | 'down' | null) => ({
+      y: dir === 'up' ? 20 : dir === 'down' ? -20 : 0,
+      opacity: 0,
+    }),
+    center: {
+      y: 0,
+      opacity: 1,
+    },
+    exit: (dir: 'up' | 'down' | null) => ({
+      y: dir === 'up' ? -20 : dir === 'down' ? 20 : 0,
+      opacity: 0,
+    }),
+  };
+
+  return (
+    <span className="relative inline-flex overflow-hidden h-[1.2em] items-center">
+      <AnimatePresence mode="popLayout" custom={direction}>
+        <motion.span
+          key={key}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="font-medium"
+        >
+          {format(displayValue)}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
 
 export function MarketTicker() {
   const { indices, loading } = useMarketData();
@@ -43,10 +97,16 @@ export function MarketTicker() {
               }`}
             >
               <span className="text-zinc-700">{item.name}</span>
-              <span className="font-medium">{item.value.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              <AnimatedValue
+                value={item.value}
+                format={(n) => n.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              />
               <span className="flex items-center gap-0.5">
                 <i className={isPositive ? 'ri-arrow-up-s-fill' : 'ri-arrow-down-s-fill'} />
-                {Math.abs(item.changePercent).toFixed(2)}%
+                <AnimatedValue
+                  value={Math.abs(item.changePercent)}
+                  format={(n) => `${n.toFixed(2)}%`}
+                />
               </span>
             </div>
           );
