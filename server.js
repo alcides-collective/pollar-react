@@ -473,6 +473,7 @@ app.use(helmet({
         "'self'",
         "data:",
         "blob:",
+        "https://pollar.up.railway.app",
         "https://*.mapbox.com",
         "https://firebasestorage.googleapis.com",
         "https://lh3.googleusercontent.com",
