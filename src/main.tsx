@@ -6,9 +6,9 @@ import './index.css'
 import App from './App.tsx'
 
 // Initialize Sentry (production only)
-if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
+if (import.meta.env.PROD) {
   Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DSN,
+    dsn: 'https://a7ca3a055e9be14f09c3a89e0799f68c@o4510829772603392.ingest.de.sentry.io/4510829773652048',
     environment: 'production',
     integrations: [
       Sentry.browserTracingIntegration(),
