@@ -7,6 +7,9 @@ import App from './App.tsx'
 
 // Initialize Sentry (production only)
 if (import.meta.env.PROD) {
+  // Expose Sentry globally for console testing
+  (window as unknown as { Sentry: typeof Sentry }).Sentry = Sentry
+
   Sentry.init({
     dsn: 'https://a7ca3a055e9be14f09c3a89e0799f68c@o4510829772603392.ingest.de.sentry.io/4510829773652048',
     environment: 'production',
