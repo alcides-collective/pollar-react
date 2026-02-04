@@ -3,7 +3,7 @@ const changelog = [
     icon: "ri-layout-4-line",
     title: "Nowy interfejs",
     description:
-      "Przeprojektowany od podstaw. Szybszy, bardziej responsywny i odporny na błędy. Zoptymalizowane ładowanie treści.",
+      "Zaprojektowany na nowo. Szybszy, bardziej responsywny i odporny na błędy. Zoptymalizowane ładowanie treści.",
   },
   {
     icon: "ri-user-line",
