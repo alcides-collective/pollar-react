@@ -15,6 +15,7 @@ import {
   type HistoricalVotingAlert,
 } from '@/services/alertsService';
 import { useLanguage } from '@/stores/languageStore';
+import { useTranslatedEventTitles } from '@/hooks/useTranslatedEventTitles';
 
 type FilterType = 'all' | 'voting' | 'category';
 type VoteFilter = 'all' | 'yes' | 'no' | 'abstain' | 'absent';
@@ -163,6 +164,16 @@ function NotificationsContent() {
 
     return alerts;
   }, [combinedAlerts, historicalAlerts, showHistorical]);
+
+  // Collect eventIds from category alerts for translation
+  const categoryEventIds = useMemo(() => {
+    return allAlerts
+      .filter((a): a is CombinedAlert & { alertType: 'category' } => a.alertType === 'category')
+      .map(a => a.eventId);
+  }, [allAlerts]);
+
+  // Fetch translated titles for category alerts
+  const { titles: translatedTitles } = useTranslatedEventTitles(categoryEventIds);
 
   // Apply filters
   const filteredAlerts = useMemo(() => {
@@ -397,7 +408,10 @@ function NotificationsContent() {
           <div className="space-y-2">
             {filteredAlerts.map((alert) => {
               if (alert.alertType === 'category') {
-                // Category alert
+                // Category alert - use translated title if available
+                const translated = translatedTitles[alert.eventId];
+                const displayTitle = translated?.title || alert.eventTitle;
+                const displayLead = translated?.lead || alert.eventLead;
                 const categoryLabel = t(`categoryLabels.${alert.category}`, alert.category);
                 const isUnread = !alert.read;
 
@@ -423,11 +437,11 @@ function NotificationsContent() {
                           )}
                         </div>
                         <p className="font-medium text-zinc-900 line-clamp-2">
-                          {alert.eventTitle}
+                          {displayTitle}
                         </p>
-                        {alert.eventLead && (
+                        {displayLead && (
                           <p className="text-sm text-zinc-500 line-clamp-1 mt-1">
-                            {alert.eventLead}
+                            {displayLead}
                           </p>
                         )}
                       </div>

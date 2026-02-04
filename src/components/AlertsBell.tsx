@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocalizedLink } from './LocalizedLink';
 import { useIsAuthenticated } from '@/stores/authStore';
@@ -8,6 +8,7 @@ import {
   useCombinedAlerts,
   type CombinedAlert,
 } from '@/stores/alertsStore';
+import { useTranslatedEventTitles } from '@/hooks/useTranslatedEventTitles';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -62,9 +63,18 @@ function VotingAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { ale
   );
 }
 
-function CategoryAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { alertType: 'category' }; onMarkAsRead: () => void }) {
+function CategoryAlertItem({
+  alert,
+  onMarkAsRead,
+  translatedTitle,
+}: {
+  alert: CombinedAlert & { alertType: 'category' };
+  onMarkAsRead: () => void;
+  translatedTitle?: string;
+}) {
   const { t } = useTranslation('notifications');
   const categoryLabel = t(`categoryLabels.${alert.category}`, alert.category);
+  const displayTitle = translatedTitle || alert.eventTitle;
 
   return (
     <DropdownMenuItem
@@ -78,7 +88,7 @@ function CategoryAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { a
             <span className="inline text-[10px] px-1.5 py-0.5 bg-amber-500/20 text-amber-300 rounded font-medium mr-1">
               {categoryLabel}
             </span>
-            {alert.eventTitle}
+            {displayTitle}
           </p>
           {!alert.read && (
             <span className="shrink-0 h-1.5 w-1.5 bg-blue-400 rounded-full mt-1" />
@@ -96,6 +106,17 @@ export function AlertsBell() {
   const combinedAlerts = useCombinedAlerts();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  // Collect eventIds from category alerts for translation
+  const categoryEventIds = useMemo(() => {
+    return combinedAlerts
+      .filter((a): a is CombinedAlert & { alertType: 'category' } => a.alertType === 'category')
+      .slice(0, 10)
+      .map(a => a.eventId);
+  }, [combinedAlerts]);
+
+  // Fetch translated titles for category alerts
+  const { titles: translatedTitles } = useTranslatedEventTitles(categoryEventIds);
 
   // Start polling when authenticated - use getState() to avoid dependency issues
   useEffect(() => {
@@ -189,6 +210,7 @@ export function AlertsBell() {
                     key={`category-${alert.id}`}
                     alert={alert}
                     onMarkAsRead={() => handleMarkCategoryAlertAsRead(alert.id)}
+                    translatedTitle={translatedTitles[alert.eventId]?.title}
                   />
                 );
               }
