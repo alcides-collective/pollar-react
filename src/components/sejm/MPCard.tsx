@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { PartyBadge } from './PartyBadge';
 import type { SejmMP } from '../../types/sejm';
+import { LocalizedLink } from '../LocalizedLink';
 
 interface MPCardProps {
   mp: SejmMP;
@@ -8,7 +8,7 @@ interface MPCardProps {
 
 export function MPCard({ mp }: MPCardProps) {
   return (
-    <Link
+    <LocalizedLink
       to={`/sejm/poslowie/${mp.id}`}
       className="block rounded overflow-hidden border border-zinc-200 hover:border-zinc-300 transition-all"
     >
@@ -37,6 +37,6 @@ export function MPCard({ mp }: MPCardProps) {
           </div>
         )}
       </div>
-    </Link>
+    </LocalizedLink>
   );
 }

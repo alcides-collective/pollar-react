@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useArchiveEvents } from '../../hooks/useArchiveEvents';
@@ -68,13 +69,13 @@ export function CategoryArchivePage() {
             {t('archive.failedToLoad')}
           </h1>
           <p className="text-zinc-600 mb-6">{error.message}</p>
-          <Link
+          <LocalizedLink
             to="/archiwum"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('archive.backToArchive')}
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     );
@@ -92,13 +93,13 @@ export function CategoryArchivePage() {
             {t('archive.noEventsInCategory', { category: translatedCategory })}
           </h1>
           <p className="text-zinc-600 mb-6">{t('archive.noEventsFound')}</p>
-          <Link
+          <LocalizedLink
             to="/archiwum"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('archive.backToArchive')}
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     );
@@ -108,13 +109,13 @@ export function CategoryArchivePage() {
     <div className="max-w-[1000px] mx-auto px-6 py-8">
       {/* Breadcrumb */}
       <div className="mb-6">
-        <Link
+        <LocalizedLink
           to="/archiwum"
           className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
         >
           <i className="ri-arrow-left-s-line" />
           {t('archive.title')}
-        </Link>
+        </LocalizedLink>
       </div>
 
       {/* Header */}
@@ -134,7 +135,7 @@ export function CategoryArchivePage() {
       >
         {categoryEvents.map((event) => (
           <motion.div key={event.id} variants={staggerItem}>
-            <Link
+            <LocalizedLink
               to={`/event/${event.id}`}
               className="block bg-white border border-zinc-200 rounded-xl p-5 hover:border-zinc-300 hover:shadow-sm transition-all group"
             >
@@ -154,7 +155,7 @@ export function CategoryArchivePage() {
                   {event.lead}
                 </p>
               )}
-            </Link>
+            </LocalizedLink>
           </motion.div>
         ))}
       </motion.div>

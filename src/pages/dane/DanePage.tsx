@@ -1,7 +1,7 @@
 import { DaneHeader, DataPanel, DataPanelStat } from '@/components/dane';
 import { useDaneOverview } from '@/hooks/useDaneOverview';
 import { DANE_CATEGORIES } from '@/types/dane';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { Card, CardContent } from '@/components/ui/card';
 
 export function DanePage() {
@@ -178,7 +178,7 @@ export function DanePage() {
         <h2 className="text-lg font-semibold mb-4">Kategorie danych</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {DANE_CATEGORIES.map((category) => (
-            <Link key={category.id} to={category.subpages[0]?.path ?? category.path}>
+            <LocalizedLink key={category.id} to={category.subpages[0]?.path ?? category.path}>
               <Card className="hover:border-foreground/20 transition-colors cursor-pointer h-full">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-3">
@@ -194,7 +194,7 @@ export function DanePage() {
                   </div>
                 </CardContent>
               </Card>
-            </Link>
+            </LocalizedLink>
           ))}
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { useRef, useState, useLayoutEffect, useEffect, memo, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import type { Event } from '../../types/events';
@@ -8,6 +7,7 @@ import { hoverScale } from '@/lib/animations';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 import { SectionImageContext } from '../../hooks/useSectionImages';
+import { LocalizedLink } from '../LocalizedLink';
 
 interface CategoryCarouselProps {
   category: string;
@@ -18,7 +18,7 @@ interface CategoryCarouselProps {
 const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }: { event: Event; hideBorder?: boolean }) {
   const imageSource = getImageSource(event);
   return (
-    <Link
+    <LocalizedLink
       to={`/event/${event.id}`}
       className={`group p-6 hover:bg-zinc-50 transition-colors h-full block ${hideBorder ? '' : 'border-r border-zinc-200'}`}
     >
@@ -41,7 +41,7 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
           {event.title}
         </h3>
       </article>
-    </Link>
+    </LocalizedLink>
   );
 });
 

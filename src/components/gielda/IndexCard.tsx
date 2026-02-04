@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 import { PriceChange } from './PriceChange';
 import type { IndexData } from '../../types/gielda';
 import { getStockDisplaySymbol } from '../../types/gielda';
+import { LocalizedLink } from '../LocalizedLink';
 
 interface IndexCardProps {
   index: IndexData;
@@ -15,7 +15,7 @@ export function IndexCard({ index, large = false, className }: IndexCardProps) {
   const isPositive = index.change >= 0;
 
   return (
-    <Link
+    <LocalizedLink
       to={`/gielda/indeksy/${encodeURIComponent(index.symbol)}`}
       className={cn(
         'group block rounded-lg border transition-all duration-200 hover:-translate-y-0.5',
@@ -70,6 +70,6 @@ export function IndexCard({ index, large = false, className }: IndexCardProps) {
           {index.previousClose.toLocaleString('pl-PL', { minimumFractionDigits: 2 })}
         </div>
       )}
-    </Link>
+    </LocalizedLink>
   );
 }

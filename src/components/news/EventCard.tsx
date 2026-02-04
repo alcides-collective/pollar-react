@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import type { Event } from '../../types/events';
 import { EventImage } from '../common/EventImage';
+import { LocalizedLink } from '../LocalizedLink';
 
 type EventCardSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -31,7 +31,7 @@ export function EventCard({
   const styles = sizeStyles[size];
 
   return (
-    <Link to={`/event/${event.id}`} className={`group block ${className}`}>
+    <LocalizedLink to={`/event/${event.id}`} className={`group block ${className}`}>
       <article>
         {showImage && (
           <div className="mb-4">
@@ -54,6 +54,6 @@ export function EventCard({
           </p>
         )}
       </article>
-    </Link>
+    </LocalizedLink>
   );
 }

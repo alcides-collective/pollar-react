@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useStockQuote, useStockHistory } from '../../hooks/useGieldaData';
 import { AreaChart, PriceChange } from '../../components/gielda';
 import { getStockDisplaySymbol } from '../../types/gielda';
@@ -26,13 +27,13 @@ export function IndexDetailPage() {
   if (indexError) {
     return (
       <div className="index-detail-page">
-        <Link
+        <LocalizedLink
           to="/gielda/indeksy"
           className="inline-flex items-center gap-2 text-sm text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
           Powrót do indeksów
-        </Link>
+        </LocalizedLink>
         <div className="rounded-lg p-4 border border-red-600/20 bg-red-600/5 text-red-700 dark:text-red-400">
           <p className="font-medium">Nie udało się załadować danych indeksu.</p>
         </div>
@@ -44,13 +45,13 @@ export function IndexDetailPage() {
 
   return (
     <div className="index-detail-page">
-      <Link
+      <LocalizedLink
         to="/gielda/indeksy"
         className="inline-flex items-center gap-2 text-sm text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
         Powrót do indeksów
-      </Link>
+      </LocalizedLink>
 
       {indexLoading && !index ? (
         <div className="space-y-6">

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useBrief } from '../../hooks/useBrief';
 import { useActiveSection } from '../../hooks/useActiveSection';
@@ -112,13 +112,13 @@ export function BriefPage() {
           <p className="text-zinc-600 mb-6">
             {error.message}
           </p>
-          <Link
+          <LocalizedLink
             to="/"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('error.backHome')}
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     );
@@ -137,13 +137,13 @@ export function BriefPage() {
           <p className="text-zinc-600 mb-6">
             {t('empty.description')}
           </p>
-          <Link
+          <LocalizedLink
             to="/"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('error.backHome')}
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     );

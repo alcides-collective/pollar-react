@@ -1,5 +1,6 @@
 import { useMemo, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useEvent } from '../../hooks/useEvent';
@@ -172,13 +173,13 @@ export function EventPage() {
           <p className="text-zinc-600 mb-6">
             {t('error.description')}
           </p>
-          <Link
+          <LocalizedLink
             to="/"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('error.backHome')}
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     );

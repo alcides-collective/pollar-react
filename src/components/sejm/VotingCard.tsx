@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import type { VotingListItem } from '../../types/sejm';
+import { LocalizedLink } from '../LocalizedLink';
 
 interface VotingCardProps {
   voting: VotingListItem;
@@ -81,14 +81,14 @@ export function VotingCard({ voting }: VotingCardProps) {
       <h3 className="text-zinc-900 text-sm leading-snug font-medium mb-1">
         {titleParts.map((part, i) =>
           part.drukNr ? (
-            <Link
+            <LocalizedLink
               key={i}
               to={`/sejm/druki/${part.drukNr}`}
               className="text-zinc-600 hover:text-zinc-900 underline decoration-zinc-300 hover:decoration-zinc-500 font-mono"
               onClick={(e) => e.stopPropagation()}
             >
               {part.text}
-            </Link>
+            </LocalizedLink>
           ) : (
             <span key={i}>{part.text}</span>
           )
@@ -134,7 +134,7 @@ export function VotingCard({ voting }: VotingCardProps) {
       </div>
 
       {/* Color bar - link to details */}
-      <Link
+      <LocalizedLink
         to={`/sejm/glosowania/${voting.sitting}/${voting.votingNumber}`}
         className="-mx-4 h-3 flex mt-3 hover:h-4 transition-all"
       >
@@ -156,7 +156,7 @@ export function VotingCard({ voting }: VotingCardProps) {
             className="bg-amber-500"
           />
         )}
-      </Link>
+      </LocalizedLink>
     </div>
   );
 }

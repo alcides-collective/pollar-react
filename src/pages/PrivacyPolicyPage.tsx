@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { GrainImage } from '../components/common/GrainImage';
 import privacyImg from '../assets/images/privacy.webp';
 
@@ -303,7 +303,7 @@ export function PrivacyPolicyPage() {
               <h3 className="text-lg font-semibold text-zinc-900 mb-1">Zarządzaj ustawieniami cookies</h3>
               <p className="text-sm text-zinc-600">Zmień swoje preferencje dotyczące plików cookie w każdej chwili.</p>
             </div>
-            <Link
+            <LocalizedLink
               to="/cookies"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-900 text-white text-sm font-medium rounded-lg hover:bg-zinc-800 transition-colors shrink-0"
             >
@@ -311,7 +311,7 @@ export function PrivacyPolicyPage() {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-            </Link>
+            </LocalizedLink>
           </div>
         </section>
       </article>

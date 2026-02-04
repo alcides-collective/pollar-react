@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 import { PriceChange } from './PriceChange';
 import { useWatchlistStore } from '../../stores/gieldaStore';
 import type { Stock } from '../../types/gielda';
 import { getStockDisplaySymbol, formatPrice } from '../../types/gielda';
+import { LocalizedLink } from '../LocalizedLink';
 
 interface StockCardProps {
   stock: Stock;
@@ -29,7 +29,7 @@ export function StockCard({
   };
 
   return (
-    <Link
+    <LocalizedLink
       to={`/gielda/akcje/${encodeURIComponent(stock.symbol)}`}
       className={cn(
         'group block rounded-lg border border-black/10 dark:border-white/10',
@@ -86,6 +86,6 @@ export function StockCard({
           )}
         </div>
       )}
-    </Link>
+    </LocalizedLink>
   );
 }

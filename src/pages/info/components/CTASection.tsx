@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { LocalizedLink } from '@/components/LocalizedLink';
 
 export function CTASection() {
   const { t } = useTranslation('info');
@@ -46,10 +46,10 @@ export function CTASection() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Button size="lg" asChild className="text-base px-8 py-6 shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_50px_rgba(59,130,246,0.7)] transition-shadow duration-300">
-            <Link to="/">{t('cta.primaryButton')}</Link>
+            <LocalizedLink to="/">{t('cta.primaryButton')}</LocalizedLink>
           </Button>
           <Button size="lg" variant="outline" asChild className="text-base px-8 py-6 bg-white text-zinc-900 border-white hover:bg-zinc-100 hover:text-zinc-900 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.5)] transition-shadow duration-300">
-            <Link to="/brief">{t('cta.secondaryButton')}</Link>
+            <LocalizedLink to="/brief">{t('cta.secondaryButton')}</LocalizedLink>
           </Button>
         </motion.div>
       </div>

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMarketData } from '../hooks/useMarketData';
 
@@ -72,9 +72,9 @@ export function MarketTicker() {
   if (loading && indices.length === 0) {
     return (
       <div className="bg-zinc-50 border-b border-zinc-200 px-4 py-2 flex items-center gap-2">
-        <Link to="/gielda" className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors shrink-0">
+        <LocalizedLink to="/gielda" className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors shrink-0">
           Notowania
-        </Link>
+        </LocalizedLink>
         <div className="text-sm text-zinc-400">Ładowanie...</div>
       </div>
     );
@@ -82,9 +82,9 @@ export function MarketTicker() {
 
   return (
     <div className="bg-zinc-50 border-b border-zinc-200 px-4 py-2 flex items-center gap-2">
-      <Link to="/gielda" className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors shrink-0">
+      <LocalizedLink to="/gielda" className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors shrink-0">
         Notowania
-      </Link>
+      </LocalizedLink>
 
       <div ref={scrollRef} className="flex items-center gap-3 overflow-x-auto scrollbar-hide">
         {indices.map((item) => {

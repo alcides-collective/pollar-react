@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useUser, useAuthStore } from '@/stores/authStore';
 import {
@@ -101,14 +101,14 @@ function ProfileContent() {
         {savedEvents.length === 0 ? (
           <div className="bg-zinc-50 rounded-lg p-6 text-center">
             <p className="text-zinc-500">{t('savedEvents.empty')}</p>
-            <Link to="/" className="text-zinc-900 hover:underline text-sm mt-2 inline-block">
+            <LocalizedLink to="/" className="text-zinc-900 hover:underline text-sm mt-2 inline-block">
               {t('savedEvents.browse')}
-            </Link>
+            </LocalizedLink>
           </div>
         ) : (
           <div className="space-y-3">
             {savedEvents.map((event) => (
-              <Link
+              <LocalizedLink
                 key={event.id}
                 to={`/event/${event.id}`}
                 className="block bg-white border border-zinc-200 rounded-lg p-4 hover:border-zinc-300 transition-colors"
@@ -130,7 +130,7 @@ function ProfileContent() {
                     </p>
                   </div>
                 </div>
-              </Link>
+              </LocalizedLink>
             ))}
           </div>
         )}

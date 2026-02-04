@@ -293,17 +293,83 @@ function generateOrganizationSchema() {
   };
 }
 
-function generateSeoHtml(opts) {
-  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null } = opts;
+// Breadcrumb segment name mapping
+const BREADCRUMB_NAMES = {
+  sejm: 'Sejm',
+  dane: 'Dane',
+  srodowisko: 'Środowisko',
+  spoleczenstwo: 'Społeczeństwo',
+  ekonomia: 'Ekonomia',
+  transport: 'Transport',
+  bezpieczenstwo: 'Bezpieczeństwo'
+};
 
-  // Generate JSON-LD script if schema is provided
-  const schemaScript = schema
-    ? `<script type="application/ld+json">${JSON.stringify(schema)}</script>`
-    : '';
+function generateBreadcrumbSchema(path, pageTitles) {
+  const baseUrl = 'https://pollar.news';
+  const segments = path.split('/').filter(Boolean);
+
+  if (segments.length === 0) return null;
+
+  const items = [
+    { '@type': 'ListItem', position: 1, name: 'Pollar', item: baseUrl }
+  ];
+
+  let currentPath = '';
+  for (let i = 0; i < segments.length; i++) {
+    currentPath += '/' + segments[i];
+    const pageInfo = pageTitles[currentPath];
+    const name = pageInfo?.title || BREADCRUMB_NAMES[segments[i]] || segments[i];
+
+    items.push({
+      '@type': 'ListItem',
+      position: i + 2,
+      name,
+      item: baseUrl + currentPath
+    });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items
+  };
+}
+
+function generateSeoHtml(opts) {
+  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null, articlePublished = null, articleModified = null, articleSection = null, newsKeywords = null, pathWithoutLang = null, lang = 'pl' } = opts;
+
+  // Generate JSON-LD script(s) if schema is provided (can be single object or array)
+  const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+  const schemaScript = schemas
+    .filter(Boolean)
+    .map(s => `<script type="application/ld+json">${JSON.stringify(s)}</script>`)
+    .join('\n    ');
+
+  // Article meta tags (only for articles)
+  const articleTags = ogType === 'article' ? [
+    articlePublished ? `<meta property="article:published_time" content="${articlePublished}" />` : '',
+    articleModified ? `<meta property="article:modified_time" content="${articleModified}" />` : '',
+    articleSection ? `<meta property="article:section" content="${escapeHtml(articleSection)}" />` : '',
+    newsKeywords ? `<meta name="news_keywords" content="${escapeHtml(newsKeywords)}" />` : '',
+  ].filter(Boolean).join('\n    ') : '';
+
+  // Generate hreflang tags for all supported languages
+  const baseUrlForHreflang = 'https://pollar.news';
+  const basePath = pathWithoutLang || '/';
+  const hreflangTags = [
+    `<link rel="alternate" hreflang="pl" href="${baseUrlForHreflang}${basePath === '/' ? '' : basePath}" />`,
+    `<link rel="alternate" hreflang="en" href="${baseUrlForHreflang}/en${basePath === '/' ? '' : basePath}" />`,
+    `<link rel="alternate" hreflang="de" href="${baseUrlForHreflang}/de${basePath === '/' ? '' : basePath}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${baseUrlForHreflang}${basePath === '/' ? '' : basePath}" />`
+  ].join('\n    ');
+
+  // og:locale for social sharing
+  const ogLocaleMap = { pl: 'pl_PL', en: 'en_US', de: 'de_DE' };
+  const ogLocale = ogLocaleMap[lang] || 'pl_PL';
 
   // All meta tags use self-closing /> for iMessage compatibility
   return `<!DOCTYPE html>
-<html lang="pl">
+<html lang="${lang}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -311,6 +377,7 @@ function generateSeoHtml(opts) {
     <meta name="description" content="${escapeHtml(description)}" />
     <meta property="og:type" content="${ogType}" />
     <meta property="og:site_name" content="Pollar" />
+    <meta property="og:locale" content="${ogLocale}" />
     <meta property="og:title" content="${escapeHtml(ogTitle)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:image" content="${ogImage}" />
@@ -318,11 +385,14 @@ function generateSeoHtml(opts) {
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:url" content="${targetUrl}" />
+    ${articleTags}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(ogTitle)}" />
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${ogImage}" />
     <link rel="canonical" href="${targetUrl}" />
+    ${hreflangTags}
+    <link rel="alternate" type="application/rss+xml" title="Pollar News RSS" href="https://pollar.news/feed.xml" />
     ${schemaScript}
   </head>
   <body>
@@ -333,9 +403,9 @@ function generateSeoHtml(opts) {
 }
 
 // Fetch event data from API
-async function fetchEventData(eventId) {
+async function fetchEventData(eventId, lang = 'pl') {
   try {
-    const response = await fetch(`${API_BASE}/api/events/${eventId}?lang=pl`);
+    const response = await fetch(`${API_BASE}/api/events/${eventId}?lang=${lang}`);
     if (!response.ok) return null;
     return await response.json();
   } catch {
@@ -344,9 +414,9 @@ async function fetchEventData(eventId) {
 }
 
 // Fetch brief data from API
-async function fetchBriefData() {
+async function fetchBriefData(lang = 'pl') {
   try {
-    const response = await fetch(`${API_BASE}/api/brief?lang=pl`);
+    const response = await fetch(`${API_BASE}/api/brief?lang=${lang}`);
     if (!response.ok) return null;
     const result = await response.json();
     return result.data;
@@ -356,9 +426,9 @@ async function fetchBriefData() {
 }
 
 // Fetch felieton data from API
-async function fetchFelietonData(felietonId) {
+async function fetchFelietonData(felietonId, lang = 'pl') {
   try {
-    const response = await fetch(`${API_BASE}/api/felietony/${felietonId}?lang=pl`);
+    const response = await fetch(`${API_BASE}/api/felietony/${felietonId}?lang=${lang}`);
     if (!response.ok) return null;
     return await response.json();
   } catch {
@@ -369,12 +439,67 @@ async function fetchFelietonData(felietonId) {
 // Trust proxy for correct protocol detection behind Railway/load balancer
 app.set('trust proxy', true);
 
+// Redirect pollar.pl to pollar.news (canonical domain)
+app.use((req, res, next) => {
+  const host = req.get('host');
+  if (host && host.includes('pollar.pl')) {
+    return res.redirect(301, `https://pollar.news${req.originalUrl}`);
+  }
+  next();
+});
+
+// Supported languages for i18n URL routing
+const SUPPORTED_LANGS = ['en', 'de'];
+
+// Redirect /pl/... to /... (Polish is default without prefix)
+app.use((req, res, next) => {
+  if (req.path.startsWith('/pl/') || req.path === '/pl') {
+    const newPath = req.path.replace(/^\/pl/, '') || '/';
+    return res.redirect(301, `https://pollar.news${newPath}`);
+  }
+  next();
+});
+
+// Language detection middleware - extracts lang from URL and sets req.lang
+app.use((req, res, next) => {
+  const langMatch = req.path.match(/^\/(en|de)(\/|$)/);
+  if (langMatch) {
+    req.lang = langMatch[1];
+    req.pathWithoutLang = req.path.replace(/^\/(en|de)/, '') || '/';
+  } else {
+    req.lang = 'pl';
+    req.pathWithoutLang = req.path;
+  }
+  next();
+});
+
 // Enable gzip compression for all responses
 app.use(compression());
 
-// Sitemap.xml endpoint with dynamic events
+// Sitemap.xml endpoint with dynamic events and multilingual support
 app.get('/sitemap.xml', async (req, res) => {
   const baseUrl = 'https://pollar.news';
+  const LANGUAGES = ['pl', 'en', 'de'];
+
+  // Helper to generate xhtml:link tags for all language versions
+  const generateHreflangLinks = (path) => {
+    const plUrl = `${baseUrl}${path}`;
+    const enUrl = `${baseUrl}/en${path}`;
+    const deUrl = `${baseUrl}/de${path}`;
+    return `
+      <xhtml:link rel="alternate" hreflang="pl" href="${plUrl}"/>
+      <xhtml:link rel="alternate" hreflang="en" href="${enUrl}"/>
+      <xhtml:link rel="alternate" hreflang="de" href="${deUrl}"/>
+      <xhtml:link rel="alternate" hreflang="x-default" href="${plUrl}"/>`;
+  };
+
+  // Helper to generate a complete URL entry with hreflang
+  const generateUrlEntry = (path) => {
+    const loc = `${baseUrl}${path}`;
+    return `  <url>
+    <loc>${loc}</loc>${generateHreflangLinks(path)}
+  </url>`;
+  };
 
   // Static pages from PAGE_TITLES
   const staticPages = Object.keys(PAGE_TITLES).filter(path => path !== '/brief');
@@ -406,21 +531,85 @@ app.get('/sitemap.xml', async (req, res) => {
     console.warn('Could not fetch felietony for sitemap:', err.message);
   }
 
-  // Generate XML
+  // Generate XML with multilingual support
   const urls = [
-    ...staticPages.map(path => `  <url><loc>${baseUrl}${path}</loc></url>`),
-    ...events.map(e => `  <url><loc>${baseUrl}/event/${e.id}</loc></url>`),
-    ...felietony.map(f => `  <url><loc>${baseUrl}/felieton/${f.id}</loc></url>`)
+    ...staticPages.map(path => generateUrlEntry(path)),
+    ...events.map(e => generateUrlEntry(`/event/${e.id}`)),
+    ...felietony.map(f => generateUrlEntry(`/felieton/${f.id}`))
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.join('\n')}
 </urlset>`;
 
   res.set('Content-Type', 'application/xml');
   res.set('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
   res.send(xml);
+});
+
+// RSS Feed descriptions per language
+const RSS_DESCRIPTIONS = {
+  pl: 'Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia.',
+  en: 'All the most important news in one place. AI organizes and summarizes today\'s events.',
+  de: 'Alle wichtigen Nachrichten an einem Ort. KI organisiert und fasst die Ereignisse des Tages zusammen.'
+};
+
+// RSS Feed endpoint (supports /feed.xml, /en/feed.xml, /de/feed.xml)
+app.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
+  const lang = req.params.lang || 'pl';
+  const langPrefix = lang !== 'pl' ? `/${lang}` : '';
+  const baseUrl = 'https://pollar.news';
+
+  // Fetch recent events from API
+  let events = [];
+  try {
+    const response = await fetch(`${API_BASE}/api/events?lang=${lang}&limit=50`);
+    if (response.ok) {
+      const data = await response.json();
+      events = data.events || data || [];
+    }
+  } catch (err) {
+    console.warn('Could not fetch events for RSS:', err.message);
+  }
+
+  // Sort by createdAt descending
+  events.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  const now = new Date().toUTCString();
+  const items = events.map(e => {
+    const title = escapeXml(stripHtml(e.title || ''));
+    const lead = escapeXml(stripHtml(e.lead || e.summary || ''));
+    const link = `${baseUrl}${langPrefix}/event/${e.id}`;
+    const pubDate = e.createdAt ? new Date(e.createdAt).toUTCString() : now;
+    const guid = `${baseUrl}/event/${e.id}`; // guid stays canonical (without lang prefix)
+
+    return `    <item>
+      <title>${title}</title>
+      <description>${lead}</description>
+      <link>${link}</link>
+      <guid isPermaLink="true">${guid}</guid>
+      <pubDate>${pubDate}</pubDate>
+    </item>`;
+  }).join('\n');
+
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pollar News</title>
+    <description>${RSS_DESCRIPTIONS[lang]}</description>
+    <link>${baseUrl}${langPrefix}</link>
+    <language>${lang}</language>
+    <lastBuildDate>${now}</lastBuildDate>
+    <atom:link href="${baseUrl}${langPrefix}/feed.xml" rel="self" type="application/rss+xml"/>
+${items}
+  </channel>
+</rss>`;
+
+  res.set('Content-Type', 'application/rss+xml');
+  res.set('Cache-Control', 'public, max-age=1800'); // Cache for 30 minutes
+  res.send(rss);
 });
 
 // Crawler middleware
@@ -432,12 +621,14 @@ app.use(async (req, res, next) => {
   // Always use HTTPS in production
   const protocol = process.env.NODE_ENV === 'production' ? 'https' : req.protocol;
   const baseUrl = `${protocol}://${req.get('host')}`;
-  const targetUrl = `${baseUrl}${req.path}`;
+  const lang = req.lang || 'pl';
+  const pathWithoutLang = req.pathWithoutLang || req.path;
+  const targetUrl = `${baseUrl}${req.path}`; // Keep full path with lang prefix for canonical
 
   // Event page
-  const eventMatch = req.path.match(/^\/event\/([^/?#]+)/);
+  const eventMatch = pathWithoutLang.match(/^\/event\/([^/?#]+)/);
   if (eventMatch) {
-    const event = await fetchEventData(eventMatch[1]);
+    const event = await fetchEventData(eventMatch[1], lang);
     if (event) {
       const shortTitle = event.metadata?.ultraShortHeadline || event.title || 'Pollar';
       const ogTitle = `Pollar News: ${shortTitle}`;
@@ -458,20 +649,35 @@ app.use(async (req, res, next) => {
         ogImage
       });
 
+      // Build news_keywords from event metadata
+      const keywordParts = [
+        event.metadata?.category,
+        ...(event.metadata?.mentionedPeople?.map(p => p.name) || []),
+        ...(event.metadata?.mentionedCountries || []),
+        event.metadata?.location?.city
+      ].filter(Boolean);
+      const newsKeywords = keywordParts.length > 0 ? keywordParts.join(', ') : null;
+
       return res.send(generateSeoHtml({
         pageTitle: `${shortTitle} | Pollar`,
         ogTitle,
         description,
         ogImage,
         targetUrl,
-        schema
+        schema,
+        articlePublished: event.createdAt || event.date,
+        articleModified: event.updatedAt || event.createdAt || event.date,
+        articleSection: event.metadata?.category,
+        newsKeywords,
+        pathWithoutLang,
+        lang
       }));
     }
   }
 
   // Brief page
-  if (req.path === '/brief') {
-    const brief = await fetchBriefData();
+  if (pathWithoutLang === '/brief') {
+    const brief = await fetchBriefData(lang);
     let briefTitle = 'Daily Brief';
     let description = 'Podsumowanie najważniejszych wydarzeń dnia.';
     let imageTitle = briefTitle;
@@ -505,14 +711,18 @@ app.use(async (req, res, next) => {
       description,
       ogImage,
       targetUrl,
-      schema
+      schema,
+      articlePublished: brief?.date || brief?.generatedAt,
+      articleSection: 'Daily Brief',
+      pathWithoutLang,
+      lang
     }));
   }
 
   // Felieton page
-  const felietonMatch = req.path.match(/^\/felieton\/([^/?#]+)/);
+  const felietonMatch = pathWithoutLang.match(/^\/felieton\/([^/?#]+)/);
   if (felietonMatch) {
-    const felieton = await fetchFelietonData(felietonMatch[1]);
+    const felieton = await fetchFelietonData(felietonMatch[1], lang);
     let felietonTitle = 'Felieton';
     let description = 'Felieton Pollar News.';
     let ogImageDescription = description;
@@ -541,22 +751,31 @@ app.use(async (req, res, next) => {
       description,
       ogImage,
       targetUrl,
-      schema
+      schema,
+      articlePublished: felieton?.createdAt || felieton?.date,
+      articleSection: felieton?.category || 'Felieton',
+      pathWithoutLang,
+      lang
     }));
   }
 
   // Static pages from PAGE_TITLES map
-  const pageInfo = PAGE_TITLES[req.path];
+  const pageInfo = PAGE_TITLES[pathWithoutLang];
   if (pageInfo) {
-    const isHomepage = req.path === '/';
+    const isHomepage = pathWithoutLang === '/';
     const ogTitle = isHomepage ? pageInfo.title : `Pollar News: ${pageInfo.title}`;
     const pageTitle = isHomepage ? 'Pollar — Wiesz więcej' : `${pageInfo.title} | Pollar`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}&description=${encodeURIComponent(pageInfo.description)}`;
 
-    // Use Organization schema for homepage, WebPage for other static pages
-    const schema = isHomepage
-      ? generateOrganizationSchema()
-      : { '@context': 'https://schema.org', '@type': 'WebPage', name: pageInfo.title, description: pageInfo.description, url: targetUrl };
+    // Use Organization schema for homepage, WebPage + BreadcrumbList for other static pages
+    let schema;
+    if (isHomepage) {
+      schema = generateOrganizationSchema();
+    } else {
+      const webPageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', name: pageInfo.title, description: pageInfo.description, url: targetUrl };
+      const breadcrumbSchema = generateBreadcrumbSchema(pathWithoutLang, PAGE_TITLES);
+      schema = breadcrumbSchema ? [webPageSchema, breadcrumbSchema] : webPageSchema;
+    }
 
     return res.send(generateSeoHtml({
       pageTitle,
@@ -565,7 +784,9 @@ app.use(async (req, res, next) => {
       ogImage,
       targetUrl: isHomepage ? baseUrl : targetUrl,
       ogType: 'website',
-      schema
+      schema,
+      pathWithoutLang,
+      lang
     }));
   }
 

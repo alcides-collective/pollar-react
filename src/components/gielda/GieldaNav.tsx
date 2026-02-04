@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../../lib/utils';
 import { ChevronDown } from 'lucide-react';
+import { LocalizedLink } from '../LocalizedLink';
 
 type NavItem = { href: string; label: string };
 type NavGroup = { label: string; items: NavItem[] };
@@ -28,10 +29,12 @@ function isGroup(entry: NavEntry): entry is NavGroup {
 }
 
 function isActiveLink(href: string, pathname: string): boolean {
+  // Remove language prefix for comparison
+  const pathWithoutLang = pathname.replace(/^\/(en|de)/, '') || '/';
   if (href === '/gielda') {
-    return pathname === '/gielda';
+    return pathWithoutLang === '/gielda';
   }
-  return pathname.startsWith(href);
+  return pathWithoutLang.startsWith(href);
 }
 
 function isGroupActive(group: NavGroup, pathname: string): boolean {
@@ -128,7 +131,7 @@ export function GieldaNav({ className }: GieldaNavProps) {
               </button>
             </div>
           ) : (
-            <Link
+            <LocalizedLink
               key={i}
               to={entry.href}
               className={cn(
@@ -139,7 +142,7 @@ export function GieldaNav({ className }: GieldaNavProps) {
               )}
             >
               <span>{entry.label}</span>
-            </Link>
+            </LocalizedLink>
           )
         )}
       </nav>
@@ -152,7 +155,7 @@ export function GieldaNav({ className }: GieldaNavProps) {
           onClick={(e) => e.stopPropagation()}
         >
           {openGroup.items.map((item, i) => (
-            <Link
+            <LocalizedLink
               key={i}
               to={item.href}
               onClick={closeDropdown}
@@ -164,7 +167,7 @@ export function GieldaNav({ className }: GieldaNavProps) {
               )}
             >
               {item.label}
-            </Link>
+            </LocalizedLink>
           ))}
         </div>
       )}
@@ -179,7 +182,7 @@ export function GieldaNav({ className }: GieldaNavProps) {
               </div>
               <div className="flex flex-col gap-0.5">
                 {entry.items.map((item, j) => (
-                  <Link
+                  <LocalizedLink
                     key={j}
                     to={item.href}
                     className={cn(
@@ -190,12 +193,12 @@ export function GieldaNav({ className }: GieldaNavProps) {
                     )}
                   >
                     {item.label}
-                  </Link>
+                  </LocalizedLink>
                 ))}
               </div>
             </div>
           ) : (
-            <Link
+            <LocalizedLink
               key={i}
               to={entry.href}
               className={cn(
@@ -206,7 +209,7 @@ export function GieldaNav({ className }: GieldaNavProps) {
               )}
             >
               {entry.label}
-            </Link>
+            </LocalizedLink>
           )
         )}
       </nav>

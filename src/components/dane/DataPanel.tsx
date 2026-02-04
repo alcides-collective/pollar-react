@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
@@ -66,7 +66,7 @@ export function DataPanel({
   );
 
   if (href) {
-    return <Link to={href}>{content}</Link>;
+    return <LocalizedLink to={href}>{content}</LocalizedLink>;
   }
 
   return content;

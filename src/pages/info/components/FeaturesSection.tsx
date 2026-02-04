@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { staggerContainer, staggerItem } from '@/lib/animations';
@@ -57,7 +57,7 @@ export function FeaturesSection() {
               variants={staggerItem}
               className="break-inside-avoid"
             >
-              <Link
+              <LocalizedLink
                 to={feature.href}
                 className="group block bg-white/80 backdrop-blur-sm rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:shadow-xl hover:bg-white hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 p-6 lg:p-8"
               >
@@ -70,7 +70,7 @@ export function FeaturesSection() {
                 <p className="text-zinc-600 text-sm leading-relaxed">
                   {feature.description}
                 </p>
-              </Link>
+              </LocalizedLink>
             </motion.div>
           ))}
         </motion.div>

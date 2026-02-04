@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useRef, useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -136,7 +136,7 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
         >
           <Button size="lg" asChild className="text-base px-8 py-6 shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_50px_rgba(59,130,246,0.7)] transition-shadow duration-300">
-            <Link to="/">{t('hero.cta')}</Link>
+            <LocalizedLink to="/">{t('hero.cta')}</LocalizedLink>
           </Button>
         </motion.div>
 

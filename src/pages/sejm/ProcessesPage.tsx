@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useProcesses } from '../../hooks/useProcesses';
 import { SejmApiError } from '../../components/sejm';
@@ -118,13 +118,13 @@ export function ProcessesPage() {
                     <span className="flex items-center gap-1">
                       {t('processesPage.prints')}:
                       {process.printsNumbers.slice(0, 3).map((num) => (
-                        <Link
+                        <LocalizedLink
                           key={num}
                           to={`/sejm/druki/${num}`}
                           className="text-blue-600 hover:underline"
                         >
                           {num}
-                        </Link>
+                        </LocalizedLink>
                       ))}
                       {process.printsNumbers.length > 3 && (
                         <span>+{process.printsNumbers.length - 3}</span>

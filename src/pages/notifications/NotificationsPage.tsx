@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import {
@@ -357,18 +357,18 @@ function NotificationsContent() {
             {t('noPreferences.description')}
           </p>
           <div className="flex gap-3 justify-center">
-            <Link
+            <LocalizedLink
               to="/sejm/poslowie"
               className="text-sm px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800"
             >
               {t('noPreferences.browseMPs')}
-            </Link>
-            <Link
+            </LocalizedLink>
+            <LocalizedLink
               to="/profil"
               className="text-sm px-4 py-2 border border-zinc-300 rounded-lg hover:bg-zinc-50"
             >
               {t('noPreferences.setCategories')}
-            </Link>
+            </LocalizedLink>
           </div>
         </div>
       )}
@@ -402,7 +402,7 @@ function NotificationsContent() {
                 const isUnread = !alert.read;
 
                 return (
-                  <Link
+                  <LocalizedLink
                     key={`category-${alert.id}`}
                     to={`/event/${alert.eventId}`}
                     className={`block p-4 rounded-lg border transition-colors ${
@@ -435,7 +435,7 @@ function NotificationsContent() {
                         {formatDate(alert.createdAt as any, language, t('noDate'))}
                       </div>
                     </div>
-                  </Link>
+                  </LocalizedLink>
                 );
               } else {
                 // Voting alert (regular or historical)
@@ -446,7 +446,7 @@ function NotificationsContent() {
                 const dateStr = 'createdAt' in votingAlert ? votingAlert.createdAt : votingAlert.date;
 
                 return (
-                  <Link
+                  <LocalizedLink
                     key={`voting-${alert.id}`}
                     to={`/sejm/glosowania/${votingAlert.sitting}/${votingAlert.votingNumber}`}
                     className={`block p-4 rounded-lg border transition-colors ${
@@ -484,7 +484,7 @@ function NotificationsContent() {
                         {formatDate(dateStr, language, t('noDate'))}
                       </div>
                     </div>
-                  </Link>
+                  </LocalizedLink>
                 );
               }
             })}

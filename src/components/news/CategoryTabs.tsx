@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Event } from '../../types/events';
 import { getImageSource } from '@/lib/imageSource';
@@ -58,7 +58,7 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
               >
                 <div className="flex flex-col md:flex-row">
                   {selectedGroup[1][0] && (
-                <Link to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
+                <LocalizedLink to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
                   <article className="flex flex-col md:flex-row gap-4">
                     <div className="w-full md:w-80 md:shrink-0">
                       <div className="relative">
@@ -84,11 +84,11 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                       </p>
                     </div>
                   </article>
-                </Link>
+                </LocalizedLink>
               )}
               <div className="flex-1 divide-y divide-zinc-200">
                 {selectedGroup[1].slice(1).map((event) => (
-                  <Link
+                  <LocalizedLink
                     key={event.id}
                     to={`/event/${event.id}`}
                     className="group block p-6 hover:bg-zinc-50 transition-colors"
@@ -96,7 +96,7 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                     <h4 className="text-zinc-600 text-sm leading-tight group-hover:underline">
                       {event.title}
                     </h4>
-                  </Link>
+                  </LocalizedLink>
                 ))}
                 </div>
               </div>

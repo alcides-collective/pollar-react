@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useCookieConsentStore } from '@/stores/cookieConsentStore';
 
 interface ToggleSwitchProps {
@@ -95,9 +95,9 @@ export function CookieSettingsPage() {
         <h1 className="text-3xl font-bold mb-2 text-zinc-900">Ustawienia cookies</h1>
         <p className="text-zinc-600 mb-8">
           Zarządzaj swoimi preferencjami dotyczącymi plików cookie. Więcej informacji znajdziesz w naszej{' '}
-          <Link to="/polityka-prywatnosci" className="text-red-600 hover:underline">
+          <LocalizedLink to="/polityka-prywatnosci" className="text-red-600 hover:underline">
             Polityce Prywatności
-          </Link>
+          </LocalizedLink>
           .
         </p>
 

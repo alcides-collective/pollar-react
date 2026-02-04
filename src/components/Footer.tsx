@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { staggerContainer, staggerItem } from '@/lib/animations';
+import { LocalizedLink } from './LocalizedLink';
 
 const socialLinks = [
   { label: 'X', icon: 'ri-twitter-x-line', href: 'https://x.com/pollarpl' },
@@ -73,11 +73,11 @@ export function Footer() {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <Link to="/" className="inline-block group">
+          <LocalizedLink to="/" className="inline-block group">
             <h2 className="text-2xl font-bold text-white tracking-tight group-hover:text-zinc-300 transition-colors">
               Pollar News
             </h2>
-          </Link>
+          </LocalizedLink>
           <p className="text-zinc-500 text-sm mt-2 max-w-xs">
             {t('footer.description')}
           </p>
@@ -99,12 +99,12 @@ export function Footer() {
               <ul className="space-y-2.5">
                 {section.links.map((link) => (
                   <li key={link.label}>
-                    <Link
+                    <LocalizedLink
                       to={link.to}
                       className="text-sm text-zinc-400 hover:text-white transition-colors"
                     >
                       {link.label}
-                    </Link>
+                    </LocalizedLink>
                   </li>
                 ))}
               </ul>
@@ -119,12 +119,12 @@ export function Footer() {
             <ul className="space-y-2.5">
               {legalLinks.map((link) => (
                 <li key={link.label}>
-                  <Link
+                  <LocalizedLink
                     to={link.to}
                     className="text-sm text-zinc-400 hover:text-white transition-colors"
                   >
                     {link.label}
-                  </Link>
+                  </LocalizedLink>
                 </li>
               ))}
             </ul>

@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import type { SejmPrint } from '../../types/sejm';
+import { LocalizedLink } from '../LocalizedLink';
 
 interface PrintCardProps {
   print: SejmPrint;
@@ -17,7 +17,7 @@ export function PrintCard({ print }: PrintCardProps) {
   };
 
   return (
-    <Link
+    <LocalizedLink
       to={`/sejm/druki/${print.number}`}
       className="block rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
     >
@@ -45,6 +45,6 @@ export function PrintCard({ print }: PrintCardProps) {
           </span>
         )}
       </div>
-    </Link>
+    </LocalizedLink>
   );
 }

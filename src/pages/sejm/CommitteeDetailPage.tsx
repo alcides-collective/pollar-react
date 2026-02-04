@@ -1,4 +1,5 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useCommittee, useCommitteeSittings } from '../../hooks/useCommittees';
 import { PartyBadge, SejmApiError } from '../../components/sejm';
@@ -39,9 +40,9 @@ export function CommitteeDetailPage() {
     return (
       <div className="text-center py-12">
         <p className="text-zinc-500">{t('committeeDetail.notFound')}</p>
-        <Link to="/sejm/komisje" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+        <LocalizedLink to="/sejm/komisje" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
           <i className="ri-arrow-left-s-line" /> {t('committeeDetail.backToList')}
-        </Link>
+        </LocalizedLink>
       </div>
     );
   }
@@ -55,9 +56,9 @@ export function CommitteeDetailPage() {
   return (
     <div className="space-y-6">
       {/* Back link */}
-      <Link to="/sejm/komisje" className="text-sm text-zinc-500 hover:text-zinc-700">
+      <LocalizedLink to="/sejm/komisje" className="text-sm text-zinc-500 hover:text-zinc-700">
         <i className="ri-arrow-left-s-line" /> {t('committeeDetail.allCommittees')}
-      </Link>
+      </LocalizedLink>
 
       {/* Header */}
       <div>
@@ -103,12 +104,12 @@ export function CommitteeDetailPage() {
             {committee.presidium.map((member) => (
               <div key={member.id} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Link
+                  <LocalizedLink
                     to={`/sejm/poslowie/${member.id}`}
                     className="text-sm text-zinc-900 hover:text-blue-600"
                   >
                     {member.firstLastName}
-                  </Link>
+                  </LocalizedLink>
                   <PartyBadge club={member.club} size="sm" />
                 </div>
                 {member.function && (
@@ -129,12 +130,12 @@ export function CommitteeDetailPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {committee.members.map((member) => (
               <div key={member.id} className="flex items-center gap-2">
-                <Link
+                <LocalizedLink
                   to={`/sejm/poslowie/${member.id}`}
                   className="text-sm text-zinc-900 hover:text-blue-600"
                 >
                   {member.firstLastName}
-                </Link>
+                </LocalizedLink>
                 <PartyBadge club={member.club} size="sm" />
               </div>
             ))}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useGieldaData } from '../../hooks/useGieldaData';
 import { IndexCard, StockCard, PriceChange } from '../../components/gielda';
@@ -126,7 +126,7 @@ export function GieldaPage() {
                 </h2>
                 <div className="space-y-2">
                   {topGainers.map((stock, i) => (
-                    <Link
+                    <LocalizedLink
                       key={stock.symbol}
                       to={`/gielda/akcje/${encodeURIComponent(stock.symbol)}`}
                       className="flex items-center justify-between p-3 rounded-lg bg-green-500/5 border border-green-500/10 hover:bg-green-500/10 transition-colors"
@@ -150,7 +150,7 @@ export function GieldaPage() {
                         size="sm"
                         showArrow={false}
                       />
-                    </Link>
+                    </LocalizedLink>
                   ))}
                   {topGainers.length === 0 && (
                     <p className="text-sm text-black/40 dark:text-white/40 text-center py-4">
@@ -167,7 +167,7 @@ export function GieldaPage() {
                 </h2>
                 <div className="space-y-2">
                   {topLosers.map((stock, i) => (
-                    <Link
+                    <LocalizedLink
                       key={stock.symbol}
                       to={`/gielda/akcje/${encodeURIComponent(stock.symbol)}`}
                       className="flex items-center justify-between p-3 rounded-lg bg-red-500/5 border border-red-500/10 hover:bg-red-500/10 transition-colors"
@@ -191,7 +191,7 @@ export function GieldaPage() {
                         size="sm"
                         showArrow={false}
                       />
-                    </Link>
+                    </LocalizedLink>
                   ))}
                   {topLosers.length === 0 && (
                     <p className="text-sm text-black/40 dark:text-white/40 text-center py-4">
@@ -210,12 +210,12 @@ export function GieldaPage() {
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-black/60 dark:text-white/60">
                   {t('wig20Stocks')}
                 </h2>
-                <Link
+                <LocalizedLink
                   to="/gielda/akcje"
                   className="text-xs text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors"
                 >
                   {t('seeAll')} →
-                </Link>
+                </LocalizedLink>
               </div>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {stocks.slice(0, 12).map(stock => (

@@ -227,7 +227,8 @@
   "greetings": {
     "morning": "Good day",
     "evening": "Good evening",
-    "default": "Hello"
+    "default": "Hello",
+    "today": "today is"
   },
   "sidebar": {
     "latest": "Latest",

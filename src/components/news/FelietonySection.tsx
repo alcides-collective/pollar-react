@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import type { Felieton, FelietonCategory } from '../../types/felieton';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
 import { GrainImage } from '../common/GrainImage';
 import { SectionWrapper } from '../common/SectionWrapper';
+import { LocalizedLink } from '../LocalizedLink';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.webp';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.webp';
@@ -22,7 +22,7 @@ function FelietonCard({ felieton }: { felieton: Felieton }) {
   const imageSrc = FELIETON_IMAGES[felieton.category];
 
   return (
-    <Link to={`/felieton/${felieton.id}`} className="group block p-6 hover:bg-sky-100 transition-colors h-full">
+    <LocalizedLink to={`/felieton/${felieton.id}`} className="group block p-6 hover:bg-sky-100 transition-colors h-full">
       <article>
         <div className="mb-4">
           <GrainImage
@@ -41,7 +41,7 @@ function FelietonCard({ felieton }: { felieton: Felieton }) {
           {felieton.lead}
         </p>
       </article>
-    </Link>
+    </LocalizedLink>
   );
 }
 

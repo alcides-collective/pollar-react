@@ -11,6 +11,7 @@ interface LanguageState {
 interface LanguageActions {
   setLanguage: (lang: Language) => void;
   loadFromStorage: () => void;
+  initFromUrl: () => void;
 }
 
 type LanguageStore = LanguageState & LanguageActions;
@@ -42,6 +43,20 @@ export const useLanguageStore = create<LanguageStore>((set) => ({
   loadFromStorage: () => {
     const stored = getStoredLanguage();
     set({ language: stored });
+  },
+
+  initFromUrl: () => {
+    if (typeof window === 'undefined') return;
+    const match = window.location.pathname.match(/^\/(en|de)(\/|$)/);
+    if (match) {
+      const lang = match[1] as Language;
+      set({ language: lang });
+      try {
+        localStorage.setItem(STORAGE_KEY, lang);
+      } catch {
+        // localStorage not available
+      }
+    }
   },
 }));
 

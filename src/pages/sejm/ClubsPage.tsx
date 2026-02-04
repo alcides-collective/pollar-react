@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useClubs } from '../../hooks/useClubs';
 import { getPartyColor } from '../../types/sejm';
@@ -39,7 +39,7 @@ export function ClubsPage() {
           const percentage = (club.membersCount / totalMembers) * 100;
 
           return (
-            <Link
+            <LocalizedLink
               key={club.id}
               to={`/sejm/kluby/${club.id}`}
               className="block rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
@@ -76,7 +76,7 @@ export function ClubsPage() {
                   {percentage.toFixed(1)}% {t('clubsPage.mandates')}
                 </p>
               </div>
-            </Link>
+            </LocalizedLink>
           );
         })}
       </div>

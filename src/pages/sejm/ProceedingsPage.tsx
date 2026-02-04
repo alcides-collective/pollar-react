@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useProceedings, useCurrentProceeding } from '../../hooks/useProceedings';
 import { SejmApiError } from '../../components/sejm';
@@ -54,7 +54,7 @@ export function ProceedingsPage() {
 
       {/* Current proceeding */}
       {currentProceeding && (
-        <Link
+        <LocalizedLink
           to={`/sejm/posiedzenia/${currentProceeding.number}`}
           className="block rounded-lg border-2 border-green-500 bg-green-50 p-4 hover:bg-green-100 transition-colors"
         >
@@ -68,13 +68,13 @@ export function ProceedingsPage() {
           </div>
           <h3 className="font-medium text-zinc-900">{currentProceeding.title}</h3>
           <p className="text-sm text-zinc-500 mt-1">{formatDates(currentProceeding.dates)}</p>
-        </Link>
+        </LocalizedLink>
       )}
 
       {/* All proceedings */}
       <div className="space-y-3">
         {sortedProceedings.map((proceeding) => (
-          <Link
+          <LocalizedLink
             key={proceeding.number}
             to={`/sejm/posiedzenia/${proceeding.number}`}
             className="block rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
@@ -97,7 +97,7 @@ export function ProceedingsPage() {
                 {formatDates(proceeding.dates)}
               </span>
             </div>
-          </Link>
+          </LocalizedLink>
         ))}
       </div>
     </div>

@@ -56,7 +56,9 @@ export interface ExtractedLineChart {
 export function extractKeyNumber(summary: string | undefined): ExtractedKeyNumber | null {
   if (!summary) return null;
 
-  const match = summary.match(/<kluczowa-liczba\s+wartość\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/kluczowa-liczba>/i);
+  // Try double quotes first, then single quotes
+  const match = summary.match(/<kluczowa-liczba\s+wartość\s*=\s*"([^"]+)">([\s\S]*?)<\/kluczowa-liczba>/i)
+    || summary.match(/<kluczowa-liczba\s+wartość\s*=\s*'([^']+)'>([\s\S]*?)<\/kluczowa-liczba>/i);
   if (!match) return null;
 
   return {
@@ -71,7 +73,9 @@ export function extractKeyNumber(summary: string | undefined): ExtractedKeyNumbe
 export function extractTimeline(summary: string | undefined): ExtractedTimeline | null {
   if (!summary) return null;
 
-  const match = summary.match(/<timeline\s+tytu[łl]u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/timeline>/i);
+  // Try double quotes first, then single quotes
+  const match = summary.match(/<timeline\s+tytu[łl]u?\s*=\s*"([^"]+)">([\s\S]*?)<\/timeline>/i)
+    || summary.match(/<timeline\s+tytu[łl]u?\s*=\s*'([^']+)'>([\s\S]*?)<\/timeline>/i);
   if (!match) return null;
 
   try {
@@ -95,38 +99,35 @@ export function extractLineCharts(summary: string | undefined): ExtractedLineCha
 
   const charts: ExtractedLineChart[] = [];
 
-  // Match both attribute orders: tytuł + jednostka and jednostka + tytuł
-  const regex1 = /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+jednostk?a?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/wykres-liniowy>/gi;
-  const regex2 = /<wykres-liniowy\s+jednostk?a?\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/wykres-liniowy>/gi;
+  // Match both attribute orders and quote types: tytuł + jednostka and jednostka + tytuł
+  const regexes = [
+    // tytuł + jednostka (double quotes)
+    { regex: /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*"([^"]+)"\s+jednostk?a?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-liniowy>/gi, order: 'title-unit' },
+    // tytuł + jednostka (single quotes)
+    { regex: /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*'([^']+)'\s+jednostk?a?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-liniowy>/gi, order: 'title-unit' },
+    // jednostka + tytuł (double quotes)
+    { regex: /<wykres-liniowy\s+jednostk?a?\s*=\s*"([^"]+)"\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-liniowy>/gi, order: 'unit-title' },
+    // jednostka + tytuł (single quotes)
+    { regex: /<wykres-liniowy\s+jednostk?a?\s*=\s*'([^']+)'\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-liniowy>/gi, order: 'unit-title' },
+  ];
 
-  let match;
   let chartIndex = 0;
 
-  // Process first order (tytuł, jednostka)
-  while ((match = regex1.exec(summary)) !== null) {
-    const [, title, unit, dataStr] = match;
-    const items = parseChartData(dataStr);
-    if (items.length > 0) {
-      charts.push({
-        id: `line-chart-${chartIndex++}`,
-        title,
-        unit,
-        items
-      });
-    }
-  }
-
-  // Process second order (jednostka, tytuł)
-  while ((match = regex2.exec(summary)) !== null) {
-    const [, unit, title, dataStr] = match;
-    const items = parseChartData(dataStr);
-    if (items.length > 0) {
-      charts.push({
-        id: `line-chart-${chartIndex++}`,
-        title,
-        unit,
-        items
-      });
+  for (const { regex, order } of regexes) {
+    let match;
+    while ((match = regex.exec(summary)) !== null) {
+      const [, first, second, dataStr] = match;
+      const title = order === 'title-unit' ? first : second;
+      const unit = order === 'title-unit' ? second : first;
+      const items = parseChartData(dataStr);
+      if (items.length > 0) {
+        charts.push({
+          id: `line-chart-${chartIndex++}`,
+          title,
+          unit,
+          items
+        });
+      }
     }
   }
 
@@ -159,10 +160,14 @@ export function removeExtractedElements(summary: string | undefined): string {
   if (!summary) return '';
 
   return summary
-    // Remove kluczowa-liczba tags
-    .replace(/<kluczowa-liczba\s+wartość\s*=\s*["'][^"']+["']>[\s\S]*?<\/kluczowa-liczba>/gi, '')
-    // Remove timeline tags
-    .replace(/<timeline\s+tytu[łl]u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/timeline>/gi, '')
+    // Remove kluczowa-liczba tags (double quotes)
+    .replace(/<kluczowa-liczba\s+wartość\s*=\s*"[^"]+">[\s\S]*?<\/kluczowa-liczba>/gi, '')
+    // Remove kluczowa-liczba tags (single quotes)
+    .replace(/<kluczowa-liczba\s+wartość\s*=\s*'[^']+'>[\s\S]*?<\/kluczowa-liczba>/gi, '')
+    // Remove timeline tags (double quotes)
+    .replace(/<timeline\s+tytu[łl]u?\s*=\s*"[^"]+">[\s\S]*?<\/timeline>/gi, '')
+    // Remove timeline tags (single quotes)
+    .replace(/<timeline\s+tytu[łl]u?\s*=\s*'[^']+'>[\s\S]*?<\/timeline>/gi, '')
     // Clean up extra whitespace/newlines left behind
     .replace(/\n{3,}/g, '\n\n')
     .trim();
@@ -268,9 +273,14 @@ export function sanitizeAndProcessHtml(text: string): string {
     .replace(/&gt;/g, '>')
     // Convert markdown bold **text** to <b>text</b>
     .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
-    // Convert <sekcja tytuł="..."> to section header
-    // Replace \n\n inside section content with paragraph break div
-    .replace(/<sekcja\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/sekcja>/gi,
+    // Convert <sekcja tytuł="..."> to section header (double quotes)
+    .replace(/<sekcja\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/sekcja>/gi,
+      (_, title, content) => {
+        const processedContent = content.replace(/\n\n+/g, '</p><p>');
+        return `\n\n<div class="section-box"><h3 class="section-title">${title}</h3><div class="section-content"><p>${processedContent}</p></div></div>\n\n`;
+      })
+    // Convert <sekcja tytuł='...'> to section header (single quotes)
+    .replace(/<sekcja\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/sekcja>/gi,
       (_, title, content) => {
         const processedContent = content.replace(/\n\n+/g, '</p><p>');
         return `\n\n<div class="section-box"><h3 class="section-title">${title}</h3><div class="section-content"><p>${processedContent}</p></div></div>\n\n`;
@@ -295,8 +305,11 @@ export function sanitizeAndProcessHtml(text: string): string {
     // Handle alternate attribute order: cytat first, then autor
     .replace(/<manipulacja\s+cytat\s*=\s*["']([^"']+)["']\s+autor\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/manipulacja>/gi,
       '\n\n<div class="manipulation-box"><span class="manipulation-label">WYKRYTO MANIPULACJĘ</span><div class="manipulation-source">Źródło: $2</div><blockquote class="manipulation-quote">„$1"</blockquote><p class="manipulation-explanation">$3</p></div>\n\n')
-    // Convert <kluczowa-liczba wartość="...">description</kluczowa-liczba> to number callout
-    .replace(/<kluczowa-liczba\s+wartość\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/kluczowa-liczba>/gi,
+    // Convert <kluczowa-liczba wartość="...">description</kluczowa-liczba> to number callout (double quotes)
+    .replace(/<kluczowa-liczba\s+wartość\s*=\s*"([^"]+)">([\s\S]*?)<\/kluczowa-liczba>/gi,
+      '\n\n<div class="key-number-box"><span class="key-number-value">$1</span><span class="key-number-description">$2</span></div>\n\n')
+    // Convert <kluczowa-liczba wartość='...'>description</kluczowa-liczba> to number callout (single quotes)
+    .replace(/<kluczowa-liczba\s+wartość\s*=\s*'([^']+)'>([\s\S]*?)<\/kluczowa-liczba>/gi,
       '\n\n<div class="key-number-box"><span class="key-number-value">$1</span><span class="key-number-description">$2</span></div>\n\n')
     // Convert <weryfikacja werdykt="..." źródło="...">explanation</weryfikacja> to fact-check box
     .replace(/<weryfikacja\s+werdykt\s*=\s*["']([^"']+)["']\s+źródło\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/weryfikacja>/gi,
@@ -316,35 +329,65 @@ export function sanitizeAndProcessHtml(text: string): string {
                            verdict.toLowerCase().includes('prawdziwe') || verdict.toLowerCase() === 'prawda' ? '✓' : '~';
         return `\n\n<div class="factcheck-box ${verdictClass}"><span class="factcheck-label">WERYFIKACJA</span><div class="factcheck-verdict"><span class="verdict-icon">${verdictIcon}</span><span class="verdict-text">${verdict}</span></div><p class="factcheck-explanation">${explanation}</p><div class="factcheck-source">Źródło: ${source}</div></div>\n\n`;
       })
-    // Convert <cytat autor="..." miejsce="..."> tags to styled quote box
-    .replace(/<cytat\s+autor\s*=\s*["']([^"']+)["']\s+miejsce\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/cytat>/gi,
+    // Convert <cytat autor="..." miejsce="..."> tags to styled quote box (double quotes)
+    .replace(/<cytat\s+autor\s*=\s*"([^"]+)"\s+miejsce\s*=\s*"([^"]+)">([\s\S]*?)<\/cytat>/gi,
       (_, autor, miejsce, text) => {
         const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
         const quotedText = hasQuotes ? text : `„${text}"`;
         return `\n\n<blockquote class="quote-box"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
       })
-    // Convert <cytat miejsce="..." autor="..."> (alternate order)
-    .replace(/<cytat\s+miejsce\s*=\s*["']([^"']+)["']\s+autor\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/cytat>/gi,
+    // Convert <cytat autor='...' miejsce='...'> tags to styled quote box (single quotes)
+    .replace(/<cytat\s+autor\s*=\s*'([^']+)'\s+miejsce\s*=\s*'([^']+)'>([\s\S]*?)<\/cytat>/gi,
+      (_, autor, miejsce, text) => {
+        const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
+        const quotedText = hasQuotes ? text : `„${text}"`;
+        return `\n\n<blockquote class="quote-box"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
+      })
+    // Convert <cytat miejsce="..." autor="..."> (alternate order, double quotes)
+    .replace(/<cytat\s+miejsce\s*=\s*"([^"]+)"\s+autor\s*=\s*"([^"]+)">([\s\S]*?)<\/cytat>/gi,
       (_, miejsce, autor, text) => {
         const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
         const quotedText = hasQuotes ? text : `„${text}"`;
         return `\n\n<blockquote class="quote-box"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
       })
-    // Convert <cytat autor="..."> (without location)
-    .replace(/<cytat\s+autor\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/cytat>/gi,
+    // Convert <cytat miejsce='...' autor='...'> (alternate order, single quotes)
+    .replace(/<cytat\s+miejsce\s*=\s*'([^']+)'\s+autor\s*=\s*'([^']+)'>([\s\S]*?)<\/cytat>/gi,
+      (_, miejsce, autor, text) => {
+        const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
+        const quotedText = hasQuotes ? text : `„${text}"`;
+        return `\n\n<blockquote class="quote-box"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
+      })
+    // Convert <cytat autor="..."> (without location, double quotes)
+    .replace(/<cytat\s+autor\s*=\s*"([^"]+)">([\s\S]*?)<\/cytat>/gi,
       (_, autor, text) => {
         const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
         const quotedText = hasQuotes ? text : `„${text}"`;
         return `\n\n<blockquote class="quote-box"><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
       })
-    // Convert <przypis title="..." opis="...">term</przypis> to tooltip
-    .replace(/<przypis\s+title\s*=\s*["']([^"']+)["']\s+opis\s*=\s*["']([^"']+)["']\s*\/?>([\s\S]*?)<\/przypis>/gi,
+    // Convert <cytat autor='...'> (without location, single quotes)
+    .replace(/<cytat\s+autor\s*=\s*'([^']+)'>([\s\S]*?)<\/cytat>/gi,
+      (_, autor, text) => {
+        const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
+        const quotedText = hasQuotes ? text : `„${text}"`;
+        return `\n\n<blockquote class="quote-box"><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
+      })
+    // Convert <przypis title="..." opis="...">term</przypis> to tooltip (double quotes)
+    .replace(/<przypis\s+title\s*=\s*"([^"]+)"\s+opis\s*=\s*"([^"]+)"\s*\/?>([\s\S]*?)<\/przypis>/gi,
       '<span class="footnote" tabindex="0"><span class="footnote-term">$3</span><span class="footnote-tooltip"><span class="footnote-title">$1</span><span class="footnote-desc">$2</span></span></span>')
-    // Handle alternate attribute order: opis first, then title
-    .replace(/<przypis\s+opis\s*=\s*["']([^"']+)["']\s+title\s*=\s*["']([^"']+)["']\s*\/?>([\s\S]*?)<\/przypis>/gi,
+    // Convert <przypis title='...' opis='...'>term</przypis> to tooltip (single quotes)
+    .replace(/<przypis\s+title\s*=\s*'([^']+)'\s+opis\s*=\s*'([^']+)'\s*\/?>([\s\S]*?)<\/przypis>/gi,
+      '<span class="footnote" tabindex="0"><span class="footnote-term">$3</span><span class="footnote-tooltip"><span class="footnote-title">$1</span><span class="footnote-desc">$2</span></span></span>')
+    // Handle alternate attribute order: opis first, then title (double quotes)
+    .replace(/<przypis\s+opis\s*=\s*"([^"]+)"\s+title\s*=\s*"([^"]+)"\s*\/?>([\s\S]*?)<\/przypis>/gi,
       '<span class="footnote" tabindex="0"><span class="footnote-term">$3</span><span class="footnote-tooltip"><span class="footnote-title">$2</span><span class="footnote-desc">$1</span></span></span>')
-    // Handle self-closing przypis
-    .replace(/<przypis\s+title\s*=\s*["']([^"']+)["']\s+opis\s*=\s*["']([^"']+)["']\s*\/>/gi,
+    // Handle alternate attribute order: opis first, then title (single quotes)
+    .replace(/<przypis\s+opis\s*=\s*'([^']+)'\s+title\s*=\s*'([^']+)'\s*\/?>([\s\S]*?)<\/przypis>/gi,
+      '<span class="footnote" tabindex="0"><span class="footnote-term">$3</span><span class="footnote-tooltip"><span class="footnote-title">$2</span><span class="footnote-desc">$1</span></span></span>')
+    // Handle self-closing przypis (double quotes)
+    .replace(/<przypis\s+title\s*=\s*"([^"]+)"\s+opis\s*=\s*"([^"]+)"\s*\/>/gi,
+      '<span class="footnote" tabindex="0"><span class="footnote-term">$1</span><span class="footnote-tooltip"><span class="footnote-title">$1</span><span class="footnote-desc">$2</span></span></span>')
+    // Handle self-closing przypis (single quotes)
+    .replace(/<przypis\s+title\s*=\s*'([^']+)'\s+opis\s*=\s*'([^']+)'\s*\/>/gi,
       '<span class="footnote" tabindex="0"><span class="footnote-term">$1</span><span class="footnote-tooltip"><span class="footnote-title">$1</span><span class="footnote-desc">$2</span></span></span>')
     // Fallback: any remaining przypis tags - strip keeping content
     .replace(/<przypis[^>]*>([\s\S]*?)<\/przypis>/gi, '$1')
@@ -352,8 +395,8 @@ export function sanitizeAndProcessHtml(text: string): string {
     // Use separate patterns for double and single quoted attributes to allow apostrophes/quotes inside
     .replace(/<ankieta\s+pytanie\s*=\s*"[^"]*">[\s\S]*?<\/ankieta>/gi, '')
     .replace(/<ankieta\s+pytanie\s*=\s*'[^']*'>[\s\S]*?<\/ankieta>/gi, '')
-    // Convert <timeline tytuł="...">JSON</timeline> to timeline
-    .replace(/<timeline\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/timeline>/gi,
+    // Convert <timeline tytuł="...">JSON</timeline> to timeline (double quotes)
+    .replace(/<timeline\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/timeline>/gi,
       (_, title, jsonData) => {
         try {
           const events = JSON.parse(jsonData.trim());
@@ -372,14 +415,33 @@ export function sanitizeAndProcessHtml(text: string): string {
           return '';
         }
       })
-    // Convert <porównanie tytuł="...">JSON</porównanie> to comparison cards
-    .replace(/<porównanie\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/porównanie>/gi,
+    // Convert <timeline tytuł='...'>JSON</timeline> to timeline (single quotes)
+    .replace(/<timeline\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/timeline>/gi,
+      (_, title, jsonData) => {
+        try {
+          const events = JSON.parse(jsonData.trim());
+          if (!Array.isArray(events)) return '';
+          const eventsHtml = events.map((e: {data?: string, tytul?: string, opis?: string}, i: number) =>
+            `<div class="timeline-event${i === events.length - 1 ? ' timeline-event-last' : ''}">` +
+            `<div class="timeline-dot"></div>` +
+            `<div class="timeline-content">` +
+            `<div class="timeline-date">${e.data || ''}</div>` +
+            `<div class="timeline-event-title">${e.tytul || ''}</div>` +
+            `<div class="timeline-event-desc">${e.opis || ''}</div>` +
+            `</div></div>`
+          ).join('');
+          return `\n\n<div class="timeline-box"><div class="timeline-title">${title}</div><div class="timeline-events"><div class="timeline-line"></div>${eventsHtml}</div></div>\n\n`;
+        } catch {
+          return '';
+        }
+      })
+    // Convert <porównanie tytuł="...">JSON</porównanie> to comparison cards (double quotes)
+    .replace(/<porównanie\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/porównanie>/gi,
       (_, title, jsonData) => {
         try {
           const items = JSON.parse(jsonData.trim());
           if (!Array.isArray(items)) return '';
           const cardsHtml = items.map((item: Record<string, string>) => {
-            // Find keys dynamically - support "przed", "przed (na Allegro)", etc.
             const keys = Object.keys(item);
             const przedKey = keys.find(k => k.toLowerCase().startsWith('przed'));
             const poKey = keys.find(k => k.toLowerCase().startsWith('po'));
@@ -397,14 +459,13 @@ export function sanitizeAndProcessHtml(text: string): string {
           return '';
         }
       })
-    // Convert <layout-porownanie> alias
-    .replace(/<layout-por[oó]wnanie\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/layout-por[oó]wnanie>/gi,
+    // Convert <porównanie tytuł='...'>JSON</porównanie> to comparison cards (single quotes)
+    .replace(/<porównanie\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/porównanie>/gi,
       (_, title, jsonData) => {
         try {
           const items = JSON.parse(jsonData.trim());
           if (!Array.isArray(items)) return '';
           const cardsHtml = items.map((item: Record<string, string>) => {
-            // Find keys dynamically - support "przed", "przed (na Allegro)", etc.
             const keys = Object.keys(item);
             const przedKey = keys.find(k => k.toLowerCase().startsWith('przed'));
             const poKey = keys.find(k => k.toLowerCase().startsWith('po'));
@@ -422,8 +483,56 @@ export function sanitizeAndProcessHtml(text: string): string {
           return '';
         }
       })
-    // Convert <wykres-wyniki> to sports results
-    .replace(/<wykres-wyniki\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/wykres-wyniki>/gi,
+    // Convert <layout-porownanie> alias (double quotes)
+    .replace(/<layout-por[oó]wnanie\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/layout-por[oó]wnanie>/gi,
+      (_, title, jsonData) => {
+        try {
+          const items = JSON.parse(jsonData.trim());
+          if (!Array.isArray(items)) return '';
+          const cardsHtml = items.map((item: Record<string, string>) => {
+            const keys = Object.keys(item);
+            const przedKey = keys.find(k => k.toLowerCase().startsWith('przed'));
+            const poKey = keys.find(k => k.toLowerCase().startsWith('po'));
+            const przedValue = przedKey ? item[przedKey] : '';
+            const poValue = poKey ? item[poKey] : '';
+            return `<div class="comparison-card">` +
+            `<div class="comparison-aspect">${item.aspekt || ''}</div>` +
+            `<div class="comparison-columns">` +
+            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${przedValue}</span></div>` +
+            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${poValue}</span></div>` +
+            `</div></div>`;
+          }).join('');
+          return `\n\n<div class="comparison-box"><span class="comparison-label">PORÓWNANIE</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
+        } catch {
+          return '';
+        }
+      })
+    // Convert <layout-porownanie> alias (single quotes)
+    .replace(/<layout-por[oó]wnanie\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/layout-por[oó]wnanie>/gi,
+      (_, title, jsonData) => {
+        try {
+          const items = JSON.parse(jsonData.trim());
+          if (!Array.isArray(items)) return '';
+          const cardsHtml = items.map((item: Record<string, string>) => {
+            const keys = Object.keys(item);
+            const przedKey = keys.find(k => k.toLowerCase().startsWith('przed'));
+            const poKey = keys.find(k => k.toLowerCase().startsWith('po'));
+            const przedValue = przedKey ? item[przedKey] : '';
+            const poValue = poKey ? item[poKey] : '';
+            return `<div class="comparison-card">` +
+            `<div class="comparison-aspect">${item.aspekt || ''}</div>` +
+            `<div class="comparison-columns">` +
+            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${przedValue}</span></div>` +
+            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${poValue}</span></div>` +
+            `</div></div>`;
+          }).join('');
+          return `\n\n<div class="comparison-box"><span class="comparison-label">PORÓWNANIE</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
+        } catch {
+          return '';
+        }
+      })
+    // Convert <wykres-wyniki> to sports results (double quotes)
+    .replace(/<wykres-wyniki\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-wyniki>/gi,
       (_, title, jsonData) => {
         try {
           const matches = JSON.parse(jsonData.trim());
@@ -465,8 +574,51 @@ export function sanitizeAndProcessHtml(text: string): string {
           return '';
         }
       })
-    // Convert <tabela-wynikow> to rankings table
-    .replace(/<tabela-wynikow\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/tabela-wynikow>/gi,
+    // Convert <wykres-wyniki> to sports results (single quotes)
+    .replace(/<wykres-wyniki\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-wyniki>/gi,
+      (_, title, jsonData) => {
+        try {
+          const matches = JSON.parse(jsonData.trim());
+          if (!Array.isArray(matches) || matches.length === 0) return '';
+
+          if (matches.length === 1) {
+            const match = matches[0] as {strona1?: string, strona2?: string, wynik1?: number, wynik2?: number, runda?: string};
+            const score1 = match.wynik1 ?? 0;
+            const score2 = match.wynik2 ?? 0;
+            const winner = score1 > score2 ? 1 : score1 < score2 ? 2 : 0;
+            return `\n\n<div class="results-box results-box-single">` +
+              `<div class="results-single-header">` +
+              `<span class="results-label">WYNIK</span>` +
+              `<span class="results-title">${title}</span>` +
+              `</div>` +
+              `<div class="results-single-match">` +
+              `<span class="match-team${winner === 1 ? ' match-winner' : ''}">${match.strona1 || ''}</span>` +
+              `<span class="match-score">${score1} : ${score2}</span>` +
+              `<span class="match-team${winner === 2 ? ' match-winner' : ''}">${match.strona2 || ''}</span>` +
+              `</div>` +
+              (match.runda ? `<div class="results-single-round">${match.runda}</div>` : '') +
+              `</div>\n\n`;
+          }
+
+          const matchesHtml = matches.map((match: {strona1?: string, strona2?: string, wynik1?: number, wynik2?: number, runda?: string}) => {
+            const score1 = match.wynik1 ?? 0;
+            const score2 = match.wynik2 ?? 0;
+            const winner = score1 > score2 ? 1 : score1 < score2 ? 2 : 0;
+            return `<div class="match-row">` +
+              (match.runda ? `<div class="match-round">${match.runda}</div>` : '') +
+              `<div class="match-teams">` +
+              `<span class="match-team${winner === 1 ? ' match-winner' : ''}">${match.strona1 || ''}</span>` +
+              `<span class="match-score">${score1} : ${score2}</span>` +
+              `<span class="match-team${winner === 2 ? ' match-winner' : ''}">${match.strona2 || ''}</span>` +
+              `</div></div>`;
+          }).join('');
+          return `\n\n<div class="results-box"><span class="results-label">WYNIKI</span><div class="results-title">${title}</div><div class="results-matches">${matchesHtml}</div></div>\n\n`;
+        } catch {
+          return '';
+        }
+      })
+    // Convert <tabela-wynikow> to rankings table (double quotes)
+    .replace(/<tabela-wynikow\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/tabela-wynikow>/gi,
       (_, title, jsonData) => {
         try {
           const entries = JSON.parse(jsonData.trim());
@@ -483,8 +635,26 @@ export function sanitizeAndProcessHtml(text: string): string {
           return '';
         }
       })
-    // Convert <ranking tytuł="..." typ="...">JSON</ranking>
-    .replace(/<ranking\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+typ\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/ranking>/gi,
+    // Convert <tabela-wynikow> to rankings table (single quotes)
+    .replace(/<tabela-wynikow\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/tabela-wynikow>/gi,
+      (_, title, jsonData) => {
+        try {
+          const entries = JSON.parse(jsonData.trim());
+          if (!Array.isArray(entries)) return '';
+          const rowsHtml = entries.map((entry: {pozycja?: number, nazwa?: string, info?: string, wynik?: string}) => {
+            return `<tr class="ranking-row">` +
+              `<td class="ranking-position">${entry.pozycja || ''}</td>` +
+              `<td class="ranking-name">${entry.nazwa || ''}${entry.info ? `<span class="ranking-info">${entry.info}</span>` : ''}</td>` +
+              `<td class="ranking-score">${entry.wynik || ''}</td>` +
+              `</tr>`;
+          }).join('');
+          return `\n\n<div class="ranking-box"><span class="ranking-label">KLASYFIKACJA</span><div class="ranking-title">${title}</div><table class="ranking-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
+        } catch {
+          return '';
+        }
+      })
+    // Convert <ranking tytuł="..." typ="...">JSON</ranking> (double quotes)
+    .replace(/<ranking\s+tytu[łlć]?u?\s*=\s*"([^"]+)"\s+typ\s*=\s*"([^"]+)">([\s\S]*?)<\/ranking>/gi,
       (_, title, typ, jsonData) => {
         try {
           const entries = JSON.parse(jsonData.trim());
@@ -504,8 +674,29 @@ export function sanitizeAndProcessHtml(text: string): string {
           return '';
         }
       })
-    // Handle alternate attribute order for ranking
-    .replace(/<ranking\s+typ\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/ranking>/gi,
+    // Convert <ranking tytuł='...' typ='...'>JSON</ranking> (single quotes)
+    .replace(/<ranking\s+tytu[łlć]?u?\s*=\s*'([^']+)'\s+typ\s*=\s*'([^']+)'>([\s\S]*?)<\/ranking>/gi,
+      (_, title, typ, jsonData) => {
+        try {
+          const entries = JSON.parse(jsonData.trim());
+          if (!Array.isArray(entries)) return '';
+          const isTrofea = typ.toLowerCase() === 'trofea';
+          const label = isTrofea ? 'OSIĄGNIĘCIA' : 'RANKING';
+          const rowsHtml = entries.map((entry: {pozycja?: number, nazwa?: string, info?: string}, index: number) => {
+            const position = isTrofea ? `<span class="ranking-trophy"><i class="ri-trophy-fill"></i></span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
+            return `<div class="ranking-item">` +
+              position +
+              `<span class="ranking-name">${entry.nazwa || ''}</span>` +
+              (entry.info ? `<span class="ranking-info">${entry.info}</span>` : '') +
+              `</div>`;
+          }).join('');
+          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${label}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
+        } catch {
+          return '';
+        }
+      })
+    // Handle alternate attribute order for ranking (double quotes)
+    .replace(/<ranking\s+typ\s*=\s*"([^"]+)"\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/ranking>/gi,
       (_, typ, title, jsonData) => {
         try {
           const entries = JSON.parse(jsonData.trim());
@@ -525,8 +716,46 @@ export function sanitizeAndProcessHtml(text: string): string {
           return '';
         }
       })
-    // Convert <kalendarz> to calendar events
-    .replace(/<kalendarz\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/kalendarz>/gi,
+    // Handle alternate attribute order for ranking (single quotes)
+    .replace(/<ranking\s+typ\s*=\s*'([^']+)'\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/ranking>/gi,
+      (_, typ, title, jsonData) => {
+        try {
+          const entries = JSON.parse(jsonData.trim());
+          if (!Array.isArray(entries)) return '';
+          const isTrofea = typ.toLowerCase() === 'trofea';
+          const label = isTrofea ? 'OSIĄGNIĘCIA' : 'RANKING';
+          const rowsHtml = entries.map((entry: {pozycja?: number, nazwa?: string, info?: string}, index: number) => {
+            const position = isTrofea ? `<span class="ranking-trophy"><i class="ri-trophy-fill"></i></span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
+            return `<div class="ranking-item">` +
+              position +
+              `<span class="ranking-name">${entry.nazwa || ''}</span>` +
+              (entry.info ? `<span class="ranking-info">${entry.info}</span>` : '') +
+              `</div>`;
+          }).join('');
+          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${label}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
+        } catch {
+          return '';
+        }
+      })
+    // Convert <kalendarz> to calendar events (double quotes)
+    .replace(/<kalendarz\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/kalendarz>/gi,
+      (_, title, jsonData) => {
+        try {
+          const events = JSON.parse(jsonData.trim());
+          if (!Array.isArray(events)) return '';
+          const rowsHtml = events.map((event: {data?: string, wydarzenie?: string}) => {
+            return `<tr class="calendar-row">` +
+              `<td class="calendar-date">${event.data || ''}</td>` +
+              `<td class="calendar-desc">${event.wydarzenie || ''}</td>` +
+              `</tr>`;
+          }).join('');
+          return `\n\n<div class="calendar-box"><span class="calendar-label">KALENDARZ</span><div class="calendar-title">${title}</div><table class="calendar-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
+        } catch {
+          return '';
+        }
+      })
+    // Convert <kalendarz> to calendar events (single quotes)
+    .replace(/<kalendarz\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/kalendarz>/gi,
       (_, title, jsonData) => {
         try {
           const events = JSON.parse(jsonData.trim());
@@ -548,8 +777,32 @@ export function sanitizeAndProcessHtml(text: string): string {
     // Remove <wykres-liniowy> tags - they are handled separately as React components in EventSummary
     .replace(/<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk?a?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
     .replace(/<wykres-liniowy\s+jednostk?a?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
-    // Convert <wykres-kołowy> to stacked bar representation
-    .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["'](?:\s+jednostk?a?\s*=\s*["'][^"']*["'])?>([\s\S]*?)<\/wykres-kołowy>/gi,
+    // Convert <wykres-kołowy> to stacked bar representation (double quotes)
+    .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*"([^"]+)"(?:\s+jednostk?a?\s*=\s*"[^"]*")?>([\s\S]*?)<\/wykres-kołowy>/gi,
+      (_, title, dataStr) => {
+        const COLORS = ['#e23c0f', '#3c3c3c', '#969696', '#c8c8c8', '#1e1e1e', '#787878'];
+        const items: {label: string, value: number}[] = [];
+        dataStr.split(',').forEach((pair: string) => {
+          const match = pair.trim().match(/^([^:]+):\s*([\d.,]+)/);
+          if (match) {
+            items.push({ label: match[1].trim(), value: parseFloat(match[2].replace(',', '.')) });
+          }
+        });
+        if (items.length < 2) return '';
+        const total = items.reduce((sum, item) => sum + item.value, 0);
+        if (total === 0) return '';
+        const segmentsHtml = items.map((item, i) => {
+          const pct = (item.value / total) * 100;
+          return `<div class="stacked-segment" style="width: ${pct}%; background: ${COLORS[i % COLORS.length]};"></div>`;
+        }).join('');
+        const legendHtml = items.map((item, i) => {
+          const pct = Math.round((item.value / total) * 100);
+          return `<div class="stacked-legend-item"><span class="stacked-legend-color" style="background: ${COLORS[i % COLORS.length]};"></span><span class="stacked-legend-text">${item.label}</span><span class="stacked-legend-pct">${pct}%</span></div>`;
+        }).join('');
+        return `\n\n<div class="stacked-box"><span class="stacked-label">STRUKTURA</span><div class="stacked-title">${title}</div><div class="stacked-bar">${segmentsHtml}</div><div class="stacked-legend">${legendHtml}</div></div>\n\n`;
+      })
+    // Convert <wykres-kołowy> to stacked bar representation (single quotes)
+    .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*'([^']+)'(?:\s+jednostk?a?\s*=\s*'[^']*')?>([\s\S]*?)<\/wykres-kołowy>/gi,
       (_, title, dataStr) => {
         const COLORS = ['#e23c0f', '#3c3c3c', '#969696', '#c8c8c8', '#1e1e1e', '#787878'];
         const items: {label: string, value: number}[] = [];

@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useCommittees } from '../../hooks/useCommittees';
 import { SejmApiError } from '../../components/sejm';
@@ -80,7 +80,7 @@ export function CommitteesPage() {
       {/* Committees list */}
       <div className="grid gap-3">
         {filteredCommittees.map((committee) => (
-          <Link
+          <LocalizedLink
             key={committee.code}
             to={`/sejm/komisje/${committee.code}`}
             className="block rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
@@ -105,7 +105,7 @@ export function CommitteesPage() {
                 </div>
               </div>
             </div>
-          </Link>
+          </LocalizedLink>
         ))}
       </div>
     </div>

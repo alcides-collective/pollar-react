@@ -1,4 +1,5 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useClub } from '../../hooks/useClubs';
 import { useMPs } from '../../hooks/useMPs';
@@ -35,9 +36,9 @@ export function ClubDetailPage() {
     return (
       <div className="text-center py-12">
         <p className="text-zinc-500">{t('clubDetail.notFound')}</p>
-        <Link to="/sejm/kluby" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+        <LocalizedLink to="/sejm/kluby" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
           <i className="ri-arrow-left-s-line" /> {t('clubDetail.backToList')}
-        </Link>
+        </LocalizedLink>
       </div>
     );
   }
@@ -45,9 +46,9 @@ export function ClubDetailPage() {
   return (
     <div className="space-y-6">
       {/* Back link */}
-      <Link to="/sejm/kluby" className="text-sm text-zinc-500 hover:text-zinc-700">
+      <LocalizedLink to="/sejm/kluby" className="text-sm text-zinc-500 hover:text-zinc-700">
         <i className="ri-arrow-left-s-line" /> {t('clubDetail.allClubs')}
-      </Link>
+      </LocalizedLink>
 
       {/* Header */}
       <div className="flex items-center gap-4">

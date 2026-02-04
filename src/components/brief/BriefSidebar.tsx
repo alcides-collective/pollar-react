@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useEvent } from '../../hooks/useEvent';
@@ -54,7 +54,7 @@ function SectionEventCard({ eventId }: { eventId: string }) {
     : null;
 
   return (
-    <Link
+    <LocalizedLink
       to={`/event/${event.id}`}
       className="block p-3 bg-zinc-50 hover:bg-zinc-100 rounded-lg transition-colors group"
     >
@@ -67,7 +67,7 @@ function SectionEventCard({ eventId }: { eventId: string }) {
         </p>
       )}
       <p className="text-xs text-zinc-400">{formattedDate}</p>
-    </Link>
+    </LocalizedLink>
   );
 }
 

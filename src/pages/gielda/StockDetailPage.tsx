@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useStockQuote, useStockHistory } from '../../hooks/useGieldaData';
 import { useWatchlistStore } from '../../stores/gieldaStore';
@@ -37,13 +38,13 @@ export function StockDetailPage() {
   if (stockError) {
     return (
       <div className="stock-detail-page">
-        <Link
+        <LocalizedLink
           to="/gielda/akcje"
           className="inline-flex items-center gap-2 text-sm text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
           {t('stockDetail.backToStocks')}
-        </Link>
+        </LocalizedLink>
         <div className="rounded-lg p-4 border border-red-600/20 bg-red-600/5 text-red-700 dark:text-red-400">
           <p className="font-medium">{t('stockDetail.failedToLoad')}</p>
         </div>
@@ -55,13 +56,13 @@ export function StockDetailPage() {
 
   return (
     <div className="stock-detail-page">
-      <Link
+      <LocalizedLink
         to="/gielda/akcje"
         className="inline-flex items-center gap-2 text-sm text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
         {t('stockDetail.backToStocks')}
-      </Link>
+      </LocalizedLink>
 
       {stockLoading && !stock ? (
         <div className="space-y-6">

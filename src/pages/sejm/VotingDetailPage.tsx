@@ -1,4 +1,5 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useVoting } from '../../hooks/useVoting';
@@ -85,9 +86,9 @@ export function VotingDetailPage() {
     return (
       <div className="text-center py-12">
         <p className="text-zinc-500">{t('votingDetail.notFound')}</p>
-        <Link to="/sejm/glosowania" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+        <LocalizedLink to="/sejm/glosowania" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
           <i className="ri-arrow-left-s-line" /> {t('votingDetail.backToList')}
-        </Link>
+        </LocalizedLink>
       </div>
     );
   }
@@ -107,9 +108,9 @@ export function VotingDetailPage() {
   return (
     <div className="space-y-6">
       {/* Back link */}
-      <Link to="/sejm/glosowania" className="text-sm text-zinc-500 hover:text-zinc-700">
+      <LocalizedLink to="/sejm/glosowania" className="text-sm text-zinc-500 hover:text-zinc-700">
         <i className="ri-arrow-left-s-line" /> {t('votingDetail.allVotings')}
-      </Link>
+      </LocalizedLink>
 
       {/* Header */}
       <div>

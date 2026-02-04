@@ -1,7 +1,8 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DANE_CATEGORIES } from '@/types/dane';
+import { LocalizedLink } from '../LocalizedLink';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,23 +17,25 @@ interface DaneNavProps {
 
 export function DaneNav({ mobile }: DaneNavProps) {
   const location = useLocation();
+  // Remove language prefix for pathname comparison
+  const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';
 
   if (mobile) {
     return (
       <div className="flex gap-2 pb-4">
-        <Link to="/dane">
+        <LocalizedLink to="/dane">
           <Button
-            variant={location.pathname === '/dane' ? 'default' : 'outline'}
+            variant={pathWithoutLang === '/dane' ? 'default' : 'outline'}
             size="sm"
           >
             Dashboard
           </Button>
-        </Link>
+        </LocalizedLink>
         {DANE_CATEGORIES.map((category) => (
           <DropdownMenu key={category.id}>
             <DropdownMenuTrigger asChild>
               <Button
-                variant={location.pathname.includes(category.id) ? 'default' : 'outline'}
+                variant={pathWithoutLang.includes(category.id) ? 'default' : 'outline'}
                 size="sm"
                 className="gap-1"
               >
@@ -44,7 +47,7 @@ export function DaneNav({ mobile }: DaneNavProps) {
             <DropdownMenuContent>
               {category.subpages.map((subpage) => (
                 <DropdownMenuItem key={subpage.id} asChild>
-                  <Link to={subpage.path}>{subpage.name}</Link>
+                  <LocalizedLink to={subpage.path}>{subpage.name}</LocalizedLink>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -56,17 +59,17 @@ export function DaneNav({ mobile }: DaneNavProps) {
 
   return (
     <nav className="space-y-6">
-      <Link
+      <LocalizedLink
         to="/dane"
         className={cn(
           'block px-3 py-2 rounded-md text-sm font-medium transition-colors',
-          location.pathname === '/dane'
+          pathWithoutLang === '/dane'
             ? 'bg-primary text-primary-foreground'
             : 'text-muted-foreground hover:bg-muted hover:text-foreground'
         )}
       >
         Dashboard
-      </Link>
+      </LocalizedLink>
 
       {DANE_CATEGORIES.map((category) => (
         <div key={category.id}>
@@ -76,18 +79,18 @@ export function DaneNav({ mobile }: DaneNavProps) {
           </h3>
           <div className="space-y-1">
             {category.subpages.map((subpage) => (
-              <Link
+              <LocalizedLink
                 key={subpage.id}
                 to={subpage.path}
                 className={cn(
                   'block px-3 py-2 rounded-md text-sm transition-colors',
-                  location.pathname === subpage.path
+                  pathWithoutLang === subpage.path
                     ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 )}
               >
                 {subpage.name}
-              </Link>
+              </LocalizedLink>
             ))}
           </div>
         </div>

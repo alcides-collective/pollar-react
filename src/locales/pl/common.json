@@ -227,7 +227,8 @@
   "greetings": {
     "morning": "Dzień dobry",
     "evening": "Dobry wieczór",
-    "default": "Witaj"
+    "default": "Witaj",
+    "today": "dziś"
   },
   "sidebar": {
     "latest": "Najnowsze",

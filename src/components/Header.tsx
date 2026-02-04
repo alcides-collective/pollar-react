@@ -1,10 +1,11 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useEvents } from '../stores/eventsStore';
 import { useUIStore } from '../stores/uiStore';
 import { useSearchStore } from '../stores/searchStore';
 import { useAuthStore, useUser, useIsAuthenticated } from '../stores/authStore';
 import { useLanguage, useSetLanguage, type Language } from '../stores/languageStore';
+import { LocalizedLink } from './LocalizedLink';
 // import { useProStore } from '../stores/proStore';
 import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -36,7 +37,20 @@ const LANGUAGES: { code: Language; label: string }[] = [
 function LanguageSelector() {
   const language = useLanguage();
   const setLanguage = useSetLanguage();
+  const location = useLocation();
+  const navigate = useNavigate();
   const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
+
+  const handleLanguageChange = (newLang: Language) => {
+    // Get current path without language prefix
+    const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
+    // Build new path with new language prefix
+    const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
+    const newPath = newPrefix + currentPath;
+    // Navigate and update store
+    navigate(newPath);
+    setLanguage(newLang);
+  };
 
   return (
     <DropdownMenu>
@@ -51,7 +65,7 @@ function LanguageSelector() {
         {LANGUAGES.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
-            onClick={() => setLanguage(lang.code)}
+            onClick={() => handleLanguageChange(lang.code)}
             className={`flex items-center gap-2 cursor-pointer ${language === lang.code ? 'bg-zinc-800 text-white' : ''}`}
           >
             <span>{lang.label}</span>
@@ -97,19 +111,19 @@ function AuthButton() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem asChild>
-            <Link to="/dashboard" className="w-full cursor-pointer">
+            <LocalizedLink to="/dashboard" className="w-full cursor-pointer">
               {t('user.dashboard')}
-            </Link>
+            </LocalizedLink>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link to="/profil" className="w-full cursor-pointer">
+            <LocalizedLink to="/profil" className="w-full cursor-pointer">
               {t('user.myProfile')}
-            </Link>
+            </LocalizedLink>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link to="/powiadomienia" className="w-full cursor-pointer">
+            <LocalizedLink to="/powiadomienia" className="w-full cursor-pointer">
               {t('user.notifications')}
-            </Link>
+            </LocalizedLink>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
@@ -226,8 +240,12 @@ export function Header() {
   // Handle category selection - navigate to home if not already there
   const handleCategoryClick = (category: string | null) => {
     setSelectedCategory(category);
-    if (location.pathname !== '/') {
-      navigate('/');
+    // Get path without language prefix to check if we're on home
+    const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';
+    if (pathWithoutLang !== '/') {
+      // Navigate to localized home
+      const prefix = language !== 'pl' ? `/${language}` : '';
+      navigate(prefix + '/');
     }
   };
 
@@ -264,7 +282,7 @@ export function Header() {
             />
           </div>
           <div className="flex items-center gap-10">
-            <Link to="/" onClick={() => handleCategoryClick(null)}>
+            <LocalizedLink to="/" onClick={() => handleCategoryClick(null)}>
               <img
                 src={logoImg}
                 alt="Pollar"
@@ -272,15 +290,15 @@ export function Header() {
                 width={172}
                 height={20}
               />
-            </Link>
+            </LocalizedLink>
           </div>
           <div className="flex items-center gap-3">
-            <Link
+            <LocalizedLink
               to="/polityka-prywatnosci"
               className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
             >
               {t('nav.privacy')}
-            </Link>
+            </LocalizedLink>
             <AlertsBell />
             <LanguageSelector />
             <AuthButton />
@@ -373,70 +391,70 @@ export function Header() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem asChild>
-                <Link to="/brief" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/brief" className="w-full flex items-center gap-2">
                   <i className="ri-newspaper-line" />
                   {t('nav.dailyBrief')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/asystent" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/asystent" className="w-full flex items-center gap-2">
                   <i className="ri-robot-2-line" />
                   {t('nav.aiAssistant')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/sejm" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/sejm" className="w-full flex items-center gap-2">
                   <i className="ri-government-line" />
                   {t('nav.sejm')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/gielda" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/gielda" className="w-full flex items-center gap-2">
                   <i className="ri-line-chart-line" />
                   {t('nav.stockExchange')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/mapa" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/mapa" className="w-full flex items-center gap-2">
                   <i className="ri-map-pin-line" />
                   {t('nav.eventMap')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/dane" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/dane" className="w-full flex items-center gap-2">
                   <i className="ri-database-2-line" />
                   {t('nav.openData')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/graf" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/graf" className="w-full flex items-center gap-2">
                   <i className="ri-share-circle-line" />
                   {t('nav.connectionGraph')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/terminal" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/terminal" className="w-full flex items-center gap-2">
                   <i className="ri-terminal-line" />
                   {t('nav.terminal')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/powiazania" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/powiazania" className="w-full flex items-center gap-2">
                   <i className="ri-mind-map" />
                   {t('nav.connections')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/archiwum" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/archiwum" className="w-full flex items-center gap-2">
                   <i className="ri-archive-line" />
                   {t('nav.archive')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/info" className="w-full flex items-center gap-2">
+                <LocalizedLink to="/info" className="w-full flex items-center gap-2">
                   <i className="ri-information-line" />
                   {t('nav.about')}
-                </Link>
+                </LocalizedLink>
               </DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>

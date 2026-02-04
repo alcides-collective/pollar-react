@@ -1,4 +1,5 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useMP } from '../../hooks/useMP';
 import { PartyBadge, SejmApiError } from '../../components/sejm';
@@ -35,9 +36,9 @@ export function MPDetailPage() {
     return (
       <div className="text-center py-12">
         <p className="text-zinc-500">{t('mpDetail.notFound')}</p>
-        <Link to="/sejm/poslowie" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+        <LocalizedLink to="/sejm/poslowie" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
           <i className="ri-arrow-left-s-line" /> {t('mpDetail.backToList')}
-        </Link>
+        </LocalizedLink>
       </div>
     );
   }
@@ -55,9 +56,9 @@ export function MPDetailPage() {
   return (
     <div className="space-y-6">
       {/* Back link */}
-      <Link to="/sejm/poslowie" className="text-sm text-zinc-500 hover:text-zinc-700">
+      <LocalizedLink to="/sejm/poslowie" className="text-sm text-zinc-500 hover:text-zinc-700">
         <i className="ri-arrow-left-s-line" /> {t('mpDetail.allMPs')}
-      </Link>
+      </LocalizedLink>
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row gap-6">

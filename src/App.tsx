@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 import { motion } from 'framer-motion'
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
@@ -17,6 +17,7 @@ import { ScrollToTop } from './components/ScrollToTop'
 import { PageLoader } from './components/common/PageLoader'
 import { useEventStream } from './hooks/useEventStream'
 import { useAllSectionsReady } from './stores/imageLoadingStore'
+import { useLanguage, useSetLanguage, type Language } from './stores/languageStore'
 
 // Lazy load all page components for code splitting
 const EventPage = lazy(() => import('./pages/event').then(m => ({ default: m.EventPage })))
@@ -87,6 +88,98 @@ function HomePage() {
 // Full-screen routes that don't need Header/Footer
 const FULLSCREEN_ROUTES = ['/mapa', '/terminal', '/asystent', '/info', '/graf']
 
+// Language route handler - syncs URL language prefix with language store
+function LanguageRouteHandler() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const setLanguage = useSetLanguage()
+  const storeLanguage = useLanguage()
+
+  useEffect(() => {
+    // Extract language from URL
+    const match = location.pathname.match(/^\/(en|de)(\/|$)/)
+    const urlLang: Language = match ? (match[1] as Language) : 'pl'
+
+    // Sync URL -> Store (only if different)
+    if (urlLang !== storeLanguage) {
+      setLanguage(urlLang)
+    }
+
+    // Redirect /pl/... -> /... (Polish is default without prefix)
+    if (location.pathname.startsWith('/pl/') || location.pathname === '/pl') {
+      const newPath = location.pathname.replace(/^\/pl/, '') || '/'
+      navigate(newPath, { replace: true })
+    }
+  }, [location.pathname, storeLanguage, setLanguage, navigate])
+
+  return null
+}
+
+// Helper to generate routes with optional language prefix
+function getAppRoutes(prefix = '') {
+  return [
+    <Route key={`${prefix}-home`} path={`${prefix}/`} element={<HomePage />} />,
+    <Route key={`${prefix}-brief`} path={`${prefix}/brief`} element={<BriefPage />} />,
+    <Route key={`${prefix}-felieton`} path={`${prefix}/felieton/:id`} element={<FelietonPage />} />,
+    <Route key={`${prefix}-event`} path={`${prefix}/event/:id`} element={<EventPage />} />,
+    <Route key={`${prefix}-privacy`} path={`${prefix}/polityka-prywatnosci`} element={<PrivacyPolicyPage />} />,
+    <Route key={`${prefix}-cookies`} path={`${prefix}/cookies`} element={<CookieSettingsPage />} />,
+    <Route key={`${prefix}-mapa`} path={`${prefix}/mapa`} element={<MapPage />} />,
+    <Route key={`${prefix}-terminal`} path={`${prefix}/terminal`} element={<TerminalPage />} />,
+    <Route key={`${prefix}-asystent`} path={`${prefix}/asystent`} element={<AsystentPage />} />,
+    <Route key={`${prefix}-info`} path={`${prefix}/info`} element={<InfoPage />} />,
+    <Route key={`${prefix}-powiazania`} path={`${prefix}/powiazania`} element={<PowiazaniaPage />} />,
+    <Route key={`${prefix}-graf`} path={`${prefix}/graf`} element={<GrafPage />} />,
+    <Route key={`${prefix}-dashboard`} path={`${prefix}/dashboard`} element={<DashboardPage />} />,
+    <Route key={`${prefix}-profil`} path={`${prefix}/profil`} element={<ProfilePage />} />,
+    <Route key={`${prefix}-powiadomienia`} path={`${prefix}/powiadomienia`} element={<NotificationsPage />} />,
+    <Route key={`${prefix}-archiwum`} path={`${prefix}/archiwum`} element={<ArchivePage />} />,
+    <Route key={`${prefix}-archiwum-cat`} path={`${prefix}/archiwum/:category`} element={<CategoryArchivePage />} />,
+    /* Sejm routes */
+    <Route key={`${prefix}-sejm`} path={`${prefix}/sejm`} element={<SejmLayout />}>
+      <Route index element={<SejmDashboard />} />
+      <Route path="poslowie" element={<MPsPage />} />
+      <Route path="poslowie/:id" element={<MPDetailPage />} />
+      <Route path="kluby" element={<ClubsPage />} />
+      <Route path="kluby/:id" element={<ClubDetailPage />} />
+      <Route path="glosowania" element={<VotingsPage />} />
+      <Route path="glosowania/:sitting/:number" element={<VotingDetailPage />} />
+      <Route path="komisje" element={<CommitteesPage />} />
+      <Route path="komisje/:code" element={<CommitteeDetailPage />} />
+      <Route path="posiedzenia" element={<ProceedingsPage />} />
+      <Route path="posiedzenia/:number" element={<ProceedingDetailPage />} />
+      <Route path="druki" element={<PrintsPage />} />
+      <Route path="druki/:number" element={<PrintDetailPage />} />
+      <Route path="procesy" element={<ProcessesPage />} />
+      <Route path="interpelacje" element={<InterpellationsPage />} />
+      <Route path="zapytania" element={<QuestionsPage />} />
+      <Route path="transmisje" element={<VideosPage />} />
+    </Route>,
+    /* Dane routes */
+    <Route key={`${prefix}-dane`} path={`${prefix}/dane`} element={<DaneLayout />}>
+      <Route index element={<DanePage />} />
+      <Route path="srodowisko/powietrze" element={<PowietrzePage />} />
+      <Route path="spoleczenstwo/imiona" element={<ImionaPage />} />
+      <Route path="spoleczenstwo/nazwiska" element={<NazwiskaPage />} />
+      <Route path="ekonomia/energia" element={<EnergiaPage />} />
+      <Route path="ekonomia/eurostat" element={<EurostatPage />} />
+      <Route path="ekonomia/mieszkania" element={<MieszkaniaPage />} />
+      <Route path="transport/kolej" element={<KolejPage />} />
+      <Route path="transport/porty" element={<PortyPage />} />
+      <Route path="bezpieczenstwo/przestepczosc" element={<PrzestepczoscPage />} />
+    </Route>,
+    /* Gielda routes */
+    <Route key={`${prefix}-gielda`} path={`${prefix}/gielda`} element={<GieldaLayout />}>
+      <Route index element={<GieldaPage />} />
+      <Route path="akcje" element={<StocksPage />} />
+      <Route path="akcje/:symbol" element={<StockDetailPage />} />
+      <Route path="indeksy" element={<IndicesPage />} />
+      <Route path="indeksy/:symbol" element={<IndexDetailPage />} />
+      <Route path="watchlist" element={<WatchlistPage />} />
+    </Route>,
+  ]
+}
+
 function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () => void; onContentReady: () => void }) {
   const location = useLocation()
 
@@ -110,65 +203,12 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
     >
       <Suspense fallback={<PageLoader />}>
         <Routes location={location}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/brief" element={<BriefPage />} />
-          <Route path="/felieton/:id" element={<FelietonPage />} />
-          <Route path="/event/:id" element={<EventPage />} />
-          <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
-          <Route path="/cookies" element={<CookieSettingsPage />} />
-          <Route path="/mapa" element={<MapPage />} />
-          <Route path="/terminal" element={<TerminalPage />} />
-          <Route path="/asystent" element={<AsystentPage />} />
-          <Route path="/info" element={<InfoPage />} />
-          <Route path="/powiazania" element={<PowiazaniaPage />} />
-          <Route path="/graf" element={<GrafPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/profil" element={<ProfilePage />} />
-          <Route path="/powiadomienia" element={<NotificationsPage />} />
-          <Route path="/archiwum" element={<ArchivePage />} />
-          <Route path="/archiwum/:category" element={<CategoryArchivePage />} />
-          {/* Sejm routes */}
-          <Route path="/sejm" element={<SejmLayout />}>
-            <Route index element={<SejmDashboard />} />
-            <Route path="poslowie" element={<MPsPage />} />
-            <Route path="poslowie/:id" element={<MPDetailPage />} />
-            <Route path="kluby" element={<ClubsPage />} />
-            <Route path="kluby/:id" element={<ClubDetailPage />} />
-            <Route path="glosowania" element={<VotingsPage />} />
-            <Route path="glosowania/:sitting/:number" element={<VotingDetailPage />} />
-            <Route path="komisje" element={<CommitteesPage />} />
-            <Route path="komisje/:code" element={<CommitteeDetailPage />} />
-            <Route path="posiedzenia" element={<ProceedingsPage />} />
-            <Route path="posiedzenia/:number" element={<ProceedingDetailPage />} />
-            <Route path="druki" element={<PrintsPage />} />
-            <Route path="druki/:number" element={<PrintDetailPage />} />
-            <Route path="procesy" element={<ProcessesPage />} />
-            <Route path="interpelacje" element={<InterpellationsPage />} />
-            <Route path="zapytania" element={<QuestionsPage />} />
-            <Route path="transmisje" element={<VideosPage />} />
-          </Route>
-          {/* Dane routes */}
-          <Route path="/dane" element={<DaneLayout />}>
-            <Route index element={<DanePage />} />
-            <Route path="srodowisko/powietrze" element={<PowietrzePage />} />
-            <Route path="spoleczenstwo/imiona" element={<ImionaPage />} />
-            <Route path="spoleczenstwo/nazwiska" element={<NazwiskaPage />} />
-            <Route path="ekonomia/energia" element={<EnergiaPage />} />
-            <Route path="ekonomia/eurostat" element={<EurostatPage />} />
-            <Route path="ekonomia/mieszkania" element={<MieszkaniaPage />} />
-            <Route path="transport/kolej" element={<KolejPage />} />
-            <Route path="transport/porty" element={<PortyPage />} />
-            <Route path="bezpieczenstwo/przestepczosc" element={<PrzestepczoscPage />} />
-          </Route>
-          {/* Gielda routes */}
-          <Route path="/gielda" element={<GieldaLayout />}>
-            <Route index element={<GieldaPage />} />
-            <Route path="akcje" element={<StocksPage />} />
-            <Route path="akcje/:symbol" element={<StockDetailPage />} />
-            <Route path="indeksy" element={<IndicesPage />} />
-            <Route path="indeksy/:symbol" element={<IndexDetailPage />} />
-            <Route path="watchlist" element={<WatchlistPage />} />
-          </Route>
+          {/* Polish routes (default, no prefix) */}
+          {getAppRoutes()}
+          {/* English routes */}
+          {getAppRoutes('/en')}
+          {/* German routes */}
+          {getAppRoutes('/de')}
         </Routes>
       </Suspense>
     </motion.div>
@@ -177,7 +217,9 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
 
 function useIsFullscreenRoute() {
   const location = useLocation()
-  return FULLSCREEN_ROUTES.some(route => location.pathname === route)
+  // Remove language prefix for comparison
+  const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/'
+  return FULLSCREEN_ROUTES.some(route => pathWithoutLang === route)
 }
 
 function AppContent() {
@@ -185,7 +227,8 @@ function AppContent() {
   const isFullscreen = useIsFullscreenRoute()
   const location = useLocation()
   const allSectionsReady = useAllSectionsReady()
-  const isHomePage = location.pathname === '/'
+  const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/'
+  const isHomePage = pathWithoutLang === '/'
 
   // Initialize auth listener
   const initializeAuth = useAuthStore((s) => s.initialize)
@@ -227,6 +270,7 @@ function AppContent() {
   if (isFullscreen) {
     return (
       <>
+        <LanguageRouteHandler />
         <ScrollToTop />
         <AnimatedRoutes onRouteChange={handleRouteChange} onContentReady={handleContentReady} />
       </>
@@ -236,6 +280,7 @@ function AppContent() {
   // Standard layout with header/footer
   return (
     <>
+      <LanguageRouteHandler />
       <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-white">
         <Header />

@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +16,20 @@ const LANGUAGES: { code: Language; label: string }[] = [
 export function FloatingLanguageSelector() {
   const language = useLanguage();
   const setLanguage = useSetLanguage();
+  const location = useLocation();
+  const navigate = useNavigate();
   const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
+
+  const handleLanguageChange = (newLang: Language) => {
+    // Get current path without language prefix
+    const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
+    // Build new path with new language prefix
+    const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
+    const newPath = newPrefix + currentPath;
+    // Navigate and update store
+    navigate(newPath);
+    setLanguage(newLang);
+  };
 
   return (
     <div className="fixed top-4 right-4 z-50">
@@ -31,7 +45,7 @@ export function FloatingLanguageSelector() {
           {LANGUAGES.map((lang) => (
             <DropdownMenuItem
               key={lang.code}
-              onClick={() => setLanguage(lang.code)}
+              onClick={() => handleLanguageChange(lang.code)}
               className={`flex items-center gap-2 cursor-pointer ${language === lang.code ? 'bg-zinc-100 text-zinc-900 font-medium' : ''}`}
             >
               <span>{lang.label}</span>

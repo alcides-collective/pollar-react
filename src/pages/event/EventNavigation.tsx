@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import type { Event } from '../../types/events';
 
@@ -17,7 +17,7 @@ export function EventNavigation({ previousEvent, nextEvent }: EventNavigationPro
         {/* Previous Event */}
         <div className="flex-1">
           {previousEvent ? (
-            <Link
+            <LocalizedLink
               to={`/event/${previousEvent.id}`}
               className="block p-4 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 transition-colors h-full"
             >
@@ -28,7 +28,7 @@ export function EventNavigation({ previousEvent, nextEvent }: EventNavigationPro
               <h4 className="text-sm font-medium text-zinc-900 line-clamp-2">
                 {previousEvent.title}
               </h4>
-            </Link>
+            </LocalizedLink>
           ) : (
             <div className="p-4 rounded-lg border border-zinc-100 h-full opacity-50">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-zinc-300 mb-2">
@@ -43,7 +43,7 @@ export function EventNavigation({ previousEvent, nextEvent }: EventNavigationPro
         {/* Next Event */}
         <div className="flex-1">
           {nextEvent ? (
-            <Link
+            <LocalizedLink
               to={`/event/${nextEvent.id}`}
               className="block p-4 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 transition-colors h-full text-right"
             >
@@ -54,7 +54,7 @@ export function EventNavigation({ previousEvent, nextEvent }: EventNavigationPro
               <h4 className="text-sm font-medium text-zinc-900 line-clamp-2">
                 {nextEvent.title}
               </h4>
-            </Link>
+            </LocalizedLink>
           ) : (
             <div className="p-4 rounded-lg border border-zinc-100 h-full text-right opacity-50">
               <div className="flex items-center justify-end gap-2 text-xs uppercase tracking-wider text-zinc-300 mb-2">

@@ -1,4 +1,5 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useFelieton } from '../../hooks/useFelieton';
 import { useEvent } from '../../hooks/useEvent';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
@@ -43,7 +44,7 @@ function SourceEventCard({ eventId }: { eventId: string }) {
   const firstKeyPoint = event.metadata?.keyPoints?.[0];
 
   return (
-    <Link
+    <LocalizedLink
       to={`/event/${event.id}`}
       className="block p-4 bg-zinc-50 hover:bg-zinc-100 rounded-lg transition-colors group"
     >
@@ -56,7 +57,7 @@ function SourceEventCard({ eventId }: { eventId: string }) {
         </p>
       )}
       <p className="text-xs text-zinc-400">{formattedDate}</p>
-    </Link>
+    </LocalizedLink>
   );
 }
 
@@ -149,13 +150,13 @@ export function FelietonPage() {
           <p className="text-zinc-600 mb-6">
             {error.message}
           </p>
-          <Link
+          <LocalizedLink
             to="/"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             Wróć do strony głównej
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     );
@@ -174,13 +175,13 @@ export function FelietonPage() {
           <p className="text-zinc-600 mb-6">
             Ten felieton nie istnieje lub został usunięty.
           </p>
-          <Link
+          <LocalizedLink
             to="/"
             className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             Wróć do strony głównej
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     );

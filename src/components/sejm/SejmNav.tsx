@@ -1,5 +1,6 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { LocalizedNavLink } from '../LocalizedLink';
 
 type NavItem = { href: string; labelKey: string };
 type NavGroup = { labelKey: string; items: NavItem[] };
@@ -39,10 +40,12 @@ function isGroup(entry: NavEntry): entry is NavGroup {
 }
 
 function isActiveLink(href: string, pathname: string): boolean {
+  // Remove language prefix for comparison
+  const pathWithoutLang = pathname.replace(/^\/(en|de)/, '') || '/';
   if (href === '/sejm') {
-    return pathname === '/sejm';
+    return pathWithoutLang === '/sejm';
   }
-  return pathname.startsWith(href);
+  return pathWithoutLang.startsWith(href);
 }
 
 export function SejmNav() {
@@ -57,7 +60,7 @@ export function SejmNav() {
         {navigationConfig.map((entry) => {
           if (isGroup(entry)) {
             return entry.items.map((item) => (
-              <NavLink
+              <LocalizedNavLink
                 key={item.href}
                 to={item.href}
                 className={`shrink-0 px-3 py-1.5 rounded text-xs uppercase tracking-wide border transition-colors ${
@@ -67,11 +70,11 @@ export function SejmNav() {
                 }`}
               >
                 {t(`navigation.${item.labelKey}`)}
-              </NavLink>
+              </LocalizedNavLink>
             ));
           }
           return (
-            <NavLink
+            <LocalizedNavLink
               key={entry.href}
               to={entry.href}
               className={`shrink-0 px-3 py-1.5 rounded text-xs uppercase tracking-wide border transition-colors ${
@@ -81,7 +84,7 @@ export function SejmNav() {
               }`}
             >
               {t(`navigation.${entry.labelKey}`)}
-            </NavLink>
+            </LocalizedNavLink>
           );
         })}
       </nav>
@@ -96,7 +99,7 @@ export function SejmNav() {
                   {t(`navigation.${entry.labelKey}`)}
                 </div>
                 {entry.items.map((item) => (
-                  <NavLink
+                  <LocalizedNavLink
                     key={item.href}
                     to={item.href}
                     className={`px-3 py-2 rounded-md text-sm transition-colors ${
@@ -106,13 +109,13 @@ export function SejmNav() {
                     }`}
                   >
                     {t(`navigation.${item.labelKey}`)}
-                  </NavLink>
+                  </LocalizedNavLink>
                 ))}
               </div>
             );
           }
           return (
-            <NavLink
+            <LocalizedNavLink
               key={entry.href}
               to={entry.href}
               className={`px-3 py-2 rounded-md text-sm font-medium border-b border-zinc-100 pb-3 mb-2 transition-colors ${
@@ -122,7 +125,7 @@ export function SejmNav() {
               }`}
             >
               {t(`navigation.${entry.labelKey}`)}
-            </NavLink>
+            </LocalizedNavLink>
           );
         })}
       </nav>

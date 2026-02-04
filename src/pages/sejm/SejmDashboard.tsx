@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useSejmStats } from '../../hooks/useSejmStats';
 import { useMPs } from '../../hooks/useMPs';
@@ -113,18 +113,18 @@ export function SejmDashboard() {
             <h3 className="text-sm font-medium text-zinc-900">
               {t('dashboard.followedMPs', { count: followedMPs.length })}
             </h3>
-            <Link
+            <LocalizedLink
               to="/sejm/poslowie"
               className="text-xs text-zinc-500 hover:text-zinc-700"
             >
               {t('dashboard.addMore')} <i className="ri-arrow-right-s-line" />
-            </Link>
+            </LocalizedLink>
           </div>
           <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
             {followedMPs.slice(0, 10).map((mp) => {
               const color = getPartyColor(mp.club);
               return (
-                <Link
+                <LocalizedLink
                   key={mp.id}
                   to={`/sejm/poslowie/${mp.id}`}
                   className="group flex flex-col items-center text-center"
@@ -143,7 +143,7 @@ export function SejmDashboard() {
                   <p className="text-[10px] text-zinc-600 mt-1 line-clamp-1 max-w-full">
                     {mp.lastName}
                   </p>
-                </Link>
+                </LocalizedLink>
               );
             })}
           </div>
@@ -168,7 +168,7 @@ export function SejmDashboard() {
 
       {/* Current Proceeding */}
       {currentProceeding && (
-        <Link
+        <LocalizedLink
           to={`/sejm/posiedzenia/${currentProceeding.number}`}
           className="block rounded-lg border-2 border-green-500 bg-green-50 p-4 hover:bg-green-100 transition-colors"
         >
@@ -181,7 +181,7 @@ export function SejmDashboard() {
             </span>
           </div>
           <h3 className="font-medium text-zinc-900">{currentProceeding.title}</h3>
-        </Link>
+        </LocalizedLink>
       )}
 
       {/* Top MPs */}
@@ -200,19 +200,19 @@ export function SejmDashboard() {
                 </option>
               ))}
             </select>
-            <Link
+            <LocalizedLink
               to="/sejm/poslowie"
               className="text-[10px] text-zinc-400 hover:text-zinc-600 transition-colors"
             >
               {t('dashboard.all')} <i className="ri-arrow-right-s-line" />
-            </Link>
+            </LocalizedLink>
           </div>
         </div>
         <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-1">
           {topMPs.map((mp) => {
             const color = getPartyColor(mp.club);
             return (
-              <Link
+              <LocalizedLink
                 key={mp.id}
                 to={`/sejm/poslowie/${mp.id}`}
                 className="block rounded overflow-hidden border border-zinc-200 hover:border-zinc-300 transition-all"
@@ -240,7 +240,7 @@ export function SejmDashboard() {
                     </div>
                   </div>
                 </div>
-              </Link>
+              </LocalizedLink>
             );
           })}
         </div>
@@ -250,12 +250,12 @@ export function SejmDashboard() {
       <div className="rounded-lg border border-zinc-200 p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-zinc-900">{t('dashboard.recentVotings')}</h3>
-          <Link
+          <LocalizedLink
             to="/sejm/glosowania"
             className="text-xs text-zinc-500 hover:text-zinc-700"
           >
             {t('dashboard.allVotings')} <i className="ri-arrow-right-s-line" />
-          </Link>
+          </LocalizedLink>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
           {recentVotings.map((voting) => (
@@ -266,36 +266,36 @@ export function SejmDashboard() {
 
       {/* Quick Links */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Link
+        <LocalizedLink
           to="/sejm/druki"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
           <i className="ri-file-text-line text-2xl text-zinc-600 mb-1" />
           <div className="text-sm font-medium text-zinc-900">{t('dashboard.prints')}</div>
           <div className="text-xs text-zinc-500">{t('dashboard.recent', { count: stats?.prints.recent || 0 })}</div>
-        </Link>
-        <Link
+        </LocalizedLink>
+        <LocalizedLink
           to="/sejm/interpelacje"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
           <i className="ri-question-answer-line text-2xl text-zinc-600 mb-1" />
           <div className="text-sm font-medium text-zinc-900">{t('dashboard.interpellations')}</div>
           <div className="text-xs text-zinc-500">{t('dashboard.recent', { count: stats?.interpellations.recent || 0 })}</div>
-        </Link>
-        <Link
+        </LocalizedLink>
+        <LocalizedLink
           to="/sejm/komisje"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
           <i className="ri-team-line text-2xl text-zinc-600 mb-1" />
           <div className="text-sm font-medium text-zinc-900">{t('dashboard.committees')}</div>
-        </Link>
-        <Link
+        </LocalizedLink>
+        <LocalizedLink
           to="/sejm/transmisje"
           className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
         >
           <i className="ri-live-line text-2xl text-zinc-600 mb-1" />
           <div className="text-sm font-medium text-zinc-900">{t('dashboard.broadcasts')}</div>
-        </Link>
+        </LocalizedLink>
       </div>
     </div>
   );

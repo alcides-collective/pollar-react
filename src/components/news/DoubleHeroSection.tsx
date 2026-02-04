@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import type { Event } from '../../types/events';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 import { SectionWrapper } from '../common/SectionWrapper';
+import { LocalizedLink } from '../LocalizedLink';
 
 interface DoubleHeroSectionProps {
   events: Event[];
@@ -23,7 +23,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
       priority="auto"
     >
       <div className={`grid grid-cols-1 ${gridCols}`}>
-      <Link to={`/event/${leftEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors border-b md:border-b-0 md:border-r border-zinc-200">
+      <LocalizedLink to={`/event/${leftEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors border-b md:border-b-0 md:border-r border-zinc-200">
         <article>
           <div className="mb-4 relative">
             <EventImage
@@ -47,9 +47,9 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
             {leftEvent.lead}
           </p>
         </article>
-      </Link>
+      </LocalizedLink>
 
-      <Link to={`/event/${rightEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors">
+      <LocalizedLink to={`/event/${rightEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors">
         <article>
           <div className="mb-4 relative">
             <EventImage
@@ -73,7 +73,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
             {rightEvent.lead}
           </p>
         </article>
-      </Link>
+      </LocalizedLink>
       </div>
     </SectionWrapper>
   );

@@ -1,4 +1,5 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { usePrints, usePrintAISummary } from '../../hooks/usePrints';
 import { useLanguageStore } from '../../stores/languageStore';
@@ -27,9 +28,9 @@ export function PrintDetailPage() {
     return (
       <div className="text-center py-12">
         <p className="text-zinc-500">{t('printDetail.notFound')}</p>
-        <Link to="/sejm/druki" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+        <LocalizedLink to="/sejm/druki" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
           <i className="ri-arrow-left-s-line" /> {t('printDetail.backToList')}
-        </Link>
+        </LocalizedLink>
       </div>
     );
   }
@@ -37,9 +38,9 @@ export function PrintDetailPage() {
   return (
     <div className="space-y-6">
       {/* Back link */}
-      <Link to="/sejm/druki" className="text-sm text-zinc-500 hover:text-zinc-700">
+      <LocalizedLink to="/sejm/druki" className="text-sm text-zinc-500 hover:text-zinc-700">
         <i className="ri-arrow-left-s-line" /> {t('printDetail.allPrints')}
-      </Link>
+      </LocalizedLink>
 
       {/* Header */}
       <div>

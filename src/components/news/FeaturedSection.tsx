@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 import { SectionWrapper } from '../common/SectionWrapper';
+import { LocalizedLink } from '../LocalizedLink';
 
 interface FeaturedSectionProps {
   events: Event[];
@@ -24,7 +24,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
     >
       <div className="grid grid-cols-1 md:grid-cols-2">
       <div className="md:border-r border-zinc-200 relative overflow-hidden">
-        <Link to={`/event/${mainEvent.id}`} className="group block">
+        <LocalizedLink to={`/event/${mainEvent.id}`} className="group block">
           <EventImage
             event={mainEvent}
             className="w-full aspect-[4/3] object-cover"
@@ -37,10 +37,10 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
             width={800}
             height={600}
           />
-        </Link>
+        </LocalizedLink>
         {/* Leadbox - only on desktop (overlaid on image) */}
         {(imageSource || mainEvent.lead) && (
-          <Link to={`/event/${mainEvent.id}`}>
+          <LocalizedLink to={`/event/${mainEvent.id}`}>
             <motion.div
               className="hidden md:block mx-4 mb-4 -mt-16 relative z-10"
               initial={{ opacity: 0, y: 20 }}
@@ -58,21 +58,21 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                 </p>
               )}
             </motion.div>
-          </Link>
+          </LocalizedLink>
         )}
       </div>
 
       <div className="p-6">
         <span className="text-zinc-500 text-sm">{mainEvent.category}</span>
-        <Link to={`/event/${mainEvent.id}`}>
+        <LocalizedLink to={`/event/${mainEvent.id}`}>
           <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 mt-1 mb-3 leading-tight hover:underline cursor-pointer">
             {mainEvent.title}
           </h2>
-        </Link>
+        </LocalizedLink>
 
         {/* Leadbox - only on mobile (after headline) */}
         {(imageSource || mainEvent.lead) && (
-          <Link to={`/event/${mainEvent.id}`}>
+          <LocalizedLink to={`/event/${mainEvent.id}`}>
             <motion.div
               className="md:hidden mb-4"
               initial={{ opacity: 0, y: 20 }}
@@ -90,7 +90,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                 </p>
               )}
             </motion.div>
-          </Link>
+          </LocalizedLink>
         )}
 
         {secondaryEvents.length > 0 && (
@@ -103,7 +103,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
           >
             {secondaryEvents.map((event) => (
               <motion.div key={event.id} variants={staggerItem}>
-                <Link
+                <LocalizedLink
                   to={`/event/${event.id}`}
                   className="group hover:bg-zinc-50 transition-colors flex gap-4 p-2 -mx-2 rounded"
                 >
@@ -129,7 +129,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                       {event.title}
                     </h3>
                   </div>
-                </Link>
+                </LocalizedLink>
               </motion.div>
             ))}
           </motion.div>

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useCookieConsentStore } from '@/stores/cookieConsentStore';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from './LocalizedLink';
 
 export function CookiePopup() {
   const { t } = useTranslation('cookies');
@@ -70,9 +70,9 @@ export function CookiePopup() {
               <div className="bg-zinc-900 rounded-md p-4 mb-4">
                 <p className="text-zinc-400 text-xs leading-relaxed">
                   Administratorem Twoich danych jest Pollar P.S.A. z siedzibą w Krakowie przy ul. Piastowskiej 46/12, 30-067 Kraków, zarejestrowaną w rejestrze przedsiębiorców Krajowego Rejestru Sądowego prowadzonym przez Sąd Rejonowy dla Krakowa - Śródmieścia w Krakowie, XI Wydział Gospodarczy KRS, pod numerem KRS 0001194489, o numerze NIP: 6772540681. Szczegółowe informacje znajdziesz w naszej{' '}
-                  <Link to="/polityka-prywatnosci" className="text-zinc-300 underline hover:text-white">
+                  <LocalizedLink to="/polityka-prywatnosci" className="text-zinc-300 underline hover:text-white">
                     {t('settings.privacyPolicy')}
-                  </Link>
+                  </LocalizedLink>
                   .
                 </p>
               </div>

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useUser } from '@/stores/authStore';
@@ -93,14 +93,14 @@ function DashboardContent() {
             {forYouEvents.length === 0 ? (
               <div className="bg-zinc-50 rounded-lg p-6 text-center">
                 <p className="text-zinc-500">{t('forYou.empty')}</p>
-                <Link to="/profil" className="text-blue-600 hover:underline text-sm mt-2 inline-block">
+                <LocalizedLink to="/profil" className="text-blue-600 hover:underline text-sm mt-2 inline-block">
                   {t('forYou.setCategories')}
-                </Link>
+                </LocalizedLink>
               </div>
             ) : (
               <div className="grid gap-3 sm:grid-cols-2">
                 {forYouEvents.map((event) => (
-                  <Link
+                  <LocalizedLink
                     key={event.id}
                     to={`/event/${event.id}`}
                     className="block bg-white border border-zinc-200 rounded-lg overflow-hidden hover:border-zinc-300 transition-colors"
@@ -116,7 +116,7 @@ function DashboardContent() {
                         {event.title}
                       </h3>
                     </div>
-                  </Link>
+                  </LocalizedLink>
                 ))}
               </div>
             )}
@@ -134,7 +134,7 @@ function DashboardContent() {
             ) : (
               <div className="space-y-2">
                 {recentlyReadEvents.slice(0, 5).map((event) => (
-                  <Link
+                  <LocalizedLink
                     key={event.id}
                     to={`/event/${event.id}`}
                     className="flex items-center gap-3 p-3 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 transition-colors"
@@ -150,7 +150,7 @@ function DashboardContent() {
                       </h3>
                       <span className="text-xs text-zinc-500">{event.category}</span>
                     </div>
-                  </Link>
+                  </LocalizedLink>
                 ))}
               </div>
             )}
@@ -163,22 +163,22 @@ function DashboardContent() {
                 {t('saved.title', { count: savedEvents.length })}
               </h2>
               {savedEvents.length > 0 && (
-                <Link to="/profil" className="text-xs text-zinc-500 hover:text-zinc-700">
+                <LocalizedLink to="/profil" className="text-xs text-zinc-500 hover:text-zinc-700">
                   {t('saved.viewAll')}
-                </Link>
+                </LocalizedLink>
               )}
             </div>
             {savedEvents.length === 0 ? (
               <div className="bg-zinc-50 rounded-lg p-6 text-center">
                 <p className="text-zinc-500">{t('saved.empty')}</p>
-                <Link to="/" className="text-blue-600 hover:underline text-sm mt-2 inline-block">
+                <LocalizedLink to="/" className="text-blue-600 hover:underline text-sm mt-2 inline-block">
                   {t('saved.browseEvents')}
-                </Link>
+                </LocalizedLink>
               </div>
             ) : (
               <div className="space-y-2">
                 {savedEvents.slice(0, 5).map((event) => (
-                  <Link
+                  <LocalizedLink
                     key={event.id}
                     to={`/event/${event.id}`}
                     className="flex items-center gap-3 p-3 bg-white border border-zinc-200 rounded-lg hover:border-zinc-300 transition-colors"
@@ -194,7 +194,7 @@ function DashboardContent() {
                       </h3>
                       <span className="text-xs text-zinc-500">{event.category}</span>
                     </div>
-                  </Link>
+                  </LocalizedLink>
                 ))}
               </div>
             )}
@@ -209,24 +209,24 @@ function DashboardContent() {
               <h2 className="text-sm font-semibold text-zinc-900">
                 {t('followedMPs.title', { count: followedMPs.length })}
               </h2>
-              <Link to="/sejm/poslowie" className="text-xs text-zinc-500 hover:text-zinc-700">
+              <LocalizedLink to="/sejm/poslowie" className="text-xs text-zinc-500 hover:text-zinc-700">
                 {t('followedMPs.add')}
-              </Link>
+              </LocalizedLink>
             </div>
             {followedMPs.length === 0 ? (
               <div className="text-center py-4">
                 <p className="text-sm text-zinc-500 mb-2">{t('followedMPs.empty')}</p>
-                <Link
+                <LocalizedLink
                   to="/sejm/poslowie"
                   className="text-sm text-blue-600 hover:underline"
                 >
                   {t('followedMPs.browseMPs')}
-                </Link>
+                </LocalizedLink>
               </div>
             ) : (
               <div className="space-y-2">
                 {followedMPs.slice(0, 8).map((mp) => (
-                  <Link
+                  <LocalizedLink
                     key={mp.id}
                     to={`/sejm/poslowie/${mp.id}`}
                     className="flex items-center gap-2 p-2 rounded hover:bg-zinc-50 transition-colors"
@@ -242,7 +242,7 @@ function DashboardContent() {
                       </p>
                       <p className="text-xs text-zinc-500">{mp.club}</p>
                     </div>
-                  </Link>
+                  </LocalizedLink>
                 ))}
               </div>
             )}
@@ -269,7 +269,7 @@ function DashboardContent() {
                 {alerts.slice(0, 5).map((alert) => {
                   const voteInfo = formatVote(alert.vote);
                   return (
-                    <Link
+                    <LocalizedLink
                       key={alert.id}
                       to={`/sejm/glosowania/${alert.sitting}/${alert.votingNumber}`}
                       className={`block p-2 rounded transition-colors ${
@@ -287,7 +287,7 @@ function DashboardContent() {
                       <p className="text-xs text-zinc-500 line-clamp-2">
                         {alert.votingTitle}
                       </p>
-                    </Link>
+                    </LocalizedLink>
                   );
                 })}
               </div>

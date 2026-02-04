@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import type { Event } from '../../../types/events';
 import { LiveTimeAgo } from '../../common/LiveTimeAgo';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { useEventsStore } from '../../../stores/eventsStore';
+import { LocalizedLink } from '../../LocalizedLink';
 
 interface LatestEventsProps {
   events: Event[];
@@ -36,7 +36,7 @@ export function LatestEvents({ events }: LatestEventsProps) {
           const isNew = newEventIds.has(event.id);
           return (
             <motion.div key={event.id} variants={staggerItem}>
-              <Link
+              <LocalizedLink
                 to={`/event/${event.id}`}
                 className="block group"
                 onClick={() => handleEventClick(event.id)}
@@ -53,7 +53,7 @@ export function LatestEvents({ events }: LatestEventsProps) {
                 }`}>
                   {event.title}
                 </h4>
-              </Link>
+              </LocalizedLink>
             </motion.div>
           );
         })}

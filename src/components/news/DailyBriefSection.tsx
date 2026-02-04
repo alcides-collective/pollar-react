@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { DailyBrief } from '../../types/brief';
 import { GrainImage } from '../common/GrainImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { useLanguage } from '../../stores/languageStore';
+import { LocalizedLink } from '../LocalizedLink';
 import dailyBriefImg from '../../assets/images/daily/day.webp';
 
 interface DailyBriefSectionProps {
@@ -34,23 +34,24 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
   };
 
   const timeGreeting = getTimeBasedGreeting();
-  const formattedDate = new Date().toLocaleDateString(localeMap[language] || 'pl-PL', {
+  const dateStr = new Date().toLocaleDateString(localeMap[language] || 'pl-PL', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
     year: 'numeric',
   });
+  const formattedDate = `${timeGreeting}, ${t('greetings.today')} ${dateStr}`;
 
   return (
     <SectionWrapper
       sectionId={`daily-brief-${brief.date}`}
       priority="high"
     >
-      <Link to="/brief" className="group block">
+      <LocalizedLink to="/brief" className="group block">
         <div className="bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer p-6">
           {/* Mobile layout */}
           <div className="md:hidden">
-            <p className="text-2xl font-semibold text-zinc-900">{timeGreeting}</p>
+            <p className="text-2xl font-semibold text-zinc-900">Daily Brief</p>
             {brief.greeting && (
               <p className="text-sm text-sky-700 mt-1">{brief.greeting}</p>
             )}
@@ -75,7 +76,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
           <div className="hidden md:grid md:grid-cols-[1fr_2fr] gap-6">
             {/* Left column: greeting + image */}
             <div>
-              <p className="text-2xl font-semibold text-zinc-900">{timeGreeting}</p>
+              <p className="text-2xl font-semibold text-zinc-900">Daily Brief</p>
               {brief.greeting && (
                 <p className="text-sm text-sky-700 mt-1">{brief.greeting}</p>
               )}
@@ -101,7 +102,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
             </div>
           </div>
         </div>
-      </Link>
+      </LocalizedLink>
     </SectionWrapper>
   );
 }
