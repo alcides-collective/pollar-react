@@ -58,7 +58,7 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
-    console.error('[EventImage] ERROR', {
+    console.warn('[EventImage] Failed to load', {
       eventId: event.id,
       failedSrc: img.src,
       currentIndex,
