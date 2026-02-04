@@ -180,14 +180,34 @@ export function Header() {
     <>
     <motion.header
       ref={headerRef}
-      className="bg-black fixed z-50 -top-3 -left-3 -right-3 pt-3 pl-3 pr-3"
+      className="bg-black fixed z-50 -top-3 -left-3 -right-3 pt-3 pl-3 pr-3 overflow-hidden"
       initial={false}
       animate={{ y: isVisible ? 0 : '-100%', opacity: isVisible ? 1 : 0, filter: isVisible ? 'blur(0px)' : 'blur(8px)' }}
       transition={{ type: 'spring', stiffness: isVisible ? 150 : 300, damping: isVisible ? 20 : 30 }}
     >
       <div className="max-w-[1400px] mx-auto px-6">
         {/* Top bar */}
-        <div className="flex items-center justify-between py-4 border-b border-zinc-800">
+        <div className="relative flex items-center justify-between py-4 border-b border-zinc-800">
+          {/* Border Glow Trail */}
+          <div className="absolute bottom-0 left-0 right-0 h-[1px] pointer-events-none overflow-hidden">
+            <motion.div
+              className="absolute h-full w-[300%]"
+              style={{
+                background: 'linear-gradient(90deg, transparent 0%, transparent 20%, rgba(255,255,255,0.08) 35%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.08) 65%, transparent 80%, transparent 100%)',
+              }}
+              animate={{
+                x: ['-100%', '100%'],
+              }}
+              transition={{
+                x: {
+                  duration: 3,
+                  ease: 'linear',
+                  repeat: Infinity,
+                  repeatDelay: 0,
+                },
+              }}
+            />
+          </div>
           <div className="flex items-center gap-10">
             <Link to="/" onClick={() => setSelectedCategory(null)}>
               <img
@@ -330,6 +350,12 @@ export function Header() {
                 <Link to="/dane" className="w-full flex items-center gap-2">
                   <i className="ri-database-2-line" />
                   Otwarte Dane
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/graf" className="w-full flex items-center gap-2">
+                  <i className="ri-share-circle-line" />
+                  Graf powiązań
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
