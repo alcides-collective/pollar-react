@@ -19,12 +19,16 @@ interface DailyBriefSectionProps {
   );
 } */
 
+function getTimeBasedGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return 'Dzień Dobry';
+  if (hour >= 12 && hour < 18) return 'Dzień Dobry';
+  if (hour >= 18 && hour < 22) return 'Dobry Wieczór';
+  return 'Dobrej Nocy';
+}
+
 export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
-  const formattedDate = new Date(brief.date).toLocaleDateString('pl-PL', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
+  const timeGreeting = getTimeBasedGreeting();
 
   return (
     <SectionWrapper
@@ -33,10 +37,14 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
     >
       <Link to="/brief" className="group block">
         <div className="bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer">
-        <p className="text-sm text-sky-700 px-6 pt-6 pb-4">
-          Daily Brief na {formattedDate}
-          {brief.greeting && ` — ${brief.greeting}`}
-        </p>
+        <div className="px-6 pt-6 pb-4">
+          <p className="text-2xl font-semibold text-zinc-900">{timeGreeting}</p>
+          {brief.greeting && (
+            <p className="text-sm text-sky-700 mt-1">
+              {brief.greeting}
+            </p>
+          )}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6 px-6 pb-6">
           <GrainImage
             src={dailyBriefImg}

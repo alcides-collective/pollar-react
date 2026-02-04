@@ -2,13 +2,18 @@ import { useState } from 'react';
 import type { Event } from '../../types/events';
 import { AudioPlayer } from './AudioPlayer';
 import { BookmarkButton } from '../../components/BookmarkButton';
+import { ShareButton } from '../../components/ShareButton';
 import { getModelDisplayName, getModelColorClass, getModelDescription, estimateCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
 
 interface EventHeaderProps {
   event: Event;
+  /** Override view count (from tracking hook) */
+  viewCount?: number;
 }
 
-export function EventHeader({ event }: EventHeaderProps) {
+export function EventHeader({ event, viewCount }: EventHeaderProps) {
+  // Use tracked viewCount if provided, fallback to event.viewCount
+  const displayViewCount = viewCount ?? event.viewCount;
   const [showCO2Tooltip, setShowCO2Tooltip] = useState(false);
   const [showModelTooltip, setShowModelTooltip] = useState(false);
 
@@ -54,23 +59,30 @@ export function EventHeader({ event }: EventHeaderProps) {
             </span>
           </span>
         )}
-        {event.viewCount > 0 && (
+        {displayViewCount > 0 && (
           <>
             {modelId && <span className="text-zinc-300">•</span>}
             <span className="flex items-center gap-1">
               <i className="ri-eye-line" />
-              {event.viewCount}
+              {displayViewCount.toLocaleString()}
             </span>
           </>
         )}
       </div>
 
-      {/* Title with bookmark */}
+      {/* Title with actions */}
       <div className="flex items-start gap-4 mb-4">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium text-zinc-900 leading-tight flex-1">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-zinc-900 leading-tight flex-1">
           {event.title}
         </h1>
-        <BookmarkButton eventId={event.id} size="md" className="shrink-0 mt-1" />
+        <div className="flex gap-2 shrink-0 mt-1">
+          <ShareButton
+            title={event.title}
+            text={event.lead}
+            size="md"
+          />
+          <BookmarkButton eventId={event.id} size="md" />
+        </div>
       </div>
 
       {/* Lead */}

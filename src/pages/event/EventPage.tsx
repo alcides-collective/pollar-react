@@ -6,6 +6,7 @@ import { useEvents } from '../../stores/eventsStore';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { useUser } from '../../stores/authStore';
 import { useReadHistoryStore } from '../../stores/readHistoryStore';
+import { useViewTracking } from '../../hooks/useViewTracking';
 import { prepareOgDescription } from '../../utils/text';
 import { staggerContainer, staggerItem, fadeInUp } from '../../lib/animations';
 import { Skeleton } from '../../components/ui/skeleton';
@@ -20,6 +21,13 @@ export function EventPage() {
   const { event, loading, error } = useEvent(id);
   const { events: allEvents } = useEvents({ limit: 100, lang: 'pl' });
   const user = useUser();
+
+  // View tracking - for all users (logged in and anonymous)
+  const { viewCount } = useViewTracking(id, {
+    initialViewCount: event?.viewCount || 0,
+    category: event?.category || '',
+    disabled: loading || !!error,
+  });
 
   // SEO meta tags
   const pageTitle = event?.metadata?.ultraShortHeadline || event?.title || '';
@@ -77,7 +85,10 @@ export function EventPage() {
                   <Skeleton className="h-9 w-full mb-2" />
                   <Skeleton className="h-9 w-3/4" />
                 </div>
-                <Skeleton className="h-9 w-9 rounded-full shrink-0" />
+                <div className="flex gap-2 shrink-0">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                </div>
               </div>
               <Skeleton className="h-6 w-full mb-2" />
               <Skeleton className="h-6 w-4/5" />
@@ -183,7 +194,7 @@ export function EventPage() {
         {/* Left column - main content */}
         <motion.div variants={staggerContainer}>
           <motion.div variants={staggerItem}>
-            <EventHeader event={event} />
+            <EventHeader event={event} viewCount={viewCount} />
           </motion.div>
           <motion.div variants={staggerItem}>
             <EventKeyPoints keyPoints={event.metadata?.keyPoints || []} />
