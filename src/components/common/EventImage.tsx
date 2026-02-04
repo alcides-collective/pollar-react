@@ -35,7 +35,8 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
   // Determine proxy width based on prop or default
   const proxyWidth = width || 800;
 
-  // Build list of proxied URLs - external images go through /api/image with grain baked in
+  // Build list of proxied URLs - external images go through /api/image
+  // The proxy returns 302 redirect to Firebase Storage URL
   const imageUrls = useMemo(() => {
     const urls: string[] = [];
     if (event.imageUrl && event.imageUrl.trim()) {
@@ -49,13 +50,20 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
     return urls;
   }, [event.imageUrl, event.articles, proxyWidth]);
 
-  // Reset indeksu gdy event się zmienia
+  // Reset when event changes
   useEffect(() => {
     setCurrentIndex(0);
     setAllFailed(false);
   }, [event.id]);
 
-  const handleError = () => {
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    console.error('[EventImage] ERROR', {
+      eventId: event.id,
+      failedSrc: img.src,
+      currentIndex,
+      totalUrls: imageUrls.length,
+    });
     const nextIndex = currentIndex + 1;
     if (nextIndex < imageUrls.length) {
       setCurrentIndex(nextIndex);
@@ -69,7 +77,7 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
     onLoad();
   };
 
-  // Użyj placeholdera gdy brak obrazków lub wszystkie zawiodły
+  // Use placeholder when no images or all failed
   const isUsingPlaceholder = allFailed || imageUrls.length === 0;
   const currentImageUrl = isUsingPlaceholder
     ? PLACEHOLDER_IMAGE
