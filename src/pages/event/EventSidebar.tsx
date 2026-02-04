@@ -163,13 +163,6 @@ export function EventSidebar({ event }: EventSidebarProps) {
                   className="block p-3 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 transition-colors"
                 >
                   <div className="flex items-start gap-3">
-                    {article.imageUrl && (
-                      <img
-                        src={article.imageUrl}
-                        alt=""
-                        className="w-16 h-12 object-cover rounded shrink-0"
-                      />
-                    )}
                     <div className="min-w-0 flex-1">
                       <p className="text-sm text-zinc-900 font-medium line-clamp-2 mb-1">
                         {article.title}
