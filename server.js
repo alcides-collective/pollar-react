@@ -513,7 +513,8 @@ app.get('/sitemap.xml', async (req, res) => {
     const response = await fetch(`${API_BASE}/api/events?lang=pl&limit=1000`);
     if (response.ok) {
       const data = await response.json();
-      events = data.events || data || [];
+      // API returns { data: [...] } or { events: [...] } or direct array
+      events = Array.isArray(data) ? data : (data.data || data.events || []);
     }
   } catch (err) {
     console.warn('Could not fetch events for sitemap:', err.message);
@@ -525,7 +526,8 @@ app.get('/sitemap.xml', async (req, res) => {
     const response = await fetch(`${API_BASE}/api/felietony?lang=pl&limit=100`);
     if (response.ok) {
       const data = await response.json();
-      felietony = data.felietony || data || [];
+      // API returns { data: [...] } or { felietony: [...] } or direct array
+      felietony = Array.isArray(data) ? data : (data.data || data.felietony || []);
     }
   } catch (err) {
     console.warn('Could not fetch felietony for sitemap:', err.message);
