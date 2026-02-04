@@ -3,6 +3,7 @@ import { SWRConfig } from 'swr'
 import { motion } from 'framer-motion'
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { Toaster } from 'sonner'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { Header } from './components/Header'
 import { AuthModal, EmailVerificationBanner } from './components/auth'
 import { ProModal } from './components/ProModal'
@@ -294,30 +295,32 @@ function AppContent() {
 
 function App() {
   return (
-    <SWRConfig value={{
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      dedupingInterval: 60000,
-      keepPreviousData: true,
-    }}>
-      <BrowserRouter>
-        <AppContent />
-        <AuthModal />
-        <ProModal />
-        <CookiePopup />
-        <Toaster
-          position="bottom-right"
-          richColors
-          closeButton
-          toastOptions={{
-            classNames: {
-              toast: 'grid grid-cols-[1fr_auto] items-start gap-2',
-              actionButton: 'col-start-2 row-start-2 self-end',
-            },
-          }}
-        />
-      </BrowserRouter>
-    </SWRConfig>
+    <ErrorBoundary>
+      <SWRConfig value={{
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        dedupingInterval: 60000,
+        keepPreviousData: true,
+      }}>
+        <BrowserRouter>
+          <AppContent />
+          <AuthModal />
+          <ProModal />
+          <CookiePopup />
+          <Toaster
+            position="bottom-right"
+            richColors
+            closeButton
+            toastOptions={{
+              classNames: {
+                toast: 'grid grid-cols-[1fr_auto] items-start gap-2',
+                actionButton: 'col-start-2 row-start-2 self-end',
+              },
+            }}
+          />
+        </BrowserRouter>
+      </SWRConfig>
+    </ErrorBoundary>
   )
 }
 

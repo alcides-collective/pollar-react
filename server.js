@@ -1,4 +1,16 @@
+import * as Sentry from '@sentry/node';
+
+// Initialize Sentry FIRST (before other code runs)
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.NODE_ENV || 'production',
+    tracesSampleRate: 0.1,
+  });
+}
+
 import express from 'express';
+import helmet from 'helmet';
 import compression from 'compression';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -439,6 +451,75 @@ async function fetchFelietonData(felietonId, lang = 'pl') {
 // Trust proxy for correct protocol detection behind Railway/load balancer
 app.set('trust proxy', true);
 
+// Security headers with helmet
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        "blob:",
+        "https://api.mapbox.com",
+        "https://events.mapbox.com",
+        "https://cloud.umami.is",
+        "https://www.googletagmanager.com",
+        "https://www.google-analytics.com",
+        "https://apis.google.com",
+      ],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://api.mapbox.com"],
+      imgSrc: [
+        "'self'",
+        "data:",
+        "blob:",
+        "https://*.mapbox.com",
+        "https://firebasestorage.googleapis.com",
+        "https://lh3.googleusercontent.com",
+        "https://*.google.com",
+        "https://*.gstatic.com",
+      ],
+      fontSrc: ["'self'", "data:"],
+      connectSrc: [
+        "'self'",
+        "https://pollar.up.railway.app",
+        "https://api.mapbox.com",
+        "https://events.mapbox.com",
+        "https://*.tiles.mapbox.com",
+        "https://api.sejm.gov.pl",
+        "https://*.firebaseio.com",
+        "https://*.googleapis.com",
+        "https://firebaseinstallations.googleapis.com",
+        "https://identitytoolkit.googleapis.com",
+        "https://securetoken.googleapis.com",
+        "https://cloud.umami.is",
+        "https://www.google-analytics.com",
+        "https://www.googletagmanager.com",
+        "wss://*.firebaseio.com",
+      ],
+      frameSrc: [
+        "'self'",
+        "https://*.firebaseapp.com",
+        "https://accounts.google.com",
+        "https://appleid.apple.com",
+      ],
+      workerSrc: ["'self'", "blob:"],
+      childSrc: ["'self'", "blob:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'none'"],
+      baseUri: ["'self'"],
+      upgradeInsecureRequests: [],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+}));
+
 // Redirect pollar.pl to pollar.news (canonical domain)
 app.use((req, res, next) => {
   const host = req.get('host');
@@ -830,6 +911,17 @@ app.use(express.static(join(__dirname, 'dist'), {
 // SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(join(__dirname, 'dist', 'index.html'));
+});
+
+// Sentry error handler (must be before other error handlers)
+if (process.env.SENTRY_DSN) {
+  Sentry.setupExpressErrorHandler(app);
+}
+
+// Generic error handler
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({ error: 'Internal server error' });
 });
 
 app.listen(PORT, () => {

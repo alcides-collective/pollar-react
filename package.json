@@ -11,6 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@sentry/node": "^10.38.0",
+    "@sentry/react": "^10.38.0",
+    "@sentry/vite-plugin": "^4.9.0",
     "@tanstack/react-virtual": "^3.13.18",
     "@types/mapbox-gl": "^3.4.1",
     "chart.js": "^4.5.1",
@@ -21,6 +24,7 @@
     "express": "^4.21.2",
     "firebase": "^12.8.0",
     "framer-motion": "^12.30.0",
+    "helmet": "^8.1.0",
     "i18next": "^25.8.1",
     "lucide-react": "^0.563.0",
     "mapbox-gl": "^3.18.1",
