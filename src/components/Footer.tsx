@@ -1,62 +1,67 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 
-const footerSections = [
-  {
-    title: 'Nawigacja',
-    links: [
-      { label: 'Strona główna', to: '/' },
-      { label: 'Daily Brief', to: '/brief' },
-      { label: 'Mapa wydarzeń', to: '/mapa' },
-      { label: 'Terminal', to: '/terminal' },
-      { label: 'Powiązania', to: '/powiazania' },
-    ],
-  },
-  {
-    title: 'Sejm',
-    links: [
-      { label: 'Dashboard', to: '/sejm' },
-      { label: 'Posłowie', to: '/sejm/poslowie' },
-      { label: 'Głosowania', to: '/sejm/glosowania' },
-      { label: 'Komisje', to: '/sejm/komisje' },
-      { label: 'Druki', to: '/sejm/druki' },
-    ],
-  },
-  {
-    title: 'Giełda',
-    links: [
-      { label: 'Przegląd', to: '/gielda' },
-      { label: 'Akcje', to: '/gielda/akcje' },
-      { label: 'Indeksy', to: '/gielda/indeksy' },
-      { label: 'Obserwowane', to: '/gielda/watchlist' },
-    ],
-  },
-  {
-    title: 'Dane',
-    links: [
-      { label: 'Przegląd', to: '/dane' },
-      { label: 'Jakość powietrza', to: '/dane/srodowisko/powietrze' },
-      { label: 'Energia', to: '/dane/ekonomia/energia' },
-      { label: 'Eurostat', to: '/dane/ekonomia/eurostat' },
-      { label: 'Mieszkania', to: '/dane/ekonomia/mieszkania' },
-    ],
-  },
-];
-
-const legalLinks = [
-  { label: 'Regulamin', to: '#' },
-  { label: 'Polityka prywatności', to: '/polityka-prywatnosci' },
-  { label: 'Cookies', to: '/cookies' },
-];
-
 const socialLinks = [
-  { label: 'X', icon: 'ri-twitter-x-line', href: 'https://x.com' },
-  { label: 'LinkedIn', icon: 'ri-linkedin-line', href: 'https://linkedin.com' },
-  { label: 'GitHub', icon: 'ri-github-line', href: 'https://github.com' },
+  { label: 'X', icon: 'ri-twitter-x-line', href: 'https://x.com/pollarpl' },
+  { label: 'LinkedIn', icon: 'ri-linkedin-line', href: 'https://www.linkedin.com/company/108790026' },
 ];
 
 export function Footer() {
+  const { t } = useTranslation('common');
+
+  const footerSections = [
+    {
+      title: t('footer.navigation'),
+      links: [
+        { label: t('footer.home'), to: '/' },
+        { label: t('nav.dailyBrief'), to: '/brief' },
+        { label: t('nav.aiAssistant'), to: '/asystent' },
+        { label: t('nav.eventMap'), to: '/mapa' },
+        { label: t('nav.connectionGraph'), to: '/graf' },
+        { label: t('nav.terminal'), to: '/terminal' },
+        { label: t('nav.connections'), to: '/powiazania' },
+        { label: t('nav.archive'), to: '/archiwum' },
+        { label: t('nav.about'), to: '/info' },
+      ],
+    },
+    {
+      title: t('nav.sejm'),
+      links: [
+        { label: t('user.dashboard'), to: '/sejm' },
+        { label: t('sejm:navigation.mps'), to: '/sejm/poslowie' },
+        { label: t('sejm:navigation.votings'), to: '/sejm/glosowania' },
+        { label: t('sejm:navigation.committees'), to: '/sejm/komisje' },
+        { label: t('sejm:navigation.prints'), to: '/sejm/druki' },
+      ],
+    },
+    {
+      title: t('nav.stockExchange'),
+      links: [
+        { label: t('gielda:navigation.overview'), to: '/gielda' },
+        { label: t('gielda:navigation.stocks'), to: '/gielda/akcje' },
+        { label: t('gielda:navigation.indices'), to: '/gielda/indeksy' },
+        { label: t('gielda:navigation.watchlist'), to: '/gielda/watchlist' },
+      ],
+    },
+    {
+      title: t('nav.openData'),
+      links: [
+        { label: t('gielda:navigation.overview'), to: '/dane' },
+        { label: 'Jakość powietrza', to: '/dane/srodowisko/powietrze' },
+        { label: 'Energia', to: '/dane/ekonomia/energia' },
+        { label: 'Eurostat', to: '/dane/ekonomia/eurostat' },
+        { label: 'Mieszkania', to: '/dane/ekonomia/mieszkania' },
+      ],
+    },
+  ];
+
+  const legalLinks = [
+    { label: t('footer.privacyPolicy'), to: '/polityka-prywatnosci' },
+    { label: t('footer.cookies'), to: '/cookies' },
+  ];
+
   return (
     <footer className="bg-zinc-900 border-t border-zinc-800 mt-auto">
       <div className="max-w-[1400px] mx-auto px-6 py-12">
@@ -74,7 +79,7 @@ export function Footer() {
             </h2>
           </Link>
           <p className="text-zinc-500 text-sm mt-2 max-w-xs">
-            Agregator wiadomości napędzany AI. Śledź wydarzenia, analizuj dane Sejmu i eksploruj statystyki publiczne.
+            {t('footer.description')}
           </p>
         </motion.div>
 
@@ -109,7 +114,7 @@ export function Footer() {
           {/* Sekcja Prawne */}
           <motion.div variants={staggerItem}>
             <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-              Prawne
+              {t('footer.legal')}
             </h4>
             <ul className="space-y-2.5">
               {legalLinks.map((link) => (
@@ -135,7 +140,7 @@ export function Footer() {
           transition={{ duration: 0.4, delay: 0.2 }}
         >
           <p className="text-zinc-500 text-sm">
-            &copy; {new Date().getFullYear()} Pollar News. Wszelkie prawa zastrzeżone.
+            &copy; {new Date().getFullYear()} Pollar News. {t('footer.allRightsReserved')}
           </p>
 
           {/* Social icons */}
