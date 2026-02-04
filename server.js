@@ -31,6 +31,7 @@ const PAGE_TITLES = {
   '/mapa': { title: 'Mapa wydarzeń', description: 'Interaktywna mapa najważniejszych wydarzeń.' },
   '/terminal': { title: 'Terminal', description: 'Terminal informacyjny Pollar News.' },
   '/polityka-prywatnosci': { title: 'Polityka prywatności', description: 'Polityka prywatności serwisu Pollar News.' },
+  '/info': { title: 'O Pollar', description: 'Poznaj Pollar News - AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów. Wiadomości bez szumu.' },
   // Sejm
   '/sejm': { title: 'Sejm', description: 'Dane i statystyki z Sejmu RP.' },
   '/sejm/poslowie': { title: 'Posłowie', description: 'Lista posłów Sejmu RP X kadencji.' },
@@ -246,8 +247,57 @@ app.get('/api/og', async (req, res) => {
   }
 });
 
+// Schema.org JSON-LD generators for AEO (Answer Engine Optimization)
+function generateNewsArticleSchema(opts) {
+  const { headline, description, datePublished, dateModified, targetUrl, ogImage } = opts;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline,
+    description,
+    datePublished: datePublished || new Date().toISOString(),
+    dateModified: dateModified || datePublished || new Date().toISOString(),
+    url: targetUrl,
+    image: ogImage,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Pollar News',
+      url: 'https://pollar.news',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://pollar.news/logo.png'
+      }
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': targetUrl
+    }
+  };
+}
+
+function generateOrganizationSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'NewsMediaOrganization',
+    name: 'Pollar News',
+    url: 'https://pollar.news',
+    description: 'AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://pollar.news/logo.png'
+    },
+    sameAs: []
+  };
+}
+
 function generateSeoHtml(opts) {
-  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article' } = opts;
+  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null } = opts;
+
+  // Generate JSON-LD script if schema is provided
+  const schemaScript = schema
+    ? `<script type="application/ld+json">${JSON.stringify(schema)}</script>`
+    : '';
+
   // All meta tags use self-closing /> for iMessage compatibility
   return `<!DOCTYPE html>
 <html lang="pl">
@@ -270,6 +320,7 @@ function generateSeoHtml(opts) {
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${ogImage}" />
     <link rel="canonical" href="${targetUrl}" />
+    ${schemaScript}
   </head>
   <body>
     <p>Przekierowywanie do <a href="${targetUrl}">${escapeHtml(ogTitle)}</a>...</p>
@@ -315,6 +366,57 @@ async function fetchFelietonData(felietonId) {
 // Trust proxy for correct protocol detection behind Railway/load balancer
 app.set('trust proxy', true);
 
+// Sitemap.xml endpoint with dynamic events
+app.get('/sitemap.xml', async (req, res) => {
+  const baseUrl = 'https://pollar.news';
+
+  // Static pages from PAGE_TITLES
+  const staticPages = Object.keys(PAGE_TITLES).filter(path => path !== '/brief');
+
+  // Add /brief separately
+  staticPages.push('/brief');
+
+  // Fetch events from API
+  let events = [];
+  try {
+    const response = await fetch(`${API_BASE}/api/events?lang=pl&limit=1000`);
+    if (response.ok) {
+      const data = await response.json();
+      events = data.events || data || [];
+    }
+  } catch (err) {
+    console.warn('Could not fetch events for sitemap:', err.message);
+  }
+
+  // Fetch felietony from API
+  let felietony = [];
+  try {
+    const response = await fetch(`${API_BASE}/api/felietony?lang=pl&limit=100`);
+    if (response.ok) {
+      const data = await response.json();
+      felietony = data.felietony || data || [];
+    }
+  } catch (err) {
+    console.warn('Could not fetch felietony for sitemap:', err.message);
+  }
+
+  // Generate XML
+  const urls = [
+    ...staticPages.map(path => `  <url><loc>${baseUrl}${path}</loc></url>`),
+    ...events.map(e => `  <url><loc>${baseUrl}/event/${e.id}</loc></url>`),
+    ...felietony.map(f => `  <url><loc>${baseUrl}/felieton/${f.id}</loc></url>`)
+  ];
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('\n')}
+</urlset>`;
+
+  res.set('Content-Type', 'application/xml');
+  res.set('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+  res.send(xml);
+});
+
 // Crawler middleware
 app.use(async (req, res, next) => {
   if (!isCrawler(req.headers['user-agent'])) {
@@ -340,12 +442,23 @@ app.use(async (req, res, next) => {
       const ogImageDescription = truncate(stripHtml(event.lead || kp?.description || event.summary || ''), 300);
       const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}`;
 
+      // Generate NewsArticle schema for AEO
+      const schema = generateNewsArticleSchema({
+        headline: fullTitle,
+        description,
+        datePublished: event.createdAt || event.date,
+        dateModified: event.updatedAt || event.createdAt || event.date,
+        targetUrl,
+        ogImage
+      });
+
       return res.send(generateSeoHtml({
         pageTitle: `${shortTitle} | Pollar`,
         ogTitle,
         description,
         ogImage,
-        targetUrl
+        targetUrl,
+        schema
       }));
     }
   }
@@ -370,12 +483,23 @@ app.use(async (req, res, next) => {
 
     const ogTitle = `Pollar News: ${briefTitle}`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(imageTitle)}&type=brief&description=${encodeURIComponent(ogImageDescription)}`;
+
+    // Generate NewsArticle schema for AEO
+    const schema = generateNewsArticleSchema({
+      headline: imageTitle,
+      description,
+      datePublished: brief?.date,
+      targetUrl,
+      ogImage
+    });
+
     return res.send(generateSeoHtml({
       pageTitle: `${briefTitle} | Pollar`,
       ogTitle,
       description,
       ogImage,
-      targetUrl
+      targetUrl,
+      schema
     }));
   }
 
@@ -395,12 +519,23 @@ app.use(async (req, res, next) => {
 
     const ogTitle = `Pollar News: ${felietonTitle}`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(felietonTitle)}&type=felieton&description=${encodeURIComponent(ogImageDescription)}`;
+
+    // Generate NewsArticle schema for AEO
+    const schema = generateNewsArticleSchema({
+      headline: felietonTitle,
+      description,
+      datePublished: felieton?.createdAt || felieton?.date,
+      targetUrl,
+      ogImage
+    });
+
     return res.send(generateSeoHtml({
       pageTitle: `${felietonTitle} | Pollar`,
       ogTitle,
       description,
       ogImage,
-      targetUrl
+      targetUrl,
+      schema
     }));
   }
 
@@ -412,13 +547,19 @@ app.use(async (req, res, next) => {
     const pageTitle = isHomepage ? 'Pollar — Wiesz więcej' : `${pageInfo.title} | Pollar`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}&description=${encodeURIComponent(pageInfo.description)}`;
 
+    // Use Organization schema for homepage, WebPage for other static pages
+    const schema = isHomepage
+      ? generateOrganizationSchema()
+      : { '@context': 'https://schema.org', '@type': 'WebPage', name: pageInfo.title, description: pageInfo.description, url: targetUrl };
+
     return res.send(generateSeoHtml({
       pageTitle,
       ogTitle,
       description: pageInfo.description,
       ogImage,
       targetUrl: isHomepage ? baseUrl : targetUrl,
-      ogType: 'website'
+      ogType: 'website',
+      schema
     }));
   }
 

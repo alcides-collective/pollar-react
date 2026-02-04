@@ -66,6 +66,7 @@ import { DashboardPage } from './pages/dashboard/DashboardPage'
 import { NotificationsPage } from './pages/notifications'
 import { ArchivePage, CategoryArchivePage } from './pages/archiwum'
 import { AsystentPage } from './pages/asystent'
+import { InfoPage } from './pages/info'
 import { useEventStream } from './hooks/useEventStream'
 import { useAllSectionsReady } from './stores/imageLoadingStore'
 
@@ -74,7 +75,7 @@ function HomePage() {
 }
 
 // Full-screen routes that don't need Header/Footer
-const FULLSCREEN_ROUTES = ['/mapa', '/terminal', '/asystent']
+const FULLSCREEN_ROUTES = ['/mapa', '/terminal', '/asystent', '/info']
 
 function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () => void; onContentReady: () => void }) {
   const location = useLocation()
@@ -107,6 +108,7 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
         <Route path="/mapa" element={<MapPage />} />
         <Route path="/terminal" element={<TerminalPage />} />
         <Route path="/asystent" element={<AsystentPage />} />
+        <Route path="/info" element={<InfoPage />} />
         <Route path="/powiazania" element={<PowiazaniaPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/profil" element={<ProfilePage />} />

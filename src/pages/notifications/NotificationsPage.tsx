@@ -44,13 +44,26 @@ function formatVote(vote: string): { text: string; color: string; bg: string } {
   }
 }
 
-function formatDate(dateStr: string | { seconds: number }): string {
+function formatDate(dateStr: string | { seconds?: number; _seconds?: number }): string {
   let date: Date;
-  if (typeof dateStr === 'object' && 'seconds' in dateStr) {
-    date = new Date(dateStr.seconds * 1000);
-  } else {
+  if (typeof dateStr === 'object' && dateStr !== null) {
+    // Handle Firestore Timestamp (can be { seconds } or { _seconds })
+    const seconds = dateStr.seconds ?? dateStr._seconds;
+    if (seconds !== undefined) {
+      date = new Date(seconds * 1000);
+    } else {
+      return 'Brak daty';
+    }
+  } else if (typeof dateStr === 'string' && dateStr) {
     date = new Date(dateStr);
+  } else {
+    return 'Brak daty';
   }
+
+  if (isNaN(date.getTime())) {
+    return 'Brak daty';
+  }
+
   return date.toLocaleDateString('pl-PL', {
     day: 'numeric',
     month: 'short',
