@@ -2,16 +2,9 @@ import { useState, useEffect, useMemo, useId } from 'react';
 import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
 import { useImageInSection } from '../../hooks/useSectionImages';
+import { getProxiedImageUrl } from '../../utils/imageProxy';
 
 const PLACEHOLDER_IMAGE = '/opengraph-image.jpg';
-
-// Force HTTPS for external images to avoid mixed content warnings
-function enforceHttps(url: string): string {
-  if (url.startsWith('http://')) {
-    return url.replace('http://', 'https://');
-  }
-  return url;
-}
 
 interface EventImageProps {
   event: Event;
@@ -39,19 +32,22 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
   const imageId = `event-${event.id}-${uniqueId}`;
   const { priority, onLoad, onError } = useImageInSection(imageId);
 
-  // Stabilna lista URLi - tylko niepuste stringi, wymuszamy HTTPS
+  // Determine proxy width based on prop or default
+  const proxyWidth = width || 800;
+
+  // Build list of proxied URLs - external images go through /api/image with grain baked in
   const imageUrls = useMemo(() => {
     const urls: string[] = [];
     if (event.imageUrl && event.imageUrl.trim()) {
-      urls.push(enforceHttps(event.imageUrl));
+      urls.push(getProxiedImageUrl(event.imageUrl, proxyWidth, true));
     }
     event.articles?.forEach(article => {
       if (article.imageUrl && article.imageUrl.trim()) {
-        urls.push(enforceHttps(article.imageUrl));
+        urls.push(getProxiedImageUrl(article.imageUrl, proxyWidth, true));
       }
     });
     return urls;
-  }, [event.imageUrl, event.articles]);
+  }, [event.imageUrl, event.articles, proxyWidth]);
 
   // Reset indeksu gdy event się zmienia
   useEffect(() => {
@@ -74,9 +70,14 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
   };
 
   // Użyj placeholdera gdy brak obrazków lub wszystkie zawiodły
-  const currentImageUrl = allFailed || imageUrls.length === 0
+  const isUsingPlaceholder = allFailed || imageUrls.length === 0;
+  const currentImageUrl = isUsingPlaceholder
     ? PLACEHOLDER_IMAGE
     : imageUrls[currentIndex];
+
+  // Only show CSS grain overlay for local images (placeholder)
+  // External images have grain baked in by the proxy
+  const showGrainOverlay = isUsingPlaceholder;
 
   // Use CSS group-hover when groupHover is enabled, otherwise use motion.whileHover
   const useGroupHover = groupHover;
@@ -103,16 +104,18 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
         width={width}
         height={height}
       />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: 'url(/grain.webp)',
-          backgroundRepeat: 'repeat',
-          backgroundSize: '256px 256px',
-          opacity: grainOpacity,
-          mixBlendMode: 'overlay',
-        }}
-      />
+      {showGrainOverlay && (
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'url(/grain.webp)',
+            backgroundRepeat: 'repeat',
+            backgroundSize: '256px 256px',
+            opacity: grainOpacity,
+            mixBlendMode: 'overlay',
+          }}
+        />
+      )}
     </motion.div>
   );
 }
