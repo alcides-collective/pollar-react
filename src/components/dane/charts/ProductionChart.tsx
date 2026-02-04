@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -28,10 +29,12 @@ interface ProductionChartProps {
 
 export function ProductionChart({
   data,
-  title = 'Produkcja energii (GWh)',
+  title,
   color = '#3b82f6',
   unit = 'GWh'
 }: ProductionChartProps) {
+  const { t } = useTranslation('dane');
+
   const chartData = {
     labels: data.map((d) => d.year.toString()),
     datasets: [
@@ -52,7 +55,7 @@ export function ProductionChart({
       },
       title: {
         display: true,
-        text: title,
+        text: title ?? t('charts.energy.productionTitle'),
       },
     },
     scales: {

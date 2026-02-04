@@ -5,6 +5,7 @@
   "refreshHint": "Versuche die Seite zu aktualisieren. Wenn das Problem weiterhin besteht, kontaktiere uns.",
   "navigation": {
     "overview": "Übersicht",
+    "markets": "Märkte",
     "stocks": "Aktien",
     "indices": "Indizes",
     "watchlist": "Watchlist"

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,12 +31,14 @@ interface CrimeBarChartProps {
   title?: string;
 }
 
-export function CrimeBarChart({ data, title = 'Przestępstwa' }: CrimeBarChartProps) {
+export function CrimeBarChart({ data, title }: CrimeBarChartProps) {
+  const { t } = useTranslation('dane');
+
   const chartData = {
     labels: data.map((d) => d.year.toString()),
     datasets: [
       {
-        label: 'Zgłoszone',
+        label: t('charts.crime.reported'),
         data: data.map((d) => d.reported),
         backgroundColor: '#ef4444',
       },
@@ -51,7 +54,7 @@ export function CrimeBarChart({ data, title = 'Przestępstwa' }: CrimeBarChartPr
       },
       title: {
         display: true,
-        text: title,
+        text: title ?? t('charts.crime.crimesTitle'),
       },
     },
   };
@@ -68,12 +71,14 @@ interface DetectionChartProps {
   title?: string;
 }
 
-export function DetectionChart({ data, title = 'Wykrywalność (%)' }: DetectionChartProps) {
+export function DetectionChart({ data, title }: DetectionChartProps) {
+  const { t } = useTranslation('dane');
+
   const chartData = {
     labels: data.map((d) => d.year.toString()),
     datasets: [
       {
-        label: 'Wykrywalność',
+        label: t('charts.crime.detection'),
         data: data.map((d) => d.detectionRate ?? 0),
         borderColor: '#22c55e',
         backgroundColor: 'rgba(34, 197, 94, 0.1)',
@@ -92,7 +97,7 @@ export function DetectionChart({ data, title = 'Wykrywalność (%)' }: Detection
       },
       title: {
         display: true,
-        text: title,
+        text: title ?? t('charts.crime.detectionTitle'),
       },
     },
     scales: {
@@ -121,12 +126,14 @@ interface CrimeCategoriesChartProps {
   title?: string;
 }
 
-export function CrimeCategoriesChart({ data, title = 'Kategorie przestępstw' }: CrimeCategoriesChartProps) {
+export function CrimeCategoriesChart({ data, title }: CrimeCategoriesChartProps) {
+  const { t } = useTranslation('dane');
+
   const chartData = {
     labels: data.map((d) => d.label),
     datasets: [
       {
-        label: 'Liczba',
+        label: t('charts.crime.count'),
         data: data.map((d) => d.value),
         backgroundColor: data.map((d) => d.color),
       },
@@ -143,7 +150,7 @@ export function CrimeCategoriesChart({ data, title = 'Kategorie przestępstw' }:
       },
       title: {
         display: true,
-        text: title,
+        text: title ?? t('charts.crime.categoriesTitle'),
       },
     },
   };

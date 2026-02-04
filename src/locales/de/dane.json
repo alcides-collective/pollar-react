@@ -1,0 +1,48 @@
+{
+  "airQuality": {
+    "title": "Luftqualität",
+    "subtitle": "Daten der Hauptumweltinspektion",
+    "shortSubtitle": "Daten von GIOŚ",
+    "error": "Fehler",
+    "tryAgain": "Erneut versuchen",
+    "nationalAverage": "Landesdurchschnitt",
+    "measurementStations": "Messstationen",
+    "stationsIn": "Stationen in {{province}}",
+    "selectProvince": "Woiwodschaft wählen",
+    "filterByProvince": "Nach Woiwodschaft filtern",
+    "allPoland": "Ganz Polen",
+    "stationMap": "Karte der Messstationen",
+    "refresh": "Aktualisieren",
+    "location": "Standort",
+    "status": "Status",
+    "measurementDate": "Messdatum",
+    "coordinates": "Koordinaten",
+    "worstQuality": "Schlechteste Qualität",
+    "bestQuality": "Beste Qualität",
+    "provinceSummary": "Zusammenfassung nach Woiwodschaft",
+    "stationsCount": "{{count}} Stationen",
+    "source": "Hauptinspektion für Umweltschutz"
+  },
+  "charts": {
+    "energy": {
+      "coal": "Kohle",
+      "gas": "Gas",
+      "renewables": "Erneuerbare",
+      "mixTitle": "Energiemix (%)",
+      "productionTitle": "Energieproduktion (GWh)"
+    },
+    "comparison": {
+      "title": "Polen vs EU",
+      "poland": "Polen",
+      "eu": "EU"
+    },
+    "crime": {
+      "crimesTitle": "Straftaten",
+      "reported": "Gemeldet",
+      "detectionTitle": "Aufklärungsrate (%)",
+      "detection": "Aufklärungsrate",
+      "categoriesTitle": "Straftatenkategorien",
+      "count": "Anzahl"
+    }
+  }
+}

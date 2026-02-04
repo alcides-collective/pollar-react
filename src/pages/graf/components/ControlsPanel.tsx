@@ -1,16 +1,13 @@
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useGrafStore } from '@/stores/grafStore';
 import type { ConnectionType, VisualizationMode } from '@/types/graph';
 import { CONNECTION_CONFIGS } from '@/types/graph';
 
-const MODES: { value: VisualizationMode; label: string }[] = [
-  { value: 'force', label: 'Siły' },
-  { value: 'radial', label: 'Promieniowy' },
-  { value: 'hierarchical', label: 'Hierarchia' },
-  { value: 'timeline', label: 'Oś czasu' },
-];
+const MODE_KEYS: VisualizationMode[] = ['force', 'radial', 'hierarchical', 'timeline'];
 
 export function ControlsPanel() {
+  const { t } = useTranslation('graf');
   const mode = useGrafStore((s) => s.mode);
   const setMode = useGrafStore((s) => s.setMode);
   const enabledConnections = useGrafStore((s) => s.enabledConnections);
@@ -29,15 +26,15 @@ export function ControlsPanel() {
     >
       {/* Mode Switcher */}
       <div className="graf-controls-section">
-        <h3 className="graf-controls-title">Tryb wizualizacji</h3>
+        <h3 className="graf-controls-title">{t('controls.visualizationMode')}</h3>
         <div className="graf-mode-buttons">
-          {MODES.map(({ value, label }) => (
+          {MODE_KEYS.map((modeKey) => (
             <button
-              key={value}
-              onClick={() => setMode(value)}
-              className={`graf-mode-button ${mode === value ? 'active' : ''}`}
+              key={modeKey}
+              onClick={() => setMode(modeKey)}
+              className={`graf-mode-button ${mode === modeKey ? 'active' : ''}`}
             >
-              {label}
+              {t(`modes.${modeKey}`)}
             </button>
           ))}
         </div>
@@ -45,7 +42,7 @@ export function ControlsPanel() {
 
       {/* Connection Toggles */}
       <div className="graf-controls-section">
-        <h3 className="graf-controls-title">Typy połączeń</h3>
+        <h3 className="graf-controls-title">{t('controls.connectionTypes')}</h3>
         <div className="graf-connection-toggles">
           {(Object.keys(CONNECTION_CONFIGS) as ConnectionType[]).map((type) => (
             <label key={type} className="graf-toggle">
@@ -72,7 +69,7 @@ export function ControlsPanel() {
                   />
                 </svg>
               </span>
-              <span className="graf-toggle-label">{CONNECTION_CONFIGS[type].label}</span>
+              <span className="graf-toggle-label">{t(`connections.${type}`)}</span>
             </label>
           ))}
         </div>
@@ -80,7 +77,7 @@ export function ControlsPanel() {
 
       {/* Trending Score Filter */}
       <div className="graf-controls-section">
-        <h3 className="graf-controls-title">Min. trending score</h3>
+        <h3 className="graf-controls-title">{t('controls.minTrendingScore')}</h3>
         <div className="graf-slider-container">
           <input
             type="range"
@@ -96,7 +93,7 @@ export function ControlsPanel() {
 
       {/* Reset Button */}
       <button onClick={resetFilters} className="graf-reset-button">
-        Resetuj filtry
+        {t('controls.resetFilters')}
       </button>
     </motion.div>
   );

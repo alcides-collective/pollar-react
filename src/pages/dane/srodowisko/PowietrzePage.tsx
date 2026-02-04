@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DaneHeader, DaneSourceFooter, StatsGrid, LiveBadge } from '@/components/dane';
 import { AirQualityMap } from '@/components/dane/maps/AirQualityMap';
 import { useAirQuality, useAirQualitySummary } from '@/hooks/useAirQuality';
@@ -16,6 +17,7 @@ const PROVINCES = [
 ];
 
 export function PowietrzePage() {
+  const { t } = useTranslation('dane');
   const { stations, worstStations, bestStations, nationalAverage, loading, error, refresh } = useAirQuality();
   const { summary } = useAirQualitySummary();
   const { selectedProvince, setSelectedProvince } = useDaneStore();
@@ -40,12 +42,12 @@ export function PowietrzePage() {
   if (error) {
     return (
       <div>
-        <DaneHeader title="Jakość powietrza" subtitle="Dane z GIOŚ" icon="ri-cloud-line" isLive />
+        <DaneHeader title={t('airQuality.title')} subtitle={t('airQuality.shortSubtitle')} icon="ri-cloud-line" isLive />
         <Card className="border-destructive">
           <CardContent className="pt-6">
-            <p className="text-destructive">Błąd: {error.message}</p>
+            <p className="text-destructive">{t('airQuality.error')}: {error.message}</p>
             <Button variant="outline" onClick={() => refresh()} className="mt-4">
-              Spróbuj ponownie
+              {t('airQuality.tryAgain')}
             </Button>
           </CardContent>
         </Card>
@@ -56,8 +58,8 @@ export function PowietrzePage() {
   return (
     <div>
       <DaneHeader
-        title="Jakość powietrza"
-        subtitle="Dane z Głównego Inspektoratu Ochrony Środowiska"
+        title={t('airQuality.title')}
+        subtitle={t('airQuality.subtitle')}
         icon="ri-cloud-line"
         isLive
       />
@@ -66,16 +68,16 @@ export function PowietrzePage() {
       <StatsGrid
         stats={[
           {
-            label: 'Średnia krajowa',
+            label: t('airQuality.nationalAverage'),
             value: nationalAverage?.level.toFixed(1) ?? '-',
             color: '#3b82f6',
           },
           {
-            label: 'Stacje pomiarowe',
+            label: t('airQuality.measurementStations'),
             value: stations.length,
           },
           {
-            label: selectedProvince ? `Stacje w ${selectedProvince}` : 'Wybierz województwo',
+            label: selectedProvince ? t('airQuality.stationsIn', { province: selectedProvince }) : t('airQuality.selectProvince'),
             value: filteredStats?.stationCount ?? '-',
           },
         ]}
@@ -87,7 +89,7 @@ export function PowietrzePage() {
       {/* Province Filter */}
       <Card className="mb-6">
         <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium">Filtruj według województwa</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('airQuality.filterByProvince')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
@@ -96,7 +98,7 @@ export function PowietrzePage() {
               size="sm"
               onClick={() => setSelectedProvince(null)}
             >
-              Cała Polska
+              {t('airQuality.allPoland')}
             </Button>
             {PROVINCES.map((province) => (
               <Button
@@ -115,11 +117,11 @@ export function PowietrzePage() {
       {/* Map */}
       <Card className="mb-6">
         <CardHeader className="flex flex-row items-center justify-between pb-3">
-          <CardTitle className="text-lg">Mapa stacji pomiarowych</CardTitle>
+          <CardTitle className="text-lg">{t('airQuality.stationMap')}</CardTitle>
           <div className="flex items-center gap-2">
             <LiveBadge />
             <Button variant="ghost" size="sm" onClick={() => refresh()}>
-              Odśwież
+              {t('airQuality.refresh')}
             </Button>
           </div>
         </CardHeader>
@@ -146,13 +148,13 @@ export function PowietrzePage() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-muted-foreground">Lokalizacja</p>
+                <p className="text-sm text-muted-foreground">{t('airQuality.location')}</p>
                 <p className="font-medium">
                   {selectedStation.station.city.name}, {selectedStation.station.city.commune.provinceName}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Status</p>
+                <p className="text-sm text-muted-foreground">{t('airQuality.status')}</p>
                 <span
                   className="inline-block px-3 py-1 rounded-full text-sm font-medium"
                   style={{
@@ -166,13 +168,13 @@ export function PowietrzePage() {
               {selectedStation.index && (
                 <>
                   <div>
-                    <p className="text-sm text-muted-foreground">Data pomiaru</p>
+                    <p className="text-sm text-muted-foreground">{t('airQuality.measurementDate')}</p>
                     <p className="font-medium">
                       {new Date(selectedStation.index.stCalcDate).toLocaleString('pl-PL')}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Współrzędne</p>
+                    <p className="text-sm text-muted-foreground">{t('airQuality.coordinates')}</p>
                     <p className="font-mono text-sm">
                       {selectedStation.station.gegrLat}, {selectedStation.station.gegrLon}
                     </p>
@@ -189,7 +191,7 @@ export function PowietrzePage() {
         {/* Worst Stations */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-red-600">Najgorsza jakość</CardTitle>
+            <CardTitle className="text-lg text-red-600">{t('airQuality.worstQuality')}</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -236,7 +238,7 @@ export function PowietrzePage() {
         {/* Best Stations */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-green-600">Najlepsza jakość</CardTitle>
+            <CardTitle className="text-lg text-green-600">{t('airQuality.bestQuality')}</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -285,7 +287,7 @@ export function PowietrzePage() {
       {summary.length > 0 && (
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle className="text-lg">Podsumowanie według województw</CardTitle>
+            <CardTitle className="text-lg">{t('airQuality.provinceSummary')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -298,7 +300,7 @@ export function PowietrzePage() {
                   <p className="font-medium text-sm">{item.province}</p>
                   <div className="flex justify-between items-center mt-1">
                     <span className="text-xs text-muted-foreground">
-                      {item.stationCount} stacji
+                      {t('airQuality.stationsCount', { count: item.stationCount })}
                     </span>
                     <span
                       className="px-2 py-0.5 rounded text-xs font-medium"
@@ -318,7 +320,7 @@ export function PowietrzePage() {
       )}
 
       <DaneSourceFooter
-        source="Główny Inspektorat Ochrony Środowiska"
+        source={t('airQuality.source')}
         sourceUrl="https://powietrze.gios.gov.pl"
       />
     </div>

@@ -1,4 +1,19 @@
 {
+  "sidebar": {
+    "dateGroups": {
+      "today": "Heute",
+      "yesterday": "Gestern",
+      "last7Days": "Letzte 7 Tage",
+      "last30Days": "Letzte 30 Tage",
+      "older": "Älter"
+    },
+    "deleteConversation": "Unterhaltung löschen",
+    "openPanel": "Panel öffnen",
+    "closePanel": "Panel schließen",
+    "newConversation": "Neue Unterhaltung",
+    "noConversations": "Keine Unterhaltungen",
+    "startNewConversation": "Neue Unterhaltung starten"
+  },
   "input": {
     "placeholder": "Frage zu Ereignissen...",
     "send": "Senden",

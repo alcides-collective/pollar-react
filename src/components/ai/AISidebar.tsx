@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Trash2, MessageSquare, PanelLeftClose, PanelLeft } from 'lucide-react';
 import {
   useAIStore,
@@ -8,20 +9,24 @@ import {
   type Conversation,
 } from '../../stores/aiStore';
 
+type DateGroupKey = 'today' | 'yesterday' | 'last7Days' | 'last30Days' | 'older';
+
 // Group conversations by date
-function groupConversationsByDate(conversations: Conversation[]) {
+function groupConversationsByDate(
+  conversations: Conversation[],
+  t: (key: string) => string
+) {
   const today = new Date().setHours(0, 0, 0, 0);
   const yesterday = today - 86400000;
   const weekAgo = today - 7 * 86400000;
   const monthAgo = today - 30 * 86400000;
 
-  const groups: { label: string; conversations: Conversation[] }[] = [
-    { label: 'Dzisiaj', conversations: [] },
-    { label: 'Wczoraj', conversations: [] },
-    { label: 'Ostatnie 7 dni', conversations: [] },
-    { label: 'Ostatnie 30 dni', conversations: [] },
-    { label: 'Starsze', conversations: [] },
-  ];
+  const groupKeys: DateGroupKey[] = ['today', 'yesterday', 'last7Days', 'last30Days', 'older'];
+  const groups: { key: DateGroupKey; label: string; conversations: Conversation[] }[] = groupKeys.map(key => ({
+    key,
+    label: t(`sidebar.dateGroups.${key}`),
+    conversations: [],
+  }));
 
   for (const conv of conversations) {
     const date = conv.updatedAt;
@@ -46,6 +51,7 @@ interface ConversationItemProps {
   isActive: boolean;
   onSelect: () => void;
   onDelete: () => void;
+  deleteLabel: string;
 }
 
 function ConversationItem({
@@ -53,6 +59,7 @@ function ConversationItem({
   isActive,
   onSelect,
   onDelete,
+  deleteLabel,
 }: ConversationItemProps) {
   const [showDelete, setShowDelete] = useState(false);
 
@@ -83,7 +90,7 @@ function ConversationItem({
           className="absolute right-2 p-1 rounded hover:bg-zinc-300 dark:hover:bg-zinc-600
                      text-zinc-400 hover:text-red-500 dark:hover:text-red-400
                      transition-colors duration-150"
-          aria-label="Usuń rozmowę"
+          aria-label={deleteLabel}
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>
@@ -93,6 +100,7 @@ function ConversationItem({
 }
 
 export function AISidebar() {
+  const { t } = useTranslation('ai');
   const conversations = useAIConversations();
   const currentId = useAICurrentConversationId();
   const isOpen = useAISidebarOpen();
@@ -103,7 +111,7 @@ export function AISidebar() {
     toggleSidebar,
   } = useAIStore();
 
-  const groupedConversations = groupConversationsByDate(conversations);
+  const groupedConversations = groupConversationsByDate(conversations, t);
 
   const handleNewChat = () => {
     createConversation();
@@ -117,7 +125,7 @@ export function AISidebar() {
           onClick={toggleSidebar}
           className="p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800
                      text-zinc-500 dark:text-zinc-400 transition-colors duration-150"
-          aria-label="Otwórz panel"
+          aria-label={t('sidebar.openPanel')}
         >
           <PanelLeft className="w-5 h-5" />
         </button>
@@ -125,7 +133,7 @@ export function AISidebar() {
           onClick={handleNewChat}
           className="mt-2 p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800
                      text-zinc-500 dark:text-zinc-400 transition-colors duration-150"
-          aria-label="Nowa rozmowa"
+          aria-label={t('sidebar.newConversation')}
         >
           <Plus className="w-5 h-5" />
         </button>
@@ -141,7 +149,7 @@ export function AISidebar() {
           onClick={toggleSidebar}
           className="p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800
                      text-zinc-500 dark:text-zinc-400 transition-colors duration-150"
-          aria-label="Zamknij panel"
+          aria-label={t('sidebar.closePanel')}
         >
           <PanelLeftClose className="w-5 h-5" />
         </button>
@@ -149,7 +157,7 @@ export function AISidebar() {
           onClick={handleNewChat}
           className="p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800
                      text-zinc-500 dark:text-zinc-400 transition-colors duration-150"
-          aria-label="Nowa rozmowa"
+          aria-label={t('sidebar.newConversation')}
         >
           <Plus className="w-5 h-5" />
         </button>
@@ -160,19 +168,19 @@ export function AISidebar() {
         {groupedConversations.length === 0 ? (
           <div className="px-3 py-8 text-center">
             <p className="text-sm text-zinc-400 dark:text-zinc-500">
-              Brak rozmów
+              {t('sidebar.noConversations')}
             </p>
             <button
               onClick={handleNewChat}
               className="mt-3 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200
                          transition-colors duration-150"
             >
-              Rozpocznij nową rozmowę
+              {t('sidebar.startNewConversation')}
             </button>
           </div>
         ) : (
           groupedConversations.map((group) => (
-            <div key={group.label} className="mb-4">
+            <div key={group.key} className="mb-4">
               <h3 className="px-3 py-1.5 text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
                 {group.label}
               </h3>
@@ -184,6 +192,7 @@ export function AISidebar() {
                     isActive={conv.id === currentId}
                     onSelect={() => selectConversation(conv.id)}
                     onDelete={() => deleteConversation(conv.id)}
+                    deleteLabel={t('sidebar.deleteConversation')}
                   />
                 ))}
               </div>

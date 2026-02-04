@@ -17,6 +17,8 @@ import plGielda from './locales/pl/gielda.json';
 import plDashboard from './locales/pl/dashboard.json';
 import plBrief from './locales/pl/brief.json';
 import plEvent from './locales/pl/event.json';
+import plDane from './locales/pl/dane.json';
+import plGraf from './locales/pl/graf.json';
 
 // English translations
 import enCommon from './locales/en/common.json';
@@ -33,6 +35,8 @@ import enGielda from './locales/en/gielda.json';
 import enDashboard from './locales/en/dashboard.json';
 import enBrief from './locales/en/brief.json';
 import enEvent from './locales/en/event.json';
+import enDane from './locales/en/dane.json';
+import enGraf from './locales/en/graf.json';
 
 // German translations
 import deCommon from './locales/de/common.json';
@@ -49,6 +53,8 @@ import deGielda from './locales/de/gielda.json';
 import deDashboard from './locales/de/dashboard.json';
 import deBrief from './locales/de/brief.json';
 import deEvent from './locales/de/event.json';
+import deDane from './locales/de/dane.json';
+import deGraf from './locales/de/graf.json';
 
 const resources = {
   pl: {
@@ -66,6 +72,8 @@ const resources = {
     dashboard: plDashboard,
     brief: plBrief,
     event: plEvent,
+    dane: plDane,
+    graf: plGraf,
   },
   en: {
     common: enCommon,
@@ -82,6 +90,8 @@ const resources = {
     dashboard: enDashboard,
     brief: enBrief,
     event: enEvent,
+    dane: enDane,
+    graf: enGraf,
   },
   de: {
     common: deCommon,
@@ -98,6 +108,8 @@ const resources = {
     dashboard: deDashboard,
     brief: deBrief,
     event: deEvent,
+    dane: deDane,
+    graf: deGraf,
   },
 };
 

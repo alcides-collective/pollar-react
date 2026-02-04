@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,23 +25,25 @@ interface EnergyMixChartProps {
 }
 
 export function EnergyMixChart({ data }: EnergyMixChartProps) {
+  const { t } = useTranslation('dane');
+
   const chartData = {
     labels: data.map((d) => d.year.toString()),
     datasets: [
       {
-        label: 'Węgiel',
+        label: t('charts.energy.coal'),
         data: data.map((d) => d.solidFuels),
         backgroundColor: '#374151',
         stack: 'stack0',
       },
       {
-        label: 'Gaz',
+        label: t('charts.energy.gas'),
         data: data.map((d) => d.gas),
         backgroundColor: '#3b82f6',
         stack: 'stack0',
       },
       {
-        label: 'OZE',
+        label: t('charts.energy.renewables'),
         data: data.map((d) => d.renewables),
         backgroundColor: '#22c55e',
         stack: 'stack0',
@@ -57,7 +60,7 @@ export function EnergyMixChart({ data }: EnergyMixChartProps) {
       },
       title: {
         display: true,
-        text: 'Mix energetyczny (%)',
+        text: t('charts.energy.mixTitle'),
       },
     },
     scales: {

@@ -1,0 +1,48 @@
+{
+  "airQuality": {
+    "title": "Air Quality",
+    "subtitle": "Data from the Chief Inspectorate of Environmental Protection",
+    "shortSubtitle": "Data from GIOŚ",
+    "error": "Error",
+    "tryAgain": "Try again",
+    "nationalAverage": "National average",
+    "measurementStations": "Measurement stations",
+    "stationsIn": "Stations in {{province}}",
+    "selectProvince": "Select province",
+    "filterByProvince": "Filter by province",
+    "allPoland": "All Poland",
+    "stationMap": "Measurement stations map",
+    "refresh": "Refresh",
+    "location": "Location",
+    "status": "Status",
+    "measurementDate": "Measurement date",
+    "coordinates": "Coordinates",
+    "worstQuality": "Worst quality",
+    "bestQuality": "Best quality",
+    "provinceSummary": "Summary by province",
+    "stationsCount": "{{count}} stations",
+    "source": "Chief Inspectorate of Environmental Protection"
+  },
+  "charts": {
+    "energy": {
+      "coal": "Coal",
+      "gas": "Gas",
+      "renewables": "Renewables",
+      "mixTitle": "Energy mix (%)",
+      "productionTitle": "Energy production (GWh)"
+    },
+    "comparison": {
+      "title": "Poland vs EU",
+      "poland": "Poland",
+      "eu": "EU"
+    },
+    "crime": {
+      "crimesTitle": "Crimes",
+      "reported": "Reported",
+      "detectionTitle": "Detection rate (%)",
+      "detection": "Detection rate",
+      "categoriesTitle": "Crime categories",
+      "count": "Count"
+    }
+  }
+}

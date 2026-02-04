@@ -138,6 +138,29 @@
     "latest": "Latest",
     "whatsNew": "What's new"
   },
+  "openData": {
+    "airQuality": "Air Quality",
+    "energy": "Energy",
+    "eurostat": "Eurostat",
+    "housing": "Housing"
+  },
+  "pro": {
+    "title": "Pollar Pro",
+    "subtitle": "Unlock the full potential of the platform",
+    "features": {
+      "personalizedBrief": "Personalized Daily Brief",
+      "unlimitedSearch": "Unlimited searches",
+      "mpTracking": "MP and Parliament tracking",
+      "dataExport": "CSV/PDF data export",
+      "fullArchive": "Full event archive",
+      "noAds": "No ads",
+      "darkMode": "Dark mode",
+      "prioritySupport": "Priority support"
+    },
+    "price": "€2.99",
+    "perMonth": "/ month",
+    "comingSoon": "Coming soon"
+  },
   "changelog": {
     "newInterface": {
       "title": "New Interface",

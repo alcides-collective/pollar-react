@@ -1,0 +1,27 @@
+{
+  "legend": {
+    "categories": "Kategorie",
+    "connections": "Połączenia",
+    "nodeSize": "Rozmiar węzła",
+    "lowTrending": "Niski trending",
+    "highTrending": "Wysoki trending"
+  },
+  "modes": {
+    "force": "Siły",
+    "radial": "Promieniowy",
+    "hierarchical": "Hierarchia",
+    "timeline": "Oś czasu"
+  },
+  "controls": {
+    "visualizationMode": "Tryb wizualizacji",
+    "connectionTypes": "Typy połączeń",
+    "minTrendingScore": "Min. trending score",
+    "resetFilters": "Resetuj filtry"
+  },
+  "connections": {
+    "people": "Wspólne osoby",
+    "countries": "Wspólne kraje",
+    "sources": "Wspólne źródła",
+    "category": "Ta sama kategoria"
+  }
+}

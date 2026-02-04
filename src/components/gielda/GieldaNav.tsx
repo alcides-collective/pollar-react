@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '../../lib/utils';
 import { ChevronDown } from 'lucide-react';
 
@@ -7,17 +8,20 @@ type NavItem = { href: string; label: string };
 type NavGroup = { label: string; items: NavItem[] };
 type NavEntry = NavItem | NavGroup;
 
-const navigation: NavEntry[] = [
-  { href: '/gielda', label: 'Przegląd' },
-  {
-    label: 'Rynki',
-    items: [
-      { href: '/gielda/akcje', label: 'Akcje' },
-      { href: '/gielda/indeksy', label: 'Indeksy' },
-    ],
-  },
-  { href: '/gielda/watchlist', label: 'Obserwowane' },
-];
+function useNavigation(): NavEntry[] {
+  const { t } = useTranslation('gielda');
+  return [
+    { href: '/gielda', label: t('navigation.overview') },
+    {
+      label: t('navigation.markets'),
+      items: [
+        { href: '/gielda/akcje', label: t('navigation.stocks') },
+        { href: '/gielda/indeksy', label: t('navigation.indices') },
+      ],
+    },
+    { href: '/gielda/watchlist', label: t('navigation.watchlist') },
+  ];
+}
 
 function isGroup(entry: NavEntry): entry is NavGroup {
   return 'items' in entry;
@@ -46,6 +50,7 @@ interface GieldaNavProps {
 export function GieldaNav({ className }: GieldaNavProps) {
   const location = useLocation();
   const pathname = location.pathname;
+  const navigation = useNavigation();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const justOpenedRef = useRef(false);

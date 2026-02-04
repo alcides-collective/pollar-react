@@ -49,10 +49,10 @@ export function Footer() {
       title: t('nav.openData'),
       links: [
         { label: t('gielda:navigation.overview'), to: '/dane' },
-        { label: 'Jakość powietrza', to: '/dane/srodowisko/powietrze' },
-        { label: 'Energia', to: '/dane/ekonomia/energia' },
-        { label: 'Eurostat', to: '/dane/ekonomia/eurostat' },
-        { label: 'Mieszkania', to: '/dane/ekonomia/mieszkania' },
+        { label: t('openData.airQuality'), to: '/dane/srodowisko/powietrze' },
+        { label: t('openData.energy'), to: '/dane/ekonomia/energia' },
+        { label: t('openData.eurostat'), to: '/dane/ekonomia/eurostat' },
+        { label: t('openData.housing'), to: '/dane/ekonomia/mieszkania' },
       ],
     },
   ];

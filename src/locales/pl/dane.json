@@ -1,0 +1,48 @@
+{
+  "airQuality": {
+    "title": "Jakość powietrza",
+    "subtitle": "Dane z Głównego Inspektoratu Ochrony Środowiska",
+    "shortSubtitle": "Dane z GIOŚ",
+    "error": "Błąd",
+    "tryAgain": "Spróbuj ponownie",
+    "nationalAverage": "Średnia krajowa",
+    "measurementStations": "Stacje pomiarowe",
+    "stationsIn": "Stacje w {{province}}",
+    "selectProvince": "Wybierz województwo",
+    "filterByProvince": "Filtruj według województwa",
+    "allPoland": "Cała Polska",
+    "stationMap": "Mapa stacji pomiarowych",
+    "refresh": "Odśwież",
+    "location": "Lokalizacja",
+    "status": "Status",
+    "measurementDate": "Data pomiaru",
+    "coordinates": "Współrzędne",
+    "worstQuality": "Najgorsza jakość",
+    "bestQuality": "Najlepsza jakość",
+    "provinceSummary": "Podsumowanie według województw",
+    "stationsCount": "{{count}} stacji",
+    "source": "Główny Inspektorat Ochrony Środowiska"
+  },
+  "charts": {
+    "energy": {
+      "coal": "Węgiel",
+      "gas": "Gaz",
+      "renewables": "OZE",
+      "mixTitle": "Mix energetyczny (%)",
+      "productionTitle": "Produkcja energii (GWh)"
+    },
+    "comparison": {
+      "title": "Polska vs UE",
+      "poland": "Polska",
+      "eu": "UE"
+    },
+    "crime": {
+      "crimesTitle": "Przestępstwa",
+      "reported": "Zgłoszone",
+      "detectionTitle": "Wykrywalność (%)",
+      "detection": "Wykrywalność",
+      "categoriesTitle": "Kategorie przestępstw",
+      "count": "Liczba"
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,17 +31,19 @@ interface ComparisonChartProps {
   title?: string;
 }
 
-export function ComparisonChart({ data, title = 'Polska vs UE' }: ComparisonChartProps) {
+export function ComparisonChart({ data, title }: ComparisonChartProps) {
+  const { t } = useTranslation('dane');
+
   const chartData = {
     labels: data.map((d) => `${d.label} (${d.unit})`),
     datasets: [
       {
-        label: 'Polska',
+        label: t('charts.comparison.poland'),
         data: data.map((d) => d.poland),
         backgroundColor: '#dc2626',
       },
       {
-        label: 'UE',
+        label: t('charts.comparison.eu'),
         data: data.map((d) => d.eu),
         backgroundColor: '#2563eb',
       },
@@ -57,7 +60,7 @@ export function ComparisonChart({ data, title = 'Polska vs UE' }: ComparisonChar
       },
       title: {
         display: true,
-        text: title,
+        text: title ?? t('charts.comparison.title'),
       },
     },
   };

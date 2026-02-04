@@ -1,4 +1,19 @@
 {
+  "sidebar": {
+    "dateGroups": {
+      "today": "Dzisiaj",
+      "yesterday": "Wczoraj",
+      "last7Days": "Ostatnie 7 dni",
+      "last30Days": "Ostatnie 30 dni",
+      "older": "Starsze"
+    },
+    "deleteConversation": "Usuń rozmowę",
+    "openPanel": "Otwórz panel",
+    "closePanel": "Zamknij panel",
+    "newConversation": "Nowa rozmowa",
+    "noConversations": "Brak rozmów",
+    "startNewConversation": "Rozpocznij nową rozmowę"
+  },
   "input": {
     "placeholder": "Zapytaj o wydarzenia...",
     "send": "Wyślij",
