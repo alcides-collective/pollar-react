@@ -16,9 +16,13 @@ interface EventImageProps {
   groupHover?: boolean;
   /** Enable shadow on hover (defaults to true when groupHover is enabled) */
   hoverShadow?: boolean;
+  /** Image width for preventing CLS */
+  width?: number;
+  /** Image height for preventing CLS */
+  height?: number;
 }
 
-export function EventImage({ event, className, style, hoverScale = 1.02, grainOpacity = 0.25, groupHover = false, hoverShadow }: EventImageProps) {
+export function EventImage({ event, className, style, hoverScale = 1.02, grainOpacity = 0.25, groupHover = false, hoverShadow, width, height }: EventImageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [allFailed, setAllFailed] = useState(false);
 
@@ -88,6 +92,8 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
         loading={priority === 'high' ? 'eager' : 'lazy'}
         onLoad={handleLoad}
         onError={allFailed ? undefined : handleError}
+        width={width}
+        height={height}
       />
       <div
         className="absolute inset-0 pointer-events-none"

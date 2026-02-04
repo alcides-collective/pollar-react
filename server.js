@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync } from 'fs';
@@ -366,6 +367,9 @@ async function fetchFelietonData(felietonId) {
 // Trust proxy for correct protocol detection behind Railway/load balancer
 app.set('trust proxy', true);
 
+// Enable gzip compression for all responses
+app.use(compression());
+
 // Sitemap.xml endpoint with dynamic events
 app.get('/sitemap.xml', async (req, res) => {
   const baseUrl = 'https://pollar.news';
@@ -566,8 +570,22 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// Serve static files
-app.use(express.static(join(__dirname, 'dist')));
+// Serve hashed assets with long-term caching (1 year, immutable)
+app.use('/assets', express.static(join(__dirname, 'dist/assets'), {
+  maxAge: '1y',
+  immutable: true
+}));
+
+// Serve other static files with short cache
+app.use(express.static(join(__dirname, 'dist'), {
+  maxAge: '1h',
+  setHeaders: (res, filePath) => {
+    // No cache for HTML files
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+  }
+}));
 
 // SPA fallback
 app.get('*', (req, res) => {

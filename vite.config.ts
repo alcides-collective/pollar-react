@@ -14,19 +14,31 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
+        manualChunks(id) {
           // Core React - always needed
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
+            return 'vendor-react';
+          }
           // Charts - only for /gielda and /dane sections
-          'vendor-charts': ['chart.js', 'react-chartjs-2', 'chartjs-plugin-datalabels'],
+          if (id.includes('node_modules/chart.js') || id.includes('node_modules/react-chartjs-2') || id.includes('node_modules/chartjs-plugin-datalabels')) {
+            return 'vendor-charts';
+          }
           // Maps - only for /mapa page
-          'vendor-maps': ['mapbox-gl'],
+          if (id.includes('node_modules/mapbox-gl')) {
+            return 'vendor-maps';
+          }
           // Firebase - only for auth features
-          'vendor-firebase': ['firebase'],
+          if (id.includes('node_modules/firebase') || id.includes('node_modules/@firebase')) {
+            return 'vendor-firebase';
+          }
           // Animation - used throughout but can be separate
-          'vendor-motion': ['framer-motion'],
+          if (id.includes('node_modules/framer-motion')) {
+            return 'vendor-motion';
+          }
           // UI components
-          'vendor-ui': ['radix-ui', 'sonner', 'lucide-react'],
+          if (id.includes('node_modules/radix-ui') || id.includes('node_modules/sonner') || id.includes('node_modules/lucide-react')) {
+            return 'vendor-ui';
+          }
         }
       }
     }

@@ -13,6 +13,10 @@ interface GrainImageProps {
   groupHover?: boolean;
   /** Enable shadow on hover (defaults to true when groupHover is enabled) */
   hoverShadow?: boolean;
+  /** Image width for preventing CLS */
+  width?: number;
+  /** Image height for preventing CLS */
+  height?: number;
 }
 
 export function GrainImage({
@@ -24,6 +28,8 @@ export function GrainImage({
   hoverScale = false,
   groupHover = false,
   hoverShadow,
+  width,
+  height,
 }: GrainImageProps) {
   // Section image tracking
   const uniqueId = useId();
@@ -47,6 +53,8 @@ export function GrainImage({
         loading={priority === 'high' ? 'eager' : 'lazy'}
         onLoad={onLoad}
         onError={onError}
+        width={width}
+        height={height}
       />
       <div
         className="absolute inset-0 pointer-events-none"

@@ -49,6 +49,9 @@ export function TeamSection() {
               src="/images/team/founders.webp"
               alt="Jakub i Bartosz - twórcy Pollar"
               className="w-full h-full object-cover"
+              loading="lazy"
+              width={800}
+              height={1000}
             />
             {/* Grain overlay */}
             <div

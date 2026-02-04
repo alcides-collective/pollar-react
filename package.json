@@ -17,6 +17,7 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "compression": "^1.8.1",
     "express": "^4.21.2",
     "firebase": "^12.8.0",
     "framer-motion": "^12.30.0",

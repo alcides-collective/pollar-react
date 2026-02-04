@@ -9,7 +9,6 @@ const features = [
     icon: 'ri-calendar-todo-line',
     href: '/brief',
     color: 'bg-amber-50 text-amber-600',
-    size: 'large', // tall card
   },
   {
     title: 'AI Asystent',
@@ -17,7 +16,6 @@ const features = [
     icon: 'ri-robot-2-line',
     href: '/asystent',
     color: 'bg-violet-50 text-violet-600',
-    size: 'medium',
   },
   {
     title: 'Sejm',
@@ -25,7 +23,6 @@ const features = [
     icon: 'ri-government-line',
     href: '/sejm',
     color: 'bg-red-50 text-red-600',
-    size: 'medium',
   },
   {
     title: 'Giełda',
@@ -33,7 +30,6 @@ const features = [
     icon: 'ri-stock-line',
     href: '/gielda',
     color: 'bg-emerald-50 text-emerald-600',
-    size: 'small',
   },
   {
     title: 'Dane',
@@ -41,7 +37,6 @@ const features = [
     icon: 'ri-bar-chart-box-line',
     href: '/dane',
     color: 'bg-blue-50 text-blue-600',
-    size: 'large',
   },
   {
     title: 'Powiązania',
@@ -49,7 +44,27 @@ const features = [
     icon: 'ri-gamepad-line',
     href: '/powiazania',
     color: 'bg-pink-50 text-pink-600',
-    size: 'small',
+  },
+  {
+    title: 'Mapa wydarzeń',
+    description: 'Interaktywna mapa z lokalizacją wydarzeń. Zobacz co dzieje się w Polsce i na świecie.',
+    icon: 'ri-map-pin-line',
+    href: '/mapa',
+    color: 'bg-cyan-50 text-cyan-600',
+  },
+  {
+    title: 'Terminal',
+    description: 'Interfejs terminalowy dla zaawansowanych użytkowników. Szybki dostęp do danych i komend.',
+    icon: 'ri-terminal-line',
+    href: '/terminal',
+    color: 'bg-zinc-100 text-zinc-700',
+  },
+  {
+    title: 'Archiwum',
+    description: 'Przeglądaj historyczne wydarzenia. Pełna baza artykułów z możliwością wyszukiwania.',
+    icon: 'ri-archive-line',
+    href: '/archiwum',
+    color: 'bg-orange-50 text-orange-600',
   },
 ];
 
