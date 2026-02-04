@@ -35,6 +35,8 @@ if (import.meta.env.PROD) {
       // Firebase IndexedDB issues on iOS Safari
       "Failed to execute 'transaction' on 'IDBDatabase'",
       'The database connection is closing',
+      // Stale cache after deployment - user has old chunks
+      "is not a valid JavaScript MIME type",
     ],
   })
 }
