@@ -576,10 +576,10 @@ app.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
   const langPrefix = lang !== 'pl' ? `/${lang}` : '';
   const baseUrl = 'https://pollar.news';
 
-  // Fetch recent events from API
+  // Fetch all events from API (limit=500 to get all, API doesn't support sorting)
   let events = [];
   try {
-    const response = await fetch(`${API_BASE}/api/events?lang=${lang}&limit=50`);
+    const response = await fetch(`${API_BASE}/api/events?lang=${lang}&limit=500`);
     if (response.ok) {
       const data = await response.json();
       // API returns { data: [...] } or { events: [...] } or direct array
@@ -589,8 +589,9 @@ app.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
     console.warn('Could not fetch events for RSS:', err.message);
   }
 
-  // Sort by createdAt descending
+  // Sort by createdAt descending and take top 50 for RSS
   events.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  events = events.slice(0, 50);
 
   const now = new Date().toUTCString();
 
