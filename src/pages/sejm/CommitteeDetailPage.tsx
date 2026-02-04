@@ -1,8 +1,12 @@
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useCommittee, useCommitteeSittings } from '../../hooks/useCommittees';
 import { PartyBadge, SejmApiError } from '../../components/sejm';
+import { useLanguageStore } from '../../stores/languageStore';
 
 export function CommitteeDetailPage() {
+  const { t } = useTranslation('sejm');
+  const language = useLanguageStore((s) => s.language);
   const { code } = useParams<{ code: string }>();
   const { committee, loading, error } = useCommittee(code || null);
   const { sittings } = useCommitteeSittings(code || null);
@@ -20,37 +24,39 @@ export function CommitteeDetailPage() {
     );
   }
 
-  if (!committee) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-zinc-500">Nie znaleziono komisji</p>
-        <Link to="/sejm/komisje" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
-          <i className="ri-arrow-left-s-line" /> Wróć do listy
-        </Link>
-      </div>
-    );
-  }
-
-  const typeLabels: Record<string, string> = {
-    standing: 'Komisja stała',
-    extraordinary: 'Komisja nadzwyczajna',
-    investigative: 'Komisja śledcza',
-  };
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
 
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return '-';
-    return new Date(dateStr).toLocaleDateString('pl-PL', {
+    return new Date(dateStr).toLocaleDateString(localeMap[language] || 'pl-PL', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     });
   };
 
+  if (!committee) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-zinc-500">{t('committeeDetail.notFound')}</p>
+        <Link to="/sejm/komisje" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+          <i className="ri-arrow-left-s-line" /> {t('committeeDetail.backToList')}
+        </Link>
+      </div>
+    );
+  }
+
+  const typeLabels: Record<string, string> = {
+    standing: t('committeeDetail.typeStanding'),
+    extraordinary: t('committeeDetail.typeExtraordinary'),
+    investigative: t('committeeDetail.typeInvestigative'),
+  };
+
   return (
     <div className="space-y-6">
       {/* Back link */}
       <Link to="/sejm/komisje" className="text-sm text-zinc-500 hover:text-zinc-700">
-        <i className="ri-arrow-left-s-line" /> Wszystkie komisje
+        <i className="ri-arrow-left-s-line" /> {t('committeeDetail.allCommittees')}
       </Link>
 
       {/* Header */}
@@ -77,13 +83,13 @@ export function CommitteeDetailPage() {
       <div className="grid grid-cols-2 gap-4 text-sm">
         {committee.phone && (
           <div>
-            <span className="text-zinc-500">Telefon:</span>
+            <span className="text-zinc-500">{t('committeeDetail.phone')}:</span>
             <p className="text-zinc-900">{committee.phone}</p>
           </div>
         )}
         {committee.appointmentDate && (
           <div>
-            <span className="text-zinc-500">Data powołania:</span>
+            <span className="text-zinc-500">{t('committeeDetail.appointmentDate')}:</span>
             <p className="text-zinc-900">{formatDate(committee.appointmentDate)}</p>
           </div>
         )}
@@ -92,7 +98,7 @@ export function CommitteeDetailPage() {
       {/* Presidium */}
       {committee.presidium && committee.presidium.length > 0 && (
         <div className="rounded-lg border border-zinc-200 p-4">
-          <h2 className="text-sm font-medium text-zinc-900 mb-3">Prezydium</h2>
+          <h2 className="text-sm font-medium text-zinc-900 mb-3">{t('committeeDetail.presidium')}</h2>
           <div className="space-y-2">
             {committee.presidium.map((member) => (
               <div key={member.id} className="flex items-center justify-between">
@@ -118,7 +124,7 @@ export function CommitteeDetailPage() {
       {committee.members && committee.members.length > 0 && (
         <div className="rounded-lg border border-zinc-200 p-4">
           <h2 className="text-sm font-medium text-zinc-900 mb-3">
-            Członkowie ({committee.members.length})
+            {t('committeeDetail.membersCount', { count: committee.members.length })}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {committee.members.map((member) => (
@@ -139,7 +145,7 @@ export function CommitteeDetailPage() {
       {/* Recent sittings */}
       {sittings.length > 0 && (
         <div className="rounded-lg border border-zinc-200 p-4">
-          <h2 className="text-sm font-medium text-zinc-900 mb-3">Ostatnie posiedzenia</h2>
+          <h2 className="text-sm font-medium text-zinc-900 mb-3">{t('committeeDetail.recentSittings')}</h2>
           <div className="space-y-2">
             {sittings.slice(0, 5).map((sitting) => (
               <div key={sitting.num} className="flex items-start justify-between py-2 border-b border-zinc-100 last:border-0">
@@ -159,7 +165,7 @@ export function CommitteeDetailPage() {
                     rel="noopener noreferrer"
                     className="shrink-0 text-xs text-blue-600 hover:underline"
                   >
-                    Video <i className="ri-arrow-right-s-line" />
+                    {t('committeeDetail.video')} <i className="ri-arrow-right-s-line" />
                   </a>
                 )}
               </div>

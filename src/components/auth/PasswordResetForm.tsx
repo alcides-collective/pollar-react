@@ -42,9 +42,9 @@ export function PasswordResetForm() {
   if (success) {
     return (
       <div className="space-y-4 text-center">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-500/20">
           <svg
-            className="h-6 w-6 text-green-600 dark:text-green-400"
+            className="h-6 w-6 text-green-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -58,10 +58,10 @@ export function PasswordResetForm() {
           </svg>
         </div>
         <div>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-zinc-400">
             {t('reset.emailSent')}
           </p>
-          <p className="mt-1 font-medium text-zinc-900 dark:text-zinc-100">
+          <p className="mt-1 font-medium text-zinc-100">
             {email}
           </p>
         </div>
@@ -82,13 +82,13 @@ export function PasswordResetForm() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-sm text-zinc-400">
         {t('reset.instructions')}
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+          <div className="rounded-md bg-red-500/20 p-3 text-sm text-red-400">
             {error}
           </div>
         )}
@@ -110,7 +110,7 @@ export function PasswordResetForm() {
         <button
           type="button"
           onClick={() => setView('login')}
-          className="w-full text-center text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+          className="w-full text-center text-sm text-zinc-400 hover:text-zinc-200 transition-colors"
         >
           {t('reset.backToLogin')}
         </button>

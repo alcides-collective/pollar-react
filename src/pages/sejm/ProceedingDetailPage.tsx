@@ -1,8 +1,12 @@
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useProceeding } from '../../hooks/useProceedings';
 import { SejmApiError } from '../../components/sejm';
+import { useLanguageStore } from '../../stores/languageStore';
 
 export function ProceedingDetailPage() {
+  const { t } = useTranslation('sejm');
+  const language = useLanguageStore((s) => s.language);
   const { number } = useParams<{ number: string }>();
   const { proceeding, loading, error } = useProceeding(number ? parseInt(number) : null);
 
@@ -19,21 +23,13 @@ export function ProceedingDetailPage() {
     );
   }
 
-  if (!proceeding) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-zinc-500">Nie znaleziono posiedzenia</p>
-        <Link to="/sejm/posiedzenia" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
-          <i className="ri-arrow-left-s-line" /> Wróć do listy
-        </Link>
-      </div>
-    );
-  }
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
 
   const formatDates = (dates: string[]) => {
     if (!dates || dates.length === 0) return '';
+    const locale = localeMap[language] || 'pl-PL';
     if (dates.length === 1) {
-      return new Date(dates[0]).toLocaleDateString('pl-PL', {
+      return new Date(dates[0]).toLocaleDateString(locale, {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -41,25 +37,36 @@ export function ProceedingDetailPage() {
     }
     const first = new Date(dates[0]);
     const last = new Date(dates[dates.length - 1]);
-    return `${first.toLocaleDateString('pl-PL', { day: 'numeric' })}-${last.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+    return `${first.toLocaleDateString(locale, { day: 'numeric' })}-${last.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })}`;
   };
+
+  if (!proceeding) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-zinc-500">{t('proceedingDetail.notFound')}</p>
+        <Link to="/sejm/posiedzenia" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+          <i className="ri-arrow-left-s-line" /> {t('proceedingDetail.backToList')}
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       {/* Back link */}
       <Link to="/sejm/posiedzenia" className="text-sm text-zinc-500 hover:text-zinc-700">
-        <i className="ri-arrow-left-s-line" /> Wszystkie posiedzenia
+        <i className="ri-arrow-left-s-line" /> {t('proceedingDetail.allProceedings')}
       </Link>
 
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
           <span className="text-lg font-semibold text-zinc-900">
-            {proceeding.number}. posiedzenie Sejmu
+            {t('proceedingDetail.sejmSession', { number: proceeding.number })}
           </span>
           {proceeding.current && (
             <span className="bg-green-500 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded animate-pulse">
-              Na żywo
+              {t('proceedingDetail.live')}
             </span>
           )}
         </div>
@@ -70,7 +77,7 @@ export function ProceedingDetailPage() {
       {/* Agenda */}
       {proceeding.agenda && (
         <div className="rounded-lg border border-zinc-200 p-4">
-          <h2 className="text-sm font-medium text-zinc-900 mb-3">Porządek obrad</h2>
+          <h2 className="text-sm font-medium text-zinc-900 mb-3">{t('proceedingDetail.agenda')}</h2>
           <div
             className="prose prose-sm max-w-none text-zinc-700"
             dangerouslySetInnerHTML={{ __html: proceeding.agenda }}

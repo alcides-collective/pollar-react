@@ -23,8 +23,8 @@ export function SearchInput({
     <div className="relative">
       <Search
         className={cn(
-          'absolute left-4 top-1/2 -translate-y-1/2 size-5 text-zinc-400',
-          isLoading && 'animate-pulse'
+          'absolute left-4 top-1/2 -translate-y-1/2 size-5 text-zinc-500',
+          isLoading && 'animate-pulse text-zinc-400'
         )}
       />
 
@@ -36,11 +36,12 @@ export function SearchInput({
         autoFocus={autoFocus}
         className={cn(
           'w-full pl-12 pr-12 py-4 text-lg',
-          'bg-transparent border-b border-zinc-200 dark:border-zinc-700',
-          'text-zinc-900 dark:text-zinc-100',
-          'placeholder:text-zinc-400 dark:placeholder:text-zinc-500',
-          'focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-500',
-          'transition-colors'
+          // Glass input style
+          'bg-white/5 border-b border-white/10',
+          'text-zinc-100',
+          'placeholder:text-zinc-500',
+          'focus:outline-none focus:bg-white/[0.07] focus:border-white/20',
+          'transition-all duration-200'
         )}
       />
 
@@ -48,9 +49,9 @@ export function SearchInput({
         <button
           type="button"
           onClick={onClear}
-          className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-colors"
         >
-          <X className="size-5 text-zinc-400" />
+          <X className="size-5" />
         </button>
       )}
     </div>

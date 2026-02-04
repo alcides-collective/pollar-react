@@ -45,7 +45,7 @@ export function SearchModal() {
           isLoading={isLoading}
         />
 
-        <div className="overflow-y-auto max-h-[calc(80vh-80px)] p-4">
+        <div className="overflow-y-auto max-h-[calc(80vh-80px)] p-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
           {showPopularSearches && (
             <PopularSearches
               searches={popularSearches}

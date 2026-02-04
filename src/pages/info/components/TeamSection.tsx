@@ -1,23 +1,20 @@
 import { motion } from 'framer-motion';
+import { useTranslation, Trans } from 'react-i18next';
 
-const team = [
-  {
-    name: 'Jakub Dudek',
-    role: 'Programista',
-    location: 'Kraków',
-    description: 'Buduje całą stronę techniczną Pollar — od interfejsu po serwery. Dba o szybkość, sprawność i niezawodność systemu.',
-    email: 'jakub@pollar.pl',
-  },
-  {
-    name: 'Bartosz Kasprzycki',
-    role: 'Produkt i Marketing',
-    location: 'Berlin',
-    description: 'Pilnuje intuicyjności i dba o to, żeby Pollar nie zabierał zbyt dużo Twojego czasu, jednocześnie dostarczając wartość.',
-    email: 'bartosz@pollar.pl',
-  },
-];
+const teamMembers = [
+  { key: 'jakub', name: 'Jakub Dudek', location: 'Kraków', email: 'jakub@pollar.pl' },
+  { key: 'bartosz', name: 'Bartosz Kasprzycki', location: 'Berlin', email: 'bartosz@pollar.pl' },
+] as const;
 
 export function TeamSection() {
+  const { t } = useTranslation('info');
+
+  const team = teamMembers.map((member) => ({
+    ...member,
+    role: t(`team.members.${member.key}.role`),
+    description: t(`team.members.${member.key}.description`),
+  }));
+
   return (
     <section className="py-20 lg:py-28 bg-white">
       <div className="max-w-[1200px] mx-auto px-6">
@@ -29,10 +26,10 @@ export function TeamSection() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-zinc-900 mb-4 tracking-tight">
-            Twórcy
+            {t('team.title')}
           </h2>
           <p className="text-lg text-zinc-600 max-w-2xl mx-auto">
-            Dwóch przyjaciół z wizją — pomagamy ludziom być na bieżąco bez przytłaczania ich nadmiarem informacji.
+            {t('team.subtitle')}
           </p>
         </motion.div>
 
@@ -47,7 +44,7 @@ export function TeamSection() {
           >
             <img
               src="/images/team/founders.webp"
-              alt="Jakub i Bartosz - twórcy Pollar"
+              alt={t('team.photoAlt')}
               className="w-full h-full object-cover"
               loading="lazy"
               width={800}
@@ -99,7 +96,7 @@ export function TeamSection() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <p className="text-sky-900">
-            Pollar jest w fazie <span className="font-semibold">bety</span>. Twój feedback jest dla nas niezwykle cenny — pisz śmiało!
+            <Trans i18nKey="team.betaNotice" ns="info" components={{ strong: <span className="font-semibold" /> }} />
           </p>
         </motion.div>
       </div>

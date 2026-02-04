@@ -154,7 +154,75 @@
     "newsWithoutNoise": "News without noise",
     "aiDescription": "AI organizes and summarizes today's events without clickbait — only verified facts.",
     "startReading": "Start reading",
-    "scroll": "Scroll"
+    "scroll": "Scroll",
+    "allInOnePlace": "All in one place",
+    "allInOnePlaceDesc": "News, parliamentary data, financial market and more — access to information that matters.",
+    "whatSetsUsApart": "What sets us apart",
+    "creators": "Creators",
+    "creatorsDesc": "Two friends with a vision — we help people stay informed without overwhelming them with information.",
+    "creatorsPhotoAlt": "Jakub and Bartosz - creators of Pollar",
+    "betaNotice": "Pollar is in <strong>beta</strong>. Your feedback is incredibly valuable — feel free to reach out!",
+    "readyToKnowMore": "Ready to know more?",
+    "ctaDescription": "Join thousands of readers who started their day with Pollar. No ads, no clickbait.",
+    "seeDailyBrief": "See Daily Brief",
+    "features": {
+      "dailyBrief": {
+        "title": "Daily Brief",
+        "description": "Daily summary of the most important events. Everything you need to know, in one place."
+      },
+      "aiAssistant": {
+        "title": "AI Assistant",
+        "description": "Ask about today's news. AI will help you understand context and connections between events."
+      },
+      "sejm": {
+        "title": "Parliament",
+        "description": "Track votes, bills and MP activity. Full transparency of parliamentary work."
+      },
+      "stockExchange": {
+        "title": "Stock Exchange",
+        "description": "Quotes, analyses and market forecasts. Stay updated on the stock market."
+      },
+      "data": {
+        "title": "Data",
+        "description": "Visualizations of public data. From air quality to crime statistics."
+      },
+      "connections": {
+        "title": "Connections",
+        "description": "Daily word game. Find hidden connections between words and group them into categories."
+      },
+      "eventMap": {
+        "title": "Event Map",
+        "description": "Interactive map with event locations. See what's happening in Poland and around the world."
+      },
+      "terminal": {
+        "title": "Terminal",
+        "description": "Terminal interface for advanced users. Quick access to data and commands."
+      },
+      "archive": {
+        "title": "Archive",
+        "description": "Browse historical events. Full article database with search capability."
+      }
+    },
+    "manifest": {
+      "integrity": {
+        "title": "Integrity",
+        "description": "Information should serve understanding, not profit. We focus on truth, not stirring emotions."
+      },
+      "quality": {
+        "title": "Quality over quantity",
+        "description": "Signal amplification, noise elimination. We group related stories and present different perspectives."
+      },
+      "respect": {
+        "title": "Respect for the reader",
+        "description": "Every moment should leave you more informed, not more anxious. We build tools for thinking people."
+      }
+    },
+    "team": {
+      "developer": "Developer",
+      "productMarketing": "Product and Marketing",
+      "jakubDesc": "Builds the entire technical side of Pollar — from interface to servers. Ensures speed, efficiency and reliability.",
+      "bartoszDesc": "Ensures intuitiveness and makes sure Pollar doesn't take too much of your time while delivering value."
+    }
   },
   "greetings": {
     "morning": "Good day",
@@ -164,6 +232,35 @@
   "sidebar": {
     "latest": "Latest",
     "whatsNew": "What's new"
+  },
+  "about": {
+    "manifest": "Manifest",
+    "tabs": {
+      "truth": "Integrity",
+      "quality": "Quality",
+      "respect": "Respect"
+    },
+    "truth": {
+      "title": "Information should serve understanding, not profit.",
+      "content": "We focus on reliable information, not on stirring emotions. We avoid sensationalism and excessive stimuli, prioritizing context, clarity, and usefulness for the reader."
+    },
+    "quality": {
+      "title": "We believe in quality over quantity.",
+      "content": "Instead of fighting for clicks, we fight for clarity. Instead of amplifying noise, we distill the signal. We group related stories, eliminate duplicates, and present different perspectives without editorial bias."
+    },
+    "respect": {
+      "title": "Every story deserves context. Every reader deserves respect.",
+      "content": "Every moment spent here should leave you more informed, not more anxious. We build tools for thinking people who want to understand their world."
+    }
+  },
+  "contact": {
+    "title": "Who we are",
+    "intro": "Pollar is created by Jakub Dudek and Bartosz Kasprzycki.",
+    "jakub": "Jakub, a developer from Krakow, builds the entire technical side — from the interface to the servers — ensuring everything works fast, efficiently, and reliably.",
+    "bartosz": "Bartosz is responsible for product and marketing — making sure every interaction with Pollar is intuitive and doesn't take more time than necessary.",
+    "goal": "The goal is shared: to help people stay informed without overwhelming them with too much information. The project is in beta — if you have an idea or notice a bug, write to us.",
+    "feedback": "Have feedback?",
+    "feedbackText": "We'd love to hear your suggestions, ideas, or bug reports. Write directly to our email."
   },
   "openData": {
     "airQuality": "Air Quality",

@@ -1,49 +1,40 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const values = [
-  {
-    title: 'Rzetelność',
-    description: 'Informacja powinna służyć zrozumieniu, nie zyskowi. Skupiamy się na prawdzie, nie na wzbudzaniu emocji.',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-        <path d="m9 12 2 2 4-4" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Jakość ponad ilość',
-    description: 'Wzmocnienie sygnału, eliminacja szumu. Grupujemy powiązane historie i prezentujemy różne perspektywy.',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M2 20h.01" />
-        <path d="M7 20v-4" />
-        <path d="M12 20v-8" />
-        <path d="M17 20V8" />
-        <path d="M22 4v16" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Szacunek dla czytelnika',
-    description: 'Każda chwila powinna zostawiać nas bardziej świadomymi, nie bardziej zaniepokojonym. Tworzymy narzędzia dla myślących ludzi.',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-      </svg>
-    ),
-  },
+const valueIcons = [
+  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>,
+  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2 20h.01" />
+    <path d="M7 20v-4" />
+    <path d="M12 20v-8" />
+    <path d="M17 20V8" />
+    <path d="M22 4v16" />
+  </svg>,
+  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+  </svg>,
 ];
 
+const valueKeys = ['reliability', 'quality', 'respect'] as const;
+
+interface Value {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
 interface ValueCardProps {
-  value: typeof values[0];
+  value: Value;
   index: number;
+  total: number;
   scrollYProgress: ReturnType<typeof useScroll>['scrollYProgress'];
 }
 
-function ValueCard({ value, index, scrollYProgress }: ValueCardProps) {
-  const total = values.length;
+function ValueCard({ value, index, total, scrollYProgress }: ValueCardProps) {
 
   // Each value takes up 1/total of the scroll, with overlap for smooth transitions
   const segmentSize = 1 / total;
@@ -96,7 +87,14 @@ function ValueCard({ value, index, scrollYProgress }: ValueCardProps) {
 }
 
 export function ManifestSection() {
+  const { t } = useTranslation('info');
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const values: Value[] = valueKeys.map((key, index) => ({
+    icon: valueIcons[index],
+    title: t(`manifest.values.${key}.title`),
+    description: t(`manifest.values.${key}.description`),
+  }));
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -122,7 +120,7 @@ export function ManifestSection() {
           }}
         >
           <h2 className="text-sm lg:text-base font-medium text-zinc-400 uppercase tracking-widest">
-            Co nas wyróżnia
+            {t('manifest.sectionTitle')}
           </h2>
         </motion.div>
 
@@ -133,6 +131,7 @@ export function ManifestSection() {
               key={value.title}
               value={value}
               index={index}
+              total={values.length}
               scrollYProgress={scrollYProgress}
             />
           ))}

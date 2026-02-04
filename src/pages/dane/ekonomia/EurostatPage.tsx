@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DaneHeader, DaneSourceFooter, StatsGrid } from '@/components/dane';
 import { EurostatLineChart } from '@/components/dane/charts';
 import { useEurostatPoland, useEurostatCompare, useEurostatSociety, useEurostatTimeSeries } from '@/hooks/useEurostat';
@@ -6,26 +7,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const COUNTRY_NAMES: Record<string, string> = {
-  PL: 'Polska',
-  DE: 'Niemcy',
-  CZ: 'Czechy',
-  SK: 'Słowacja',
-  HU: 'Węgry',
-  AT: 'Austria',
-};
-
-const INDICATORS = [
-  { id: 'gdp', name: 'PKB', unit: 'mln EUR' },
-  { id: 'inflation', name: 'Inflacja', unit: '%' },
-  { id: 'unemployment', name: 'Bezrobocie', unit: '%' },
-  { id: 'population', name: 'Populacja', unit: 'mln' },
-];
-
 const COMPARE_COUNTRIES = ['PL', 'DE', 'CZ', 'SK', 'HU', 'AT'];
 
 export function EurostatPage() {
+  const { t } = useTranslation('dane');
   const [selectedIndicator, setSelectedIndicator] = useState('gdp');
+
+  const COUNTRY_NAMES: Record<string, string> = {
+    PL: t('eurostat.countries.PL'),
+    DE: t('eurostat.countries.DE'),
+    CZ: t('eurostat.countries.CZ'),
+    SK: t('eurostat.countries.SK'),
+    HU: t('eurostat.countries.HU'),
+    AT: t('eurostat.countries.AT'),
+  };
+
+  const INDICATORS = [
+    { id: 'gdp', name: t('eurostat.gdp'), unit: 'mln EUR' },
+    { id: 'inflation', name: t('eurostat.inflation'), unit: '%' },
+    { id: 'unemployment', name: t('eurostat.unemployment'), unit: '%' },
+    { id: 'population', name: t('eurostat.population'), unit: 'mln' },
+  ];
 
   const { data: polandData, loading: polandLoading, error: polandError } = useEurostatPoland();
   const { countries: compareData, loading: compareLoading } = useEurostatCompare({
@@ -42,10 +44,10 @@ export function EurostatPage() {
   if (error) {
     return (
       <div>
-        <DaneHeader title="Eurostat" subtitle="Dane makroekonomiczne UE" icon="ri-global-line" />
+        <DaneHeader title={t('eurostat.title')} subtitle={t('eurostat.subtitleShort')} icon="ri-global-line" />
         <Card className="border-destructive">
           <CardContent className="pt-6">
-            <p className="text-destructive">Błąd: {error.message}</p>
+            <p className="text-destructive">{t('common.error')}: {error.message}</p>
           </CardContent>
         </Card>
       </div>
@@ -55,8 +57,8 @@ export function EurostatPage() {
   return (
     <div>
       <DaneHeader
-        title="Eurostat"
-        subtitle="Dane makroekonomiczne z Eurostatu"
+        title={t('eurostat.title')}
+        subtitle={t('eurostat.subtitle')}
         icon="ri-global-line"
         lastUpdate={polandData?.lastUpdate}
       />
@@ -66,7 +68,7 @@ export function EurostatPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
               <i className="ri-pie-chart-line text-primary" />
-              Polska - kluczowe wskaźniki
+              {t('eurostat.polandKeyIndicators')}
             </CardTitle>
         </CardHeader>
         <CardContent>
@@ -80,24 +82,24 @@ export function EurostatPage() {
             <StatsGrid
               stats={[
                 {
-                  label: 'PKB',
+                  label: t('eurostat.gdp'),
                   value: polandData.data.gdp?.value
                     ? `${(polandData.data.gdp.value / 1000000).toFixed(0)} mld`
                     : '-',
                   unit: 'EUR',
                 },
                 {
-                  label: 'Inflacja',
+                  label: t('eurostat.inflation'),
                   value: polandData.data.inflation?.value?.toFixed(1) ?? '-',
                   unit: '%',
                 },
                 {
-                  label: 'Bezrobocie',
+                  label: t('eurostat.unemployment'),
                   value: polandData.data.unemployment?.value?.toFixed(1) ?? '-',
                   unit: '%',
                 },
                 {
-                  label: 'Populacja',
+                  label: t('eurostat.population'),
                   value: polandData.data.population?.value
                     ? `${(polandData.data.population.value / 1000000).toFixed(1)} mln`
                     : '-',
@@ -114,7 +116,7 @@ export function EurostatPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
               <i className="ri-bar-chart-grouped-line text-primary" />
-              Porównanie krajów
+              {t('eurostat.countryComparison')}
             </CardTitle>
         </CardHeader>
         <CardContent>
@@ -140,9 +142,9 @@ export function EurostatPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-2">Kraj</th>
-                    <th className="text-right py-2">Wartość</th>
-                    <th className="text-right py-2">Okres</th>
+                    <th className="text-left py-2">{t('eurostat.country')}</th>
+                    <th className="text-right py-2">{t('eurostat.value')}</th>
+                    <th className="text-right py-2">{t('eurostat.period')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -174,7 +176,7 @@ export function EurostatPage() {
               </table>
             </div>
           ) : (
-            <p className="text-muted-foreground text-center py-8">Brak danych do porównania</p>
+            <p className="text-muted-foreground text-center py-8">{t('eurostat.noComparisonData')}</p>
           )}
         </CardContent>
       </Card>
@@ -185,7 +187,7 @@ export function EurostatPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <i className="ri-group-line text-primary" />
-              Wskaźniki społeczne
+              {t('eurostat.socialIndicators')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -215,13 +217,13 @@ export function EurostatPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <i className="ri-line-chart-line text-primary" />
-                  Inflacja (%)
+                  {t('eurostat.inflationPercent')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <EurostatLineChart
                   data={inflationSeries}
-                  title="Inflacja w Polsce"
+                  title={t('eurostat.inflationInPoland')}
                   color="#ef4444"
                   unit="%"
                 />
@@ -233,13 +235,13 @@ export function EurostatPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <i className="ri-line-chart-line text-primary" />
-                  Bezrobocie (%)
+                  {t('eurostat.unemploymentPercent')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <EurostatLineChart
                   data={unemploymentSeries}
-                  title="Bezrobocie w Polsce"
+                  title={t('eurostat.unemploymentInPoland')}
                   color="#f59e0b"
                   unit="%"
                 />

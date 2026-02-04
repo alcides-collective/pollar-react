@@ -1,13 +1,18 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DaneHeader, DaneSourceFooter } from '@/components/dane';
 import { useNames } from '@/hooks/useNames';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useLanguageStore } from '@/stores/languageStore';
 
 export function ImionaPage() {
-  const [year, setYear] = useState<number | undefined>(undefined); // API zwróci najnowszy rok
+  const { t } = useTranslation('dane');
+  const language = useLanguageStore((s) => s.language);
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
+  const [year, setYear] = useState<number | undefined>(undefined);
   const [gender, setGender] = useState<'M' | 'K' | undefined>(undefined);
   const [search, setSearch] = useState('');
 
@@ -23,15 +28,15 @@ export function ImionaPage() {
   return (
     <div>
       <DaneHeader
-        title="Imiona"
-        subtitle="Najpopularniejsze imiona nadawane w Polsce"
+        title={t('imiona.title')}
+        subtitle={t('imiona.subtitle')}
         icon="ri-user-heart-line"
       />
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 mb-6">
         <Input
-          placeholder="Szukaj imienia..."
+          placeholder={t('imiona.searchPlaceholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="h-9 w-48"
@@ -43,21 +48,21 @@ export function ImionaPage() {
             className="h-9"
             onClick={() => setGender(undefined)}
           >
-            Wszystkie
+            {t('imiona.all')}
           </Button>
           <Button
             variant={gender === 'M' ? 'default' : 'outline'}
             className="h-9"
             onClick={() => setGender('M')}
           >
-            Męskie
+            {t('imiona.male')}
           </Button>
           <Button
             variant={gender === 'K' ? 'default' : 'outline'}
             className="h-9"
             onClick={() => setGender('K')}
           >
-            Żeńskie
+            {t('imiona.female')}
           </Button>
         </div>
 
@@ -80,7 +85,7 @@ export function ImionaPage() {
       {error && (
         <Card className="border-destructive">
           <CardContent className="pt-6">
-            <p className="text-destructive">Błąd: {error.message}</p>
+            <p className="text-destructive">{t('common.error')}: {error.message}</p>
           </CardContent>
         </Card>
       )}
@@ -100,7 +105,7 @@ export function ImionaPage() {
           <CardContent className="p-0">
             {filteredRanking.length === 0 ? (
               <p className="text-muted-foreground text-center py-8">
-                Brak wyników dla podanych kryteriów
+                {t('common.noResults')}
               </p>
             ) : (
               <table className="w-full">
@@ -114,15 +119,15 @@ export function ImionaPage() {
                         <div className="font-medium text-sm">{entry.name}</div>
                         <div className="text-xs text-muted-foreground">
                           {entry.gender === 'M' ? (
-                            <><i className="ri-men-line text-blue-500" /> męskie</>
+                            <><i className="ri-men-line text-blue-500" /> {t('imiona.maleLabel')}</>
                           ) : (
-                            <><i className="ri-women-line text-pink-500" /> żeńskie</>
+                            <><i className="ri-women-line text-pink-500" /> {t('imiona.femaleLabel')}</>
                           )}
                         </div>
                       </td>
                       <td className="w-24 pl-2 text-right">
-                        <div className="font-semibold text-sm tabular-nums">{entry.count.toLocaleString()}</div>
-                        <div className="text-xs text-muted-foreground">nadań</div>
+                        <div className="font-semibold text-sm tabular-nums">{entry.count.toLocaleString(localeMap[language] || 'pl-PL')}</div>
+                        <div className="text-xs text-muted-foreground">{t('imiona.given')}</div>
                       </td>
                     </tr>
                   ))}

@@ -26,50 +26,56 @@ export function SearchResultItem({ result, onClick }: SearchResultItemProps) {
       type="button"
       onClick={onClick}
       className={cn(
-        'w-full flex items-start gap-3 p-3 rounded-lg text-left',
-        'hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors',
-        'focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2'
+        'w-full flex items-start gap-3 p-3 rounded-xl text-left',
+        // Liquid glass hover effect
+        'hover:bg-white/10 transition-all duration-150',
+        'focus:outline-none focus:bg-white/10 focus:ring-1 focus:ring-white/20'
       )}
     >
-      <div className={cn('mt-0.5 p-2 rounded-md bg-zinc-100 dark:bg-zinc-800', config.color)}>
+      <div className={cn(
+        'mt-0.5 p-2 rounded-lg',
+        // Glass icon container
+        'bg-white/10 backdrop-blur-sm',
+        config.color
+      )}>
         <Icon className="size-4" />
       </div>
 
       <div className="flex-1 min-w-0">
-        <div className="font-medium text-zinc-900 dark:text-zinc-100 line-clamp-2">
+        <div className="font-medium text-zinc-100 line-clamp-2">
           {result.title}
         </div>
 
         {result.subtitle && (
-          <div className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-1 mt-0.5">
+          <div className="text-sm text-zinc-400 line-clamp-1 mt-0.5">
             {result.subtitle}
           </div>
         )}
 
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-xs text-zinc-400 dark:text-zinc-500">
+          <span className="text-xs text-zinc-500">
             {t(`resultTypes.${result.type}`)}
           </span>
           {result.metadata?.category && (
             <>
-              <span className="text-xs text-zinc-300 dark:text-zinc-600">•</span>
-              <span className="text-xs text-zinc-400 dark:text-zinc-500">
+              <span className="text-xs text-zinc-600">•</span>
+              <span className="text-xs text-zinc-500">
                 {result.metadata.category}
               </span>
             </>
           )}
           {result.metadata?.club && (
             <>
-              <span className="text-xs text-zinc-300 dark:text-zinc-600">•</span>
-              <span className="text-xs text-zinc-400 dark:text-zinc-500">
+              <span className="text-xs text-zinc-600">•</span>
+              <span className="text-xs text-zinc-500">
                 {result.metadata.club}
               </span>
             </>
           )}
           {result.metadata?.date && (
             <>
-              <span className="text-xs text-zinc-300 dark:text-zinc-600">•</span>
-              <span className="text-xs text-zinc-400 dark:text-zinc-500">
+              <span className="text-xs text-zinc-600">•</span>
+              <span className="text-xs text-zinc-500">
                 {new Date(result.metadata.date).toLocaleDateString('pl-PL')}
               </span>
             </>

@@ -1,4 +1,76 @@
 {
+  "common": {
+    "error": "Błąd",
+    "noData": "Brak danych",
+    "noResults": "Brak wyników dla podanych kryteriów",
+    "asOf": "Stan na"
+  },
+  "imiona": {
+    "title": "Imiona",
+    "subtitle": "Najpopularniejsze imiona nadawane w Polsce",
+    "searchPlaceholder": "Szukaj imienia...",
+    "all": "Wszystkie",
+    "male": "Męskie",
+    "female": "Żeńskie",
+    "maleLabel": "męskie",
+    "femaleLabel": "żeńskie",
+    "given": "nadań"
+  },
+  "nazwiska": {
+    "title": "Nazwiska",
+    "subtitle": "Najpopularniejsze nazwiska w Polsce",
+    "searchPlaceholder": "Szukaj nazwiska...",
+    "people": "osób"
+  },
+  "energia": {
+    "title": "Energia",
+    "subtitle": "Dane o energetyce w Polsce",
+    "energyMix": "Mix energetyczny",
+    "coal": "Węgiel",
+    "gas": "Gaz",
+    "renewables": "OZE",
+    "fuels": "Paliwa",
+    "liquidFuels": "Paliwa płynne",
+    "production": "Produkcja",
+    "import": "Import",
+    "export": "Eksport",
+    "householdPrice": "Cena (gosp. dom.)",
+    "polandVsEU": "Polska vs Unia Europejska",
+    "renewablesShare": "Udział OZE",
+    "co2PerCapita": "CO₂ na mieszkańca",
+    "energyDependency": "Zależność energetyczna",
+    "mixEvolution": "Ewolucja miksu energetycznego",
+    "energyProduction": "Produkcja energii",
+    "energyProductionGWh": "Produkcja energii (GWh)"
+  },
+  "eurostat": {
+    "title": "Eurostat",
+    "subtitle": "Dane makroekonomiczne z Eurostatu",
+    "subtitleShort": "Dane makroekonomiczne UE",
+    "polandKeyIndicators": "Polska - kluczowe wskaźniki",
+    "countryComparison": "Porównanie krajów",
+    "socialIndicators": "Wskaźniki społeczne",
+    "country": "Kraj",
+    "value": "Wartość",
+    "period": "Okres",
+    "noComparisonData": "Brak danych do porównania",
+    "gdp": "PKB",
+    "inflation": "Inflacja",
+    "unemployment": "Bezrobocie",
+    "population": "Populacja",
+    "inflationPercent": "Inflacja (%)",
+    "unemploymentPercent": "Bezrobocie (%)",
+    "inflationInPoland": "Inflacja w Polsce",
+    "unemploymentInPoland": "Bezrobocie w Polsce",
+    "countries": {
+      "PL": "Polska",
+      "DE": "Niemcy",
+      "CZ": "Czechy",
+      "SK": "Słowacja",
+      "HU": "Węgry",
+      "AT": "Austria"
+    }
+  },
   "airQuality": {
     "title": "Jakość powietrza",
     "subtitle": "Dane z Głównego Inspektoratu Ochrony Środowiska",

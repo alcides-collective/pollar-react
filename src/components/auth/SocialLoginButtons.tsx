@@ -24,26 +24,28 @@ export function SocialLoginButtons() {
 
   return (
     <div className="space-y-3">
+      {/* Google button - official branding: white bg, gray border, dark text */}
       <Button
         type="button"
         variant="outline"
-        className="w-full"
+        className="w-full h-10 gap-3 bg-white text-[#1F1F1F] hover:text-[#1F1F1F] border-[#747775] hover:border-[#747775] font-medium transition-all duration-150 hover:opacity-90 hover:shadow-md active:scale-[0.98]"
         onClick={handleGoogle}
         disabled={isLoading}
       >
-        <GoogleIcon className="mr-2 h-5 w-5" />
-        Kontynuuj z Google
+        <GoogleIcon className="h-5 w-5 shrink-0" />
+        <span>Kontynuuj z Google</span>
       </Button>
 
+      {/* Apple button - official branding: black bg, white text/logo */}
       <Button
         type="button"
         variant="outline"
-        className="w-full"
+        className="w-full h-10 gap-3 bg-black text-white hover:text-white border-black hover:border-zinc-800 hover:bg-zinc-900 font-medium transition-all duration-150 hover:shadow-md active:scale-[0.98]"
         onClick={handleApple}
         disabled={isLoading}
       >
-        <AppleIcon className="mr-2 h-5 w-5" />
-        Kontynuuj z Apple
+        <AppleIcon className="h-5 w-5 shrink-0" />
+        <span>Kontynuuj z Apple</span>
       </Button>
     </div>
   );

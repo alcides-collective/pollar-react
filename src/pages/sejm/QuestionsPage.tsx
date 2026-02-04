@@ -1,11 +1,15 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useWrittenQuestions, fetchQuestionBody } from '../../hooks/useWrittenQuestions';
 import { SejmApiError } from '../../components/sejm';
+import { useLanguageStore } from '../../stores/languageStore';
 import type { SejmWrittenQuestion } from '../../types/sejm';
 
 type FilterOption = 'all' | 'answered' | 'pending';
 
 export function QuestionsPage() {
+  const { t } = useTranslation('sejm');
+  const language = useLanguageStore((s) => s.language);
   const { questions, hasMore, loading, loadingMore, loadMore, error } = useWrittenQuestions();
   const [filter, setFilter] = useState<FilterOption>('all');
   const [selectedQuestion, setSelectedQuestion] = useState<SejmWrittenQuestion | null>(null);
@@ -32,7 +36,7 @@ export function QuestionsPage() {
       const body = await fetchQuestionBody(question.num);
       setBodyContent(body);
     } catch (err) {
-      setBodyContent('Nie udało się pobrać treści zapytania.');
+      setBodyContent(t('questionsPage.fetchError'));
     } finally {
       setLoadingBody(false);
     }
@@ -43,9 +47,10 @@ export function QuestionsPage() {
     setBodyContent(null);
   };
 
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return '-';
-    return new Date(dateStr).toLocaleDateString('pl-PL', {
+    return new Date(dateStr).toLocaleDateString(localeMap[language] || 'pl-PL', {
       day: 'numeric',
       month: 'short',
       year: 'numeric',
@@ -71,14 +76,14 @@ export function QuestionsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">Zapytania poselskie</h1>
+      <h1 className="text-xl font-semibold text-zinc-900">{t('questionsPage.title')}</h1>
 
       {/* Filters */}
       <div className="flex gap-2">
         {[
-          { value: 'all', label: 'Wszystkie' },
-          { value: 'answered', label: 'Odpowiedziane' },
-          { value: 'pending', label: 'Oczekujące' },
+          { value: 'all', label: t('questionsPage.all') },
+          { value: 'answered', label: t('questionsPage.answered') },
+          { value: 'pending', label: t('questionsPage.pending') },
         ].map((option) => (
           <button
             key={option.value}
@@ -118,7 +123,7 @@ export function QuestionsPage() {
                       : 'bg-amber-100 text-amber-700'
                   }`}
                 >
-                  {hasReply ? 'Odpowiedziano' : 'Oczekuje'}
+                  {hasReply ? t('questionsPage.answeredStatus') : t('questionsPage.pendingStatus')}
                 </span>
               </div>
 
@@ -128,14 +133,14 @@ export function QuestionsPage() {
 
               <div className="text-[11px] text-zinc-500 space-y-1">
                 <div>
-                  <span className="text-zinc-400">Do:</span>{' '}
+                  <span className="text-zinc-400">{t('questionsPage.to')}:</span>{' '}
                   {question.to.join(', ')}
                 </div>
                 <div className="flex items-center justify-between pt-1">
                   <span>{formatDate(question.sentDate)}</span>
                   {hasReply && (
                     <span className="text-green-600">
-                      {question.replies!.length} odpowiedzi
+                      {question.replies!.length} {t('questionsPage.replies')}
                     </span>
                   )}
                 </div>
@@ -147,7 +152,7 @@ export function QuestionsPage() {
 
       {filteredQuestions.length === 0 && (
         <p className="text-center text-zinc-500 py-8">
-          Brak zapytań do wyświetlenia
+          {t('questionsPage.noResults')}
         </p>
       )}
 
@@ -158,7 +163,7 @@ export function QuestionsPage() {
             disabled={loadingMore}
             className="px-6 py-2 bg-zinc-100 text-zinc-700 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50"
           >
-            {loadingMore ? 'Ładowanie...' : 'Załaduj więcej'}
+            {loadingMore ? t('questionsPage.loading') : t('questionsPage.loadMore')}
           </button>
         </div>
       )}
@@ -172,7 +177,7 @@ export function QuestionsPage() {
           >
             <div className="p-4 border-b border-zinc-200 flex items-start justify-between">
               <div>
-                <span className="text-xs text-zinc-500">Zapytanie #{selectedQuestion.num}</span>
+                <span className="text-xs text-zinc-500">{t('questionsPage.questionNumber', { num: selectedQuestion.num })}</span>
                 <h2 className="font-medium text-zinc-900 mt-1">{selectedQuestion.title}</h2>
               </div>
               <button

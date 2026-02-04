@@ -34,7 +34,7 @@ export function LoginForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+          <div className="rounded-md bg-red-500/20 p-3 text-sm text-red-400">
             {error}
           </div>
         )}
@@ -64,7 +64,7 @@ export function LoginForm() {
           <button
             type="button"
             onClick={() => setView('reset')}
-            className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+            className="text-sm text-zinc-400 hover:text-zinc-200 transition-colors"
           >
             {t('login.forgotPassword')}
           </button>
@@ -74,12 +74,12 @@ export function LoginForm() {
           {isLoading ? t('login.loading') : t('login.title')}
         </Button>
 
-        <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-center text-sm text-zinc-400">
           {t('login.noAccount')}{' '}
           <button
             type="button"
             onClick={() => setView('register')}
-            className="font-medium text-zinc-900 hover:underline dark:text-zinc-200"
+            className="font-medium text-zinc-100 hover:text-white hover:underline transition-colors"
           >
             {t('login.register')}
           </button>

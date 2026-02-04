@@ -34,7 +34,21 @@ function TooltipContent({
       <TooltipPrimitive.Content
         sideOffset={sideOffset}
         className={cn(
-          "z-50 overflow-hidden rounded-lg bg-zinc-900 px-3 py-2 text-xs text-zinc-100 shadow-md border border-zinc-700/50 animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+          "z-50 overflow-hidden",
+          // Liquid glass effect
+          "bg-zinc-900/70 backdrop-blur-xl backdrop-saturate-150",
+          "text-zinc-100 text-xs",
+          // Border with subtle glow
+          "border border-white/10 ring-1 ring-white/5",
+          // Shadow for depth
+          "shadow-xl shadow-black/30",
+          // Rounded corners & padding
+          "rounded-xl px-3 py-2",
+          // Animations
+          "animate-in fade-in-0 zoom-in-95",
+          "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+          "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
+          "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           className
         )}
         {...props}

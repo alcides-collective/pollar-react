@@ -1,9 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useClub } from '../../hooks/useClubs';
 import { useMPs } from '../../hooks/useMPs';
 import { MPCard, SejmApiError } from '../../components/sejm';
 
 export function ClubDetailPage() {
+  const { t } = useTranslation('sejm');
   const { id } = useParams<{ id: string }>();
   const { club, loading, error } = useClub(id || null);
   const { mps } = useMPs();
@@ -32,9 +34,9 @@ export function ClubDetailPage() {
   if (!club) {
     return (
       <div className="text-center py-12">
-        <p className="text-zinc-500">Nie znaleziono klubu</p>
+        <p className="text-zinc-500">{t('clubDetail.notFound')}</p>
         <Link to="/sejm/kluby" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
-          <i className="ri-arrow-left-s-line" /> Wróć do listy
+          <i className="ri-arrow-left-s-line" /> {t('clubDetail.backToList')}
         </Link>
       </div>
     );
@@ -44,7 +46,7 @@ export function ClubDetailPage() {
     <div className="space-y-6">
       {/* Back link */}
       <Link to="/sejm/kluby" className="text-sm text-zinc-500 hover:text-zinc-700">
-        <i className="ri-arrow-left-s-line" /> Wszystkie kluby
+        <i className="ri-arrow-left-s-line" /> {t('clubDetail.allClubs')}
       </Link>
 
       {/* Header */}
@@ -58,18 +60,18 @@ export function ClubDetailPage() {
         )}
         <div>
           <h1 className="text-xl font-semibold text-zinc-900">{club.name}</h1>
-          <p className="text-zinc-500">{club.membersCount} posłów</p>
+          <p className="text-zinc-500">{t('clubDetail.membersCount', { count: club.membersCount })}</p>
         </div>
       </div>
 
       {/* Contact info */}
       {(club.email || club.phone || club.fax) && (
         <div className="rounded-lg border border-zinc-200 p-4">
-          <h2 className="text-sm font-medium text-zinc-900 mb-3">Kontakt</h2>
+          <h2 className="text-sm font-medium text-zinc-900 mb-3">{t('clubDetail.contact')}</h2>
           <div className="space-y-2 text-sm">
             {club.email && (
               <div>
-                <span className="text-zinc-500">Email:</span>{' '}
+                <span className="text-zinc-500">{t('clubDetail.email')}:</span>{' '}
                 <a href={`mailto:${club.email}`} className="text-blue-600 hover:underline">
                   {club.email}
                 </a>
@@ -77,13 +79,13 @@ export function ClubDetailPage() {
             )}
             {club.phone && (
               <div>
-                <span className="text-zinc-500">Telefon:</span>{' '}
+                <span className="text-zinc-500">{t('clubDetail.phone')}:</span>{' '}
                 <span className="text-zinc-900">{club.phone}</span>
               </div>
             )}
             {club.fax && (
               <div>
-                <span className="text-zinc-500">Fax:</span>{' '}
+                <span className="text-zinc-500">{t('clubDetail.fax')}:</span>{' '}
                 <span className="text-zinc-900">{club.fax}</span>
               </div>
             )}
@@ -94,7 +96,7 @@ export function ClubDetailPage() {
       {/* Members */}
       <div>
         <h2 className="text-sm font-medium text-zinc-900 mb-4">
-          Członkowie ({clubMPs.length})
+          {t('clubDetail.members')} ({clubMPs.length})
         </h2>
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 gap-1">
           {clubMPs.map((mp) => (

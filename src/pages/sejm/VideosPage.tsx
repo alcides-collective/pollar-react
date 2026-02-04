@@ -1,11 +1,15 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useVideos, useTodayVideos } from '../../hooks/useVideos';
 import { SejmApiError } from '../../components/sejm';
+import { useLanguageStore } from '../../stores/languageStore';
 import type { SejmVideo } from '../../types/sejm';
 
 type FilterOption = 'all' | 'sitting' | 'committee';
 
 export function VideosPage() {
+  const { t } = useTranslation('sejm');
+  const language = useLanguageStore((s) => s.language);
   const { videos, loading, error } = useVideos(100);
   const { videos: todayVideos } = useTodayVideos();
   const [filter, setFilter] = useState<FilterOption>('all');
@@ -26,9 +30,10 @@ export function VideosPage() {
     setSelectedVideo(null);
   };
 
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   const formatDateTime = (dateStr?: string) => {
     if (!dateStr) return '-';
-    return new Date(dateStr).toLocaleString('pl-PL', {
+    return new Date(dateStr).toLocaleString(localeMap[language] || 'pl-PL', {
       day: 'numeric',
       month: 'short',
       year: 'numeric',
@@ -63,23 +68,23 @@ export function VideosPage() {
   }
 
   const typeLabels: Record<string, string> = {
-    sitting: 'Posiedzenie',
-    committee: 'Komisja',
-    other: 'Inne',
+    sitting: t('videosPage.types.sitting'),
+    committee: t('videosPage.types.committee'),
+    other: t('videosPage.types.other'),
   };
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">Transmisje</h1>
+      <h1 className="text-xl font-semibold text-zinc-900">{t('videosPage.title')}</h1>
 
       {/* Today's broadcasts */}
       {todayVideos.length > 0 && (
         <div className="rounded-lg border-2 border-green-500 bg-green-50 p-4">
           <h2 className="text-sm font-medium text-green-900 mb-3 flex items-center gap-2">
             <span className="bg-green-500 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded animate-pulse">
-              Dziś
+              {t('videosPage.today')}
             </span>
-            Transmisje na żywo
+            {t('videosPage.liveBroadcasts')}
           </h2>
           <div className="grid gap-3 md:grid-cols-2">
             {todayVideos.map((video) => (
@@ -102,9 +107,9 @@ export function VideosPage() {
       {/* Filters */}
       <div className="flex gap-2">
         {[
-          { value: 'all', label: 'Wszystkie' },
-          { value: 'sitting', label: 'Posiedzenia' },
-          { value: 'committee', label: 'Komisje' },
+          { value: 'all', label: t('videosPage.all') },
+          { value: 'sitting', label: t('videosPage.sittings') },
+          { value: 'committee', label: t('videosPage.committees') },
         ].map((option) => (
           <button
             key={option.value}
@@ -146,7 +151,7 @@ export function VideosPage() {
               {formatDateTime(video.startDateTime)}
             </p>
             {video.room && (
-              <p className="text-xs text-zinc-400 mt-1">Sala: {video.room}</p>
+              <p className="text-xs text-zinc-400 mt-1">{t('videosPage.room')}: {video.room}</p>
             )}
           </button>
         ))}
@@ -154,7 +159,7 @@ export function VideosPage() {
 
       {filteredVideos.length === 0 && (
         <p className="text-center text-zinc-500 py-8">
-          Brak transmisji do wyświetlenia
+          {t('videosPage.noResults')}
         </p>
       )}
 
@@ -198,7 +203,7 @@ export function VideosPage() {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-white">
-                  <p>Brak dostępnego video</p>
+                  <p>{t('videosPage.noVideo')}</p>
                 </div>
               )}
             </div>

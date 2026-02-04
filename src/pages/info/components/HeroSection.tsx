@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useRef, useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { useEvents } from '@/stores/eventsStore';
 import { useArchiveEvents } from '@/hooks/useArchiveEvents';
+import { useLanguage } from '@/stores/languageStore';
 import logoImg from '@/assets/logo-white.png';
 
 function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
@@ -35,6 +37,8 @@ function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffi
 }
 
 export function HeroSection() {
+  const { t } = useTranslation('info');
+  const language = useLanguage();
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -46,8 +50,8 @@ export function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   // Fetch stats
-  const { events: currentEvents } = useEvents({ limit: 100, lang: 'pl', skipHiddenFilter: true });
-  const { events: archiveEvents } = useArchiveEvents({ limit: 500, lang: 'pl' });
+  const { events: currentEvents } = useEvents({ limit: 100, lang: language, skipHiddenFilter: true });
+  const { events: archiveEvents } = useArchiveEvents({ limit: 500, lang: language });
 
   const stats = useMemo(() => {
     const eventMap = new Map<string, typeof currentEvents[0]>();
@@ -63,12 +67,12 @@ export function HeroSection() {
     });
 
     return [
-      { value: allEvents.length || 500, suffix: '+', label: 'Wydarzeń' },
-      { value: allSources.size || 50, suffix: '+', label: 'Źródeł' },
-      { value: 0, suffix: '', label: 'Reklam' },
-      { value: 24, suffix: '/7', label: 'Online' },
+      { value: allEvents.length || 500, suffix: '+', label: t('hero.stats.events') },
+      { value: allSources.size || 50, suffix: '+', label: t('hero.stats.sources') },
+      { value: 0, suffix: '', label: t('hero.stats.ads') },
+      { value: 24, suffix: '/7', label: t('hero.stats.online') },
     ];
-  }, [currentEvents, archiveEvents]);
+  }, [currentEvents, archiveEvents, t]);
 
   return (
     <section ref={ref} className="relative min-h-screen overflow-hidden">
@@ -114,7 +118,7 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
         >
-          Wiadomości bez szumu
+          {t('hero.title')}
         </motion.h1>
 
         <motion.p
@@ -123,7 +127,7 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
         >
-          AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.
+          {t('hero.subtitle')}
         </motion.p>
 
         <motion.div
@@ -132,7 +136,7 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
         >
           <Button size="lg" asChild className="text-base px-8 py-6 shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_50px_rgba(59,130,246,0.7)] transition-shadow duration-300">
-            <Link to="/">Zacznij czytać</Link>
+            <Link to="/">{t('hero.cta')}</Link>
           </Button>
         </motion.div>
 
@@ -162,7 +166,7 @@ export function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.7 }}
         >
-          <span className="text-xs uppercase tracking-widest">Przewiń</span>
+          <span className="text-xs uppercase tracking-widest">{t('hero.scroll')}</span>
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}

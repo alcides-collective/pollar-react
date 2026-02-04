@@ -1,0 +1,95 @@
+{
+  "hero": {
+    "title": "Nachrichten ohne Lärm",
+    "subtitle": "KI organisiert und fasst die heutigen Ereignisse ohne Clickbait zusammen — nur verifizierte Fakten.",
+    "cta": "Jetzt lesen",
+    "scroll": "Scrollen",
+    "stats": {
+      "events": "Ereignisse",
+      "sources": "Quellen",
+      "ads": "Werbung",
+      "online": "Online"
+    }
+  },
+  "manifest": {
+    "sectionTitle": "Was uns auszeichnet",
+    "values": {
+      "reliability": {
+        "title": "Zuverlässigkeit",
+        "description": "Information sollte dem Verständnis dienen, nicht dem Profit. Wir konzentrieren uns auf die Wahrheit, nicht auf das Schüren von Emotionen."
+      },
+      "quality": {
+        "title": "Qualität vor Quantität",
+        "description": "Signal verstärken, Rauschen eliminieren. Wir gruppieren verwandte Geschichten und präsentieren verschiedene Perspektiven."
+      },
+      "respect": {
+        "title": "Respekt für den Leser",
+        "description": "Jeder Moment sollte uns informierter hinterlassen, nicht ängstlicher. Wir bauen Werkzeuge für denkende Menschen."
+      }
+    }
+  },
+  "features": {
+    "title": "Alles an einem Ort",
+    "subtitle": "Nachrichten, Parlamentsdaten, Finanzmärkte und mehr — Zugang zu Informationen, die wichtig sind.",
+    "items": {
+      "brief": {
+        "title": "Daily Brief",
+        "description": "Täglicher Überblick über die wichtigsten Ereignisse. Alles, was Sie wissen müssen, an einem Ort."
+      },
+      "assistant": {
+        "title": "KI-Assistent",
+        "description": "Stellen Sie Fragen zu den heutigen Nachrichten. KI hilft Ihnen, den Kontext und die Zusammenhänge zwischen Ereignissen zu verstehen."
+      },
+      "sejm": {
+        "title": "Parlament",
+        "description": "Verfolgen Sie Abstimmungen, Gesetzentwürfe und Abgeordnetenaktivitäten. Volle Transparenz der Parlamentsarbeit."
+      },
+      "stock": {
+        "title": "Börse",
+        "description": "Kurse, Analysen und Marktprognosen. Bleiben Sie auf dem Laufenden mit der Börse."
+      },
+      "data": {
+        "title": "Daten",
+        "description": "Visualisierungen öffentlicher Daten. Von Luftqualität bis Kriminalitätsstatistiken."
+      },
+      "connections": {
+        "title": "Verbindungen",
+        "description": "Tägliches Wortspiel. Finden Sie versteckte Verbindungen zwischen Wörtern und gruppieren Sie sie in Kategorien."
+      },
+      "map": {
+        "title": "Ereigniskarte",
+        "description": "Interaktive Karte mit Ereignisorten. Sehen Sie, was in Polen und der Welt passiert."
+      },
+      "terminal": {
+        "title": "Terminal",
+        "description": "Terminal-Schnittstelle für fortgeschrittene Benutzer. Schneller Zugriff auf Daten und Befehle."
+      },
+      "archive": {
+        "title": "Archiv",
+        "description": "Durchsuchen Sie historische Ereignisse. Vollständige Artikeldatenbank mit Suchfunktion."
+      }
+    }
+  },
+  "team": {
+    "title": "Gründer",
+    "subtitle": "Zwei Freunde mit einer Vision — wir helfen Menschen, informiert zu bleiben, ohne sie mit Informationen zu überfordern.",
+    "photoAlt": "Jakub und Bartosz - Pollar-Gründer",
+    "betaNotice": "Pollar befindet sich in der <strong>Beta-Phase</strong>. Ihr Feedback ist für uns von unschätzbarem Wert — schreiben Sie uns!",
+    "members": {
+      "jakub": {
+        "role": "Entwickler",
+        "description": "Baut die gesamte technische Seite von Pollar — von der Oberfläche bis zu den Servern. Sorgt für Geschwindigkeit, Effizienz und Systemzuverlässigkeit."
+      },
+      "bartosz": {
+        "role": "Produkt & Marketing",
+        "description": "Sorgt für Intuitivität und stellt sicher, dass Pollar nicht zu viel Ihrer Zeit beansprucht und gleichzeitig Mehrwert liefert."
+      }
+    }
+  },
+  "cta": {
+    "title": "Bereit, mehr zu erfahren?",
+    "subtitle": "Schließen Sie sich Tausenden von Lesern an, die ihren Tag mit Pollar beginnen. Keine Werbung, kein Clickbait.",
+    "primaryButton": "Jetzt lesen",
+    "secondaryButton": "Daily Brief ansehen"
+  }
+}

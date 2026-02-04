@@ -1,38 +1,26 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimateHeight } from "@/components/common/AnimateHeight";
 
-const tabs = [
-  {
-    id: "truth",
-    label: "Rzetelność",
-    title: "Informacja powinna służyć zrozumieniu, nie zyskowi.",
-    content:
-      "Skupiamy się na rzetelnej informacji, nie na wzbudzaniu emocji. Unikamy sensacyjności i nadmiaru bodźców, stawiając na kontekst, klarowność i użyteczność dla czytelnika.",
-  },
-  {
-    id: "quality",
-    label: "Jakość",
-    title: "Wierzymy w jakość ponad ilość.",
-    content:
-      "Zamiast walczyć o kliki, walczymy o jasność. Zamiast wzmacniać szum, destylujemy sygnał. Grupujemy powiązane historie, eliminujemy duplikaty i prezentujemy różne perspektywy bez uprzedzeń redakcyjnych.",
-  },
-  {
-    id: "respect",
-    label: "Szacunek",
-    title: "Każda historia zasługuje na kontekst. Każdy czytelnik zasługuje na szacunek.",
-    content:
-      "Każda chwila spędzona tutaj powinna pozostawić cię bardziej świadomym, nie bardziej zaniepokojonym. Budujemy narzędzia dla myślących ludzi, którzy chcą rozumieć swój świat.",
-  },
-];
+const TAB_IDS = ["truth", "quality", "respect"] as const;
 
 export function AboutSection() {
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
+  const { t } = useTranslation("common");
+  const [activeTab, setActiveTab] = useState<typeof TAB_IDS[number]>(TAB_IDS[0]);
+
+  const tabs = TAB_IDS.map((id) => ({
+    id,
+    label: t(`about.tabs.${id}`),
+    title: t(`about.${id}.title`),
+    content: t(`about.${id}.content`),
+  }));
+
   const activeContent = tabs.find((tab) => tab.id === activeTab)!;
 
   return (
     <div className="p-6">
-      <h3 className="text-zinc-900 font-semibold mb-4">Manifest</h3>
+      <h3 className="text-zinc-900 font-semibold mb-4">{t("about.manifest")}</h3>
 
       {/* Tabs */}
       <div className="flex justify-center border-b border-zinc-200 mb-4">

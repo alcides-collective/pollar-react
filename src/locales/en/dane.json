@@ -1,4 +1,77 @@
 {
+  "common": {
+    "error": "Error",
+    "noData": "No data",
+    "noResults": "No results for the given criteria"
+  },
+  "imiona": {
+    "title": "First Names",
+    "subtitle": "Most popular first names given in Poland",
+    "searchPlaceholder": "Search name...",
+    "all": "All",
+    "male": "Male",
+    "female": "Female",
+    "maleLabel": "male",
+    "femaleLabel": "female",
+    "given": "given",
+    "asOf": "As of"
+  },
+  "nazwiska": {
+    "title": "Surnames",
+    "subtitle": "Most popular surnames in Poland",
+    "searchPlaceholder": "Search surname...",
+    "people": "people",
+    "asOf": "As of"
+  },
+  "energia": {
+    "title": "Energy",
+    "subtitle": "Energy data for Poland",
+    "energyMix": "Energy mix",
+    "coal": "Coal",
+    "gas": "Gas",
+    "renewables": "Renewables",
+    "fuels": "Fuels",
+    "liquidFuels": "Liquid fuels",
+    "production": "Production",
+    "import": "Import",
+    "export": "Export",
+    "householdPrice": "Price (household)",
+    "polandVsEU": "Poland vs European Union",
+    "renewablesShare": "Renewables share",
+    "co2PerCapita": "CO₂ per capita",
+    "energyDependency": "Energy dependency",
+    "mixEvolution": "Energy mix evolution",
+    "energyProduction": "Energy production",
+    "energyProductionGWh": "Energy production (GWh)"
+  },
+  "eurostat": {
+    "title": "Eurostat",
+    "subtitle": "Macroeconomic data from Eurostat",
+    "subtitleShort": "EU macroeconomic data",
+    "polandKeyIndicators": "Poland - key indicators",
+    "countryComparison": "Country comparison",
+    "socialIndicators": "Social indicators",
+    "country": "Country",
+    "value": "Value",
+    "period": "Period",
+    "noComparisonData": "No comparison data available",
+    "gdp": "GDP",
+    "inflation": "Inflation",
+    "unemployment": "Unemployment",
+    "population": "Population",
+    "inflationPercent": "Inflation (%)",
+    "unemploymentPercent": "Unemployment (%)",
+    "inflationInPoland": "Inflation in Poland",
+    "unemploymentInPoland": "Unemployment in Poland",
+    "countries": {
+      "PL": "Poland",
+      "DE": "Germany",
+      "CZ": "Czech Republic",
+      "SK": "Slovakia",
+      "HU": "Hungary",
+      "AT": "Austria"
+    }
+  },
   "airQuality": {
     "title": "Air Quality",
     "subtitle": "Data from the Chief Inspectorate of Environmental Protection",

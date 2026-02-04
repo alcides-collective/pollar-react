@@ -1,0 +1,95 @@
+{
+  "hero": {
+    "title": "News without the noise",
+    "subtitle": "AI organizes and summarizes today's events without clickbait — just verified facts.",
+    "cta": "Start reading",
+    "scroll": "Scroll",
+    "stats": {
+      "events": "Events",
+      "sources": "Sources",
+      "ads": "Ads",
+      "online": "Online"
+    }
+  },
+  "manifest": {
+    "sectionTitle": "What sets us apart",
+    "values": {
+      "reliability": {
+        "title": "Reliability",
+        "description": "Information should serve understanding, not profit. We focus on truth, not on stirring emotions."
+      },
+      "quality": {
+        "title": "Quality over quantity",
+        "description": "Amplifying the signal, eliminating the noise. We group related stories and present different perspectives."
+      },
+      "respect": {
+        "title": "Respect for the reader",
+        "description": "Every moment should leave us more informed, not more anxious. We build tools for thinking people."
+      }
+    }
+  },
+  "features": {
+    "title": "Everything in one place",
+    "subtitle": "News, parliamentary data, financial markets and more — access to information that matters.",
+    "items": {
+      "brief": {
+        "title": "Daily Brief",
+        "description": "Daily overview of the most important events. Everything you need to know, in one place."
+      },
+      "assistant": {
+        "title": "AI Assistant",
+        "description": "Ask questions about today's news. AI will help you understand context and connections between events."
+      },
+      "sejm": {
+        "title": "Parliament",
+        "description": "Track votes, bills and MP activity. Full transparency of parliamentary work."
+      },
+      "stock": {
+        "title": "Stock Market",
+        "description": "Quotes, analyses and market forecasts. Stay up to date with the stock exchange."
+      },
+      "data": {
+        "title": "Data",
+        "description": "Public data visualizations. From air quality to crime statistics."
+      },
+      "connections": {
+        "title": "Connections",
+        "description": "Daily word game. Find hidden connections between words and group them into categories."
+      },
+      "map": {
+        "title": "Event Map",
+        "description": "Interactive map with event locations. See what's happening in Poland and around the world."
+      },
+      "terminal": {
+        "title": "Terminal",
+        "description": "Terminal interface for advanced users. Quick access to data and commands."
+      },
+      "archive": {
+        "title": "Archive",
+        "description": "Browse historical events. Full article database with search capability."
+      }
+    }
+  },
+  "team": {
+    "title": "Creators",
+    "subtitle": "Two friends with a vision — we help people stay informed without overwhelming them with information.",
+    "photoAlt": "Jakub and Bartosz - Pollar creators",
+    "betaNotice": "Pollar is in <strong>beta</strong>. Your feedback is invaluable to us — don't hesitate to reach out!",
+    "members": {
+      "jakub": {
+        "role": "Developer",
+        "description": "Builds the entire technical side of Pollar — from interface to servers. Ensures speed, efficiency and system reliability."
+      },
+      "bartosz": {
+        "role": "Product & Marketing",
+        "description": "Ensures intuitiveness and makes sure Pollar doesn't take too much of your time while delivering value."
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to know more?",
+    "subtitle": "Join thousands of readers who start their day with Pollar. No ads, no clickbait.",
+    "primaryButton": "Start reading",
+    "secondaryButton": "See Daily Brief"
+  }
+}

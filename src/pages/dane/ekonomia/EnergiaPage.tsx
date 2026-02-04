@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { DaneHeader, DaneSourceFooter, StatsGrid } from '@/components/dane';
 import { EnergyMixChart, ProductionChart, ComparisonChart } from '@/components/dane/charts';
 import { useEnergy } from '@/hooks/useEnergy';
@@ -5,15 +6,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function EnergiaPage() {
+  const { t } = useTranslation('dane');
   const { summary, energyMix, balance, comparison, electricityPrice, timeSeries, loading, error } = useEnergy();
 
   if (error) {
     return (
       <div>
-        <DaneHeader title="Energia" subtitle="Dane o energetyce w Polsce" icon="ri-flashlight-line" />
+        <DaneHeader title={t('energia.title')} subtitle={t('energia.subtitle')} icon="ri-flashlight-line" />
         <Card className="border-destructive">
           <CardContent className="pt-6">
-            <p className="text-destructive">Błąd: {error.message}</p>
+            <p className="text-destructive">{t('common.error')}: {error.message}</p>
           </CardContent>
         </Card>
       </div>
@@ -23,8 +25,8 @@ export function EnergiaPage() {
   return (
     <div>
       <DaneHeader
-        title="Energia"
-        subtitle="Dane o energetyce w Polsce"
+        title={t('energia.title')}
+        subtitle={t('energia.subtitle')}
         icon="ri-flashlight-line"
         lastUpdate={summary?.lastUpdate}
       />
@@ -34,7 +36,7 @@ export function EnergiaPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
               <i className="ri-donut-chart-line text-primary" />
-              Mix energetyczny
+              {t('energia.energyMix')}
             </CardTitle>
         </CardHeader>
         <CardContent>
@@ -46,45 +48,45 @@ export function EnergiaPage() {
                 <div
                   className="bg-gray-600 transition-all"
                   style={{ width: `${energyMix.solidFuels}%` }}
-                  title={`Węgiel: ${energyMix.solidFuels.toFixed(1)}%`}
+                  title={`${t('energia.coal')}: ${energyMix.solidFuels.toFixed(1)}%`}
                 />
                 <div
                   className="bg-blue-500 transition-all"
                   style={{ width: `${energyMix.gas}%` }}
-                  title={`Gaz: ${energyMix.gas.toFixed(1)}%`}
+                  title={`${t('energia.gas')}: ${energyMix.gas.toFixed(1)}%`}
                 />
                 <div
                   className="bg-green-500 transition-all"
                   style={{ width: `${energyMix.renewables}%` }}
-                  title={`OZE: ${energyMix.renewables.toFixed(1)}%`}
+                  title={`${t('energia.renewables')}: ${energyMix.renewables.toFixed(1)}%`}
                 />
                 <div
                   className="bg-amber-500 transition-all"
                   style={{ width: `${energyMix.liquidFuels}%` }}
-                  title={`Paliwa płynne: ${energyMix.liquidFuels.toFixed(1)}%`}
+                  title={`${t('energia.liquidFuels')}: ${energyMix.liquidFuels.toFixed(1)}%`}
                 />
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-gray-600" />
-                  <span>Węgiel: {energyMix.solidFuels.toFixed(1)}%</span>
+                  <span>{t('energia.coal')}: {energyMix.solidFuels.toFixed(1)}%</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-blue-500" />
-                  <span>Gaz: {energyMix.gas.toFixed(1)}%</span>
+                  <span>{t('energia.gas')}: {energyMix.gas.toFixed(1)}%</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-green-500" />
-                  <span>OZE: {energyMix.renewables.toFixed(1)}%</span>
+                  <span>{t('energia.renewables')}: {energyMix.renewables.toFixed(1)}%</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-amber-500" />
-                  <span>Paliwa: {energyMix.liquidFuels.toFixed(1)}%</span>
+                  <span>{t('energia.fuels')}: {energyMix.liquidFuels.toFixed(1)}%</span>
                 </div>
               </div>
             </div>
           ) : (
-            <p className="text-muted-foreground">Brak danych</p>
+            <p className="text-muted-foreground">{t('common.noData')}</p>
           )}
         </CardContent>
       </Card>
@@ -93,22 +95,22 @@ export function EnergiaPage() {
       <StatsGrid
         stats={[
           {
-            label: 'Produkcja',
+            label: t('energia.production'),
             value: balance?.production ? `${(balance.production / 1000).toFixed(1)}` : '-',
             unit: 'TWh',
           },
           {
-            label: 'Import',
+            label: t('energia.import'),
             value: balance?.import ? `${(balance.import / 1000).toFixed(1)}` : '-',
             unit: 'TWh',
           },
           {
-            label: 'Eksport',
+            label: t('energia.export'),
             value: balance?.export ? `${(balance.export / 1000).toFixed(1)}` : '-',
             unit: 'TWh',
           },
           {
-            label: 'Cena (gosp. dom.)',
+            label: t('energia.householdPrice'),
             value: electricityPrice?.householdPrice ?? '-',
             unit: 'zł/MWh',
           },
@@ -124,20 +126,20 @@ export function EnergiaPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <i className="ri-bar-chart-horizontal-line text-primary" />
-              Polska vs Unia Europejska
+              {t('energia.polandVsEU')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <ComparisonChart
               data={[
                 {
-                  label: 'Udział OZE',
+                  label: t('energia.renewablesShare'),
                   poland: comparison.poland.renewablesShare,
                   eu: comparison.eu.renewablesShare,
                   unit: '%',
                 },
                 {
-                  label: 'CO₂ na mieszkańca',
+                  label: t('energia.co2PerCapita'),
                   poland: comparison.poland.co2PerCapita,
                   eu: comparison.eu.co2PerCapita ?? 0,
                   unit: 't',
@@ -145,7 +147,7 @@ export function EnergiaPage() {
                 ...(comparison.poland.energyDependency !== undefined
                   ? [
                       {
-                        label: 'Zależność energetyczna',
+                        label: t('energia.energyDependency'),
                         poland: comparison.poland.energyDependency,
                         eu: comparison.eu.energyDependency ?? 0,
                         unit: '%',
@@ -166,7 +168,7 @@ export function EnergiaPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <i className="ri-pie-chart-line text-primary" />
-                Ewolucja miksu energetycznego
+                {t('energia.mixEvolution')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -181,13 +183,13 @@ export function EnergiaPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <i className="ri-line-chart-line text-primary" />
-                Produkcja energii
+                {t('energia.energyProduction')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <ProductionChart
                 data={timeSeries.production.slice(-10)}
-                title="Produkcja energii (GWh)"
+                title={t('energia.energyProductionGWh')}
                 color="#3b82f6"
               />
             </CardContent>

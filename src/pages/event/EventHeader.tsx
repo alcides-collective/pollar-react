@@ -39,7 +39,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
             >
               {getModelDisplayName(modelId)}
               {showModelTooltip && modelDescription.text && (
-                <span className="absolute left-0 bottom-full mb-2 px-3 py-2 bg-zinc-900 text-white text-xs rounded shadow-lg z-[60] w-72 font-normal leading-relaxed">
+                <span className="absolute left-0 bottom-full mb-2 px-3 py-2.5 bg-zinc-900/70 backdrop-blur-xl backdrop-saturate-150 text-zinc-100 text-xs rounded-xl border border-white/10 ring-1 ring-white/5 shadow-xl shadow-black/30 z-[60] w-72 font-normal leading-relaxed">
                   {modelDescription.text}
                 </span>
               )}
@@ -52,7 +52,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
             >
               {co2Value}mg CO<sub>2</sub>
               {showCO2Tooltip && (
-                <span className="absolute left-0 bottom-full mb-2 px-3 py-2 bg-zinc-900 text-white text-xs rounded shadow-lg whitespace-nowrap z-[60]">
+                <span className="absolute left-0 bottom-full mb-2 px-3 py-2.5 bg-zinc-900/70 backdrop-blur-xl backdrop-saturate-150 text-zinc-100 text-xs rounded-xl border border-white/10 ring-1 ring-white/5 shadow-xl shadow-black/30 whitespace-nowrap z-[60]">
                   {co2Equivalents.map((equiv, i) => (
                     <span key={i} className="block">{equiv}</span>
                   ))}

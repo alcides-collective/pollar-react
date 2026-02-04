@@ -1,0 +1,95 @@
+{
+  "hero": {
+    "title": "Wiadomości bez szumu",
+    "subtitle": "AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.",
+    "cta": "Zacznij czytać",
+    "scroll": "Przewiń",
+    "stats": {
+      "events": "Wydarzeń",
+      "sources": "Źródeł",
+      "ads": "Reklam",
+      "online": "Online"
+    }
+  },
+  "manifest": {
+    "sectionTitle": "Co nas wyróżnia",
+    "values": {
+      "reliability": {
+        "title": "Rzetelność",
+        "description": "Informacja powinna służyć zrozumieniu, nie zyskowi. Skupiamy się na prawdzie, nie na wzbudzaniu emocji."
+      },
+      "quality": {
+        "title": "Jakość ponad ilość",
+        "description": "Wzmocnienie sygnału, eliminacja szumu. Grupujemy powiązane historie i prezentujemy różne perspektywy."
+      },
+      "respect": {
+        "title": "Szacunek dla czytelnika",
+        "description": "Każda chwila powinna zostawiać nas bardziej świadomymi, nie bardziej zaniepokojonym. Tworzymy narzędzia dla myślących ludzi."
+      }
+    }
+  },
+  "features": {
+    "title": "Wszystko w jednym miejscu",
+    "subtitle": "Wiadomości, dane parlamentarne, rynek finansowy i więcej — dostęp do informacji, które mają znaczenie.",
+    "items": {
+      "brief": {
+        "title": "Daily Brief",
+        "description": "Codzienny przegląd najważniejszych wydarzeń. Wszystko, co musisz wiedzieć, w jednym miejscu."
+      },
+      "assistant": {
+        "title": "AI Asystent",
+        "description": "Zadaj pytanie o dzisiejsze wiadomości. AI pomoże Ci zrozumieć kontekst i powiązania między wydarzeniami."
+      },
+      "sejm": {
+        "title": "Sejm",
+        "description": "Śledź głosowania, projekty ustaw i aktywność posłów. Pełna transparentność prac parlamentu."
+      },
+      "stock": {
+        "title": "Giełda",
+        "description": "Notowania, analizy i prognozy rynkowe. Bądź na bieżąco z sytuacją na GPW."
+      },
+      "data": {
+        "title": "Dane",
+        "description": "Wizualizacje danych publicznych. Od jakości powietrza po statystyki przestępczości."
+      },
+      "connections": {
+        "title": "Powiązania",
+        "description": "Codzienna gra słowna. Znajdź ukryte połączenia między słowami i pogrupuj je w kategorie."
+      },
+      "map": {
+        "title": "Mapa wydarzeń",
+        "description": "Interaktywna mapa z lokalizacją wydarzeń. Zobacz co dzieje się w Polsce i na świecie."
+      },
+      "terminal": {
+        "title": "Terminal",
+        "description": "Interfejs terminalowy dla zaawansowanych użytkowników. Szybki dostęp do danych i komend."
+      },
+      "archive": {
+        "title": "Archiwum",
+        "description": "Przeglądaj historyczne wydarzenia. Pełna baza artykułów z możliwością wyszukiwania."
+      }
+    }
+  },
+  "team": {
+    "title": "Twórcy",
+    "subtitle": "Dwóch przyjaciół z wizją — pomagamy ludziom być na bieżąco bez przytłaczania ich nadmiarem informacji.",
+    "photoAlt": "Jakub i Bartosz - twórcy Pollar",
+    "betaNotice": "Pollar jest w fazie <strong>bety</strong>. Twój feedback jest dla nas niezwykle cenny — pisz śmiało!",
+    "members": {
+      "jakub": {
+        "role": "Programista",
+        "description": "Buduje całą stronę techniczną Pollar — od interfejsu po serwery. Dba o szybkość, sprawność i niezawodność systemu."
+      },
+      "bartosz": {
+        "role": "Produkt i Marketing",
+        "description": "Pilnuje intuicyjności i dba o to, żeby Pollar nie zabierał zbyt dużo Twojego czasu, jednocześnie dostarczając wartość."
+      }
+    }
+  },
+  "cta": {
+    "title": "Gotowy, by wiedzieć więcej?",
+    "subtitle": "Dołącz do tysięcy czytelników, którzy zaczęli dzień od Pollar. Bez reklam, bez clickbaitów.",
+    "primaryButton": "Zacznij czytać",
+    "secondaryButton": "Zobacz Daily Brief"
+  }
+}

@@ -148,7 +148,7 @@ export function AreaChart({
                   transform: 'translate(-50%, -120%)',
                 }}
               >
-                <div className="bg-black/90 backdrop-blur-sm rounded-lg px-3 py-2 flex flex-col items-center gap-0.5 shadow-lg">
+                <div className="bg-zinc-900/70 backdrop-blur-xl backdrop-saturate-150 rounded-xl px-3 py-2.5 flex flex-col items-center gap-0.5 border border-white/10 ring-1 ring-white/5 shadow-xl shadow-black/30">
                   <span
                     className={cn(
                       'font-mono text-sm font-semibold',
@@ -160,9 +160,9 @@ export function AreaChart({
                       maximumFractionDigits: 2,
                     })}
                   </span>
-                  <span className="text-[10px] text-white/60">{hoveredPoint.date}</span>
+                  <span className="text-[10px] text-zinc-400">{hoveredPoint.date}</span>
                 </div>
-                <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 border-l-6 border-r-6 border-t-6 border-transparent border-t-black/90" />
+                <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 border-l-6 border-r-6 border-t-6 border-transparent border-t-zinc-900/70" />
               </div>
             )}
           </div>

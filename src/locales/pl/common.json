@@ -154,7 +154,75 @@
     "newsWithoutNoise": "Wiadomości bez szumu",
     "aiDescription": "AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.",
     "startReading": "Zacznij czytać",
-    "scroll": "Przewiń"
+    "scroll": "Przewiń",
+    "allInOnePlace": "Wszystko w jednym miejscu",
+    "allInOnePlaceDesc": "Wiadomości, dane parlamentarne, rynek finansowy i więcej — dostęp do informacji, które mają znaczenie.",
+    "whatSetsUsApart": "Co nas wyróżnia",
+    "creators": "Twórcy",
+    "creatorsDesc": "Dwóch przyjaciół z wizją — pomagamy ludziom być na bieżąco bez przytłaczania ich nadmiarem informacji.",
+    "creatorsPhotoAlt": "Jakub i Bartosz - twórcy Pollar",
+    "betaNotice": "Pollar jest w fazie <strong>bety</strong>. Twój feedback jest dla nas niezwykle cenny — pisz śmiało!",
+    "readyToKnowMore": "Gotowy, by wiedzieć więcej?",
+    "ctaDescription": "Dołącz do tysięcy czytelników, którzy zaczęli dzień od Pollar. Bez reklam, bez clickbaitów.",
+    "seeDailyBrief": "Zobacz Daily Brief",
+    "features": {
+      "dailyBrief": {
+        "title": "Daily Brief",
+        "description": "Codzienny przegląd najważniejszych wydarzeń. Wszystko, co musisz wiedzieć, w jednym miejscu."
+      },
+      "aiAssistant": {
+        "title": "AI Asystent",
+        "description": "Zadaj pytanie o dzisiejsze wiadomości. AI pomoże Ci zrozumieć kontekst i powiązania między wydarzeniami."
+      },
+      "sejm": {
+        "title": "Sejm",
+        "description": "Śledź głosowania, projekty ustaw i aktywność posłów. Pełna transparentność prac parlamentu."
+      },
+      "stockExchange": {
+        "title": "Giełda",
+        "description": "Notowania, analizy i prognozy rynkowe. Bądź na bieżąco z sytuacją na GPW."
+      },
+      "data": {
+        "title": "Dane",
+        "description": "Wizualizacje danych publicznych. Od jakości powietrza po statystyki przestępczości."
+      },
+      "connections": {
+        "title": "Powiązania",
+        "description": "Codzienna gra słowna. Znajdź ukryte połączenia między słowami i pogrupuj je w kategorie."
+      },
+      "eventMap": {
+        "title": "Mapa wydarzeń",
+        "description": "Interaktywna mapa z lokalizacją wydarzeń. Zobacz co dzieje się w Polsce i na świecie."
+      },
+      "terminal": {
+        "title": "Terminal",
+        "description": "Interfejs terminalowy dla zaawansowanych użytkowników. Szybki dostęp do danych i komend."
+      },
+      "archive": {
+        "title": "Archiwum",
+        "description": "Przeglądaj historyczne wydarzenia. Pełna baza artykułów z możliwością wyszukiwania."
+      }
+    },
+    "manifest": {
+      "integrity": {
+        "title": "Rzetelność",
+        "description": "Informacja powinna służyć zrozumieniu, nie zyskowi. Skupiamy się na prawdzie, nie na wzbudzaniu emocji."
+      },
+      "quality": {
+        "title": "Jakość ponad ilość",
+        "description": "Wzmocnienie sygnału, eliminacja szumu. Grupujemy powiązane historie i prezentujemy różne perspektywy."
+      },
+      "respect": {
+        "title": "Szacunek dla czytelnika",
+        "description": "Każda chwila powinna zostawiać nas bardziej świadomymi, nie bardziej zaniepokojonym. Tworzymy narzędzia dla myślących ludzi."
+      }
+    },
+    "team": {
+      "developer": "Programista",
+      "productMarketing": "Produkt i Marketing",
+      "jakubDesc": "Buduje całą stronę techniczną Pollar — od interfejsu po serwery. Dba o szybkość, sprawność i niezawodność systemu.",
+      "bartoszDesc": "Pilnuje intuicyjności i dba o to, żeby Pollar nie zabierał zbyt dużo Twojego czasu, jednocześnie dostarczając wartość."
+    }
   },
   "greetings": {
     "morning": "Dzień dobry",
@@ -164,6 +232,35 @@
   "sidebar": {
     "latest": "Najnowsze",
     "whatsNew": "Co nowego"
+  },
+  "about": {
+    "manifest": "Manifest",
+    "tabs": {
+      "truth": "Rzetelność",
+      "quality": "Jakość",
+      "respect": "Szacunek"
+    },
+    "truth": {
+      "title": "Informacja powinna służyć zrozumieniu, nie zyskowi.",
+      "content": "Skupiamy się na rzetelnej informacji, nie na wzbudzaniu emocji. Unikamy sensacyjności i nadmiaru bodźców, stawiając na kontekst, klarowność i użyteczność dla czytelnika."
+    },
+    "quality": {
+      "title": "Wierzymy w jakość ponad ilość.",
+      "content": "Zamiast walczyć o kliki, walczymy o jasność. Zamiast wzmacniać szum, destylujemy sygnał. Grupujemy powiązane historie, eliminujemy duplikaty i prezentujemy różne perspektywy bez uprzedzeń redakcyjnych."
+    },
+    "respect": {
+      "title": "Każda historia zasługuje na kontekst. Każdy czytelnik zasługuje na szacunek.",
+      "content": "Każda chwila spędzona tutaj powinna pozostawić cię bardziej świadomym, nie bardziej zaniepokojonym. Budujemy narzędzia dla myślących ludzi, którzy chcą rozumieć swój świat."
+    }
+  },
+  "contact": {
+    "title": "Kim jesteśmy",
+    "intro": "Pollar tworzą Jakub Dudek i Bartosz Kasprzycki.",
+    "jakub": "Jakub, programista z Krakowa, buduje całą stronę techniczną — od interfejsu po serwery — dbając, by wszystko działało szybko, sprawnie i niezawodnie.",
+    "bartosz": "Bartosz odpowiada za produkt i marketing — pilnuje, by każda interakcja z Pollarem była intuicyjna i nie zabierała więcej czasu niż trzeba.",
+    "goal": "Cel jest wspólny: pomóc ludziom być na bieżąco bez przytłaczania ich nadmiarem informacji. Projekt jest w fazie beta — jeśli masz pomysł lub zauważysz błąd, napisz.",
+    "feedback": "Masz uwagi?",
+    "feedbackText": "Chętnie wysłuchamy Twoich sugestii, pomysłów lub zgłoszeń błędów. Napisz bezpośrednio na maila."
   },
   "openData": {
     "airQuality": "Jakość powietrza",

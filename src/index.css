@@ -627,7 +627,11 @@ body {
 }
 
 .footnote-tooltip {
-  @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-white border border-zinc-200 rounded-lg shadow-lg opacity-0 invisible transition-all duration-200 z-50;
+  @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3.5;
+  @apply bg-zinc-900/70 backdrop-blur-xl;
+  @apply border border-white/10 ring-1 ring-white/5;
+  @apply rounded-xl shadow-xl shadow-black/30;
+  @apply opacity-0 invisible transition-all duration-200 z-50;
 }
 
 .footnote:hover .footnote-tooltip,
@@ -636,11 +640,11 @@ body {
 }
 
 .footnote-title {
-  @apply block font-semibold text-zinc-900 text-sm mb-1;
+  @apply block font-semibold text-zinc-100 text-sm mb-1;
 }
 
 .footnote-desc {
-  @apply block text-xs text-zinc-600 leading-relaxed;
+  @apply block text-xs text-zinc-400 leading-relaxed;
 }
 
 /* ==========================================

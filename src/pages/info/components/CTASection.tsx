@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 
 export function CTASection() {
+  const { t } = useTranslation('info');
+
   return (
     <section className="py-20 lg:py-28 bg-zinc-900 relative overflow-hidden">
       {/* Background gradient */}
@@ -22,7 +25,7 @@ export function CTASection() {
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.5 }}
         >
-          Gotowy, by wiedzieć więcej?
+          {t('cta.title')}
         </motion.h2>
 
         <motion.p
@@ -32,7 +35,7 @@ export function CTASection() {
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          Dołącz do tysięcy czytelników, którzy zaczęli dzień od Pollar. Bez reklam, bez clickbaitów.
+          {t('cta.subtitle')}
         </motion.p>
 
         <motion.div
@@ -43,10 +46,10 @@ export function CTASection() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Button size="lg" asChild className="text-base px-8 py-6 shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_50px_rgba(59,130,246,0.7)] transition-shadow duration-300">
-            <Link to="/">Zacznij czytać</Link>
+            <Link to="/">{t('cta.primaryButton')}</Link>
           </Button>
           <Button size="lg" variant="outline" asChild className="text-base px-8 py-6 bg-white text-zinc-900 border-white hover:bg-zinc-100 hover:text-zinc-900 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.5)] transition-shadow duration-300">
-            <Link to="/brief">Zobacz Daily Brief</Link>
+            <Link to="/brief">{t('cta.secondaryButton')}</Link>
           </Button>
         </motion.div>
       </div>

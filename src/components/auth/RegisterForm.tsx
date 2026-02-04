@@ -74,7 +74,7 @@ export function RegisterForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+          <div className="rounded-md bg-red-500/20 p-3 text-sm text-red-400">
             {error}
           </div>
         )}
@@ -126,8 +126,8 @@ export function RegisterForm() {
                 key={i}
                 className={`flex items-center gap-1.5 ${
                   req.met
-                    ? 'text-green-600 dark:text-green-400'
-                    : 'text-zinc-400 dark:text-zinc-500'
+                    ? 'text-green-400'
+                    : 'text-zinc-500'
                 }`}
               >
                 <span>{req.met ? '✓' : '○'}</span>
@@ -141,12 +141,12 @@ export function RegisterForm() {
           {isLoading ? t('register.loading') : t('register.title')}
         </Button>
 
-        <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-center text-sm text-zinc-400">
           {t('register.hasAccount')}{' '}
           <button
             type="button"
             onClick={() => setView('login')}
-            className="font-medium text-zinc-900 hover:underline dark:text-zinc-200"
+            className="font-medium text-zinc-100 hover:text-white hover:underline transition-colors"
           >
             {t('register.login')}
           </button>

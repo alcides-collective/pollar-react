@@ -1,7 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { usePrints, usePrintAISummary } from '../../hooks/usePrints';
+import { useLanguageStore } from '../../stores/languageStore';
 
 export function PrintDetailPage() {
+  const { t } = useTranslation('sejm');
+  const language = useLanguageStore((s) => s.language);
   const { number } = useParams<{ number: string }>();
   const { prints } = usePrints();
   const { summary: aiSummary, loading: aiLoading } = usePrintAISummary(number || null);
@@ -9,9 +13,10 @@ export function PrintDetailPage() {
   // Find print in the loaded list
   const print = prints.find(p => p.number === number);
 
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return '-';
-    return new Date(dateStr).toLocaleDateString('pl-PL', {
+    return new Date(dateStr).toLocaleDateString(localeMap[language] || 'pl-PL', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -21,9 +26,9 @@ export function PrintDetailPage() {
   if (!print && prints.length > 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-zinc-500">Nie znaleziono druku</p>
+        <p className="text-zinc-500">{t('printDetail.notFound')}</p>
         <Link to="/sejm/druki" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
-          <i className="ri-arrow-left-s-line" /> Wróć do listy
+          <i className="ri-arrow-left-s-line" /> {t('printDetail.backToList')}
         </Link>
       </div>
     );
@@ -33,14 +38,14 @@ export function PrintDetailPage() {
     <div className="space-y-6">
       {/* Back link */}
       <Link to="/sejm/druki" className="text-sm text-zinc-500 hover:text-zinc-700">
-        <i className="ri-arrow-left-s-line" /> Wszystkie druki
+        <i className="ri-arrow-left-s-line" /> {t('printDetail.allPrints')}
       </Link>
 
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
           <span className="bg-zinc-100 text-zinc-600 text-sm font-mono px-2 py-0.5 rounded">
-            Druk nr {number}
+            {t('printDetail.printNumber', { number })}
           </span>
           {print?.documentType && (
             <span className="text-xs text-zinc-500 uppercase tracking-wide">
@@ -49,7 +54,7 @@ export function PrintDetailPage() {
           )}
         </div>
         <h1 className="text-xl font-semibold text-zinc-900">
-          {print?.title || `Druk nr ${number}`}
+          {print?.title || t('printDetail.printNumber', { number })}
         </h1>
         {print && (
           <p className="text-zinc-500 mt-2">{formatDate(print.deliveryDate)}</p>
@@ -80,16 +85,16 @@ export function PrintDetailPage() {
               aiSummary.analysis.complexity === 'medium' ? 'bg-amber-100 text-amber-700' :
               'bg-red-100 text-red-700'
             }`}>
-              Złożoność: {aiSummary.analysis.complexity === 'simple' ? 'niska' :
-                aiSummary.analysis.complexity === 'medium' ? 'średnia' : 'wysoka'}
+              {t('printDetail.complexity')}: {aiSummary.analysis.complexity === 'simple' ? t('printDetail.complexityLow') :
+                aiSummary.analysis.complexity === 'medium' ? t('printDetail.complexityMedium') : t('printDetail.complexityHigh')}
             </span>
             <span className={`text-xs px-2 py-1 rounded ${
               aiSummary.analysis.controversy === 'low' ? 'bg-green-100 text-green-700' :
               aiSummary.analysis.controversy === 'medium' ? 'bg-amber-100 text-amber-700' :
               'bg-red-100 text-red-700'
             }`}>
-              Kontrowersyjność: {aiSummary.analysis.controversy === 'low' ? 'niska' :
-                aiSummary.analysis.controversy === 'medium' ? 'średnia' : 'wysoka'}
+              {t('printDetail.controversy')}: {aiSummary.analysis.controversy === 'low' ? t('printDetail.controversyLow') :
+                aiSummary.analysis.controversy === 'medium' ? t('printDetail.controversyMedium') : t('printDetail.controversyHigh')}
             </span>
           </div>
 
@@ -107,7 +112,7 @@ export function PrintDetailPage() {
           {/* Key changes */}
           {aiSummary.analysis.keyChanges.length > 0 && (
             <div className="rounded-lg border border-zinc-200 p-4">
-              <h2 className="text-sm font-medium text-zinc-900 mb-3">Kluczowe zmiany</h2>
+              <h2 className="text-sm font-medium text-zinc-900 mb-3">{t('printDetail.keyChanges')}</h2>
               <ul className="space-y-2">
                 {aiSummary.analysis.keyChanges.map((change, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-zinc-700">
@@ -122,7 +127,7 @@ export function PrintDetailPage() {
           {/* Affected groups */}
           {aiSummary.analysis.affectedGroups.length > 0 && (
             <div className="rounded-lg border border-zinc-200 p-4">
-              <h2 className="text-sm font-medium text-zinc-900 mb-3">Dotknięte grupy</h2>
+              <h2 className="text-sm font-medium text-zinc-900 mb-3">{t('printDetail.affectedGroups')}</h2>
               <div className="space-y-2">
                 {aiSummary.analysis.affectedGroups.map((group, i) => (
                   <div key={i} className="flex items-center justify-between text-sm">
@@ -144,15 +149,15 @@ export function PrintDetailPage() {
           {/* Financial impact */}
           {aiSummary.analysis.financialImpact.hasBudgetImpact && (
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-              <h2 className="text-sm font-medium text-amber-900 mb-2">Wpływ finansowy</h2>
+              <h2 className="text-sm font-medium text-amber-900 mb-2">{t('printDetail.financialImpact')}</h2>
               {aiSummary.analysis.financialImpact.estimatedCost && (
                 <p className="text-amber-800">
-                  Szacowany koszt: {aiSummary.analysis.financialImpact.estimatedCost}
+                  {t('printDetail.estimatedCost')}: {aiSummary.analysis.financialImpact.estimatedCost}
                 </p>
               )}
               {aiSummary.analysis.financialImpact.who && (
                 <p className="text-amber-700 text-sm mt-1">
-                  Kto poniesie: {aiSummary.analysis.financialImpact.who}
+                  {t('printDetail.whoBears')}: {aiSummary.analysis.financialImpact.who}
                 </p>
               )}
             </div>
@@ -163,7 +168,7 @@ export function PrintDetailPage() {
       {/* Attachments */}
       {print?.attachments && print.attachments.length > 0 && (
         <div className="rounded-lg border border-zinc-200 p-4">
-          <h2 className="text-sm font-medium text-zinc-900 mb-3">Załączniki</h2>
+          <h2 className="text-sm font-medium text-zinc-900 mb-3">{t('printDetail.attachments')}</h2>
           <div className="space-y-2">
             {print.attachments.map((attachment, i) => (
               <a

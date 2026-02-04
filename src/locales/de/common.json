@@ -154,7 +154,75 @@
     "newsWithoutNoise": "Nachrichten ohne Lärm",
     "aiDescription": "KI organisiert und fasst die heutigen Ereignisse ohne Clickbait zusammen — nur verifizierte Fakten.",
     "startReading": "Jetzt lesen",
-    "scroll": "Scrollen"
+    "scroll": "Scrollen",
+    "allInOnePlace": "Alles an einem Ort",
+    "allInOnePlaceDesc": "Nachrichten, Parlamentsdaten, Finanzmarkt und mehr — Zugang zu Informationen, die zählen.",
+    "whatSetsUsApart": "Was uns unterscheidet",
+    "creators": "Gründer",
+    "creatorsDesc": "Zwei Freunde mit einer Vision — wir helfen Menschen, informiert zu bleiben, ohne sie mit Informationen zu überwältigen.",
+    "creatorsPhotoAlt": "Jakub und Bartosz - Gründer von Pollar",
+    "betaNotice": "Pollar ist in der <strong>Beta</strong>-Phase. Ihr Feedback ist für uns sehr wertvoll — schreiben Sie uns!",
+    "readyToKnowMore": "Bereit, mehr zu erfahren?",
+    "ctaDescription": "Schließen Sie sich Tausenden von Lesern an, die ihren Tag mit Pollar begonnen haben. Keine Werbung, kein Clickbait.",
+    "seeDailyBrief": "Daily Brief ansehen",
+    "features": {
+      "dailyBrief": {
+        "title": "Daily Brief",
+        "description": "Tägliche Zusammenfassung der wichtigsten Ereignisse. Alles, was Sie wissen müssen, an einem Ort."
+      },
+      "aiAssistant": {
+        "title": "KI-Assistent",
+        "description": "Stellen Sie Fragen zu aktuellen Nachrichten. KI hilft Ihnen, Kontext und Zusammenhänge zwischen Ereignissen zu verstehen."
+      },
+      "sejm": {
+        "title": "Parlament",
+        "description": "Verfolgen Sie Abstimmungen, Gesetzentwürfe und Abgeordnetenaktivitäten. Volle Transparenz der Parlamentsarbeit."
+      },
+      "stockExchange": {
+        "title": "Börse",
+        "description": "Kurse, Analysen und Marktprognosen. Bleiben Sie auf dem Laufenden über den Aktienmarkt."
+      },
+      "data": {
+        "title": "Daten",
+        "description": "Visualisierungen öffentlicher Daten. Von Luftqualität bis Kriminalitätsstatistiken."
+      },
+      "connections": {
+        "title": "Verbindungen",
+        "description": "Tägliches Wortspiel. Finden Sie versteckte Verbindungen zwischen Wörtern und gruppieren Sie sie in Kategorien."
+      },
+      "eventMap": {
+        "title": "Ereigniskarte",
+        "description": "Interaktive Karte mit Ereignisstandorten. Sehen Sie, was in Polen und weltweit passiert."
+      },
+      "terminal": {
+        "title": "Terminal",
+        "description": "Terminal-Oberfläche für fortgeschrittene Benutzer. Schneller Zugriff auf Daten und Befehle."
+      },
+      "archive": {
+        "title": "Archiv",
+        "description": "Durchsuchen Sie historische Ereignisse. Vollständige Artikeldatenbank mit Suchfunktion."
+      }
+    },
+    "manifest": {
+      "integrity": {
+        "title": "Integrität",
+        "description": "Information sollte dem Verständnis dienen, nicht dem Profit. Wir konzentrieren uns auf Wahrheit, nicht auf das Schüren von Emotionen."
+      },
+      "quality": {
+        "title": "Qualität statt Quantität",
+        "description": "Signalverstärkung, Rauschunterdrückung. Wir gruppieren verwandte Geschichten und präsentieren verschiedene Perspektiven."
+      },
+      "respect": {
+        "title": "Respekt für den Leser",
+        "description": "Jeder Moment sollte Sie informierter zurücklassen, nicht ängstlicher. Wir bauen Werkzeuge für denkende Menschen."
+      }
+    },
+    "team": {
+      "developer": "Entwickler",
+      "productMarketing": "Produkt und Marketing",
+      "jakubDesc": "Baut die gesamte technische Seite von Pollar — von der Oberfläche bis zu den Servern. Sorgt für Geschwindigkeit, Effizienz und Zuverlässigkeit.",
+      "bartoszDesc": "Sorgt für Intuitivität und stellt sicher, dass Pollar nicht zu viel Ihrer Zeit in Anspruch nimmt, während es Mehrwert liefert."
+    }
   },
   "greetings": {
     "morning": "Guten Tag",
@@ -164,6 +232,35 @@
   "sidebar": {
     "latest": "Neueste",
     "whatsNew": "Neuigkeiten"
+  },
+  "about": {
+    "manifest": "Manifest",
+    "tabs": {
+      "truth": "Integrität",
+      "quality": "Qualität",
+      "respect": "Respekt"
+    },
+    "truth": {
+      "title": "Information sollte dem Verständnis dienen, nicht dem Profit.",
+      "content": "Wir konzentrieren uns auf zuverlässige Information, nicht auf das Schüren von Emotionen. Wir vermeiden Sensationsgier und übermäßige Reize und setzen auf Kontext, Klarheit und Nützlichkeit für den Leser."
+    },
+    "quality": {
+      "title": "Wir glauben an Qualität statt Quantität.",
+      "content": "Statt um Klicks zu kämpfen, kämpfen wir um Klarheit. Statt Lärm zu verstärken, destillieren wir das Signal. Wir gruppieren verwandte Geschichten, eliminieren Duplikate und präsentieren verschiedene Perspektiven ohne redaktionelle Voreingenommenheit."
+    },
+    "respect": {
+      "title": "Jede Geschichte verdient Kontext. Jeder Leser verdient Respekt.",
+      "content": "Jeder hier verbrachte Moment sollte Sie informierter zurücklassen, nicht ängstlicher. Wir bauen Werkzeuge für denkende Menschen, die ihre Welt verstehen wollen."
+    }
+  },
+  "contact": {
+    "title": "Wer wir sind",
+    "intro": "Pollar wird von Jakub Dudek und Bartosz Kasprzycki erstellt.",
+    "jakub": "Jakub, ein Entwickler aus Krakau, baut die gesamte technische Seite — von der Oberfläche bis zu den Servern — und sorgt dafür, dass alles schnell, effizient und zuverlässig funktioniert.",
+    "bartosz": "Bartosz ist für Produkt und Marketing verantwortlich — er achtet darauf, dass jede Interaktion mit Pollar intuitiv ist und nicht mehr Zeit als nötig in Anspruch nimmt.",
+    "goal": "Das Ziel ist gemeinsam: Menschen zu helfen, auf dem Laufenden zu bleiben, ohne sie mit zu vielen Informationen zu überwältigen. Das Projekt befindet sich in der Beta-Phase — wenn Sie eine Idee haben oder einen Fehler bemerken, schreiben Sie uns.",
+    "feedback": "Haben Sie Feedback?",
+    "feedbackText": "Wir würden uns freuen, Ihre Vorschläge, Ideen oder Fehlerberichte zu hören. Schreiben Sie direkt an unsere E-Mail."
   },
   "openData": {
     "airQuality": "Luftqualität",
