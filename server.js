@@ -33,6 +33,8 @@ const PAGE_TITLES = {
   '/terminal': { title: 'Terminal', description: 'Terminal informacyjny Pollar News.' },
   '/polityka-prywatnosci': { title: 'Polityka prywatności', description: 'Polityka prywatności serwisu Pollar News.' },
   '/info': { title: 'O Pollar', description: 'Poznaj Pollar News - AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów. Wiadomości bez szumu.' },
+  '/graf': { title: 'Graf powiązań', description: 'Interaktywna wizualizacja powiązań między wydarzeniami, osobami i organizacjami.' },
+  '/gielda': { title: 'Giełda', description: 'Notowania giełdowe i indeksy w czasie rzeczywistym.' },
   // Sejm
   '/sejm': { title: 'Sejm', description: 'Dane i statystyki z Sejmu RP.' },
   '/sejm/poslowie': { title: 'Posłowie', description: 'Lista posłów Sejmu RP X kadencji.' },
