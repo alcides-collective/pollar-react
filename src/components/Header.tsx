@@ -301,6 +301,12 @@ export function Header() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
+                <Link to="/asystent" className="w-full flex items-center gap-2">
+                  <i className="ri-robot-2-line" />
+                  AI Asystent
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link to="/sejm" className="w-full flex items-center gap-2">
                   <i className="ri-government-line" />
                   Sejm
