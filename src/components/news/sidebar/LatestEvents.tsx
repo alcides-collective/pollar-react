@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import type { Event } from '../../../types/events';
 import { LiveTimeAgo } from '../../common/LiveTimeAgo';
@@ -10,6 +11,7 @@ interface LatestEventsProps {
 }
 
 export function LatestEvents({ events }: LatestEventsProps) {
+  const { t } = useTranslation('common');
   const newEventIds = useEventsStore((s) => s.newEventIds);
   const markEventAsSeen = useEventsStore((s) => s.markEventAsSeen);
 
@@ -22,7 +24,7 @@ export function LatestEvents({ events }: LatestEventsProps) {
 
   return (
     <div className="p-6">
-      <h3 className="text-red-500 font-semibold mb-4">Najnowsze</h3>
+      <h3 className="text-red-500 font-semibold mb-4">{t('sidebar.latest')}</h3>
       <motion.div
         key={events.map(e => e.id).join(',')}
         className="space-y-5"

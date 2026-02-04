@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInterpellations, fetchInterpellationBody } from '../../hooks/useInterpellations';
 import { InterpellationCard, SejmApiError } from '../../components/sejm';
 import type { SejmInterpellation } from '../../types/sejm';
@@ -6,6 +7,7 @@ import type { SejmInterpellation } from '../../types/sejm';
 type FilterOption = 'all' | 'answered' | 'pending';
 
 export function InterpellationsPage() {
+  const { t } = useTranslation('sejm');
   const { interpellations, hasMore, loading, loadingMore, loadMore, error } = useInterpellations();
   const [filter, setFilter] = useState<FilterOption>('all');
   const [selectedInterpellation, setSelectedInterpellation] = useState<SejmInterpellation | null>(null);
@@ -32,7 +34,7 @@ export function InterpellationsPage() {
       const body = await fetchInterpellationBody(interpellation.term, interpellation.num);
       setBodyContent(body);
     } catch (err) {
-      setBodyContent('Nie udało się pobrać treści interpelacji.');
+      setBodyContent(t('interpellationsPage.fetchError'));
     } finally {
       setLoadingBody(false);
     }
@@ -60,17 +62,19 @@ export function InterpellationsPage() {
     );
   }
 
+  const filterOptions = [
+    { value: 'all', label: t('interpellationsPage.all') },
+    { value: 'answered', label: t('interpellationsPage.answered') },
+    { value: 'pending', label: t('interpellationsPage.pending') },
+  ];
+
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">Interpelacje</h1>
+      <h1 className="text-xl font-semibold text-zinc-900">{t('interpellationsPage.title')}</h1>
 
       {/* Filters */}
       <div className="flex gap-2">
-        {[
-          { value: 'all', label: 'Wszystkie' },
-          { value: 'answered', label: 'Odpowiedziane' },
-          { value: 'pending', label: 'Oczekujące' },
-        ].map((option) => (
+        {filterOptions.map((option) => (
           <button
             key={option.value}
             onClick={() => setFilter(option.value as FilterOption)}
@@ -101,7 +105,7 @@ export function InterpellationsPage() {
 
       {filteredInterpellations.length === 0 && (
         <p className="text-center text-zinc-500 py-8">
-          Brak interpelacji do wyświetlenia
+          {t('interpellationsPage.noResults')}
         </p>
       )}
 
@@ -112,7 +116,7 @@ export function InterpellationsPage() {
             disabled={loadingMore}
             className="px-6 py-2 bg-zinc-100 text-zinc-700 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50"
           >
-            {loadingMore ? 'Ładowanie...' : 'Załaduj więcej'}
+            {loadingMore ? t('interpellationsPage.loading') : t('interpellationsPage.loadMore')}
           </button>
         </div>
       )}
@@ -126,7 +130,7 @@ export function InterpellationsPage() {
           >
             <div className="p-4 border-b border-zinc-200 flex items-start justify-between">
               <div>
-                <span className="text-xs text-zinc-500">Interpelacja #{selectedInterpellation.num}</span>
+                <span className="text-xs text-zinc-500">{t('interpellationsPage.interpellationNumber', { num: selectedInterpellation.num })}</span>
                 <h2 className="font-medium text-zinc-900 mt-1">{selectedInterpellation.title}</h2>
               </div>
               <button

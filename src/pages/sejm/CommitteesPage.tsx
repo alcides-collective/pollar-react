@@ -1,11 +1,13 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useCommittees } from '../../hooks/useCommittees';
 import { SejmApiError } from '../../components/sejm';
 
 type FilterOption = 'all' | 'standing' | 'extraordinary' | 'investigative';
 
 export function CommitteesPage() {
+  const { t } = useTranslation('sejm');
   const { committees, loading, error } = useCommittees();
   const [filter, setFilter] = useState<FilterOption>('all');
 
@@ -39,23 +41,25 @@ export function CommitteesPage() {
   }
 
   const typeLabels: Record<string, string> = {
-    standing: 'Stała',
-    extraordinary: 'Nadzwyczajna',
-    investigative: 'Śledcza',
+    standing: t('committeesPage.typeStanding'),
+    extraordinary: t('committeesPage.typeExtraordinary'),
+    investigative: t('committeesPage.typeInvestigative'),
   };
+
+  const filterOptions = [
+    { value: 'all', label: t('committeesPage.all') },
+    { value: 'standing', label: t('committeesPage.standing') },
+    { value: 'extraordinary', label: t('committeesPage.extraordinary') },
+    { value: 'investigative', label: t('committeesPage.investigative') },
+  ];
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">Komisje sejmowe</h1>
+      <h1 className="text-xl font-semibold text-zinc-900">{t('committeesPage.title')}</h1>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
-        {[
-          { value: 'all', label: 'Wszystkie' },
-          { value: 'standing', label: 'Stałe' },
-          { value: 'extraordinary', label: 'Nadzwyczajne' },
-          { value: 'investigative', label: 'Śledcze' },
-        ].map((option) => (
+        {filterOptions.map((option) => (
           <button
             key={option.value}
             onClick={() => setFilter(option.value as FilterOption)}

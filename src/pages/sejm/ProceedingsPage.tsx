@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useProceedings, useCurrentProceeding } from '../../hooks/useProceedings';
 import { SejmApiError } from '../../components/sejm';
+import { useLanguage } from '../../stores/languageStore';
 
 export function ProceedingsPage() {
+  const { t } = useTranslation('sejm');
+  const language = useLanguage();
   const { proceedings, loading, error } = useProceedings();
   const { proceeding: currentProceeding } = useCurrentProceeding();
+
+  const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
 
   if (error) {
     return <SejmApiError message={error.message} />;
@@ -26,8 +32,9 @@ export function ProceedingsPage() {
 
   const formatDates = (dates: string[]) => {
     if (!dates || dates.length === 0) return '';
+    const locale = localeMap[language] || 'pl-PL';
     if (dates.length === 1) {
-      return new Date(dates[0]).toLocaleDateString('pl-PL', {
+      return new Date(dates[0]).toLocaleDateString(locale, {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -35,7 +42,7 @@ export function ProceedingsPage() {
     }
     const first = new Date(dates[0]);
     const last = new Date(dates[dates.length - 1]);
-    return `${first.toLocaleDateString('pl-PL', { day: 'numeric' })}-${last.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+    return `${first.toLocaleDateString(locale, { day: 'numeric' })}-${last.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })}`;
   };
 
   // Sort by number descending (most recent first)
@@ -43,7 +50,7 @@ export function ProceedingsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">Posiedzenia Sejmu</h1>
+      <h1 className="text-xl font-semibold text-zinc-900">{t('proceedingsPage.title')}</h1>
 
       {/* Current proceeding */}
       {currentProceeding && (
@@ -53,10 +60,10 @@ export function ProceedingsPage() {
         >
           <div className="flex items-center gap-3 mb-2">
             <span className="bg-green-500 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded animate-pulse">
-              Na żywo
+              {t('proceedingsPage.live')}
             </span>
             <span className="text-sm text-zinc-600">
-              {currentProceeding.number}. posiedzenie
+              {t('proceedingsPage.proceeding', { number: currentProceeding.number })}
             </span>
           </div>
           <h3 className="font-medium text-zinc-900">{currentProceeding.title}</h3>
@@ -76,11 +83,11 @@ export function ProceedingsPage() {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-medium text-zinc-900">
-                    {proceeding.number}. posiedzenie
+                    {t('proceedingsPage.proceeding', { number: proceeding.number })}
                   </span>
                   {proceeding.current && (
                     <span className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">
-                      Bieżące
+                      {t('proceedingsPage.current')}
                     </span>
                   )}
                 </div>

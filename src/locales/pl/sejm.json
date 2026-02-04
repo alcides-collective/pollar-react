@@ -71,5 +71,61 @@
     "absent": "Nieobecny",
     "passed": "Przyjęta",
     "rejected": "Odrzucona"
+  },
+  "clubsPage": {
+    "title": "Kluby parlamentarne",
+    "mps": "posłów",
+    "mandates": "mandatów"
+  },
+  "votingsPage": {
+    "title": "Głosowania",
+    "all": "Wszystkie",
+    "passed": "Przyjęte",
+    "rejected": "Odrzucone",
+    "found": "Znaleziono: {{count}} głosowań",
+    "sitting": "Posiedzenie {{number}}",
+    "votingsCount": "{{count}} głosowań",
+    "passedCount": "{{count}} przyjęte",
+    "rejectedCount": "{{count}} odrzucone",
+    "for": "za",
+    "against": "przeciw",
+    "abstain": "wstrzym.",
+    "noResults": "Brak głosowań do wyświetlenia",
+    "loading": "Ładowanie...",
+    "loadMore": "Załaduj więcej",
+    "loadMoreCount": "Załaduj więcej ({{loaded}}/{{total}})"
+  },
+  "printsPage": {
+    "title": "Druki sejmowe",
+    "noResults": "Brak druków do wyświetlenia",
+    "loading": "Ładowanie...",
+    "loadMore": "Załaduj więcej"
+  },
+  "interpellationsPage": {
+    "title": "Interpelacje",
+    "all": "Wszystkie",
+    "answered": "Odpowiedziane",
+    "pending": "Oczekujące",
+    "noResults": "Brak interpelacji do wyświetlenia",
+    "loading": "Ładowanie...",
+    "loadMore": "Załaduj więcej",
+    "fetchError": "Nie udało się pobrać treści interpelacji.",
+    "interpellationNumber": "Interpelacja #{{num}}"
+  },
+  "committeesPage": {
+    "title": "Komisje sejmowe",
+    "all": "Wszystkie",
+    "standing": "Stałe",
+    "extraordinary": "Nadzwyczajne",
+    "investigative": "Śledcze",
+    "typeStanding": "Stała",
+    "typeExtraordinary": "Nadzwyczajna",
+    "typeInvestigative": "Śledcza"
+  },
+  "proceedingsPage": {
+    "title": "Posiedzenia Sejmu",
+    "live": "Na żywo",
+    "proceeding": "{{number}}. posiedzenie",
+    "current": "Bieżące"
   }
 }

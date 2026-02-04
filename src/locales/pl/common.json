@@ -133,5 +133,43 @@
     "morning": "Dzień dobry",
     "evening": "Dobry wieczór",
     "default": "Witaj"
+  },
+  "sidebar": {
+    "latest": "Najnowsze",
+    "whatsNew": "Co nowego"
+  },
+  "changelog": {
+    "newInterface": {
+      "title": "Nowy interfejs",
+      "description": "Zaprojektowany na nowo. Szybszy, bardziej responsywny i odporny na błędy. Zoptymalizowane ładowanie treści."
+    },
+    "userAccounts": {
+      "title": "Konta użytkowników",
+      "description": "Zaloguj się, aby personalizować swoje doświadczenie. Twoje preferencje synchronizują się między urządzeniami."
+    },
+    "mpTracking": {
+      "title": "Śledzenie posłów",
+      "description": "Obserwuj wybranych posłów i bądź na bieżąco z ich aktywnością w Sejmie - głosowaniami, wystąpieniami i projektami ustaw."
+    },
+    "favoriteCategories": {
+      "title": "Ulubione kategorie",
+      "description": "Wybierz tematy, które Cię interesują. Algorytm dostosuje treści do Twoich preferencji."
+    },
+    "savedArticles": {
+      "title": "Zapisane artykuły",
+      "description": "Zapisuj interesujące artykuły do przeczytania później. Twoja lista jest zawsze pod ręką."
+    },
+    "notifications": {
+      "title": "Powiadomienia",
+      "description": "Przeprojektowany system powiadomień. Otrzymuj alerty o ważnych wydarzeniach bez zbędnego szumu."
+    },
+    "latestNews": {
+      "title": "Najnowsze wiadomości",
+      "description": "Nowy panel z najświeższymi informacjami aktualizowany w czasie rzeczywistym."
+    },
+    "aiFeuilletons": {
+      "title": "Felietony AI",
+      "description": "Autorskie analizy generowane przez Gemini. Polska polityka, geopolityka i ekonomia - aktualizowane dwa razy dziennie."
+    }
   }
 }

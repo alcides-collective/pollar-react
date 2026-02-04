@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useVotings } from '../../hooks/useVotings';
 import { VotingCard, SejmApiError } from '../../components/sejm';
 import type { VotingListItem } from '../../types/sejm';
@@ -32,10 +33,12 @@ function StackItem({
   stack,
   isExpanded,
   onToggle,
+  t,
 }: {
   stack: VotingStack;
   isExpanded: boolean;
   onToggle: () => void;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }) {
   // Single voting - full card
   if (stack.votings.length === 1) {
@@ -70,19 +73,19 @@ function StackItem({
         {/* Meta pills */}
         <div className="flex items-center flex-wrap gap-1 mb-3">
           <span className="px-1.5 py-0.5 text-[10px] rounded bg-zinc-100 text-zinc-600">
-            Posiedzenie {stack.sitting}
+            {t('votingsPage.sitting', { number: stack.sitting })}
           </span>
           <span className="px-1.5 py-0.5 text-[10px] rounded bg-zinc-100 text-zinc-600">
-            {stack.votings.length} głosowań
+            {t('votingsPage.votingsCount', { count: stack.votings.length })}
           </span>
           {passedCount > 0 && (
             <span className="px-1.5 py-0.5 text-[10px] rounded font-medium bg-green-100 text-green-700">
-              {passedCount} przyjęte
+              {t('votingsPage.passedCount', { count: passedCount })}
             </span>
           )}
           {rejectedCount > 0 && (
             <span className="px-1.5 py-0.5 text-[10px] rounded font-medium bg-red-100 text-red-700">
-              {rejectedCount} odrzucone
+              {t('votingsPage.rejectedCount', { count: rejectedCount })}
             </span>
           )}
           <i className={`ri-arrow-down-s-line text-zinc-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
@@ -92,15 +95,15 @@ function StackItem({
         <div className="grid grid-cols-3 gap-2 text-center">
           <div>
             <p className="text-lg font-mono text-green-600">{Math.round((totalYes / total) * 100)}%</p>
-            <p className="text-xs text-zinc-500">za</p>
+            <p className="text-xs text-zinc-500">{t('votingsPage.for')}</p>
           </div>
           <div>
             <p className="text-lg font-mono text-red-600">{Math.round((totalNo / total) * 100)}%</p>
-            <p className="text-xs text-zinc-500">przeciw</p>
+            <p className="text-xs text-zinc-500">{t('votingsPage.against')}</p>
           </div>
           <div>
             <p className="text-lg font-mono text-amber-600">{Math.round((totalAbstain / total) * 100)}%</p>
-            <p className="text-xs text-zinc-500">wstrzym.</p>
+            <p className="text-xs text-zinc-500">{t('votingsPage.abstain')}</p>
           </div>
         </div>
       </button>
@@ -136,6 +139,7 @@ function StackItem({
 }
 
 export function VotingsPage() {
+  const { t } = useTranslation('sejm');
   const { votings, total, hasMore, loading, loadingMore, loadMore, error } = useVotings();
   const [filter, setFilter] = useState<FilterOption>('all');
   const [expandedStacks, setExpandedStacks] = useState<Set<string>>(new Set());
@@ -211,7 +215,7 @@ export function VotingsPage() {
                   : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
               }`}
             >
-              Wszystkie
+              {t('votingsPage.all')}
             </button>
             <button
               onClick={() => setFilter('passed')}
@@ -221,7 +225,7 @@ export function VotingsPage() {
                   : 'bg-green-100 text-green-700 hover:bg-green-200'
               }`}
             >
-              Przyjęte
+              {t('votingsPage.passed')}
             </button>
             <button
               onClick={() => setFilter('rejected')}
@@ -231,11 +235,11 @@ export function VotingsPage() {
                   : 'bg-red-100 text-red-700 hover:bg-red-200'
               }`}
             >
-              Odrzucone
+              {t('votingsPage.rejected')}
             </button>
           </div>
           <p className="text-sm text-zinc-500">
-            Znaleziono: {filteredVotings.length} głosowań
+            {t('votingsPage.found', { count: filteredVotings.length })}
           </p>
         </div>
       </div>
@@ -243,7 +247,7 @@ export function VotingsPage() {
       {/* Votings list - Two-column Pinterest grid */}
       {filteredVotings.length === 0 ? (
         <p className="text-center text-zinc-500 py-8">
-          Brak głosowań do wyświetlenia
+          {t('votingsPage.noResults')}
         </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
@@ -255,6 +259,7 @@ export function VotingsPage() {
                 stack={stack}
                 isExpanded={expandedStacks.has(stack.key)}
                 onToggle={() => toggleStack(stack.key)}
+                t={t}
               />
             ))}
           </div>
@@ -266,6 +271,7 @@ export function VotingsPage() {
                 stack={stack}
                 isExpanded={expandedStacks.has(stack.key)}
                 onToggle={() => toggleStack(stack.key)}
+                t={t}
               />
             ))}
           </div>
@@ -281,8 +287,8 @@ export function VotingsPage() {
             className="px-6 py-2 rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-50 transition-colors disabled:opacity-50"
           >
             {loadingMore
-              ? 'Ładowanie...'
-              : `Załaduj więcej (${votings.length}/${total || '?'})`}
+              ? t('votingsPage.loading')
+              : t('votingsPage.loadMoreCount', { loaded: votings.length, total: total || '?' })}
           </button>
         </div>
       )}

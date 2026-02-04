@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useClubs } from '../../hooks/useClubs';
 import { getPartyColor } from '../../types/sejm';
 import { SejmApiError } from '../../components/sejm';
 
 export function ClubsPage() {
+  const { t } = useTranslation('sejm');
   const { clubs, loading, error } = useClubs();
 
   if (error) {
@@ -29,7 +31,7 @@ export function ClubsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">Kluby parlamentarne</h1>
+      <h1 className="text-xl font-semibold text-zinc-900">{t('clubsPage.title')}</h1>
 
       <div className="grid gap-4 md:grid-cols-2">
         {sortedClubs.map((club) => {
@@ -55,7 +57,7 @@ export function ClubsPage() {
                 )}
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-zinc-900 truncate">{club.name}</h3>
-                  <p className="text-sm text-zinc-500">{club.membersCount} posłów</p>
+                  <p className="text-sm text-zinc-500">{club.membersCount} {t('clubsPage.mps')}</p>
                 </div>
               </div>
 
@@ -71,7 +73,7 @@ export function ClubsPage() {
                   />
                 </div>
                 <p className="text-xs text-zinc-400 mt-1">
-                  {percentage.toFixed(1)}% mandatów
+                  {percentage.toFixed(1)}% {t('clubsPage.mandates')}
                 </p>
               </div>
             </Link>

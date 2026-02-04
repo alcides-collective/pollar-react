@@ -133,5 +133,43 @@
     "morning": "Guten Tag",
     "evening": "Guten Abend",
     "default": "Willkommen"
+  },
+  "sidebar": {
+    "latest": "Neueste",
+    "whatsNew": "Neuigkeiten"
+  },
+  "changelog": {
+    "newInterface": {
+      "title": "Neue Oberfläche",
+      "description": "Komplett neu gestaltet. Schneller, reaktionsfähiger und fehlerresistent. Optimiertes Laden von Inhalten."
+    },
+    "userAccounts": {
+      "title": "Benutzerkonten",
+      "description": "Melden Sie sich an, um Ihre Erfahrung zu personalisieren. Ihre Einstellungen werden geräteübergreifend synchronisiert."
+    },
+    "mpTracking": {
+      "title": "Abgeordneten-Tracking",
+      "description": "Verfolgen Sie ausgewählte Abgeordnete und bleiben Sie über ihre Parlamentsaktivitäten informiert - Abstimmungen, Reden und Gesetzentwürfe."
+    },
+    "favoriteCategories": {
+      "title": "Lieblingskategorien",
+      "description": "Wählen Sie Themen, die Sie interessieren. Der Algorithmus passt die Inhalte an Ihre Vorlieben an."
+    },
+    "savedArticles": {
+      "title": "Gespeicherte Artikel",
+      "description": "Speichern Sie interessante Artikel zum späteren Lesen. Ihre Liste ist immer griffbereit."
+    },
+    "notifications": {
+      "title": "Benachrichtigungen",
+      "description": "Überarbeitetes Benachrichtigungssystem. Erhalten Sie Alerts über wichtige Ereignisse ohne unnötigen Lärm."
+    },
+    "latestNews": {
+      "title": "Neueste Nachrichten",
+      "description": "Neues Panel mit den aktuellsten Informationen in Echtzeit aktualisiert."
+    },
+    "aiFeuilletons": {
+      "title": "KI-Feuilletons",
+      "description": "Originale Analysen von Gemini generiert. Polnische Politik, Geopolitik und Wirtschaft - zweimal täglich aktualisiert."
+    }
   }
 }

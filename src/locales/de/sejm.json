@@ -71,5 +71,61 @@
     "absent": "Abwesend",
     "passed": "Angenommen",
     "rejected": "Abgelehnt"
+  },
+  "clubsPage": {
+    "title": "Parlamentarische Klubs",
+    "mps": "Abgeordnete",
+    "mandates": "der Mandate"
+  },
+  "votingsPage": {
+    "title": "Abstimmungen",
+    "all": "Alle",
+    "passed": "Angenommen",
+    "rejected": "Abgelehnt",
+    "found": "Gefunden: {{count}} Abstimmungen",
+    "sitting": "Sitzung {{number}}",
+    "votingsCount": "{{count}} Abstimmungen",
+    "passedCount": "{{count}} angenommen",
+    "rejectedCount": "{{count}} abgelehnt",
+    "for": "dafür",
+    "against": "dagegen",
+    "abstain": "enth.",
+    "noResults": "Keine Abstimmungen anzuzeigen",
+    "loading": "Wird geladen...",
+    "loadMore": "Mehr laden",
+    "loadMoreCount": "Mehr laden ({{loaded}}/{{total}})"
+  },
+  "printsPage": {
+    "title": "Parlamentarische Drucksachen",
+    "noResults": "Keine Drucksachen anzuzeigen",
+    "loading": "Wird geladen...",
+    "loadMore": "Mehr laden"
+  },
+  "interpellationsPage": {
+    "title": "Interpellationen",
+    "all": "Alle",
+    "answered": "Beantwortet",
+    "pending": "Ausstehend",
+    "noResults": "Keine Interpellationen anzuzeigen",
+    "loading": "Wird geladen...",
+    "loadMore": "Mehr laden",
+    "fetchError": "Inhalt der Interpellation konnte nicht geladen werden.",
+    "interpellationNumber": "Interpellation #{{num}}"
+  },
+  "committeesPage": {
+    "title": "Parlamentarische Ausschüsse",
+    "all": "Alle",
+    "standing": "Ständig",
+    "extraordinary": "Außerordentlich",
+    "investigative": "Untersuchungs-",
+    "typeStanding": "Ständig",
+    "typeExtraordinary": "Außerordentlich",
+    "typeInvestigative": "Untersuchungs-"
+  },
+  "proceedingsPage": {
+    "title": "Sejm-Sitzungen",
+    "live": "Live",
+    "proceeding": "{{number}}. Sitzung",
+    "current": "Aktuell"
   }
 }

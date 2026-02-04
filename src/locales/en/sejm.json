@@ -71,5 +71,61 @@
     "absent": "Absent",
     "passed": "Passed",
     "rejected": "Rejected"
+  },
+  "clubsPage": {
+    "title": "Parliamentary Clubs",
+    "mps": "MPs",
+    "mandates": "of mandates"
+  },
+  "votingsPage": {
+    "title": "Votings",
+    "all": "All",
+    "passed": "Passed",
+    "rejected": "Rejected",
+    "found": "Found: {{count}} votings",
+    "sitting": "Session {{number}}",
+    "votingsCount": "{{count}} votings",
+    "passedCount": "{{count}} passed",
+    "rejectedCount": "{{count}} rejected",
+    "for": "for",
+    "against": "against",
+    "abstain": "abstain",
+    "noResults": "No votings to display",
+    "loading": "Loading...",
+    "loadMore": "Load more",
+    "loadMoreCount": "Load more ({{loaded}}/{{total}})"
+  },
+  "printsPage": {
+    "title": "Parliamentary Prints",
+    "noResults": "No prints to display",
+    "loading": "Loading...",
+    "loadMore": "Load more"
+  },
+  "interpellationsPage": {
+    "title": "Interpellations",
+    "all": "All",
+    "answered": "Answered",
+    "pending": "Pending",
+    "noResults": "No interpellations to display",
+    "loading": "Loading...",
+    "loadMore": "Load more",
+    "fetchError": "Failed to fetch interpellation content.",
+    "interpellationNumber": "Interpellation #{{num}}"
+  },
+  "committeesPage": {
+    "title": "Parliamentary Committees",
+    "all": "All",
+    "standing": "Standing",
+    "extraordinary": "Extraordinary",
+    "investigative": "Investigative",
+    "typeStanding": "Standing",
+    "typeExtraordinary": "Extraordinary",
+    "typeInvestigative": "Investigative"
+  },
+  "proceedingsPage": {
+    "title": "Sejm Sessions",
+    "live": "Live",
+    "proceeding": "{{number}}. session",
+    "current": "Current"
   }
 }

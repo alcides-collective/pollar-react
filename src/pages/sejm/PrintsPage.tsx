@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import { usePrints } from '../../hooks/usePrints';
 import { PrintCard, SejmApiError } from '../../components/sejm';
 
 export function PrintsPage() {
+  const { t } = useTranslation('sejm');
   const { prints, hasMore, loading, loadingMore, loadMore, error } = usePrints();
 
   if (error) {
@@ -23,7 +25,7 @@ export function PrintsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">Druki sejmowe</h1>
+      <h1 className="text-xl font-semibold text-zinc-900">{t('printsPage.title')}</h1>
 
       <div className="grid gap-3 md:grid-cols-2">
         {prints.map((print) => (
@@ -33,7 +35,7 @@ export function PrintsPage() {
 
       {prints.length === 0 && (
         <p className="text-center text-zinc-500 py-8">
-          Brak druków do wyświetlenia
+          {t('printsPage.noResults')}
         </p>
       )}
 
@@ -44,7 +46,7 @@ export function PrintsPage() {
             disabled={loadingMore}
             className="px-6 py-2 bg-zinc-100 text-zinc-700 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50"
           >
-            {loadingMore ? 'Ładowanie...' : 'Załaduj więcej'}
+            {loadingMore ? t('printsPage.loading') : t('printsPage.loadMore')}
           </button>
         </div>
       )}
