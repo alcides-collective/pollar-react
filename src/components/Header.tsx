@@ -126,9 +126,10 @@ function AuthButton() {
         <TooltipTrigger asChild>
           <button
             onClick={() => openAuthModal('login')}
-            className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
+            className="h-9 flex items-center justify-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-2 sm:px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
           >
-            {t('auth:login.title')}
+            <i className="ri-user-line text-lg sm:hidden" />
+            <span className="hidden sm:inline">{t('auth:login.title')}</span>
           </button>
         </TooltipTrigger>
         <TooltipContent side="bottom" align="end" className="max-w-64">
