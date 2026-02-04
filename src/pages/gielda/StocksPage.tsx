@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useGieldaData } from '../../hooks/useGieldaData';
 import { StockCard } from '../../components/gielda';
 import { Skeleton } from '../../components/ui/skeleton';
 import { Search } from 'lucide-react';
 
 export function StocksPage() {
+  const { t } = useTranslation('gielda');
   const { stocks, loading } = useGieldaData();
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'symbol' | 'change' | 'volume'>('symbol');
@@ -32,9 +34,9 @@ export function StocksPage() {
   return (
     <div className="stocks-page">
       <header className="page-header mb-6">
-        <h1 className="text-2xl font-semibold text-black dark:text-white mb-1">Akcje</h1>
+        <h1 className="text-2xl font-semibold text-black dark:text-white mb-1">{t('stocksPage.title')}</h1>
         <p className="text-sm text-black/50 dark:text-white/50">
-          Notowania akcji z indeksów WIG20 i mWIG40
+          {t('stocksPage.subtitle')}
         </p>
       </header>
 
@@ -44,7 +46,7 @@ export function StocksPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black/40 dark:text-white/40" />
           <input
             type="text"
-            placeholder="Szukaj akcji..."
+            placeholder={t('stocksPage.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full h-10 pl-10 pr-4 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/10"
@@ -55,9 +57,9 @@ export function StocksPage() {
           onChange={(e) => setSortBy(e.target.value as 'symbol' | 'change' | 'volume')}
           className="h-10 px-4 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-900 text-sm focus:outline-none"
         >
-          <option value="symbol">Sortuj: Symbol</option>
-          <option value="change">Sortuj: Zmiana %</option>
-          <option value="volume">Sortuj: Wolumen</option>
+          <option value="symbol">{t('stocksPage.sortSymbol')}</option>
+          <option value="change">{t('stocksPage.sortChange')}</option>
+          <option value="volume">{t('stocksPage.sortVolume')}</option>
         </select>
       </div>
 
@@ -70,7 +72,7 @@ export function StocksPage() {
       ) : (
         <>
           <p className="text-xs text-black/40 dark:text-white/40 mb-4">
-            Znaleziono {filteredStocks.length} akcji
+            {t('stocksPage.found', { count: filteredStocks.length })}
           </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredStocks.map(stock => (
@@ -79,7 +81,7 @@ export function StocksPage() {
           </div>
           {filteredStocks.length === 0 && (
             <div className="text-center py-12 text-black/40 dark:text-white/40">
-              Nie znaleziono akcji pasujących do wyszukiwania
+              {t('stocksPage.noResults')}
             </div>
           )}
         </>

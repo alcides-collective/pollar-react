@@ -1,16 +1,18 @@
+import { useTranslation } from 'react-i18next';
 import { useGieldaData } from '../../hooks/useGieldaData';
 import { IndexCard } from '../../components/gielda';
 import { Skeleton } from '../../components/ui/skeleton';
 
 export function IndicesPage() {
+  const { t } = useTranslation('gielda');
   const { indices, loading, polishIndices, globalIndices } = useGieldaData();
 
   return (
     <div className="indices-page">
       <header className="page-header mb-6">
-        <h1 className="text-2xl font-semibold text-black dark:text-white mb-1">Indeksy</h1>
+        <h1 className="text-2xl font-semibold text-black dark:text-white mb-1">{t('indicesPage.title')}</h1>
         <p className="text-sm text-black/50 dark:text-white/50">
-          Notowania głównych indeksów giełdowych
+          {t('indicesPage.subtitle')}
         </p>
       </header>
 
@@ -38,7 +40,7 @@ export function IndicesPage() {
           {/* Polish Indices */}
           <section className="mb-8">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-black/60 dark:text-white/60 mb-4">
-              Indeksy Polskie
+              {t('polishIndices')}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {polishIndices.map(index => (
@@ -50,7 +52,7 @@ export function IndicesPage() {
           {/* Global Indices */}
           <section>
             <h2 className="text-sm font-semibold uppercase tracking-wide text-black/60 dark:text-white/60 mb-4">
-              Indeksy Globalne
+              {t('globalIndices')}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {globalIndices.map(index => (

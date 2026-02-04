@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useStockQuote, useStockHistory } from '../../hooks/useGieldaData';
 import { useWatchlistStore } from '../../stores/gieldaStore';
 import { AreaChart, PriceChange } from '../../components/gielda';
@@ -21,6 +22,7 @@ const RANGES = [
 ];
 
 export function StockDetailPage() {
+  const { t } = useTranslation('gielda');
   const { symbol } = useParams<{ symbol: string }>();
   const decodedSymbol = symbol ? decodeURIComponent(symbol) : '';
 
@@ -40,10 +42,10 @@ export function StockDetailPage() {
           className="inline-flex items-center gap-2 text-sm text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Powrót do akcji
+          {t('stockDetail.backToStocks')}
         </Link>
         <div className="rounded-lg p-4 border border-red-600/20 bg-red-600/5 text-red-700 dark:text-red-400">
-          <p className="font-medium">Nie udało się załadować danych akcji.</p>
+          <p className="font-medium">{t('stockDetail.failedToLoad')}</p>
         </div>
       </div>
     );
@@ -58,7 +60,7 @@ export function StockDetailPage() {
         className="inline-flex items-center gap-2 text-sm text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
-        Powrót do akcji
+        {t('stockDetail.backToStocks')}
       </Link>
 
       {stockLoading && !stock ? (
@@ -80,7 +82,7 @@ export function StockDetailPage() {
                   <button
                     onClick={() => toggle(decodedSymbol)}
                     className="text-amber-400 hover:scale-110 transition-transform"
-                    title={isInWatchlist ? 'Usuń z obserwowanych' : 'Dodaj do obserwowanych'}
+                    title={isInWatchlist ? t('stockDetail.removeFromWatchlist') : t('stockDetail.addToWatchlist')}
                   >
                     <Star className={`w-6 h-6 ${isInWatchlist ? 'fill-current' : ''}`} />
                   </button>
@@ -128,19 +130,19 @@ export function StockDetailPage() {
           {/* Details */}
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
-              <div className="text-xs text-black/50 dark:text-white/50 mb-1">Otwarcie</div>
+              <div className="text-xs text-black/50 dark:text-white/50 mb-1">{t('stockDetail.open')}</div>
               <div className="font-mono font-medium text-black dark:text-white">
                 {stock.open ? formatPrice(stock.open, stock.currency) : '-'}
               </div>
             </div>
             <div className="p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
-              <div className="text-xs text-black/50 dark:text-white/50 mb-1">Poprzednie zamknięcie</div>
+              <div className="text-xs text-black/50 dark:text-white/50 mb-1">{t('stockDetail.previousClose')}</div>
               <div className="font-mono font-medium text-black dark:text-white">
                 {stock.previousClose ? formatPrice(stock.previousClose, stock.currency) : '-'}
               </div>
             </div>
             <div className="p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
-              <div className="text-xs text-black/50 dark:text-white/50 mb-1">Dzienny zakres</div>
+              <div className="text-xs text-black/50 dark:text-white/50 mb-1">{t('stockDetail.dailyRange')}</div>
               <div className="font-mono font-medium text-black dark:text-white">
                 {stock.dayLow && stock.dayHigh
                   ? `${stock.dayLow.toFixed(2)} - ${stock.dayHigh.toFixed(2)}`
@@ -148,13 +150,13 @@ export function StockDetailPage() {
               </div>
             </div>
             <div className="p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
-              <div className="text-xs text-black/50 dark:text-white/50 mb-1">Wolumen</div>
+              <div className="text-xs text-black/50 dark:text-white/50 mb-1">{t('stockDetail.volume')}</div>
               <div className="font-mono font-medium text-black dark:text-white">
                 {stock.volume ? formatVolume(stock.volume) : '-'}
               </div>
             </div>
             <div className="p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
-              <div className="text-xs text-black/50 dark:text-white/50 mb-1">52-tyg. zakres</div>
+              <div className="text-xs text-black/50 dark:text-white/50 mb-1">{t('stockDetail.fiftyTwoWeekRange')}</div>
               <div className="font-mono font-medium text-black dark:text-white">
                 {stock.fiftyTwoWeekLow && stock.fiftyTwoWeekHigh
                   ? `${stock.fiftyTwoWeekLow.toFixed(2)} - ${stock.fiftyTwoWeekHigh.toFixed(2)}`
@@ -162,19 +164,19 @@ export function StockDetailPage() {
               </div>
             </div>
             <div className="p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
-              <div className="text-xs text-black/50 dark:text-white/50 mb-1">Kapitalizacja</div>
+              <div className="text-xs text-black/50 dark:text-white/50 mb-1">{t('stockDetail.marketCap')}</div>
               <div className="font-mono font-medium text-black dark:text-white">
                 {stock.marketCap ? formatMarketCap(stock.marketCap) : '-'}
               </div>
             </div>
             <div className="p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
-              <div className="text-xs text-black/50 dark:text-white/50 mb-1">Giełda</div>
+              <div className="text-xs text-black/50 dark:text-white/50 mb-1">{t('stockDetail.exchange')}</div>
               <div className="font-mono font-medium text-black dark:text-white">
                 {stock.exchange}
               </div>
             </div>
             <div className="p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
-              <div className="text-xs text-black/50 dark:text-white/50 mb-1">Waluta</div>
+              <div className="text-xs text-black/50 dark:text-white/50 mb-1">{t('stockDetail.currency')}</div>
               <div className="font-mono font-medium text-black dark:text-white">
                 {stock.currency}
               </div>

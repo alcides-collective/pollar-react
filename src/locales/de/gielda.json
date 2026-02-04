@@ -22,5 +22,42 @@
     "seconds": "vor {{count}} Sek.",
     "minutes": "vor {{count}} Min.",
     "hours": "vor {{count}} Std."
+  },
+  "stocksPage": {
+    "title": "Aktien",
+    "subtitle": "Aktienkurse aus WIG20 und mWIG40 Indizes",
+    "searchPlaceholder": "Aktien suchen...",
+    "sortSymbol": "Sortieren: Symbol",
+    "sortChange": "Sortieren: Änderung %",
+    "sortVolume": "Sortieren: Volumen",
+    "found": "{{count}} Aktien gefunden",
+    "noResults": "Keine Aktien gefunden, die Ihrer Suche entsprechen"
+  },
+  "indicesPage": {
+    "title": "Indizes",
+    "subtitle": "Kurse der wichtigsten Börsenindizes"
+  },
+  "watchlistPage": {
+    "title": "Watchlist",
+    "subtitle": "Ihre beobachteten Aktien",
+    "clearList": "Liste löschen",
+    "emptyTitle": "Keine beobachteten Aktien",
+    "emptyDescription": "Fügen Sie Aktien zu Ihrer Watchlist hinzu, indem Sie auf den Stern (☆) auf einer Aktienkarte klicken. Ihre Liste wird im Browser gespeichert.",
+    "stocksOnList": "{{count}} Aktien auf der Liste",
+    "loadingWatchlist": "Watchlist-Daten werden geladen..."
+  },
+  "stockDetail": {
+    "backToStocks": "Zurück zu Aktien",
+    "failedToLoad": "Aktiendaten konnten nicht geladen werden.",
+    "addToWatchlist": "Zur Watchlist hinzufügen",
+    "removeFromWatchlist": "Von Watchlist entfernen",
+    "open": "Eröffnung",
+    "previousClose": "Vorheriger Schluss",
+    "dailyRange": "Tagesbereich",
+    "volume": "Volumen",
+    "fiftyTwoWeekRange": "52-Wochen-Bereich",
+    "marketCap": "Marktkapitalisierung",
+    "exchange": "Börse",
+    "currency": "Währung"
   }
 }

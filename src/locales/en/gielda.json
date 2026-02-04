@@ -22,5 +22,42 @@
     "seconds": "{{count}} sec. ago",
     "minutes": "{{count}} min. ago",
     "hours": "{{count}} hr. ago"
+  },
+  "stocksPage": {
+    "title": "Stocks",
+    "subtitle": "Stock quotes from WIG20 and mWIG40 indices",
+    "searchPlaceholder": "Search stocks...",
+    "sortSymbol": "Sort: Symbol",
+    "sortChange": "Sort: Change %",
+    "sortVolume": "Sort: Volume",
+    "found": "Found {{count}} stocks",
+    "noResults": "No stocks found matching your search"
+  },
+  "indicesPage": {
+    "title": "Indices",
+    "subtitle": "Main stock exchange indices quotes"
+  },
+  "watchlistPage": {
+    "title": "Watchlist",
+    "subtitle": "Your watched stocks",
+    "clearList": "Clear list",
+    "emptyTitle": "No watched stocks",
+    "emptyDescription": "Add stocks to your watchlist by clicking the star (☆) on a stock card. Your list will be saved in your browser.",
+    "stocksOnList": "{{count}} stocks on list",
+    "loadingWatchlist": "Loading watchlist data..."
+  },
+  "stockDetail": {
+    "backToStocks": "Back to stocks",
+    "failedToLoad": "Failed to load stock data.",
+    "addToWatchlist": "Add to watchlist",
+    "removeFromWatchlist": "Remove from watchlist",
+    "open": "Open",
+    "previousClose": "Previous close",
+    "dailyRange": "Daily range",
+    "volume": "Volume",
+    "fiftyTwoWeekRange": "52-week range",
+    "marketCap": "Market cap",
+    "exchange": "Exchange",
+    "currency": "Currency"
   }
 }

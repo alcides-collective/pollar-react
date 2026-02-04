@@ -22,5 +22,42 @@
     "seconds": "{{count}} sek. temu",
     "minutes": "{{count}} min. temu",
     "hours": "{{count}} godz. temu"
+  },
+  "stocksPage": {
+    "title": "Akcje",
+    "subtitle": "Notowania akcji z indeksów WIG20 i mWIG40",
+    "searchPlaceholder": "Szukaj akcji...",
+    "sortSymbol": "Sortuj: Symbol",
+    "sortChange": "Sortuj: Zmiana %",
+    "sortVolume": "Sortuj: Wolumen",
+    "found": "Znaleziono {{count}} akcji",
+    "noResults": "Nie znaleziono akcji pasujących do wyszukiwania"
+  },
+  "indicesPage": {
+    "title": "Indeksy",
+    "subtitle": "Notowania głównych indeksów giełdowych"
+  },
+  "watchlistPage": {
+    "title": "Obserwowane",
+    "subtitle": "Twoje obserwowane akcje",
+    "clearList": "Wyczyść listę",
+    "emptyTitle": "Brak obserwowanych akcji",
+    "emptyDescription": "Dodaj akcje do obserwowanych, klikając gwiazdkę (☆) na karcie akcji. Twoja lista będzie zapisana w przeglądarce.",
+    "stocksOnList": "{{count}} akcji na liście",
+    "loadingWatchlist": "Ładowanie danych obserwowanych akcji..."
+  },
+  "stockDetail": {
+    "backToStocks": "Powrót do akcji",
+    "failedToLoad": "Nie udało się załadować danych akcji.",
+    "addToWatchlist": "Dodaj do obserwowanych",
+    "removeFromWatchlist": "Usuń z obserwowanych",
+    "open": "Otwarcie",
+    "previousClose": "Poprzednie zamknięcie",
+    "dailyRange": "Dzienny zakres",
+    "volume": "Wolumen",
+    "fiftyTwoWeekRange": "52-tyg. zakres",
+    "marketCap": "Kapitalizacja",
+    "exchange": "Giełda",
+    "currency": "Waluta"
   }
 }
