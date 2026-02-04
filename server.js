@@ -516,7 +516,7 @@ app.use(helmet({
       workerSrc: ["'self'", "blob:"],
       childSrc: ["'self'", "blob:"],
       objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
+      mediaSrc: ["'self'", "https://storage.googleapis.com", "https://firebasestorage.googleapis.com"],
       formAction: ["'self'"],
       frameAncestors: ["'none'"],
       baseUri: ["'self'"],
