@@ -4,7 +4,7 @@ import { useEvents } from '../stores/eventsStore';
 import { useUIStore } from '../stores/uiStore';
 import { useSearchStore } from '../stores/searchStore';
 import { useAuthStore, useUser, useIsAuthenticated } from '../stores/authStore';
-import { useLanguage, useSetLanguage, type Language } from '../stores/languageStore';
+import { useLanguage, type Language } from '../stores/languageStore';
 import { LocalizedLink } from './LocalizedLink';
 // import { useProStore } from '../stores/proStore';
 import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
@@ -36,7 +36,6 @@ const LANGUAGES: { code: Language; label: string }[] = [
 // Language selector component
 function LanguageSelector() {
   const language = useLanguage();
-  const setLanguage = useSetLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
@@ -46,10 +45,9 @@ function LanguageSelector() {
     const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
     // Build new path with new language prefix
     const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
-    const newPath = newPrefix + currentPath;
-    // Navigate and update store
+    const newPath = newPrefix + currentPath + location.search;
+    // Only navigate - let LanguageRouteHandler sync the store from URL
     navigate(newPath);
-    setLanguage(newLang);
   };
 
   return (
@@ -110,11 +108,6 @@ function AuthButton() {
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
-          <DropdownMenuItem asChild>
-            <LocalizedLink to="/dashboard" className="w-full cursor-pointer">
-              {t('user.dashboard')}
-            </LocalizedLink>
-          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <LocalizedLink to="/profil" className="w-full cursor-pointer">
               {t('user.myProfile')}

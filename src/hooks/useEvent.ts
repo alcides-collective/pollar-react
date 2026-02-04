@@ -12,10 +12,14 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+
     if (!eventId) {
       setLoading(false);
       return;
     }
+
+    // Track if this effect is still current (prevents race conditions)
+    let cancelled = false;
 
     const fetchEvent = async () => {
       setLoading(true);
@@ -32,15 +36,28 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
         }
 
         const data = await response.json();
-        setEvent(sanitizeEvent(data));
+
+        // Only update state if this request is still current
+        if (!cancelled) {
+          setEvent(sanitizeEvent(data));
+        }
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('Failed to fetch event'));
+        if (!cancelled) {
+          setError(err instanceof Error ? err : new Error('Failed to fetch event'));
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
     fetchEvent();
+
+    // Cleanup: mark this effect as cancelled when a new one runs
+    return () => {
+      cancelled = true;
+    };
   }, [eventId, lang]);
 
   return { event, loading, error };

@@ -234,6 +234,15 @@
     "latest": "Najnowsze",
     "whatsNew": "Co nowego"
   },
+  "stats": {
+    "title": "Statystyki",
+    "articles": "Artykułów",
+    "sources": "Źródeł",
+    "categories": "Kategorii",
+    "users": "Użytkowników",
+    "mostMentioned": "Najczęściej wspominani",
+    "topCities": "Najczęstsze miasta"
+  },
   "about": {
     "manifest": "Manifest",
     "tabs": {

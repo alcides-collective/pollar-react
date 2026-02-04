@@ -10,7 +10,7 @@ import { DailyBriefSection } from './news/DailyBriefSection';
 import { FelietonySection } from './news/FelietonySection';
 import { DiscoverSection } from './news/DiscoverSection';
 import { CategoryCarousel } from './news/CategoryCarousel';
-import { LatestEvents, /* NewsletterSection, */ MapSection, AboutSection, ContactSection, VersionSection } from './news/sidebar';
+import { LatestEvents, /* NewsletterSection, */ MapSection, AboutSection, ContactSection, VersionSection, StatsSection } from './news/sidebar';
 import { AISidebarWidget } from './ai';
 import { LoadingSpinner } from './common/LoadingSpinner';
 import { LazySection } from './common/LazySection';
@@ -96,6 +96,7 @@ export function NewsGrid() {
           <AboutSection />
           <ContactSection />
           <VersionSection />
+          <StatsSection />
         </aside>
         </div>
       </div>

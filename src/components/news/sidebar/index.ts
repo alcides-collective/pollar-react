@@ -4,3 +4,4 @@ export { MapSection } from './MapSection';
 export { AboutSection } from './AboutSection';
 export { ContactSection } from './ContactSection';
 export { VersionSection } from './VersionSection';
+export { StatsSection } from './StatsSection';

@@ -31,7 +31,6 @@ const InfoPage = lazy(() => import('./pages/info').then(m => ({ default: m.InfoP
 const AsystentPage = lazy(() => import('./pages/asystent').then(m => ({ default: m.AsystentPage })))
 const PowiazaniaPage = lazy(() => import('./pages/powiazania').then(m => ({ default: m.PowiazaniaPage })))
 const ProfilePage = lazy(() => import('./pages/profile/ProfilePage').then(m => ({ default: m.ProfilePage })))
-const DashboardPage = lazy(() => import('./pages/dashboard/DashboardPage').then(m => ({ default: m.DashboardPage })))
 const NotificationsPage = lazy(() => import('./pages/notifications').then(m => ({ default: m.NotificationsPage })))
 const ArchivePage = lazy(() => import('./pages/archiwum').then(m => ({ default: m.ArchivePage })))
 const CategoryArchivePage = lazy(() => import('./pages/archiwum').then(m => ({ default: m.CategoryArchivePage })))
@@ -130,7 +129,6 @@ function getAppRoutes(prefix = '') {
     <Route key={`${prefix}-info`} path={`${prefix}/info`} element={<InfoPage />} />,
     <Route key={`${prefix}-powiazania`} path={`${prefix}/powiazania`} element={<PowiazaniaPage />} />,
     <Route key={`${prefix}-graf`} path={`${prefix}/graf`} element={<GrafPage />} />,
-    <Route key={`${prefix}-dashboard`} path={`${prefix}/dashboard`} element={<DashboardPage />} />,
     <Route key={`${prefix}-profil`} path={`${prefix}/profil`} element={<ProfilePage />} />,
     <Route key={`${prefix}-powiadomienia`} path={`${prefix}/powiadomienia`} element={<NotificationsPage />} />,
     <Route key={`${prefix}-archiwum`} path={`${prefix}/archiwum`} element={<ArchivePage />} />,

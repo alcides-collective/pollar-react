@@ -1,6 +1,7 @@
 {
   "title": "Twój profil",
   "emailNotVerified": "Email niezweryfikowany",
+  "oauthProvider": "Zalogowano przez {{provider}}. Zarządzanie kontem odbywa się przez dostawcę.",
   "savedEvents": {
     "title": "Zapisane wydarzenia",
     "count": "Zapisane wydarzenia ({{count}})",

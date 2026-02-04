@@ -1,6 +1,7 @@
 {
   "title": "Your profile",
   "emailNotVerified": "Email not verified",
+  "oauthProvider": "Logged in via {{provider}}. Account management is handled by the provider.",
   "savedEvents": {
     "title": "Saved events",
     "count": "Saved events ({{count}})",

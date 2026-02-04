@@ -1,6 +1,7 @@
 {
   "title": "Dein Profil",
   "emailNotVerified": "E-Mail nicht verifiziert",
+  "oauthProvider": "Angemeldet über {{provider}}. Kontoverwaltung erfolgt über den Anbieter.",
   "savedEvents": {
     "title": "Gespeicherte Ereignisse",
     "count": "Gespeicherte Ereignisse ({{count}})",

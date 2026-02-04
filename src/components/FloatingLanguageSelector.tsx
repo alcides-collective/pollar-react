@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useLanguage, useSetLanguage, type Language } from '../stores/languageStore';
+import { useLanguage, type Language } from '../stores/languageStore';
 
 const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'pl', label: 'Polski' },
@@ -15,7 +15,6 @@ const LANGUAGES: { code: Language; label: string }[] = [
 
 export function FloatingLanguageSelector() {
   const language = useLanguage();
-  const setLanguage = useSetLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
@@ -25,10 +24,9 @@ export function FloatingLanguageSelector() {
     const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
     // Build new path with new language prefix
     const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
-    const newPath = newPrefix + currentPath;
-    // Navigate and update store
+    const newPath = newPrefix + currentPath + location.search;
+    // Only navigate - let LanguageRouteHandler sync the store from URL
     navigate(newPath);
-    setLanguage(newLang);
   };
 
   return (
