@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
-import { useBrief } from '@/hooks/useBrief';
+import { useRef, useEffect, useState, useMemo } from 'react';
+import { useEvents } from '@/stores/eventsStore';
+import { useArchiveEvents } from '@/hooks/useArchiveEvents';
 
 function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
   const [count, setCount] = useState(0);
@@ -30,11 +31,43 @@ function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffi
 }
 
 export function StatsSection() {
-  const { brief } = useBrief({ lang: 'pl' });
+  // Fetch current events + archive events
+  const { events: currentEvents } = useEvents({ limit: 100, lang: 'pl', skipHiddenFilter: true });
+  const { events: archiveEvents } = useArchiveEvents({ limit: 500, lang: 'pl' });
+
+  // Combine and deduplicate events from both sources
+  const aggregatedStats = useMemo(() => {
+    // Merge current + archive, deduplicate by ID
+    const eventMap = new Map<string, typeof currentEvents[0]>();
+
+    currentEvents.forEach((event) => eventMap.set(event.id, event));
+    archiveEvents.forEach((event) => {
+      if (!eventMap.has(event.id)) {
+        eventMap.set(event.id, event);
+      }
+    });
+
+    const allEvents = Array.from(eventMap.values());
+
+    if (allEvents.length === 0) {
+      return { totalEvents: 1000, uniqueSources: 50 };
+    }
+
+    // Count unique sources across all events
+    const allSources = new Set<string>();
+    allEvents.forEach((event) => {
+      event.sources?.forEach((source) => allSources.add(source));
+    });
+
+    return {
+      totalEvents: allEvents.length,
+      uniqueSources: allSources.size,
+    };
+  }, [currentEvents, archiveEvents]);
 
   const stats = [
-    { value: brief?.analytics?.totalEvents ?? 1000, suffix: '+', label: 'Wydarzeń dziennie' },
-    { value: brief?.analytics?.topSources?.length ?? 50, suffix: '+', label: 'Źródeł informacji' },
+    { value: aggregatedStats.totalEvents, suffix: '+', label: 'Wydarzeń' },
+    { value: aggregatedStats.uniqueSources, suffix: '+', label: 'Źródeł informacji' },
     { value: 0, suffix: '', label: 'Reklam', highlight: true },
     { value: 24, suffix: '/7', label: 'Dostępność' },
   ];
