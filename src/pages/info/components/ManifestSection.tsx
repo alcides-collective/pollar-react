@@ -100,7 +100,7 @@ export function ManifestSection() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end'],
+    offset: ['start 0.8', 'end 0.2'],
   });
 
   // Progress indicator dots
@@ -110,7 +110,7 @@ export function ManifestSection() {
     <section
       ref={containerRef}
       className="relative bg-white"
-      style={{ height: `${values.length * 100}vh` }}
+      style={{ height: `${values.length * 60 + 40}vh` }}
     >
       {/* Sticky container */}
       <div className="sticky top-0 h-screen overflow-hidden">

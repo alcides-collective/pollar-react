@@ -105,66 +105,68 @@ function AnimatedRoutes({ onRouteChange, onContentReady }: { onRouteChange: () =
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
     >
-      <Routes location={location}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/brief" element={<BriefPage />} />
-        <Route path="/felieton/:id" element={<FelietonPage />} />
-        <Route path="/event/:id" element={<EventPage />} />
-        <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
-        <Route path="/cookies" element={<CookieSettingsPage />} />
-        <Route path="/mapa" element={<MapPage />} />
-        <Route path="/terminal" element={<TerminalPage />} />
-        <Route path="/asystent" element={<AsystentPage />} />
-        <Route path="/info" element={<InfoPage />} />
-        <Route path="/powiazania" element={<PowiazaniaPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/profil" element={<ProfilePage />} />
-        <Route path="/powiadomienia" element={<NotificationsPage />} />
-        <Route path="/archiwum" element={<ArchivePage />} />
-        <Route path="/archiwum/:category" element={<CategoryArchivePage />} />
-        {/* Sejm routes */}
-        <Route path="/sejm" element={<SejmLayout />}>
-          <Route index element={<SejmDashboard />} />
-          <Route path="poslowie" element={<MPsPage />} />
-          <Route path="poslowie/:id" element={<MPDetailPage />} />
-          <Route path="kluby" element={<ClubsPage />} />
-          <Route path="kluby/:id" element={<ClubDetailPage />} />
-          <Route path="glosowania" element={<VotingsPage />} />
-          <Route path="glosowania/:sitting/:number" element={<VotingDetailPage />} />
-          <Route path="komisje" element={<CommitteesPage />} />
-          <Route path="komisje/:code" element={<CommitteeDetailPage />} />
-          <Route path="posiedzenia" element={<ProceedingsPage />} />
-          <Route path="posiedzenia/:number" element={<ProceedingDetailPage />} />
-          <Route path="druki" element={<PrintsPage />} />
-          <Route path="druki/:number" element={<PrintDetailPage />} />
-          <Route path="procesy" element={<ProcessesPage />} />
-          <Route path="interpelacje" element={<InterpellationsPage />} />
-          <Route path="zapytania" element={<QuestionsPage />} />
-          <Route path="transmisje" element={<VideosPage />} />
-        </Route>
-        {/* Dane routes */}
-        <Route path="/dane" element={<DaneLayout />}>
-          <Route index element={<DanePage />} />
-          <Route path="srodowisko/powietrze" element={<PowietrzePage />} />
-          <Route path="spoleczenstwo/imiona" element={<ImionaPage />} />
-          <Route path="spoleczenstwo/nazwiska" element={<NazwiskaPage />} />
-          <Route path="ekonomia/energia" element={<EnergiaPage />} />
-          <Route path="ekonomia/eurostat" element={<EurostatPage />} />
-          <Route path="ekonomia/mieszkania" element={<MieszkaniaPage />} />
-          <Route path="transport/kolej" element={<KolejPage />} />
-          <Route path="transport/porty" element={<PortyPage />} />
-          <Route path="bezpieczenstwo/przestepczosc" element={<PrzestepczoscPage />} />
-        </Route>
-        {/* Gielda routes */}
-        <Route path="/gielda" element={<GieldaLayout />}>
-          <Route index element={<GieldaPage />} />
-          <Route path="akcje" element={<StocksPage />} />
-          <Route path="akcje/:symbol" element={<StockDetailPage />} />
-          <Route path="indeksy" element={<IndicesPage />} />
-          <Route path="indeksy/:symbol" element={<IndexDetailPage />} />
-          <Route path="watchlist" element={<WatchlistPage />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes location={location}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/brief" element={<BriefPage />} />
+          <Route path="/felieton/:id" element={<FelietonPage />} />
+          <Route path="/event/:id" element={<EventPage />} />
+          <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
+          <Route path="/cookies" element={<CookieSettingsPage />} />
+          <Route path="/mapa" element={<MapPage />} />
+          <Route path="/terminal" element={<TerminalPage />} />
+          <Route path="/asystent" element={<AsystentPage />} />
+          <Route path="/info" element={<InfoPage />} />
+          <Route path="/powiazania" element={<PowiazaniaPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/profil" element={<ProfilePage />} />
+          <Route path="/powiadomienia" element={<NotificationsPage />} />
+          <Route path="/archiwum" element={<ArchivePage />} />
+          <Route path="/archiwum/:category" element={<CategoryArchivePage />} />
+          {/* Sejm routes */}
+          <Route path="/sejm" element={<SejmLayout />}>
+            <Route index element={<SejmDashboard />} />
+            <Route path="poslowie" element={<MPsPage />} />
+            <Route path="poslowie/:id" element={<MPDetailPage />} />
+            <Route path="kluby" element={<ClubsPage />} />
+            <Route path="kluby/:id" element={<ClubDetailPage />} />
+            <Route path="glosowania" element={<VotingsPage />} />
+            <Route path="glosowania/:sitting/:number" element={<VotingDetailPage />} />
+            <Route path="komisje" element={<CommitteesPage />} />
+            <Route path="komisje/:code" element={<CommitteeDetailPage />} />
+            <Route path="posiedzenia" element={<ProceedingsPage />} />
+            <Route path="posiedzenia/:number" element={<ProceedingDetailPage />} />
+            <Route path="druki" element={<PrintsPage />} />
+            <Route path="druki/:number" element={<PrintDetailPage />} />
+            <Route path="procesy" element={<ProcessesPage />} />
+            <Route path="interpelacje" element={<InterpellationsPage />} />
+            <Route path="zapytania" element={<QuestionsPage />} />
+            <Route path="transmisje" element={<VideosPage />} />
+          </Route>
+          {/* Dane routes */}
+          <Route path="/dane" element={<DaneLayout />}>
+            <Route index element={<DanePage />} />
+            <Route path="srodowisko/powietrze" element={<PowietrzePage />} />
+            <Route path="spoleczenstwo/imiona" element={<ImionaPage />} />
+            <Route path="spoleczenstwo/nazwiska" element={<NazwiskaPage />} />
+            <Route path="ekonomia/energia" element={<EnergiaPage />} />
+            <Route path="ekonomia/eurostat" element={<EurostatPage />} />
+            <Route path="ekonomia/mieszkania" element={<MieszkaniaPage />} />
+            <Route path="transport/kolej" element={<KolejPage />} />
+            <Route path="transport/porty" element={<PortyPage />} />
+            <Route path="bezpieczenstwo/przestepczosc" element={<PrzestepczoscPage />} />
+          </Route>
+          {/* Gielda routes */}
+          <Route path="/gielda" element={<GieldaLayout />}>
+            <Route index element={<GieldaPage />} />
+            <Route path="akcje" element={<StocksPage />} />
+            <Route path="akcje/:symbol" element={<StockDetailPage />} />
+            <Route path="indeksy" element={<IndicesPage />} />
+            <Route path="indeksy/:symbol" element={<IndexDetailPage />} />
+            <Route path="watchlist" element={<WatchlistPage />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </motion.div>
   )
 }
