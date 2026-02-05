@@ -1,4 +1,5 @@
 import type { Event } from '../types/events';
+import type { DailyBrief } from '../types/brief';
 
 // Model display names
 export function getModelDisplayName(modelId: string | undefined): string {
@@ -12,6 +13,8 @@ export function getModelDisplayName(modelId: string | undefined): string {
     'z-ai/glm-4.7': 'GLM-4.7',
     'openai/gpt-5.1-codex-mini': 'GPT-5.1 Codex Mini',
     'openai/gpt-5.1-codex-max': 'GPT-5.1 Codex Max',
+    'anthropic/claude-opus-4-5': 'Claude Opus 4.5',
+    'anthropic/claude-sonnet-4': 'Claude Sonnet 4',
   };
 
   return modelNames[modelId] || modelId;
@@ -20,6 +23,8 @@ export function getModelDisplayName(modelId: string | undefined): string {
 // Model color class for styling
 export function getModelColorClass(modelId: string | undefined): string {
   if (!modelId) return '';
+  if (modelId.includes('opus')) return 'text-orange-600';
+  if (modelId.includes('sonnet')) return 'text-violet-600';
   if (modelId.includes('pro')) return 'text-amber-600';
   if (modelId.includes('flash')) return 'text-blue-600';
   if (modelId.includes('deepseek')) return 'text-blue-600';
@@ -96,8 +101,93 @@ export function estimateCO2(event: Event): number {
     // GPT-5.1 Codex Mini: efficient smaller model
     inputRate = 0.000005;
     outputRate = 0.00003;
+  } else if (modelId.includes('opus')) {
+    // Claude Opus 4.5: flagship Anthropic model, higher compute
+    inputRate = 0.00004;
+    outputRate = 0.00024;
+  } else if (modelId.includes('sonnet')) {
+    // Claude Sonnet 4: balanced Anthropic model
+    inputRate = 0.000008;
+    outputRate = 0.000048;
   } else {
     // Default/unknown: use Flash rates
+    inputRate = 0.000005;
+    outputRate = 0.00003;
+  }
+
+  return (inputTokens * inputRate) + (outputTokens * outputRate);
+}
+
+// Calculate total output characters from AI-generated fields for Brief
+export function calculateBriefOutputChars(brief: DailyBrief): number {
+  let chars = 0;
+
+  // Main fields
+  chars += (brief.headline || '').length;
+  chars += (brief.lead || '').length;
+  chars += (brief.executiveSummary || '').length;
+  chars += (brief.greeting || '').length;
+  chars += (brief.radioScript || '').length;
+
+  // Sections
+  if (brief.sections) {
+    brief.sections.forEach(section => {
+      chars += (section.headline || '').length;
+      chars += (section.content || '').length;
+      chars += (section.keyEvents || []).join('').length;
+      chars += (section.insights || []).join('').length;
+    });
+  }
+
+  // Insights
+  if (brief.insights) {
+    chars += (brief.insights.metaCommentary || '').length;
+    chars += (brief.insights.trends || []).join('').length;
+    chars += (brief.insights.correlations || []).join('').length;
+    chars += (brief.insights.anomalies || []).join('').length;
+    chars += (brief.insights.implications || []).join('').length;
+  }
+
+  // Word of the day
+  if (brief.wordOfTheDay) {
+    chars += JSON.stringify(brief.wordOfTheDay).length;
+  }
+
+  // Mentioned people/orgs
+  if (brief.mentionedPeople) chars += JSON.stringify(brief.mentionedPeople).length;
+  if (brief.mentionedOrganizations) chars += brief.mentionedOrganizations.join('').length;
+
+  return chars;
+}
+
+// Estimate CO2 emissions for Brief
+export function estimateBriefCO2(brief: DailyBrief): number {
+  const outputChars = calculateBriefOutputChars(brief);
+  const outputTokens = outputChars / 3.5; // ~3.5 chars per token (Polish)
+  const inputTokens = outputTokens * 6; // estimate: input is ~6x output for brief (more sources)
+
+  const modelId = brief.metadata?.model || '';
+
+  // CO2 per token estimates (grams)
+  let inputRate: number;
+  let outputRate: number;
+
+  if (modelId.includes('opus')) {
+    inputRate = 0.00004;
+    outputRate = 0.00024;
+  } else if (modelId.includes('sonnet')) {
+    inputRate = 0.000008;
+    outputRate = 0.000048;
+  } else if (modelId.includes('pro')) {
+    inputRate = 0.00002;
+    outputRate = 0.00012;
+  } else if (modelId.includes('flash')) {
+    inputRate = 0.000005;
+    outputRate = 0.00003;
+  } else if (modelId.includes('deepseek')) {
+    inputRate = 0.000004;
+    outputRate = 0.000024;
+  } else {
     inputRate = 0.000005;
     outputRate = 0.00003;
   }
@@ -162,6 +252,14 @@ export function getModelDescription(modelId: string | undefined): { title: strin
     'openai/gpt-5.1-codex-max': {
       title: 'GPT-5.1 Codex Max',
       text: 'Flagowy model agentyczny OpenAI z listopada 2025. Pierwszy model trenowany na milionach tokenów kontekstu przez kompaktowanie. W SWE-Bench zdobywa 77,9%, używając 30% mniej tokenów reasoning niż poprzednik.'
+    },
+    'anthropic/claude-opus-4-5': {
+      title: 'Claude Opus 4.5',
+      text: 'Flagowy model Anthropic z lutego 2025. Pierwszy model hybrydowy łączący rozumowanie z intuicją. Osiąga najwyższe wyniki w testach kreatywności i pisania. Okno kontekstowe 200K tokenów.'
+    },
+    'anthropic/claude-sonnet-4': {
+      title: 'Claude Sonnet 4',
+      text: 'Zbalansowany model Anthropic z lutego 2025. Oferuje optymalny stosunek jakości do ceny. Idealny do codziennych zadań analitycznych i pisarskich. Okno kontekstowe 200K tokenów.'
     }
   };
 

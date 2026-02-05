@@ -1,4 +1,8 @@
 {
+  "header": {
+    "generatedBy": "Generiert von",
+    "emitting": "emittiert"
+  },
   "error": {
     "title": "Brief konnte nicht geladen werden",
     "backHome": "Zurück zur Startseite"

@@ -1,4 +1,8 @@
 {
+  "header": {
+    "generatedBy": "Wygenerowany przez",
+    "emitting": "emitując"
+  },
   "error": {
     "title": "Nie udało się załadować briefu",
     "backHome": "Wróć do strony głównej"
