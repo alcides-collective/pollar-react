@@ -56,7 +56,7 @@ export function NewsGrid() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px]">
         {/* Main Content */}
-        <div className="min-w-0 overflow-hidden lg:border-r border-zinc-200 divide-y divide-zinc-200">
+        <div className="min-w-0 overflow-hidden lg:border-r border-zinc-200 divide-y divide-zinc-200 [&>*:last-child]:border-b [&>*:last-child]:border-zinc-200">
           {!isFiltered && brief && <DailyBriefSection brief={brief} />}
 
           <FeaturedSection events={featured} />
@@ -97,7 +97,7 @@ export function NewsGrid() {
         </div>
 
         {/* Sidebar - hidden on mobile */}
-        <aside className="hidden lg:block divide-y divide-zinc-200">
+        <aside className="hidden lg:block divide-y divide-zinc-200 [&>*:last-child]:border-b [&>*:last-child]:border-zinc-200">
           <AISidebarWidget />
           <LatestEvents events={latestEvents} />
           {/* <NewsletterSection /> */}
