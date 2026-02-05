@@ -78,9 +78,16 @@ function computeEventGroups(
   const groups: Array<[string, Event[]]> = [];
 
   // === DYNAMIC ALLOCATION ===
-  // Strategy: CategoryGroups only use events with real similarities (people/countries)
-  // DoubleHero sections get all remaining events
-  // If groups are empty, we show up to 6 hero sections instead of 2
+  // Priority: Hero sections FIRST (up to 6 sections = 12 events)
+  // Then CategoryGroups get remaining events with similarities
+
+  const MAX_HERO_SECTIONS = 6;
+  const HERO_RESERVE = MAX_HERO_SECTIONS * 2; // 12 events for 6 sections
+  const availableCount = eventsForGrid.length;
+
+  // Reserve events for hero sections first
+  const reserveForHero = Math.min(HERO_RESERVE, availableCount);
+  const maxEventsForGroups = Math.max(0, availableCount - reserveForHero);
 
   const findSimilar = (anchor: Event, pool: Event[], usedIds: Set<string>) => {
     const anchorCategory = anchor.category;
@@ -101,40 +108,50 @@ function computeEventGroups(
     });
   };
 
-  // Build groups only from events with real similarities
-  // No artificial limits - if no similar events, groups will be empty
+  // Build groups only from events AFTER hero reservation
+  let groupEventCount = 0;
   for (const event of eventsForGrid) {
     if (groups.length >= 4) break;
+    if (groupEventCount >= maxEventsForGroups) break;
     if (groupUsedIds.has(event.id)) continue;
 
-    // Find similar events BEFORE adding anchor to check if group is worth creating
-    const similar = findSimilar(event, eventsForGrid, groupUsedIds).slice(0, 2);
+    // Find similar events
+    const remainingSlots = maxEventsForGroups - groupEventCount;
+    const similar = findSimilar(event, eventsForGrid, groupUsedIds).slice(0, Math.min(2, remainingSlots - 1));
 
-    // Only create group if we have at least 1 similar event (min 2 total)
-    if (similar.length === 0) continue;
+    // Only create group if we have at least 1 similar event AND budget
+    if (similar.length === 0 || remainingSlots < 2) continue;
 
     groupUsedIds.add(event.id);
-    similar.forEach(e => groupUsedIds.add(e.id));
+    groupEventCount++;
+    similar.forEach(e => {
+      groupUsedIds.add(e.id);
+      groupEventCount++;
+    });
 
     const groupEvents = [event, ...similar];
     const label = event.metadata?.ultraShortHeadline || event.category || 'Inne';
     groups.push([label, groupEvents]);
   }
 
-  // Collect all used IDs (for fresh events used in main sections)
+  // Collect all used IDs (featured + groups)
   const usedIds = new Set<string>(featured.map(e => e.id));
   groups.forEach(([_, evts]) => evts.forEach(e => usedIds.add(e.id)));
 
-  // Double hero sections - dynamically create based on available events
-  // If categoryGroups is empty, create up to 6 sections to fill the space
-  // Otherwise, create 2 sections (standard layout)
-  const maxHeroSections = 6;
+  // Double hero sections - use FRESH first, then OLD as fallback (up to 6 sections)
   const doubleHeroSections: Event[][] = [];
   const heroUsedIds = new Set(usedIds);
 
-  for (let i = 0; i < maxHeroSections; i++) {
-    const availableForHero = freshBoostedEvents.filter(e => !heroUsedIds.has(e.id));
-    if (availableForHero.length < 2) break; // Need at least 2 events per section
+  for (let i = 0; i < MAX_HERO_SECTIONS; i++) {
+    // First try FRESH events
+    let availableForHero = freshBoostedEvents.filter(e => !heroUsedIds.has(e.id));
+
+    // If not enough FRESH, fall back to ALL events (including OLD)
+    if (availableForHero.length < 2) {
+      availableForHero = boostedEvents.filter(e => !heroUsedIds.has(e.id));
+    }
+
+    if (availableForHero.length < 2) break; // Really no more events
 
     const heroSection = availableForHero.slice(0, 2);
     doubleHeroSections.push(heroSection);
