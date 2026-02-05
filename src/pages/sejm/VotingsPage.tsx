@@ -67,7 +67,7 @@ function StackItem({
         className="w-full text-left pt-4 px-4 hover:bg-zinc-50/50 transition-colors"
       >
         {/* Title */}
-        <h3 className="text-zinc-900 text-sm leading-snug font-medium mb-1">
+        <h3 className="text-zinc-900 text-sm leading-snug font-medium mb-1 break-words overflow-hidden">
           <TitleWithDrukLinks
             title={stack.votings[0].title}
             linkClassName="text-blue-600 hover:text-blue-800 hover:underline font-mono"

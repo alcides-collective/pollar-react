@@ -127,7 +127,7 @@ export function VotingDetailPage() {
             {passed ? t('votingDetail.passed') : t('votingDetail.rejected')}
           </span>
         </div>
-        <h1 className="text-xl font-semibold text-zinc-900 mb-2">
+        <h1 className="text-xl font-semibold text-zinc-900 mb-2 break-words">
           <TitleWithDrukLinks
             title={voting.title}
             linkClassName="text-blue-600 hover:underline font-mono"

@@ -28,7 +28,7 @@ export function VotingCard({ voting }: VotingCardProps) {
         : 'border-red-200 bg-red-50/30 hover:border-red-300'
     }`}>
       {/* Title with druk links */}
-      <h3 className="text-zinc-900 text-sm leading-snug font-medium mb-1">
+      <h3 className="text-zinc-900 text-sm leading-snug font-medium mb-1 break-words overflow-hidden">
         <TitleWithDrukLinks
           title={voting.title}
           linkClassName="text-blue-600 hover:text-blue-800 hover:underline font-mono"

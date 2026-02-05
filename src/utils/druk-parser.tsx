@@ -82,7 +82,7 @@ export function TitleWithDrukLinks({
   const parts = parseDrukReferences(title);
 
   return (
-    <span className={className}>
+    <span className={`break-words ${className}`}>
       {parts.map((part, i) =>
         part.drukNr ? (
           <LocalizedLink
