@@ -23,8 +23,7 @@ export function NewsGrid() {
   const {
     featured,
     categoryGroups,
-    doubleHero1,
-    doubleHero2,
+    doubleHeroSections,
     eventsByCategory,
     latestEvents,
     loading,
@@ -64,9 +63,12 @@ export function NewsGrid() {
 
           <CategoryTabs groups={categoryGroups} />
 
-          <LazySection height="300px">
-            <DoubleHeroSection events={doubleHero1} />
-          </LazySection>
+          {/* Hero sections interspersed with other content */}
+          {doubleHeroSections[0] && (
+            <LazySection height="300px">
+              <DoubleHeroSection events={doubleHeroSections[0]} />
+            </LazySection>
+          )}
 
           {!isFiltered && (
             <LazySection height="200px">
@@ -74,15 +76,24 @@ export function NewsGrid() {
             </LazySection>
           )}
 
-          <LazySection height="300px">
-            <DoubleHeroSection events={doubleHero2} reversed />
-          </LazySection>
+          {doubleHeroSections[1] && (
+            <LazySection height="300px">
+              <DoubleHeroSection events={doubleHeroSections[1]} reversed />
+            </LazySection>
+          )}
 
           {!isFiltered && (
             <LazySection height="400px">
               <FelietonySection felietony={felietony} />
             </LazySection>
           )}
+
+          {/* Additional hero sections when categoryGroups is empty */}
+          {doubleHeroSections.slice(2).map((events, idx) => (
+            <LazySection key={`hero-${idx + 2}`} height="300px">
+              <DoubleHeroSection events={events} reversed={idx % 2 === 1} />
+            </LazySection>
+          ))}
         </div>
 
         {/* Sidebar */}

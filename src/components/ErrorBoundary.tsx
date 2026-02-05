@@ -38,7 +38,7 @@ export class ErrorBoundary extends Component<Props, State> {
               Coś poszło nie tak
             </h1>
             <p className="text-zinc-600 dark:text-zinc-400 mb-6">
-              Przepraszamy za niedogodności. Błąd został automatycznie zgłoszony.
+              Przepraszamy za niedogodności.<br />Błąd został automatycznie zgłoszony.
             </p>
             <button
               onClick={() => window.location.reload()}

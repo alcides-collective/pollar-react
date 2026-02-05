@@ -17,8 +17,7 @@ function isFreshEvent(event: Event): boolean {
 export interface EventGroups {
   featured: Event[];
   categoryGroups: Array<[string, Event[]]>;
-  doubleHero1: Event[];
-  doubleHero2: Event[];
+  doubleHeroSections: Event[][]; // Dynamic array of hero sections (2 events each)
   moreEvents: Event[];
   eventsByCategory: Array<{ category: string; events: Event[] }>;
   latestEvents: Event[];
@@ -78,13 +77,18 @@ function computeEventGroups(
   const groupUsedIds = new Set<string>();
   const groups: Array<[string, Event[]]> = [];
 
-  const findSimilar = (anchor: Event, pool: Event[]) => {
+  // === DYNAMIC ALLOCATION ===
+  // Strategy: CategoryGroups only use events with real similarities (people/countries)
+  // DoubleHero sections get all remaining events
+  // If groups are empty, we show up to 6 hero sections instead of 2
+
+  const findSimilar = (anchor: Event, pool: Event[], usedIds: Set<string>) => {
     const anchorCategory = anchor.category;
     const anchorPeople = new Set(anchor.metadata?.mentionedPeople?.map(p => p.name) || []);
     const anchorCountries = new Set(anchor.metadata?.mentionedCountries || []);
 
     return pool.filter(event => {
-      if (groupUsedIds.has(event.id)) return false;
+      if (usedIds.has(event.id)) return false;
       if (event.category !== anchorCategory) return false;
 
       const eventPeople = event.metadata?.mentionedPeople?.map(p => p.name) || [];
@@ -97,12 +101,19 @@ function computeEventGroups(
     });
   };
 
+  // Build groups only from events with real similarities
+  // No artificial limits - if no similar events, groups will be empty
   for (const event of eventsForGrid) {
     if (groups.length >= 4) break;
     if (groupUsedIds.has(event.id)) continue;
 
+    // Find similar events BEFORE adding anchor to check if group is worth creating
+    const similar = findSimilar(event, eventsForGrid, groupUsedIds).slice(0, 2);
+
+    // Only create group if we have at least 1 similar event (min 2 total)
+    if (similar.length === 0) continue;
+
     groupUsedIds.add(event.id);
-    const similar = findSimilar(event, eventsForGrid).slice(0, 2);
     similar.forEach(e => groupUsedIds.add(e.id));
 
     const groupEvents = [event, ...similar];
@@ -114,20 +125,25 @@ function computeEventGroups(
   const usedIds = new Set<string>(featured.map(e => e.id));
   groups.forEach(([_, evts]) => evts.forEach(e => usedIds.add(e.id)));
 
-  // Double hero events - only use FRESH events
-  const availableForHero1 = freshBoostedEvents.filter(e => !usedIds.has(e.id));
-  const doubleHero1 = availableForHero1.slice(0, 2);
+  // Double hero sections - dynamically create based on available events
+  // If categoryGroups is empty, create up to 6 sections to fill the space
+  // Otherwise, create 2 sections (standard layout)
+  const maxHeroSections = 6;
+  const doubleHeroSections: Event[][] = [];
+  const heroUsedIds = new Set(usedIds);
 
-  const hero1Ids = new Set(usedIds);
-  doubleHero1.forEach(e => hero1Ids.add(e.id));
-  const availableForHero2 = freshBoostedEvents.filter(e => !hero1Ids.has(e.id));
-  const doubleHero2 = availableForHero2.slice(0, 2);
+  for (let i = 0; i < maxHeroSections; i++) {
+    const availableForHero = freshBoostedEvents.filter(e => !heroUsedIds.has(e.id));
+    if (availableForHero.length < 2) break; // Need at least 2 events per section
+
+    const heroSection = availableForHero.slice(0, 2);
+    doubleHeroSections.push(heroSection);
+    heroSection.forEach(e => heroUsedIds.add(e.id));
+  }
 
   // More events for CategoryCarousel - includes ALL events (fresh + OLD)
   // that weren't used in main sections above
-  const allUsedIds = new Set(hero1Ids);
-  doubleHero2.forEach(e => allUsedIds.add(e.id));
-  const moreEvents = boostedEvents.filter(e => !allUsedIds.has(e.id));
+  const moreEvents = boostedEvents.filter(e => !heroUsedIds.has(e.id));
 
   // Group by category
   const grouped = new Map<string, Event[]>();
@@ -164,8 +180,7 @@ function computeEventGroups(
   return {
     featured,
     categoryGroups: groups,
-    doubleHero1,
-    doubleHero2,
+    doubleHeroSections,
     moreEvents,
     eventsByCategory,
     latestEvents,
