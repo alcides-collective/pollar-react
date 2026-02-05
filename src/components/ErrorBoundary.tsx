@@ -35,16 +35,16 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="text-center p-8 max-w-md">
             <div className="text-6xl mb-6">:(</div>
             <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-              Cos poszlo nie tak
+              Coś poszło nie tak
             </h1>
             <p className="text-zinc-600 dark:text-zinc-400 mb-6">
-              Przepraszamy za niedogodnosci. Blad zostal automatycznie zgloszony.
+              Przepraszamy za niedogodności. Błąd został automatycznie zgłoszony.
             </p>
             <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
             >
-              Odswiez strone
+              Odśwież stronę
             </button>
           </div>
         </div>

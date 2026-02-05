@@ -28,6 +28,32 @@
       }
     }
   },
+  "howItWorks": {
+    "sectionTitle": "Wie es funktioniert",
+    "title": "Von Quellen zu Ihnen",
+    "steps": {
+      "sources": {
+        "title": "Quellen",
+        "description": "Wir aggregieren täglich hunderte Artikel von führenden Nachrichtenagenturen und verifizierten Medien aus ganz Europa"
+      },
+      "ai": {
+        "title": "KI",
+        "description": "Künstliche Intelligenz analysiert Inhalte, extrahiert Schlüsselinformationen und erstellt prägnante Zusammenfassungen"
+      },
+      "analysis": {
+        "title": "Analyse",
+        "description": "Wir erkennen Duplikate, gruppieren verwandte Ereignisse und bewerten deren Bedeutung und Quellenglaubwürdigkeit"
+      },
+      "personalization": {
+        "title": "Personalisierung",
+        "description": "Inhalte werden an Ihren Standort angepasst — Ereignisse aus Ihrer Region und Europa haben Priorität"
+      },
+      "delivery": {
+        "title": "Zustellung",
+        "description": "Sie erhalten ein tägliches Briefing, personalisierten Feed und optionale Push-Benachrichtigungen für wichtige Ereignisse"
+      }
+    }
+  },
   "features": {
     "title": "Alles an einem Ort",
     "subtitle": "Nachrichten, Parlamentsdaten, Finanzmärkte und mehr — Zugang zu Informationen, die wichtig sind.",

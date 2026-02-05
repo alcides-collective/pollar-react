@@ -28,6 +28,32 @@
       }
     }
   },
+  "howItWorks": {
+    "sectionTitle": "How it works",
+    "title": "From sources to you",
+    "steps": {
+      "sources": {
+        "title": "Sources",
+        "description": "We aggregate hundreds of articles daily from leading news agencies and verified media across Europe"
+      },
+      "ai": {
+        "title": "AI",
+        "description": "Artificial intelligence analyzes content, extracts key information, and generates concise summaries"
+      },
+      "analysis": {
+        "title": "Analysis",
+        "description": "We detect duplicates, cluster related events, and assess their significance and source credibility"
+      },
+      "personalization": {
+        "title": "Personalization",
+        "description": "Content is tailored to your location — events from your region and Europe are prioritized"
+      },
+      "delivery": {
+        "title": "Delivery",
+        "description": "You receive a daily brief, personalized feed, and optional push notifications for important events"
+      }
+    }
+  },
   "features": {
     "title": "Everything in one place",
     "subtitle": "News, parliamentary data, financial markets and more — access to information that matters.",

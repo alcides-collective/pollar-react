@@ -28,6 +28,32 @@
       }
     }
   },
+  "howItWorks": {
+    "sectionTitle": "Jak to działa",
+    "title": "Od źródeł do Ciebie",
+    "steps": {
+      "sources": {
+        "title": "Źródła",
+        "description": "Agregujemy setki artykułów dziennie z wiodących agencji prasowych i zweryfikowanych mediów z całej Europy"
+      },
+      "ai": {
+        "title": "AI",
+        "description": "Sztuczna inteligencja analizuje treść, wyodrębnia kluczowe informacje i generuje zwięzłe podsumowania"
+      },
+      "analysis": {
+        "title": "Analiza",
+        "description": "Wykrywamy duplikaty, grupujemy powiązane wydarzenia i oceniamy ich istotność oraz wiarygodność źródeł"
+      },
+      "personalization": {
+        "title": "Personalizacja",
+        "description": "Dostosowujemy treści do Twojej lokalizacji — wydarzenia z Polski i Europy mają priorytet"
+      },
+      "delivery": {
+        "title": "Dostawa",
+        "description": "Otrzymujesz codzienny brief, spersonalizowany feed i opcjonalne powiadomienia push o ważnych wydarzeniach"
+      }
+    }
+  },
   "features": {
     "title": "Wszystko w jednym miejscu",
     "subtitle": "Wiadomości, dane parlamentarne, rynek finansowy i więcej — dostęp do informacji, które mają znaczenie.",
