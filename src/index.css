@@ -924,3 +924,26 @@ body {
   background-size: 100% 0.15em;
 }
 
+/* Per-line animated underline with stagger delay */
+.animated-underline-line {
+  display: inline;
+  background-image: linear-gradient(
+    135deg,
+    #18181b 0%,
+    #18181b 25%,
+    #52525b 50%,
+    #18181b 75%,
+    #18181b 100%
+  );
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 0.15em;
+  transition: background-size 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-delay: var(--line-delay, 0ms);
+}
+
+/* Show underline on hover - per line */
+.group\/underline:hover .animated-underline-line {
+  background-size: 100% 0.15em;
+}
+
