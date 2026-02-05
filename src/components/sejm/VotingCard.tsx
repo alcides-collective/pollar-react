@@ -1,64 +1,14 @@
 import type { VotingListItem } from '../../types/sejm';
 import { LocalizedLink } from '../LocalizedLink';
+import { TitleWithDrukLinks } from '../../utils/druk-parser';
 
 interface VotingCardProps {
   voting: VotingListItem;
 }
 
-// Parse title and extract druk references for linking
-function parseTitle(title: string): { text: string; drukNr?: string }[] {
-  const pattern = /\(?(druk[i]?\s+nr\s+)([\d\s,i]+)\)?/gi;
-  const parts: { text: string; drukNr?: string }[] = [];
-  let lastIndex = 0;
-  let match;
-
-  while ((match = pattern.exec(title)) !== null) {
-    // Add text before the match
-    if (match.index > lastIndex) {
-      parts.push({ text: title.slice(lastIndex, match.index) });
-    }
-
-    // Parse the druk numbers
-    const numbersStr = match[2];
-    const numbers = numbersStr.split(/[,i\s]+/).filter(n => /^\d+$/.test(n.trim()));
-
-    // Add prefix
-    const hasOpenParen = title[match.index] === '(';
-    if (hasOpenParen) parts.push({ text: '(' });
-    parts.push({ text: match[1] });
-
-    // Add each number as a link
-    numbers.forEach((num, i) => {
-      if (i > 0) {
-        if (numbersStr.includes(',')) {
-          parts.push({ text: ', ' });
-        } else {
-          parts.push({ text: ' i ' });
-        }
-      }
-      parts.push({ text: num.trim(), drukNr: num.trim() });
-    });
-
-    // Check for closing paren
-    if (match[0].endsWith(')')) {
-      parts.push({ text: ')' });
-    }
-
-    lastIndex = match.index + match[0].length;
-  }
-
-  // Add remaining text
-  if (lastIndex < title.length) {
-    parts.push({ text: title.slice(lastIndex) });
-  }
-
-  return parts.length > 0 ? parts : [{ text: title }];
-}
-
 export function VotingCard({ voting }: VotingCardProps) {
   const passed = voting.yes > voting.no;
   const total = voting.yes + voting.no + voting.abstain;
-  const titleParts = parseTitle(voting.title);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -79,20 +29,10 @@ export function VotingCard({ voting }: VotingCardProps) {
     }`}>
       {/* Title with druk links */}
       <h3 className="text-zinc-900 text-sm leading-snug font-medium mb-1">
-        {titleParts.map((part, i) =>
-          part.drukNr ? (
-            <LocalizedLink
-              key={i}
-              to={`/sejm/druki/${part.drukNr}`}
-              className="text-zinc-600 hover:text-zinc-900 underline decoration-zinc-300 hover:decoration-zinc-500 font-mono"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {part.text}
-            </LocalizedLink>
-          ) : (
-            <span key={i}>{part.text}</span>
-          )
-        )}
+        <TitleWithDrukLinks
+          title={voting.title}
+          linkClassName="text-zinc-600 hover:text-zinc-900 underline decoration-zinc-300 hover:decoration-zinc-500 font-mono"
+        />
       </h3>
 
       {/* Meta pills */}

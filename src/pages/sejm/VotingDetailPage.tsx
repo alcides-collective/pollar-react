@@ -6,6 +6,7 @@ import { useVoting } from '../../hooks/useVoting';
 import { useMPs } from '../../hooks/useMPs';
 import { VotingResultBar, VoteIndicator, PartyBadge, SejmApiError } from '../../components/sejm';
 import { useLanguageStore } from '../../stores/languageStore';
+import { TitleWithDrukLinks } from '../../utils/druk-parser';
 
 export function VotingDetailPage() {
   const { t } = useTranslation('sejm');
@@ -126,7 +127,12 @@ export function VotingDetailPage() {
             {passed ? t('votingDetail.passed') : t('votingDetail.rejected')}
           </span>
         </div>
-        <h1 className="text-xl font-semibold text-zinc-900 mb-2">{voting.title}</h1>
+        <h1 className="text-xl font-semibold text-zinc-900 mb-2">
+          <TitleWithDrukLinks
+            title={voting.title}
+            linkClassName="text-blue-600 hover:underline font-mono"
+          />
+        </h1>
         <p className="text-sm text-zinc-500">{formatDate(voting.date)}</p>
       </div>
 
