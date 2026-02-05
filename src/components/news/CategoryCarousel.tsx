@@ -1,4 +1,5 @@
 import { useRef, useState, useLayoutEffect, useEffect, memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import type { Event } from '../../types/events';
@@ -16,6 +17,7 @@ interface CategoryCarouselProps {
 
 // Memoized event card component with hover animation
 const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }: { event: Event; hideBorder?: boolean }) {
+  const { t } = useTranslation('common');
   const imageSource = getImageSource(event);
   return (
     <LocalizedLink
@@ -33,7 +35,7 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
           />
           {imageSource && (
             <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">
-              Źródło: {imageSource}
+              {t('image.source', { source: imageSource })}
             </span>
           )}
         </div>
@@ -46,12 +48,16 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
 });
 
 export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
+  const { t } = useTranslation('common');
   const scrollRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
   const [itemWidth, setItemWidth] = useState<number | null>(null);
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
   const [isMeasuring, setIsMeasuring] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Translate category name
+  const translatedCategory = t(`categories.${category}`, { defaultValue: category });
 
   // Section ID for context (no blocking on image load)
   const sectionId = `carousel-${category}`;
@@ -144,7 +150,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
       <SectionImageContext.Provider value={carouselContext}>
         <div className="border-b border-zinc-200 last:border-b-0 relative">
           <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
-            <h2 className="text-xl font-bold text-zinc-900">{category}</h2>
+            <h2 className="text-xl font-bold text-zinc-900">{translatedCategory}</h2>
           </div>
           <div
             ref={measureRef}
@@ -176,7 +182,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
     <SectionImageContext.Provider value={carouselContext}>
       <div className="border-b border-zinc-200 last:border-b-0">
         <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
-          <h2 className="text-xl font-bold text-zinc-900">{category}</h2>
+          <h2 className="text-xl font-bold text-zinc-900">{translatedCategory}</h2>
           <div className="flex gap-2">
             <motion.div {...hoverScale}>
               <Button
@@ -184,7 +190,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
                 size="icon"
                 onClick={() => scroll('left')}
                 className="w-8 h-8 rounded-full"
-                aria-label="Przewiń w lewo"
+                aria-label={t('actions.scrollLeft')}
               >
                 <i className="ri-arrow-left-s-line text-lg text-zinc-900"></i>
               </Button>
@@ -195,7 +201,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
                 size="icon"
                 onClick={() => scroll('right')}
                 className="w-8 h-8 rounded-full"
-                aria-label="Przewiń w prawo"
+                aria-label={t('actions.scrollRight')}
               >
                 <i className="ri-arrow-right-s-line text-lg text-zinc-900"></i>
               </Button>

@@ -47,7 +47,12 @@
     "send": "Wyślij",
     "refresh": "Odśwież",
     "copy": "Kopiuj",
-    "copied": "Skopiowano"
+    "copied": "Skopiowano",
+    "scrollLeft": "Przewiń w lewo",
+    "scrollRight": "Przewiń w prawo"
+  },
+  "image": {
+    "source": "Źródło: {{source}}"
   },
   "time": {
     "now": "teraz",

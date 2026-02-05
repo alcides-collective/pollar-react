@@ -55,7 +55,7 @@ export function GrainImage({
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover"
         loading={loadingProp ?? (priority === 'high' ? 'eager' : 'lazy')}
         fetchPriority={fetchPriority}
         onLoad={onLoad}

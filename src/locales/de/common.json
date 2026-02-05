@@ -47,7 +47,12 @@
     "send": "Senden",
     "refresh": "Aktualisieren",
     "copy": "Kopieren",
-    "copied": "Kopiert"
+    "copied": "Kopiert",
+    "scrollLeft": "Nach links scrollen",
+    "scrollRight": "Nach rechts scrollen"
+  },
+  "image": {
+    "source": "Quelle: {{source}}"
   },
   "time": {
     "now": "jetzt",

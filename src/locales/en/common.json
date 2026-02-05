@@ -47,7 +47,12 @@
     "send": "Send",
     "refresh": "Refresh",
     "copy": "Copy",
-    "copied": "Copied"
+    "copied": "Copied",
+    "scrollLeft": "Scroll left",
+    "scrollRight": "Scroll right"
+  },
+  "image": {
+    "source": "Source: {{source}}"
   },
   "time": {
     "now": "now",
