@@ -37,6 +37,8 @@ if (import.meta.env.PROD) {
       'The database connection is closing',
       // Stale cache after deployment - user has old chunks
       "is not a valid JavaScript MIME type",
+      // Old devices without WebGL support (Mapbox)
+      'Failed to initialize WebGL',
     ],
   })
 }
