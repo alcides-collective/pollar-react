@@ -197,7 +197,7 @@ export function CategoryCarousel({ category, events, variant = 'carousel' }: Cat
 
   return (
     <SectionImageContext.Provider value={carouselContext}>
-      <div className="border-b border-zinc-200">
+      <div className="border-b border-zinc-200 last:border-b-0">
         <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
           <h2 className="text-xl font-bold text-zinc-900">{translatedCategory}</h2>
           <div className="flex gap-2">
