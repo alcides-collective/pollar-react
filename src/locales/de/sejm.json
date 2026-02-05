@@ -230,7 +230,9 @@
     "estimatedCost": "Geschätzte Kosten",
     "whoBears": "Wer trägt die Kosten",
     "documentContent": "Dokumentinhalt",
-    "characters": "Zeichen"
+    "characters": "Zeichen",
+    "fullSummary": "Vollständige Zusammenfassung",
+    "noAISummary": "KI-Analyse nicht verfügbar"
   },
   "committeeDetail": {
     "backToList": "Zurück zur Liste",

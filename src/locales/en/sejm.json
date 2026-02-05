@@ -230,7 +230,9 @@
     "estimatedCost": "Estimated cost",
     "whoBears": "Who bears",
     "documentContent": "Document content",
-    "characters": "characters"
+    "characters": "characters",
+    "fullSummary": "Full summary",
+    "noAISummary": "AI analysis unavailable"
   },
   "committeeDetail": {
     "backToList": "Back to list",

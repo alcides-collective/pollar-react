@@ -230,7 +230,9 @@
     "estimatedCost": "Szacowany koszt",
     "whoBears": "Kto poniesie",
     "documentContent": "Treść dokumentu",
-    "characters": "znaków"
+    "characters": "znaków",
+    "fullSummary": "Pełne podsumowanie",
+    "noAISummary": "Analiza AI niedostępna"
   },
   "committeeDetail": {
     "backToList": "Wróć do listy",
