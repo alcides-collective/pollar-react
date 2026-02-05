@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useVotings } from '../../hooks/useVotings';
 import { VotingCard, SejmApiError } from '../../components/sejm';
+import { TitleWithDrukLinks } from '../../utils/druk-parser';
 import type { VotingListItem } from '../../types/sejm';
 
 type FilterOption = 'all' | 'passed' | 'rejected';
@@ -67,7 +68,10 @@ function StackItem({
       >
         {/* Title */}
         <h3 className="text-zinc-900 text-sm leading-snug font-medium mb-1">
-          {stack.votings[0].title}
+          <TitleWithDrukLinks
+            title={stack.votings[0].title}
+            linkClassName="text-blue-600 hover:text-blue-800 hover:underline font-mono"
+          />
         </h3>
 
         {/* Meta pills */}

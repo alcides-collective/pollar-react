@@ -12,7 +12,11 @@ interface TitlePart {
  * - (druki nr 1944, 2009, 2013 i 2014)
  */
 export function parseDrukReferences(title: string): TitlePart[] {
-  const pattern = /\(?(druk[i]?\s+nr\s+)([\d\w\-\s,i]+)\)?/gi;
+  // Handles formats:
+  // - (druk nr 2179)
+  // - (druki nr 1944, 2009, 2013 i 2014)
+  // - z druków 2140 i 2153
+  const pattern = /\(?(druk(?:i|ów)?\s+(?:nr\s+)?)([\d\w\-\s,i]+)\)?/gi;
   const parts: TitlePart[] = [];
   let lastIndex = 0;
   let match;
