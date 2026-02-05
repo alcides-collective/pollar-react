@@ -75,7 +75,7 @@ export function PollingChart() {
   };
 
   return (
-    <div className="overflow-hidden max-w-full">
+    <div className="overflow-hidden w-full min-w-0">
       {/* Average bars */}
       <div className="mb-6">
         <h4 className="text-xs text-zinc-500 uppercase tracking-wide mb-3">
@@ -138,8 +138,8 @@ export function PollingChart() {
           </button>
 
           {expanded && (
-            <div className="mt-3 -mx-4 px-4 overflow-x-auto">
-              <table className="text-xs min-w-full">
+            <div className="mt-3 overflow-x-auto overflow-y-hidden -mx-4 px-4" style={{ maxWidth: 'calc(100% + 2rem)' }}>
+              <table className="text-xs" style={{ minWidth: '500px' }}>
                 <thead>
                   <tr className="text-[10px] text-zinc-400 uppercase tracking-wide">
                     <th className="pb-2 text-left pr-3 whitespace-nowrap">Sondaż</th>
