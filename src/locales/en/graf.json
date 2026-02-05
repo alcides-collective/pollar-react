@@ -1,5 +1,6 @@
 {
   "legend": {
+    "title": "Legend",
     "categories": "Categories",
     "connections": "Connections",
     "nodeSize": "Node size",
@@ -13,6 +14,7 @@
     "timeline": "Timeline"
   },
   "controls": {
+    "title": "Controls",
     "visualizationMode": "Visualization mode",
     "connectionTypes": "Connection types",
     "minTrendingScore": "Min. trending score",

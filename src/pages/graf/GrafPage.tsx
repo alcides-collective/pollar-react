@@ -10,6 +10,8 @@ import { LegendPanel } from './components/LegendPanel';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import './graf.css';
 
+const MOBILE_BREAKPOINT = 768;
+
 export function GrafPage() {
   const navigate = useNavigate();
   const { graphData, loading, nodeCount, linkCount, getConnectedNodeIds, getNodeById } =
@@ -20,10 +22,36 @@ export function GrafPage() {
   const showLegend = useGrafStore((s) => s.showLegend);
   const hoverNode = useGrafStore((s) => s.hoverNode);
   const selectNode = useGrafStore((s) => s.selectNode);
-  const toggleControls = useGrafStore((s) => s.toggleControls);
-  const toggleLegend = useGrafStore((s) => s.toggleLegend);
+  const setShowControls = useGrafStore((s) => s.setShowControls);
+  const setShowLegend = useGrafStore((s) => s.setShowLegend);
 
   const selectedNode = selectedNodeId ? getNodeById(selectedNodeId) : undefined;
+
+  // Mobile: close both panels on mount, Desktop: keep open
+  useEffect(() => {
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    if (isMobile) {
+      setShowControls(false);
+      setShowLegend(false);
+    }
+  }, [setShowControls, setShowLegend]);
+
+  // Toggle handlers - on mobile, only one panel at a time
+  const handleToggleControls = useCallback(() => {
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    if (isMobile && !showControls) {
+      setShowLegend(false);
+    }
+    setShowControls(!showControls);
+  }, [showControls, setShowControls, setShowLegend]);
+
+  const handleToggleLegend = useCallback(() => {
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    if (isMobile && !showLegend) {
+      setShowControls(false);
+    }
+    setShowLegend(!showLegend);
+  }, [showLegend, setShowLegend, setShowControls]);
 
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
@@ -39,18 +67,18 @@ export function GrafPage() {
           break;
         case 'c':
         case 'C':
-          toggleControls();
+          handleToggleControls();
           break;
         case 'l':
         case 'L':
-          toggleLegend();
+          handleToggleLegend();
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeydown);
     return () => window.removeEventListener('keydown', handleKeydown);
-  }, [navigate, selectedNodeId, selectNode, toggleControls, toggleLegend]);
+  }, [navigate, selectedNodeId, selectNode, handleToggleControls, handleToggleLegend]);
 
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
@@ -104,10 +132,28 @@ export function GrafPage() {
         onNodeDoubleClick={handleNodeDoubleClick}
       />
 
-      <div className="graf-stats">
-        <span>{nodeCount} wydarzeń</span>
-        <span className="graf-stats-separator">|</span>
-        <span>{linkCount} połączeń</span>
+      <div className="graf-top-bar">
+        <div className="graf-toggle-buttons">
+          <button
+            onClick={handleToggleControls}
+            className={`graf-toggle-btn ${showControls ? 'active' : ''}`}
+            aria-label={showControls ? 'Ukryj kontrolki' : 'Pokaż kontrolki'}
+          >
+            <i className="ri-settings-3-line" />
+          </button>
+          <button
+            onClick={handleToggleLegend}
+            className={`graf-toggle-btn ${showLegend ? 'active' : ''}`}
+            aria-label={showLegend ? 'Ukryj legendę' : 'Pokaż legendę'}
+          >
+            <i className="ri-information-line" />
+          </button>
+        </div>
+        <div className="graf-stats">
+          <span>{nodeCount} wydarzeń</span>
+          <span className="graf-stats-separator">|</span>
+          <span>{linkCount} połączeń</span>
+        </div>
       </div>
 
       <AnimatePresence>

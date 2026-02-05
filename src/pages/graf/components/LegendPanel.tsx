@@ -1,11 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { useGrafStore } from '@/stores/grafStore';
 import { CATEGORY_COLORS, CONNECTION_CONFIGS } from '@/types/graph';
 import type { ConnectionType } from '@/types/graph';
 
 export function LegendPanel() {
   const { t } = useTranslation('graf');
   const { t: tCommon } = useTranslation('common');
+  const toggleLegend = useGrafStore((s) => s.toggleLegend);
   const categories = Object.entries(CATEGORY_COLORS).filter(([key]) => key !== 'default');
 
   return (
@@ -16,6 +18,12 @@ export function LegendPanel() {
       transition={{ duration: 0.2 }}
       className="graf-legend"
     >
+      <div className="graf-panel-header">
+        <h2 className="graf-panel-title">{t('legend.title', 'Legenda')}</h2>
+        <button onClick={toggleLegend} className="graf-panel-close" aria-label="Zamknij">
+          <i className="ri-close-line" />
+        </button>
+      </div>
       {/* Category Colors */}
       <div className="graf-legend-section">
         <h4 className="graf-legend-title">{t('legend.categories')}</h4>

@@ -15,15 +15,22 @@ export function ControlsPanel() {
   const minTrendingScore = useGrafStore((s) => s.minTrendingScore);
   const setMinTrendingScore = useGrafStore((s) => s.setMinTrendingScore);
   const resetFilters = useGrafStore((s) => s.resetFilters);
+  const toggleControls = useGrafStore((s) => s.toggleControls);
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.2 }}
       className="graf-controls"
     >
+      <div className="graf-panel-header">
+        <h2 className="graf-panel-title">{t('controls.title', 'Kontrolki')}</h2>
+        <button onClick={toggleControls} className="graf-panel-close" aria-label="Zamknij">
+          <i className="ri-close-line" />
+        </button>
+      </div>
       {/* Mode Switcher */}
       <div className="graf-controls-section">
         <h3 className="graf-controls-title">{t('controls.visualizationMode')}</h3>

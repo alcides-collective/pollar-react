@@ -22,6 +22,8 @@ interface GrafActions {
   toggleCategory: (category: string) => void;
   toggleControls: () => void;
   toggleLegend: () => void;
+  setShowControls: (show: boolean) => void;
+  setShowLegend: (show: boolean) => void;
   resetFilters: () => void;
 }
 
@@ -77,6 +79,10 @@ export const useGrafStore = create<GrafStore>((set) => ({
   toggleControls: () => set((state) => ({ showControls: !state.showControls })),
 
   toggleLegend: () => set((state) => ({ showLegend: !state.showLegend })),
+
+  setShowControls: (show: boolean) => set({ showControls: show }),
+
+  setShowLegend: (show: boolean) => set({ showLegend: show }),
 
   resetFilters: () =>
     set({

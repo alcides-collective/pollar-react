@@ -1,5 +1,6 @@
 {
   "legend": {
+    "title": "Legenda",
     "categories": "Kategorie",
     "connections": "Połączenia",
     "nodeSize": "Rozmiar węzła",
@@ -13,6 +14,7 @@
     "timeline": "Oś czasu"
   },
   "controls": {
+    "title": "Kontrolki",
     "visualizationMode": "Tryb wizualizacji",
     "connectionTypes": "Typy połączeń",
     "minTrendingScore": "Min. trending score",
