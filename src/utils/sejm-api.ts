@@ -40,6 +40,14 @@ export class SejmApiUnavailableError extends Error {
 }
 
 function isApiBlocked(text: string): boolean {
+  // Only check for actual block messages, not DOCTYPE
+  // (interpellation bodies are legitimate HTML)
+  return text.includes('Request Rejected') ||
+         text.includes('Żądanie odrzucone');
+}
+
+function isJsonApiBlocked(text: string): boolean {
+  // For JSON endpoints, HTML response means block
   return text.includes('Request Rejected') ||
          text.includes('Żądanie odrzucone') ||
          text.includes('<!doctype html>') ||
@@ -59,7 +67,7 @@ async function fetchSejmDirect<T>(path: string): Promise<T> {
 
   if (contentType.includes('text/html')) {
     const text = await response.text();
-    if (isApiBlocked(text)) {
+    if (isJsonApiBlocked(text)) {
       throw new SejmApiUnavailableError();
     }
     throw new Error('Unexpected response from Sejm API');
