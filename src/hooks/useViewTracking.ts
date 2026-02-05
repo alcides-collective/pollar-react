@@ -77,6 +77,21 @@ export function useViewTracking(
         setIsTracked(true);
         trackedEventIdRef.current = eventId;
       }
+
+      // 3. X Ads conversion tracking (for article views)
+      if (typeof window !== 'undefined' && window.twq) {
+        window.twq('event', 'tw-qe4m5-r3wob', {
+          contents: [
+            {
+              content_type: 'article',
+              content_id: eventId,
+              content_name: null,
+              content_group_id: category || null,
+            },
+          ],
+          conversion_id: `${visitorId}-${eventId}`,
+        });
+      }
     };
 
     performTracking();

@@ -10,6 +10,19 @@ interface Window {
     targetOrAction: string | Date,
     params?: Record<string, unknown>
   ) => void;
+  twq: (
+    command: 'event' | 'config',
+    eventId: string,
+    params?: {
+      contents?: Array<{
+        content_type?: string | null;
+        content_id?: string | null;
+        content_name?: string | null;
+        content_group_id?: string | null;
+      }>;
+      conversion_id?: string | null;
+    }
+  ) => void;
 }
 
 /**
