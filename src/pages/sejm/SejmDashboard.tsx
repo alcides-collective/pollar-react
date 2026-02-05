@@ -160,7 +160,7 @@ export function SejmDashboard() {
         {stats && <SejmStats stats={stats} />}
 
         {/* Polling */}
-        <div className="rounded-lg border border-zinc-200 p-4">
+        <div className="rounded-lg border border-zinc-200 p-4 min-w-0 overflow-hidden">
           <h3 className="text-sm font-medium text-zinc-900 mb-4">{t('dashboard.polls')}</h3>
           <PollingChart />
         </div>
