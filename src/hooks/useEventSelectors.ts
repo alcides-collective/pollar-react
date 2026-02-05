@@ -81,7 +81,7 @@ function computeEventGroups(
   // Priority: Hero sections FIRST (up to 6 sections = 12 events)
   // Then CategoryGroups get remaining events with similarities
 
-  const MAX_HERO_SECTIONS = 6;
+  const MAX_HERO_SECTIONS = 8;
   const HERO_RESERVE = MAX_HERO_SECTIONS * 2; // 12 events for 6 sections
   const availableCount = eventsForGrid.length;
 

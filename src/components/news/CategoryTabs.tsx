@@ -86,12 +86,12 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                   </article>
                 </LocalizedLink>
               )}
-              <div className="flex-1 divide-y divide-zinc-200">
+              <div className="flex-1">
                 {selectedGroup[1].slice(1).map((event) => (
                   <LocalizedLink
                     key={event.id}
                     to={`/event/${event.id}`}
-                    className="group block p-6 hover:bg-zinc-50 transition-colors"
+                    className="group block p-6 hover:bg-zinc-50 transition-colors border-b border-zinc-200"
                   >
                     <h4 className="text-zinc-600 text-sm leading-tight group-hover:underline">
                       {event.title}

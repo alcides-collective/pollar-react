@@ -56,7 +56,7 @@ export function NewsGrid() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px]">
         {/* Main Content */}
-        <div className="min-w-0 overflow-hidden lg:border-r border-zinc-200 divide-y divide-zinc-200">
+        <div className="min-w-0 overflow-hidden lg:border-r border-zinc-200 divide-y divide-zinc-200 border-b">
           {!isFiltered && brief && <DailyBriefSection brief={brief} />}
 
           <FeaturedSection events={featured} />
@@ -96,8 +96,8 @@ export function NewsGrid() {
           ))}
         </div>
 
-        {/* Sidebar */}
-        <aside className="divide-y divide-zinc-200">
+        {/* Sidebar - hidden on mobile */}
+        <aside className="hidden lg:block divide-y divide-zinc-200">
           <AISidebarWidget />
           <LatestEvents events={latestEvents} />
           {/* <NewsletterSection /> */}
@@ -108,16 +108,35 @@ export function NewsGrid() {
           <ContactSection />
           <VersionSection />
           <StatsSection />
+          {/* CategoryCarousel in sidebar - at the end */}
+          {/* When filtered: list view, when not filtered: sidebar carousel */}
+          {eventsByCategory.map(({ category, events }) => (
+            <CategoryCarousel
+              key={category}
+              category={category}
+              events={events}
+              variant={isFiltered ? 'list' : 'sidebar'}
+            />
+          ))}
         </aside>
         </div>
       </div>
 
-      {/* More News - Full Width, grouped by category with carousel */}
-      <div className="border border-t-0 border-zinc-200">
+      {/* More News - Mobile only (desktop has it in sidebar) */}
+      <div className="lg:hidden border border-t-0 border-zinc-200">
         {eventsByCategory.map(({ category, events }) => (
-          <LazySection key={category} height="280px">
-            <CategoryCarousel category={category} events={events} />
-          </LazySection>
+          isFiltered ? (
+            <CategoryCarousel
+              key={category}
+              category={category}
+              events={events}
+              variant="list"
+            />
+          ) : (
+            <LazySection key={category} height="280px">
+              <CategoryCarousel category={category} events={events} />
+            </LazySection>
+          )
         ))}
       </div>
     </section>

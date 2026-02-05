@@ -233,6 +233,8 @@ export function Header() {
   // Handle category selection - navigate to home if not already there
   const handleCategoryClick = (category: string | null) => {
     setSelectedCategory(category);
+    // Scroll to top when changing category
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     // Get path without language prefix to check if we're on home
     const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';
     if (pathWithoutLang !== '/') {

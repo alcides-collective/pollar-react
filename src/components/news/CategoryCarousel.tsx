@@ -13,6 +13,7 @@ import { LocalizedLink } from '../LocalizedLink';
 interface CategoryCarouselProps {
   category: string;
   events: Event[];
+  variant?: 'carousel' | 'list' | 'sidebar';
 }
 
 // Memoized event card component with hover animation
@@ -47,7 +48,7 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
   );
 });
 
-export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
+export function CategoryCarousel({ category, events, variant = 'carousel' }: CategoryCarouselProps) {
   const { t } = useTranslation('common');
   const scrollRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
@@ -72,6 +73,9 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
   }), [sectionId]);
 
   // Calculate item width based on container and screen size
+  // sidebar variant always shows 1 item (like mobile)
+  const isSidebar = variant === 'sidebar';
+
   useLayoutEffect(() => {
     const updateWidth = () => {
       const container = measureRef.current || scrollRef.current;
@@ -83,14 +87,15 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
           setIsMeasuring(true);
         }
         setIsMobile(mobile);
-        const newWidth = mobile ? containerWidth : containerWidth / 4;
+        // Sidebar always shows 1 item, mobile shows 1, desktop shows 4
+        const newWidth = (isSidebar || mobile) ? containerWidth : containerWidth / 4;
         setItemWidth(newWidth);
       }
     };
     updateWidth();
     window.addEventListener('resize', updateWidth);
     return () => window.removeEventListener('resize', updateWidth);
-  }, [isMobile]);
+  }, [isMobile, isSidebar]);
 
   // Measure all items in hidden container to find tallest
   useLayoutEffect(() => {
@@ -129,8 +134,8 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current && itemWidth) {
       const currentScroll = scrollRef.current.scrollLeft;
-      // On mobile scroll by 1, on desktop scroll by 4
-      const scrollAmount = isMobile ? itemWidth : itemWidth * 4;
+      // Sidebar/mobile scroll by 1, desktop scroll by 4
+      const scrollAmount = (isSidebar || isMobile) ? itemWidth : itemWidth * 4;
       scrollRef.current.scrollTo({
         left: direction === 'left'
           ? currentScroll - scrollAmount
@@ -139,6 +144,18 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
       });
     }
   };
+
+  // List variant - simple vertical list (after all hooks)
+  if (variant === 'list') {
+    if (events.length === 0) return null;
+    return (
+      <div className="divide-y divide-zinc-200">
+        {events.map(event => (
+          <EventCarouselItem key={event.id} event={event} hideBorder />
+        ))}
+      </div>
+    );
+  }
 
   if (events.length === 0) {
     return null;
@@ -168,7 +185,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
                   data-measure-item
                   style={{ width: itemWidth ?? 300, flexShrink: 0 }}
                 >
-                  <EventCarouselItem event={event} hideBorder={isMobile || index % 4 === 3} />
+                  <EventCarouselItem event={event} hideBorder={isSidebar || isMobile || index % 4 === 3} />
                 </div>
               ))}
             </div>
@@ -180,7 +197,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
 
   return (
     <SectionImageContext.Provider value={carouselContext}>
-      <div className="border-b border-zinc-200 last:border-b-0">
+      <div className="border-b border-zinc-200">
         <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
           <h2 className="text-xl font-bold text-zinc-900">{translatedCategory}</h2>
           <div className="flex gap-2">
@@ -213,7 +230,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
           className="overflow-x-auto scroll-smooth scrollbar-hide"
           style={{
             height: containerHeight ?? 200,
-            scrollSnapType: isMobile ? 'x mandatory' : undefined,
+            scrollSnapType: (isSidebar || isMobile) ? 'x mandatory' : undefined,
           }}
         >
           <div
@@ -225,7 +242,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
           >
             {virtualizer.getVirtualItems().map((virtualItem) => {
               const event = events[virtualItem.index];
-              const hideBorder = isMobile || virtualItem.index % 4 === 3;
+              const hideBorder = isSidebar || isMobile || virtualItem.index % 4 === 3;
               return (
                 <div
                   key={event.id}
@@ -237,7 +254,7 @@ export function CategoryCarousel({ category, events }: CategoryCarouselProps) {
                     width: `${itemWidth ?? 300}px`,
                     height: '100%',
                     transform: `translateX(${virtualItem.start}px)`,
-                    scrollSnapAlign: isMobile ? 'start' : undefined,
+                    scrollSnapAlign: (isSidebar || isMobile) ? 'start' : undefined,
                   }}
                 >
                   <EventCarouselItem event={event} hideBorder={hideBorder} />
