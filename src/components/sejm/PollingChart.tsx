@@ -138,20 +138,16 @@ export function PollingChart() {
           </button>
 
           {expanded && (
-            <div className="mt-3 overflow-x-auto">
-              <table className="text-xs w-full">
+            <div className="mt-3 -mx-4 px-4 overflow-x-auto">
+              <table className="text-xs min-w-full">
                 <thead>
                   <tr className="text-[10px] text-zinc-400 uppercase tracking-wide">
-                    <th className="pb-2 text-left sticky left-0 bg-white z-10" style={{ minWidth: 90 }}>
-                      Sondaż
-                    </th>
-                    <th className="pb-2 text-left sticky left-[90px] bg-white z-10">
-                      Data
-                    </th>
+                    <th className="pb-2 text-left pr-3 whitespace-nowrap">Sondaż</th>
+                    <th className="pb-2 text-left pr-3 whitespace-nowrap">Data</th>
                     {averageData.map(({ party, internalName }) => (
-                      <th key={party} className="pb-2 text-right px-2 whitespace-nowrap">
+                      <th key={party} className="pb-2 text-right px-1.5 whitespace-nowrap">
                         <span
-                          className="inline-block w-2 h-2 rounded-sm mr-1"
+                          className="inline-block w-2 h-2 rounded-sm mr-0.5"
                           style={{ background: getPartyColor(internalName).bg }}
                         />
                         {getPartyShort(internalName)}
@@ -161,20 +157,17 @@ export function PollingChart() {
                 </thead>
                 <tbody>
                   {latestPolls.map((poll, idx) => (
-                    <tr key={idx} className="border-t border-zinc-100 hover:bg-zinc-50">
-                      <td
-                        className="py-2 pr-2 text-zinc-700 truncate sticky left-0 bg-white"
-                        style={{ maxWidth: 90 }}
-                      >
+                    <tr key={idx} className="border-t border-zinc-100">
+                      <td className="py-2 pr-3 text-zinc-700 whitespace-nowrap text-[11px]">
                         {poll.pollster}
                       </td>
-                      <td className="py-2 pr-2 text-zinc-500 whitespace-nowrap sticky left-[90px] bg-white">
+                      <td className="py-2 pr-3 text-zinc-500 whitespace-nowrap">
                         {formatDate(poll.date)}
                       </td>
                       {averageData.map(({ party }) => {
                         const val = getPollValue(poll, party);
                         return (
-                          <td key={party} className="py-2 px-2 text-right whitespace-nowrap font-mono">
+                          <td key={party} className="py-2 px-1.5 text-right whitespace-nowrap font-mono">
                             {val ? (
                               <span className="text-zinc-800">{val.toFixed(1)}</span>
                             ) : (
