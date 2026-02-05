@@ -110,7 +110,9 @@
     "loading": "Loading...",
     "loadMore": "Load more",
     "fetchError": "Failed to fetch interpellation content.",
-    "interpellationNumber": "Interpellation #{{num}}"
+    "interpellationNumber": "Interpellation #{{num}}",
+    "authors": "Authors",
+    "recipients": "To"
   },
   "committeesPage": {
     "title": "Parliamentary Committees",

@@ -110,7 +110,9 @@
     "loading": "Ładowanie...",
     "loadMore": "Załaduj więcej",
     "fetchError": "Nie udało się pobrać treści interpelacji.",
-    "interpellationNumber": "Interpelacja #{{num}}"
+    "interpellationNumber": "Interpelacja #{{num}}",
+    "authors": "Autorzy",
+    "recipients": "Do"
   },
   "committeesPage": {
     "title": "Komisje sejmowe",

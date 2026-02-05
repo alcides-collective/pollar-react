@@ -20,18 +20,11 @@ export function InterpellationCard({ interpellation, mpsMap, onClick }: Interpel
 
   const hasReply = interpellation.replies && interpellation.replies.length > 0;
 
-  // Resolve MP IDs to names
-  const getMPName = (idStr: string) => {
-    const id = parseInt(idStr, 10);
-    if (mpsMap && !isNaN(id)) {
-      const mp = mpsMap.get(id);
-      if (mp) return mp.firstLastName;
-    }
-    return idStr; // fallback to ID if not found
-  };
-
   return (
-    <div className="rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4">
+    <button
+      onClick={onClick}
+      className="block w-full text-left rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
+    >
       <div className="flex items-start justify-between gap-3 mb-2">
         <span className="shrink-0 bg-zinc-100 text-zinc-600 text-xs font-mono px-2 py-0.5 rounded">
           #{interpellation.num}
@@ -47,14 +40,9 @@ export function InterpellationCard({ interpellation, mpsMap, onClick }: Interpel
         </span>
       </div>
 
-      <button
-        onClick={onClick}
-        className="block w-full text-left"
-      >
-        <h3 className="text-sm font-medium text-zinc-900 leading-tight line-clamp-2 mb-2 hover:text-blue-600 transition-colors">
-          {interpellation.title}
-        </h3>
-      </button>
+      <h3 className="text-sm font-medium text-zinc-900 leading-tight line-clamp-2 mb-2">
+        {interpellation.title}
+      </h3>
 
       <div className="text-[11px] text-zinc-500 space-y-1">
         <div className="flex flex-wrap gap-x-1">
@@ -93,6 +81,6 @@ export function InterpellationCard({ interpellation, mpsMap, onClick }: Interpel
           )}
         </div>
       </div>
-    </div>
+    </button>
   );
 }

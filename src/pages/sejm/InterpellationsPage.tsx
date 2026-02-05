@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useInterpellations, fetchInterpellationBody } from '../../hooks/useInterpellations';
 import { useMPsMap } from '../../hooks/useMPs';
 import { InterpellationCard, SejmApiError } from '../../components/sejm';
+import { LocalizedLink } from '../../components/LocalizedLink';
 import type { SejmInterpellation } from '../../types/sejm';
 
 type FilterOption = 'all' | 'answered' | 'pending';
@@ -131,18 +132,67 @@ export function InterpellationsPage() {
             className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-zinc-200 flex items-start justify-between">
-              <div>
-                <span className="text-xs text-zinc-500">{t('interpellationsPage.interpellationNumber', { num: selectedInterpellation.num })}</span>
-                <h2 className="font-medium text-zinc-900 mt-1">{selectedInterpellation.title}</h2>
+            {/* Header */}
+            <div className="p-4 border-b border-zinc-200 flex items-start justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs bg-zinc-100 text-zinc-600 font-mono px-2 py-0.5 rounded">
+                    #{selectedInterpellation.num}
+                  </span>
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded ${
+                    selectedInterpellation.replies && selectedInterpellation.replies.length > 0
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-amber-100 text-amber-700'
+                  }`}>
+                    {selectedInterpellation.replies && selectedInterpellation.replies.length > 0 ? 'Odpowiedziano' : 'Oczekuje'}
+                  </span>
+                </div>
+                <h2 className="font-medium text-zinc-900">{selectedInterpellation.title}</h2>
               </div>
               <button
                 onClick={closeModal}
-                className="text-zinc-400 hover:text-zinc-600"
+                className="shrink-0 text-zinc-400 hover:text-zinc-600"
               >
                 <i className="ri-close-line text-2xl" />
               </button>
             </div>
+
+            {/* Authors */}
+            <div className="px-4 py-3 border-b border-zinc-100 bg-zinc-50">
+              <div className="text-xs text-zinc-500 mb-2">{t('interpellationsPage.authors')}</div>
+              <div className="flex flex-wrap gap-2">
+                {selectedInterpellation.from.map((idStr) => {
+                  const id = parseInt(idStr, 10);
+                  const mp = mpsMap && !isNaN(id) ? mpsMap.get(id) : null;
+                  if (!mp) return null;
+                  return (
+                    <LocalizedLink
+                      key={id}
+                      to={`/sejm/poslowie/${id}`}
+                      className="flex items-center gap-2 bg-white rounded-full pr-3 pl-1 py-1 border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all"
+                      onClick={closeModal}
+                    >
+                      <img
+                        src={mp.photoMiniUrl || mp.photoUrl}
+                        alt={mp.firstLastName}
+                        className="w-6 h-6 rounded-full object-cover bg-zinc-100"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = `https://api.sejm.gov.pl/sejm/term10/MP/${id}/photo-mini`;
+                        }}
+                      />
+                      <span className="text-sm text-zinc-700">{mp.firstLastName}</span>
+                      <span className="text-[10px] text-zinc-400">{mp.club}</span>
+                    </LocalizedLink>
+                  );
+                })}
+              </div>
+              <div className="text-xs text-zinc-500 mt-3 mb-1">{t('interpellationsPage.recipients')}</div>
+              <div className="text-sm text-zinc-700">
+                {selectedInterpellation.to.join(', ')}
+              </div>
+            </div>
+
+            {/* Body */}
             <div className="p-4 overflow-y-auto flex-1">
               {loadingBody ? (
                 <div className="space-y-2">

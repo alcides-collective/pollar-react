@@ -110,7 +110,9 @@
     "loading": "Wird geladen...",
     "loadMore": "Mehr laden",
     "fetchError": "Inhalt der Interpellation konnte nicht geladen werden.",
-    "interpellationNumber": "Interpellation #{{num}}"
+    "interpellationNumber": "Interpellation #{{num}}",
+    "authors": "Autoren",
+    "recipients": "An"
   },
   "committeesPage": {
     "title": "Parlamentarische Ausschüsse",
