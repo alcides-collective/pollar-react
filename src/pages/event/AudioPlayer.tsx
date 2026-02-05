@@ -32,7 +32,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
   const [isDraggingSeek, setIsDraggingSeek] = useState(false);
   const [isDraggingVolume, setIsDraggingVolume] = useState(false);
 
-  const volumeTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const volumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const audio = audioRef.current;
