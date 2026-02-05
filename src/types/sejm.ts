@@ -199,6 +199,18 @@ export interface PrintsResponse {
   lastUpdate: string | null;
 }
 
+export interface PrintContentAttachment {
+  filename: string;
+  text: string;
+}
+
+export interface PrintContentResponse {
+  printNumber: string;
+  title: string;
+  attachments: PrintContentAttachment[];
+  totalCharacters: number;
+}
+
 export interface InterpellationsResponse {
   items: SejmInterpellation[];
   count: number;

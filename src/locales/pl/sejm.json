@@ -228,7 +228,9 @@
     "affectedGroups": "Dotknięte grupy",
     "financialImpact": "Wpływ finansowy",
     "estimatedCost": "Szacowany koszt",
-    "whoBears": "Kto poniesie"
+    "whoBears": "Kto poniesie",
+    "documentContent": "Treść dokumentu",
+    "characters": "znaków"
   },
   "committeeDetail": {
     "backToList": "Wróć do listy",

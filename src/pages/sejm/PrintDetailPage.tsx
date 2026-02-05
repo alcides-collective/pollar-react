@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
-import { usePrints, usePrintAISummary } from '../../hooks/usePrints';
+import { usePrints, usePrintAISummary, usePrintContent } from '../../hooks/usePrints';
 import { useLanguageStore } from '../../stores/languageStore';
 
 export function PrintDetailPage() {
@@ -10,6 +10,7 @@ export function PrintDetailPage() {
   const { number } = useParams<{ number: string }>();
   const { prints } = usePrints();
   const { summary: aiSummary, loading: aiLoading } = usePrintAISummary(number || null);
+  const { content: printContent, loading: contentLoading } = usePrintContent(number || null);
 
   // Find print in the loaded list
   const print = prints.find(p => p.number === number);
@@ -163,6 +164,41 @@ export function PrintDetailPage() {
               )}
             </div>
           )}
+        </div>
+      ) : null}
+
+      {/* Document Content */}
+      {contentLoading ? (
+        <div className="rounded-lg border border-zinc-200 p-4">
+          <div className="h-4 w-40 bg-zinc-100 animate-pulse rounded mb-3" />
+          <div className="space-y-2">
+            <div className="h-4 bg-zinc-100 animate-pulse rounded" />
+            <div className="h-4 bg-zinc-100 animate-pulse rounded w-5/6" />
+            <div className="h-4 bg-zinc-100 animate-pulse rounded w-4/6" />
+          </div>
+        </div>
+      ) : printContent && printContent.attachments.length > 0 ? (
+        <div className="rounded-lg border border-zinc-200 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-medium text-zinc-900">{t('printDetail.documentContent')}</h2>
+            <span className="text-xs text-zinc-500">
+              {printContent.totalCharacters.toLocaleString()} {t('printDetail.characters')}
+            </span>
+          </div>
+          <div className="space-y-4">
+            {printContent.attachments.map((attachment, i) => (
+              <details key={i} className="group">
+                <summary className="cursor-pointer text-sm font-medium text-zinc-700 hover:text-zinc-900 flex items-center gap-2">
+                  <i className="ri-file-text-line" />
+                  {attachment.filename}
+                  <i className="ri-arrow-down-s-line group-open:rotate-180 transition-transform ml-auto" />
+                </summary>
+                <div className="mt-3 p-3 bg-zinc-50 rounded text-sm text-zinc-700 whitespace-pre-wrap max-h-96 overflow-y-auto font-mono text-xs leading-relaxed">
+                  {attachment.text}
+                </div>
+              </details>
+            ))}
+          </div>
         </div>
       ) : null}
 

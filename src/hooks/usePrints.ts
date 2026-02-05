@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { useState, useCallback } from 'react';
 import { sejmApi } from '../utils/sejm-api';
-import type { SejmPrint, PrintsResponse, PrintAISummary } from '../types/sejm';
+import type { SejmPrint, PrintsResponse, PrintAISummary, PrintContentResponse } from '../types/sejm';
 
 const PAGE_SIZE = 20;
 
@@ -64,6 +64,23 @@ export function usePrintAISummary(printNumber: string | null) {
 
   return {
     summary: data ?? null,
+    loading: isLoading,
+    error: error ?? null,
+  };
+}
+
+export function usePrintContent(printNumber: string | null) {
+  const { data, error, isLoading } = useSWR<PrintContentResponse | null>(
+    printNumber ? `/sejm/prints/${printNumber}/content` : null,
+    () => printNumber ? sejmApi.prints.getContent(printNumber) : null,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 600000, // 10 minutes - content doesn't change
+    }
+  );
+
+  return {
+    content: data ?? null,
     loading: isLoading,
     error: error ?? null,
   };

@@ -228,7 +228,9 @@
     "affectedGroups": "Betroffene Gruppen",
     "financialImpact": "Finanzielle Auswirkungen",
     "estimatedCost": "Geschätzte Kosten",
-    "whoBears": "Wer trägt die Kosten"
+    "whoBears": "Wer trägt die Kosten",
+    "documentContent": "Dokumentinhalt",
+    "characters": "Zeichen"
   },
   "committeeDetail": {
     "backToList": "Zurück zur Liste",

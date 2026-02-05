@@ -9,6 +9,7 @@ import type {
   VotingsResponse,
   SejmVoting,
   PrintsResponse,
+  PrintContentResponse,
   InterpellationsResponse,
   SejmStats,
   SejmClub,
@@ -165,6 +166,15 @@ export const sejmApi = {
   prints: {
     list: (params?: { limit?: number; offset?: number }) =>
       fetchAPI<PrintsResponse>('/sejm/prints', { params }),
+
+    getContent: async (printNumber: string): Promise<PrintContentResponse | null> => {
+      try {
+        return await fetchAPI<PrintContentResponse>(`/sejm/prints/${printNumber}/content`);
+      } catch (error) {
+        console.error('Failed to fetch print content:', error);
+        return null;
+      }
+    },
 
     getAISummary: async (printNumber: string): Promise<PrintAISummary | null> => {
       try {

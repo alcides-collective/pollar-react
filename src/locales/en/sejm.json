@@ -228,7 +228,9 @@
     "affectedGroups": "Affected groups",
     "financialImpact": "Financial impact",
     "estimatedCost": "Estimated cost",
-    "whoBears": "Who bears"
+    "whoBears": "Who bears",
+    "documentContent": "Document content",
+    "characters": "characters"
   },
   "committeeDetail": {
     "backToList": "Back to list",
