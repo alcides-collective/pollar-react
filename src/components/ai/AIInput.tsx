@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { ArrowUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAIRemainingQueries, useAILoading } from '../../stores/aiStore';
-import { formatRemainingQueries } from '../../utils/ai-helpers';
 
 interface AIInputProps {
   onSend: (message: string) => void;
@@ -9,6 +9,7 @@ interface AIInputProps {
 }
 
 export function AIInput({ onSend, autoFocus = false }: AIInputProps) {
+  const { t } = useTranslation('ai');
   const [input, setInput] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const isLoading = useAILoading();
@@ -98,8 +99,8 @@ export function AIInput({ onSend, autoFocus = false }: AIInputProps) {
 
       {/* Legal disclaimer and rate limit */}
       <p className="mt-2 text-[11px] text-zinc-400 dark:text-zinc-500 text-center">
-        AI może popełniać błędy. Zawsze weryfikuj ważne informacje.
-        {!import.meta.env.DEV && ` · ${formatRemainingQueries(remainingQueries)}`}
+        {t('input.disclaimer')}
+        {!import.meta.env.DEV && ` · ${t('input.remaining', { count: remainingQueries })}`}
       </p>
     </div>
   );

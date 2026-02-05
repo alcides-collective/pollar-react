@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAISuggestions, useAIStore } from '../../stores/aiStore';
-import { DEFAULT_SUGGESTIONS } from '../../utils/ai-helpers';
 import { API_BASE } from '../../config/api';
 
 const PAUSE_BETWEEN = 4000; // ms to show each placeholder
 
 export function AISidebarWidget() {
+  const { t } = useTranslation('ai');
   const navigate = useNavigate();
   const suggestions = useAISuggestions();
   const setSuggestions = useAIStore((s) => s.setSuggestions);
@@ -14,9 +15,15 @@ export function AISidebarWidget() {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
+  // Get default suggestions from i18n
+  const defaultSuggestions = useMemo(() =>
+    t('suggestions.default', { returnObjects: true }) as string[],
+    [t]
+  );
+
   // Use suggestions or default
   const placeholders =
-    suggestions.length >= 4 ? suggestions : DEFAULT_SUGGESTIONS;
+    suggestions.length >= 4 ? suggestions : defaultSuggestions;
 
   const currentText = placeholders[placeholderIndex];
 

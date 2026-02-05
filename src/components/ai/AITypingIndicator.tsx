@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useAIDebugSteps } from '../../stores/aiStore';
-import { getTypingLabel } from '../../utils/ai-helpers';
+import { getTypingLabelKey } from '../../utils/ai-helpers';
 
 export function AITypingIndicator() {
+  const { t } = useTranslation('ai');
   const debugSteps = useAIDebugSteps();
-  const label = getTypingLabel(debugSteps);
+  const labelKey = getTypingLabelKey(debugSteps);
+  const label = t(`status.${labelKey}`);
 
   return (
     <div className="self-start w-full animate-fade-in">

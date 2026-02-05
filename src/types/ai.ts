@@ -80,7 +80,4 @@ export interface SSEEvent {
   status?: string;
 }
 
-export type TypingLabel =
-  | 'Analizuję pytanie'
-  | 'Szukam informacji'
-  | 'Generuję odpowiedź';
+export type TypingLabelKey = 'analyzing' | 'searching' | 'generating';

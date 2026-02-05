@@ -6,6 +6,7 @@ import { AIDebugPanel } from './AIDebugPanel';
 import { useAICompanion } from '../../hooks/useAICompanion';
 import { useWordAnimation } from '../../hooks/useWordAnimation';
 import { useAIError, useAIStore } from '../../stores/aiStore';
+import { useLanguage } from '../../stores/languageStore';
 
 interface AIChatProps {
   variant?: 'page' | 'modal';
@@ -17,6 +18,7 @@ export function AIChat({ variant = 'page', showHeader = true }: AIChatProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const error = useAIError();
   const setError = useAIStore((s) => s.setError);
+  const language = useLanguage();
 
   // Scroll helper
   const scrollToBottom = useCallback(() => {
@@ -32,8 +34,9 @@ export function AIChat({ variant = 'page', showHeader = true }: AIChatProps) {
     isUserAtBottom: true,
   });
 
-  // AI companion hook
+  // AI companion hook - pass current language for multi-language support
   const { sendMessage, checkStatus, fetchSuggestions } = useAICompanion({
+    language,
     onAnimationStart: animateMessage,
   });
 

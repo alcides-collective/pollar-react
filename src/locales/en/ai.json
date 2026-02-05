@@ -1,4 +1,22 @@
 {
+  "suggestions": {
+    "default": [
+      "What happened in Venezuela?",
+      "What are the latest news?",
+      "Were there any protests today?",
+      "What's new in politics?",
+      "What's happening in Congress?",
+      "What are the latest AI news?"
+    ]
+  },
+  "status": {
+    "analyzing": "Analyzing question...",
+    "searching": "Searching for information...",
+    "generating": "Generating response..."
+  },
+  "conversation": {
+    "new": "New conversation"
+  },
   "sidebar": {
     "dateGroups": {
       "today": "Today",
@@ -17,7 +35,9 @@
   "input": {
     "placeholder": "Ask about events...",
     "send": "Send",
-    "disclaimer": "AI can make mistakes. Always verify important information."
+    "disclaimer": "AI can make mistakes. Always verify important information.",
+    "remaining": "{{count}} queries remaining",
+    "remaining_one": "{{count}} query remaining"
   },
   "header": {
     "back": "Back",

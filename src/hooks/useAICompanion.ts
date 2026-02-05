@@ -26,7 +26,7 @@ function getVisitorId(): string {
 }
 
 interface UseAICompanionOptions {
-  language?: 'pl' | 'en' | 'ua';
+  language?: 'pl' | 'en' | 'de';
   onAnimationStart?: (messageId: string, totalWords: number) => void;
 }
 

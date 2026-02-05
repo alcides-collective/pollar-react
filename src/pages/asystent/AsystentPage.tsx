@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { AIChat, AISidebar } from '../../components/ai';
+import { FloatingLanguageSelector } from '../../components/FloatingLanguageSelector';
 
 export function AsystentPage() {
   // Disable body scroll while on this page
@@ -14,6 +15,9 @@ export function AsystentPage() {
 
   return (
     <div className="h-dvh w-full overflow-hidden bg-white dark:bg-zinc-950 flex">
+      {/* Language selector */}
+      <FloatingLanguageSelector />
+
       {/* Sidebar - hidden on mobile */}
       <div className="hidden md:block h-full">
         <AISidebar />

@@ -1,4 +1,22 @@
 {
+  "suggestions": {
+    "default": [
+      "Was ist in Venezuela passiert?",
+      "Was sind die neuesten Nachrichten?",
+      "Gab es heute Proteste?",
+      "Was gibt es Neues in der Politik?",
+      "Was passiert im Bundestag?",
+      "Was sind die neuesten KI-Nachrichten?"
+    ]
+  },
+  "status": {
+    "analyzing": "Analysiere Frage...",
+    "searching": "Suche nach Informationen...",
+    "generating": "Generiere Antwort..."
+  },
+  "conversation": {
+    "new": "Neue Unterhaltung"
+  },
   "sidebar": {
     "dateGroups": {
       "today": "Heute",
@@ -17,7 +35,9 @@
   "input": {
     "placeholder": "Frage zu Ereignissen...",
     "send": "Senden",
-    "disclaimer": "KI kann Fehler machen. Überprüfe wichtige Informationen immer."
+    "disclaimer": "KI kann Fehler machen. Überprüfe wichtige Informationen immer.",
+    "remaining": "{{count}} Anfragen übrig",
+    "remaining_one": "{{count}} Anfrage übrig"
   },
   "header": {
     "back": "Zurück",

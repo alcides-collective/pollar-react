@@ -1,6 +1,6 @@
 // AI Companion utility functions
 
-import type { DebugStep, TypingLabel } from '../types/ai';
+import type { DebugStep, TypingLabelKey } from '../types/ai';
 
 /**
  * Tokenize content into words, preserving markdown links and line breaks as single units
@@ -120,15 +120,16 @@ export function formatSourceDate(
 }
 
 /**
- * Get dynamic typing label based on debug steps
+ * Get dynamic typing label key based on debug steps
+ * Returns i18n key for translation in component
  * Simplified to 3 main stages for better UX
  */
-export function getTypingLabel(debugSteps: DebugStep[]): TypingLabel {
-  if (debugSteps.length === 0) return 'Analizuję pytanie';
+export function getTypingLabelKey(debugSteps: DebugStep[]): TypingLabelKey {
+  if (debugSteps.length === 0) return 'analyzing';
 
   // Stage 3: Generating response
   if (debugSteps.some((s) => s.step === 'generating' || s.step === 'complete')) {
-    return 'Generuję odpowiedź';
+    return 'generating';
   }
 
   // Stage 2: Searching for information
@@ -138,11 +139,11 @@ export function getTypingLabel(debugSteps: DebugStep[]): TypingLabel {
     s.step === 'rerank' ||
     s.step === 'searchComplete'
   )) {
-    return 'Szukam informacji';
+    return 'searching';
   }
 
   // Stage 1: Analyzing question (default)
-  return 'Analizuję pytanie';
+  return 'analyzing';
 }
 
 /**

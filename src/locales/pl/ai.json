@@ -1,4 +1,22 @@
 {
+  "suggestions": {
+    "default": [
+      "Co się stało w Wenezueli?",
+      "Jakie są najnowsze wiadomości?",
+      "Czy były jakieś protesty dzisiaj?",
+      "Co nowego w polityce?",
+      "Co się dzieje w Sejmie?",
+      "Jakie są najnowsze wiadomości o AI?"
+    ]
+  },
+  "status": {
+    "analyzing": "Analizuję pytanie...",
+    "searching": "Szukam informacji...",
+    "generating": "Generuję odpowiedź..."
+  },
+  "conversation": {
+    "new": "Nowa rozmowa"
+  },
   "sidebar": {
     "dateGroups": {
       "today": "Dzisiaj",
@@ -17,7 +35,10 @@
   "input": {
     "placeholder": "Zapytaj o wydarzenia...",
     "send": "Wyślij",
-    "disclaimer": "AI może popełniać błędy. Zawsze weryfikuj ważne informacje."
+    "disclaimer": "AI może popełniać błędy. Zawsze weryfikuj ważne informacje.",
+    "remaining": "pozostało {{count}} zapytań",
+    "remaining_one": "pozostało {{count}} zapytanie",
+    "remaining_few": "pozostało {{count}} zapytania"
   },
   "header": {
     "back": "Wróć",
