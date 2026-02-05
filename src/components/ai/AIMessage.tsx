@@ -6,12 +6,10 @@ import { useAIAnimatingMessageId, useAIVisibleWordCount } from '../../stores/aiS
 
 interface AIMessageProps {
   message: AIMessageType;
-  index: number;
 }
 
 export const AIMessage = memo(function AIMessage({
   message,
-  index,
 }: AIMessageProps) {
   const navigate = useNavigate();
   const animatingMessageId = useAIAnimatingMessageId();
@@ -53,6 +51,11 @@ export const AIMessage = memo(function AIMessage({
     ? tokens.slice(0, visibleWordCount)
     : tokens;
 
+  // Format generation time
+  const generationTimeLabel = message.generationTimeMs
+    ? `${(message.generationTimeMs / 1000).toFixed(1)}s`
+    : null;
+
   return (
     <div
       className="self-start w-full animate-fade-in"
@@ -61,12 +64,20 @@ export const AIMessage = memo(function AIMessage({
       <div className="text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200">
         {visibleTokens.map((token, i) => (
           <span
-            key={`${index}-${i}`}
-            className="inline"
+            key={`${message.id}-${i}`}
+            className={`inline ${isAnimating ? 'animate-word-reveal' : ''}`}
             dangerouslySetInnerHTML={{ __html: formatMarkdown(token) + ' ' }}
           />
         ))}
       </div>
+
+      {/* Generation time - show after animation completes */}
+      {!isAnimating && generationTimeLabel && (
+        <div className="mt-2 text-xs text-zinc-400 dark:text-zinc-500 animate-fade-in">
+          <i className="ri-time-line mr-1" />
+          {generationTimeLabel}
+        </div>
+      )}
 
       {/* Source links styling */}
       <style>{`

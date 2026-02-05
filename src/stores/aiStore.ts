@@ -42,6 +42,9 @@ interface AIState {
   animatingMessageId: string | null;
   visibleWordCount: number;
 
+  // Generation timing
+  generationStartTime: number | null;
+
   // Rate Limiting
   remainingQueries: number;
 
@@ -79,6 +82,10 @@ interface AIActions {
   incrementWordCount: () => void;
   stopWordAnimation: () => void;
 
+  // Timing Actions
+  startGenerationTimer: () => void;
+  stopGenerationTimer: () => number | null;
+
   // Rate Limit Actions
   setRemainingQueries: (remaining: number) => void;
 
@@ -100,7 +107,7 @@ type AIStore = AIState & AIActions;
 
 export const useAIStore = create<AIStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // Initial State
       conversations: [],
       currentConversationId: null,
@@ -110,6 +117,7 @@ export const useAIStore = create<AIStore>()(
       sidebarOpen: true,
       animatingMessageId: null,
       visibleWordCount: 0,
+      generationStartTime: null,
       remainingQueries: import.meta.env.DEV ? 9999 : 20,
       debugSteps: [],
       followUps: [],
@@ -286,6 +294,20 @@ export const useAIStore = create<AIStore>()(
         });
       },
 
+      // Timing Actions
+      startGenerationTimer: () => {
+        set({ generationStartTime: Date.now() });
+      },
+
+      stopGenerationTimer: () => {
+        const startTime = get().generationStartTime;
+        set({ generationStartTime: null });
+        if (startTime) {
+          return Date.now() - startTime;
+        }
+        return null;
+      },
+
       // Rate Limit Actions - ignore in dev mode
       setRemainingQueries: (remaining) => {
         if (import.meta.env.DEV) return;
@@ -398,4 +420,8 @@ export function useAIAnimatingMessageId() {
 
 export function useAIVisibleWordCount() {
   return useAIStore((state) => state.visibleWordCount);
+}
+
+export function useAIGenerationStartTime() {
+  return useAIStore((state) => state.generationStartTime);
 }

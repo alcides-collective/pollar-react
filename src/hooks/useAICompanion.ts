@@ -50,6 +50,8 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
     clearDebugSteps,
     setFollowUps,
     setSuggestions,
+    startGenerationTimer,
+    stopGenerationTimer,
   } = useAIStore();
 
   /**
@@ -109,6 +111,7 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
       setError(null);
       clearDebugSteps();
       setFollowUps([]);
+      startGenerationTimer();
 
       try {
         const visitorId = getVisitorId();
@@ -200,6 +203,9 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
           }
         }
 
+        // Stop timer and get generation time
+        const generationTimeMs = stopGenerationTimer();
+
         // Process and add assistant message
         const sanitizedContent = sanitizeLinks(rawContent);
         const formattedContent = preFormatMarkdown(sanitizedContent);
@@ -208,6 +214,7 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
           role: 'assistant',
           content: formattedContent,
           sources,
+          generationTimeMs: generationTimeMs ?? undefined,
         });
 
         // Calculate word count for animation
@@ -249,6 +256,8 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
       addDebugStep,
       clearDebugSteps,
       setFollowUps,
+      startGenerationTimer,
+      stopGenerationTimer,
       onAnimationStart,
     ]
   );

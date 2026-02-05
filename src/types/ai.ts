@@ -6,6 +6,8 @@ export interface AIMessage {
   content: string;
   sources?: AIEventSource[];
   timestamp: number;
+  /** Generation time in milliseconds (for assistant messages) */
+  generationTimeMs?: number;
 }
 
 export interface AIEventSource {

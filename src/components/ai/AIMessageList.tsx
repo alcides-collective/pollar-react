@@ -112,8 +112,8 @@ export function AIMessageList({
       className="flex-1 overflow-y-auto min-h-0 relative"
     >
       <div className="flex flex-col gap-3 p-4">
-        {messages.map((message, i) => (
-          <AIMessage key={message.id} message={message} index={i} />
+        {messages.map((message) => (
+          <AIMessage key={message.id} message={message} />
         ))}
 
         {showTypingIndicator && <AITypingIndicator />}
