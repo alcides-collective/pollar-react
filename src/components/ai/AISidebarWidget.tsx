@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAISuggestions, useAIStore } from '../../stores/aiStore';
+import { useLanguage } from '../../stores/languageStore';
 import { API_BASE } from '../../config/api';
 
 const PAUSE_BETWEEN = 4000; // ms to show each placeholder
@@ -9,6 +10,7 @@ const PAUSE_BETWEEN = 4000; // ms to show each placeholder
 export function AISidebarWidget() {
   const { t } = useTranslation('ai');
   const navigate = useNavigate();
+  const language = useLanguage();
   const suggestions = useAISuggestions();
   const setSuggestions = useAIStore((s) => s.setSuggestions);
 
@@ -27,11 +29,11 @@ export function AISidebarWidget() {
 
   const currentText = placeholders[placeholderIndex];
 
-  // Fetch suggestions on mount
+  // Fetch suggestions on mount and when language changes
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
-        const response = await fetch(`${API_BASE}/assistant/suggestions`);
+        const response = await fetch(`${API_BASE}/assistant/suggestions?language=${language}`);
         if (response.ok) {
           const data = await response.json();
           if (data.suggestions?.length >= 4) {
@@ -43,7 +45,7 @@ export function AISidebarWidget() {
       }
     };
     fetchSuggestions();
-  }, [setSuggestions]);
+  }, [setSuggestions, language]);
 
   // Cycle through placeholders with fade
   useEffect(() => {

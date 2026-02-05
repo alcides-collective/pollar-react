@@ -73,7 +73,7 @@ export function AIInput({ onSend, autoFocus = false }: AIInputProps) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={isDisabled}
-          placeholder="Zapytaj o wydarzenia..."
+          placeholder={t('input.placeholder')}
           rows={1}
           className="flex-1 resize-none bg-transparent text-base text-zinc-800 dark:text-zinc-200
                      placeholder:text-zinc-400 dark:placeholder:text-zinc-500
@@ -83,7 +83,7 @@ export function AIInput({ onSend, autoFocus = false }: AIInputProps) {
         <button
           onClick={handleSend}
           disabled={!canSend}
-          aria-label="Wyslij"
+          aria-label={t('input.send')}
           className={`
             flex items-center justify-center w-9 h-9 rounded-xl shrink-0
             transition-all duration-150 active:scale-95

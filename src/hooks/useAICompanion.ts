@@ -71,11 +71,11 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
   }, [setRemainingQueries]);
 
   /**
-   * Fetch suggestions from API
+   * Fetch suggestions from API (language-aware)
    */
   const fetchSuggestions = useCallback(async () => {
     try {
-      const response = await fetch(`${API_BASE}/assistant/suggestions`);
+      const response = await fetch(`${API_BASE}/assistant/suggestions?language=${language}`);
       if (response.ok) {
         const data = await response.json();
         if (data.suggestions?.length >= 4) {
@@ -85,7 +85,7 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
     } catch {
       // Keep default suggestions
     }
-  }, [setSuggestions]);
+  }, [setSuggestions, language]);
 
   /**
    * Send message to AI companion
