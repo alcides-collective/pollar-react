@@ -51,3 +51,17 @@ export function useMPsByClub() {
     ...rest,
   };
 }
+
+export function useMPsMap() {
+  const { mps, ...rest } = useMPs();
+
+  const mpsMap = new Map<number, SejmMP>();
+  mps.forEach(mp => {
+    mpsMap.set(mp.id, mp);
+  });
+
+  return {
+    mpsMap,
+    ...rest,
+  };
+}

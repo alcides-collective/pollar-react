@@ -1,11 +1,13 @@
-import type { SejmInterpellation } from '../../types/sejm';
+import type { SejmInterpellation, SejmMP } from '../../types/sejm';
+import { LocalizedLink } from '../LocalizedLink';
 
 interface InterpellationCardProps {
   interpellation: SejmInterpellation;
+  mpsMap?: Map<number, SejmMP>;
   onClick?: () => void;
 }
 
-export function InterpellationCard({ interpellation, onClick }: InterpellationCardProps) {
+export function InterpellationCard({ interpellation, mpsMap, onClick }: InterpellationCardProps) {
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return '';
     const date = new Date(dateStr);
@@ -18,11 +20,18 @@ export function InterpellationCard({ interpellation, onClick }: InterpellationCa
 
   const hasReply = interpellation.replies && interpellation.replies.length > 0;
 
+  // Resolve MP IDs to names
+  const getMPName = (idStr: string) => {
+    const id = parseInt(idStr, 10);
+    if (mpsMap && !isNaN(id)) {
+      const mp = mpsMap.get(id);
+      if (mp) return mp.firstLastName;
+    }
+    return idStr; // fallback to ID if not found
+  };
+
   return (
-    <button
-      onClick={onClick}
-      className="block w-full text-left rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
-    >
+    <div className="rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4">
       <div className="flex items-start justify-between gap-3 mb-2">
         <span className="shrink-0 bg-zinc-100 text-zinc-600 text-xs font-mono px-2 py-0.5 rounded">
           #{interpellation.num}
@@ -38,14 +47,38 @@ export function InterpellationCard({ interpellation, onClick }: InterpellationCa
         </span>
       </div>
 
-      <h3 className="text-sm font-medium text-zinc-900 leading-tight line-clamp-2 mb-2">
-        {interpellation.title}
-      </h3>
+      <button
+        onClick={onClick}
+        className="block w-full text-left"
+      >
+        <h3 className="text-sm font-medium text-zinc-900 leading-tight line-clamp-2 mb-2 hover:text-blue-600 transition-colors">
+          {interpellation.title}
+        </h3>
+      </button>
 
       <div className="text-[11px] text-zinc-500 space-y-1">
-        <div>
-          <span className="text-zinc-400">Od:</span>{' '}
-          {interpellation.from.join(', ')}
+        <div className="flex flex-wrap gap-x-1">
+          <span className="text-zinc-400">Od:</span>
+          {interpellation.from.map((idStr, i) => {
+            const id = parseInt(idStr, 10);
+            const mp = mpsMap && !isNaN(id) ? mpsMap.get(id) : null;
+            return (
+              <span key={idStr}>
+                {mp ? (
+                  <LocalizedLink
+                    to={`/sejm/poslowie/${id}`}
+                    className="text-blue-600 hover:underline"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {mp.firstLastName}
+                  </LocalizedLink>
+                ) : (
+                  <span>{idStr}</span>
+                )}
+                {i < interpellation.from.length - 1 && ','}
+              </span>
+            );
+          })}
         </div>
         <div>
           <span className="text-zinc-400">Do:</span>{' '}
@@ -60,6 +93,6 @@ export function InterpellationCard({ interpellation, onClick }: InterpellationCa
           )}
         </div>
       </div>
-    </button>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInterpellations, fetchInterpellationBody } from '../../hooks/useInterpellations';
+import { useMPsMap } from '../../hooks/useMPs';
 import { InterpellationCard, SejmApiError } from '../../components/sejm';
 import type { SejmInterpellation } from '../../types/sejm';
 
@@ -9,6 +10,7 @@ type FilterOption = 'all' | 'answered' | 'pending';
 export function InterpellationsPage() {
   const { t } = useTranslation('sejm');
   const { interpellations, hasMore, loading, loadingMore, loadMore, error } = useInterpellations();
+  const { mpsMap } = useMPsMap();
   const [filter, setFilter] = useState<FilterOption>('all');
   const [selectedInterpellation, setSelectedInterpellation] = useState<SejmInterpellation | null>(null);
   const [bodyContent, setBodyContent] = useState<string | null>(null);
@@ -98,6 +100,7 @@ export function InterpellationsPage() {
           <InterpellationCard
             key={interpellation.num}
             interpellation={interpellation}
+            mpsMap={mpsMap}
             onClick={() => handleOpenInterpellation(interpellation)}
           />
         ))}
