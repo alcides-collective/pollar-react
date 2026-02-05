@@ -12,7 +12,9 @@
   "sidebar": {
     "mentionedPeople": "Wspomniane osoby",
     "sources": "Źródła ({{count}})",
-    "moreSources": "+ {{count}} więcej źródeł"
+    "moreSources_one": "+ jeszcze {{count}} źródło",
+    "moreSources_few": "+ jeszcze {{count}} źródła",
+    "moreSources_many": "+ jeszcze {{count}} źródeł"
   },
   "navigation": {
     "previous": "Poprzednie",
