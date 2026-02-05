@@ -220,3 +220,71 @@ export const sectionReveal: Variants = {
     },
   },
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Animated Underline Variants
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Slide from left - elegant, professional
+export const underlineSlideFromLeft: Variants = {
+  initial: { scaleX: 0, originX: 0 },
+  hover: {
+    scaleX: 1,
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+}
+
+// Slide from center - symmetric, balanced
+export const underlineSlideFromCenter: Variants = {
+  initial: { scaleX: 0, originX: 0.5 },
+  hover: {
+    scaleX: 1,
+    transition: {
+      duration: 0.25,
+      ease: 'easeOut',
+    },
+  },
+}
+
+// Elastic - playful spring effect
+export const underlineElastic: Variants = {
+  initial: { scaleX: 0, originX: 0 },
+  hover: {
+    scaleX: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 400,
+      damping: 15,
+    },
+  },
+}
+
+// Reveal - subtle lift + fade
+export const underlineReveal: Variants = {
+  initial: { scaleX: 0, originX: 0, y: 4, opacity: 0 },
+  hover: {
+    scaleX: 1,
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.35,
+      ease: [0.23, 1, 0.32, 1],
+    },
+  },
+}
+
+// Brush stroke - artistic, dynamic
+export const underlineBrush: Variants = {
+  initial: { scaleX: 0, originX: 0, skewX: -15 },
+  hover: {
+    scaleX: 1,
+    skewX: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.34, 1.56, 0.64, 1],
+    },
+  },
+}

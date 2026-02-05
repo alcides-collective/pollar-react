@@ -6,6 +6,7 @@ import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 import { AnimateHeight } from '../common/AnimateHeight';
 import { SectionWrapper } from '../common/SectionWrapper';
+import { AnimatedUnderline } from '../common/AnimatedUnderline';
 
 interface CategoryTabsProps {
   groups: Array<[string, Event[]]>;
@@ -58,7 +59,7 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
               >
                 <div className="flex flex-col md:flex-row">
                   {selectedGroup[1][0] && (
-                <LocalizedLink to={`/event/${selectedGroup[1][0].id}`} className="group flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
+                <LocalizedLink to={`/event/${selectedGroup[1][0].id}`} className="group/underline flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-zinc-200">
                   <article className="flex flex-col md:flex-row gap-4">
                     <div className="w-full md:w-80 md:shrink-0">
                       <div className="relative">
@@ -76,8 +77,8 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                     </div>
                     <div>
                       <span className="text-zinc-400 text-xs">{selectedGroup[1][0].category}</span>
-                      <h4 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">
-                        {selectedGroup[1][0].title}
+                      <h4 className="text-zinc-900 font-semibold text-xl leading-tight">
+                        <AnimatedUnderline>{selectedGroup[1][0].title}</AnimatedUnderline>
                       </h4>
                       <p className="text-sm text-zinc-600 mt-2 leading-snug">
                         {selectedGroup[1][0].lead}
@@ -91,10 +92,10 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                   <LocalizedLink
                     key={event.id}
                     to={`/event/${event.id}`}
-                    className="group block p-6 hover:bg-zinc-50 transition-colors border-b border-zinc-200"
+                    className="group/underline block p-6 hover:bg-zinc-50 transition-colors border-b border-zinc-200"
                   >
-                    <h4 className="text-zinc-600 text-sm leading-tight group-hover:underline">
-                      {event.title}
+                    <h4 className="text-zinc-600 text-sm leading-tight">
+                      <AnimatedUnderline>{event.title}</AnimatedUnderline>
                     </h4>
                   </LocalizedLink>
                 ))}

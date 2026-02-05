@@ -890,3 +890,37 @@ body {
   animation: shimmer 1.5s infinite;
 }
 
+/* ==========================================
+   Animated Underline Effects with Shimmer Gradient
+   - Underline: diagonal shimmer gradient (appears on hover)
+   - Works with multiline text using background-image
+   ========================================== */
+
+.animated-underline {
+  /* Shimmer gradient underline - more visible */
+  background-image: linear-gradient(
+    135deg,
+    #18181b 0%,
+    #18181b 25%,
+    #52525b 50%,
+    #18181b 75%,
+    #18181b 100%
+  );
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 0.15em;
+
+  /* Smooth animation */
+  transition: background-size 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Enable multiline support */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Show underline on hover */
+.group\/underline:hover .animated-underline,
+.animated-underline:hover {
+  background-size: 100% 0.15em;
+}
+

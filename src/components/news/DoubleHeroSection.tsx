@@ -3,6 +3,7 @@ import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { LocalizedLink } from '../LocalizedLink';
+import { AnimatedUnderline } from '../common/AnimatedUnderline';
 
 interface DoubleHeroSectionProps {
   events: Event[];
@@ -23,7 +24,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
       priority="auto"
     >
       <div className={`grid grid-cols-1 ${gridCols}`}>
-      <LocalizedLink to={`/event/${leftEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors border-b md:border-b-0 md:border-r border-zinc-200">
+      <LocalizedLink to={`/event/${leftEvent.id}`} className="group/underline p-6 hover:bg-zinc-50 transition-colors border-b md:border-b-0 md:border-r border-zinc-200">
         <article>
           <div className="mb-4 relative">
             <EventImage
@@ -40,8 +41,8 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
             )}
           </div>
           <span className="text-zinc-400 text-xs">{leftEvent.category}</span>
-          <h3 className={`text-zinc-900 font-semibold leading-tight group-hover:underline ${leftIsLarger ? 'text-2xl' : 'text-xl'}`}>
-            {leftEvent.title}
+          <h3 className={`text-zinc-900 font-semibold leading-tight ${leftIsLarger ? 'text-2xl' : 'text-xl'}`}>
+            <AnimatedUnderline>{leftEvent.title}</AnimatedUnderline>
           </h3>
           <p className={`text-zinc-600 leading-snug ${leftIsLarger ? 'mt-3' : 'mt-2 text-sm'}`}>
             {leftEvent.lead}
@@ -49,7 +50,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
         </article>
       </LocalizedLink>
 
-      <LocalizedLink to={`/event/${rightEvent.id}`} className="group p-6 hover:bg-zinc-50 transition-colors">
+      <LocalizedLink to={`/event/${rightEvent.id}`} className="group/underline p-6 hover:bg-zinc-50 transition-colors">
         <article>
           <div className="mb-4 relative">
             <EventImage
@@ -66,8 +67,8 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
             )}
           </div>
           <span className="text-zinc-400 text-xs">{rightEvent.category}</span>
-          <h3 className={`text-zinc-900 font-semibold leading-tight group-hover:underline ${rightIsLarger ? 'text-2xl' : 'text-xl'}`}>
-            {rightEvent.title}
+          <h3 className={`text-zinc-900 font-semibold leading-tight ${rightIsLarger ? 'text-2xl' : 'text-xl'}`}>
+            <AnimatedUnderline>{rightEvent.title}</AnimatedUnderline>
           </h3>
           <p className={`text-zinc-600 leading-snug ${rightIsLarger ? 'mt-3' : 'mt-2 text-sm'}`}>
             {rightEvent.lead}

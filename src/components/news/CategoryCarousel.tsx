@@ -9,6 +9,7 @@ import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 import { SectionImageContext } from '../../hooks/useSectionImages';
 import { LocalizedLink } from '../LocalizedLink';
+import { AnimatedUnderline } from '../common/AnimatedUnderline';
 
 interface CategoryCarouselProps {
   category: string;
@@ -23,7 +24,7 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
   return (
     <LocalizedLink
       to={`/event/${event.id}`}
-      className={`group p-6 hover:bg-zinc-50 transition-colors h-full block ${hideBorder ? '' : 'border-r border-zinc-200'}`}
+      className={`group/underline p-6 hover:bg-zinc-50 transition-colors h-full block ${hideBorder ? '' : 'border-r border-zinc-200'}`}
     >
       <article>
         <div className="mb-4 relative">
@@ -40,8 +41,8 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
             </span>
           )}
         </div>
-        <h3 className="text-zinc-900 font-semibold leading-tight group-hover:underline">
-          {event.title}
+        <h3 className="text-zinc-900 font-semibold leading-tight">
+          <AnimatedUnderline>{event.title}</AnimatedUnderline>
         </h3>
       </article>
     </LocalizedLink>

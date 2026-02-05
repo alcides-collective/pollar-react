@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { GrainImage } from '../common/GrainImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { LocalizedLink } from '../LocalizedLink';
+import { AnimatedUnderline } from '../common/AnimatedUnderline';
 import powiazaniaImg from '../../assets/images/discover/powiazania.webp';
 import sejmImg from '../../assets/images/discover/sejm.webp';
 import gieldaImg from '../../assets/images/discover/gielda.webp';
@@ -43,7 +44,7 @@ function DiscoverCard({ link, t }: { link: DiscoverLink; t: (key: string) => str
   const description = t(link.descriptionKey);
 
   return (
-    <LocalizedLink to={link.path} className="group block p-6 hover:bg-amber-100 transition-colors h-full">
+    <LocalizedLink to={link.path} className="group/underline block p-6 hover:bg-amber-100 transition-colors h-full">
       <article>
         <div className="mb-4">
           {link.image ? (
@@ -61,8 +62,8 @@ function DiscoverCard({ link, t }: { link: DiscoverLink; t: (key: string) => str
           )}
         </div>
         <span className="text-zinc-400 text-xs uppercase tracking-wide">{t('discover.title')}</span>
-        <h3 className="text-zinc-900 font-semibold text-xl leading-tight group-hover:underline">
-          {title}
+        <h3 className="text-zinc-900 font-semibold text-xl leading-tight">
+          <AnimatedUnderline>{title}</AnimatedUnderline>
         </h3>
         <p className="text-sm text-zinc-600 mt-2 leading-snug line-clamp-3">
           {description}

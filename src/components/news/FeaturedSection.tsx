@@ -5,6 +5,7 @@ import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { LocalizedLink } from '../LocalizedLink';
+import { AnimatedHeadline, AnimatedUnderline } from '../common/AnimatedUnderline';
 
 interface FeaturedSectionProps {
   events: Event[];
@@ -64,11 +65,13 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
 
       <div className="p-6">
         <span className="text-zinc-500 text-sm">{mainEvent.category}</span>
-        <LocalizedLink to={`/event/${mainEvent.id}`}>
-          <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 mt-1 mb-3 leading-tight hover:underline cursor-pointer">
-            {mainEvent.title}
-          </h2>
-        </LocalizedLink>
+        <AnimatedHeadline
+          to={`/event/${mainEvent.id}`}
+          as="h2"
+          className="text-3xl md:text-4xl font-bold text-zinc-900 mt-1 mb-3 leading-tight"
+        >
+          {mainEvent.title}
+        </AnimatedHeadline>
 
         {/* Leadbox - only on mobile (after headline) */}
         {(imageSource || mainEvent.lead) && (
@@ -123,10 +126,12 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-col justify-center">
+                  <div className="flex flex-col justify-center group/underline">
                     <span className="text-zinc-400 text-xs">{event.category}</span>
                     <h3 className="text-zinc-900 font-semibold text-base leading-snug">
-                      {event.title}
+                      <AnimatedUnderline>
+                        {event.title}
+                      </AnimatedUnderline>
                     </h3>
                   </div>
                 </LocalizedLink>
