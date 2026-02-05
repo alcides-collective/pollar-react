@@ -122,15 +122,15 @@ function escapeXml(str) {
 
 // OG Image generation endpoint
 app.get('/api/og', async (req, res) => {
-  const { title = 'Pollar News', type = 'default', description = '' } = req.query;
+  const { title = 'Pollar News', type = 'default', description = '', lang = 'pl' } = req.query;
 
   const typeLabels = {
-    event: 'WYDARZENIE',
-    brief: 'DAILY BRIEF',
-    felieton: 'FELIETON',
-    default: '',
+    event: { pl: 'WYDARZENIE', en: 'EVENT', de: 'EREIGNIS' },
+    brief: { pl: 'DAILY BRIEF', en: 'DAILY BRIEF', de: 'DAILY BRIEF' },
+    felieton: { pl: 'FELIETON', en: 'OPINION', de: 'KOLUMNE' },
+    default: { pl: '', en: '', de: '' },
   };
-  const typeLabel = typeLabels[type] || '';
+  const typeLabel = typeLabels[type]?.[lang] || typeLabels[type]?.pl || '';
 
   // Calculate font size based on title length
   const fontSize = title.length > 100 ? 40 : title.length > 80 ? 48 : title.length > 50 ? 56 : 64;
@@ -751,7 +751,7 @@ app.use(async (req, res, next) => {
       const description = truncate(stripHtml(kp?.description || event.lead || event.summary || ''), 160);
       // For OG image, use longer description (up to 300 chars for multi-line display)
       const ogImageDescription = truncate(stripHtml(event.lead || kp?.description || event.summary || ''), 300);
-      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}`;
+      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
 
       // Generate NewsArticle schema for AEO
       const schema = generateNewsArticleSchema({
@@ -808,7 +808,7 @@ app.use(async (req, res, next) => {
     }
 
     const ogTitle = `Pollar News: ${briefTitle}`;
-    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(imageTitle)}&type=brief&description=${encodeURIComponent(ogImageDescription)}`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(imageTitle)}&type=brief&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
 
     // Generate NewsArticle schema for AEO
     const schema = generateNewsArticleSchema({
@@ -848,7 +848,7 @@ app.use(async (req, res, next) => {
     }
 
     const ogTitle = `Pollar News: ${felietonTitle}`;
-    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(felietonTitle)}&type=felieton&description=${encodeURIComponent(ogImageDescription)}`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(felietonTitle)}&type=felieton&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
 
     // Generate NewsArticle schema for AEO
     const schema = generateNewsArticleSchema({
@@ -879,7 +879,7 @@ app.use(async (req, res, next) => {
     const isHomepage = pathWithoutLang === '/';
     const ogTitle = isHomepage ? pageInfo.title : `Pollar News: ${pageInfo.title}`;
     const pageTitle = isHomepage ? 'Pollar — Wiesz więcej' : `${pageInfo.title} | Pollar`;
-    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}&description=${encodeURIComponent(pageInfo.description)}`;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}&description=${encodeURIComponent(pageInfo.description)}&lang=${lang}`;
 
     // Use Organization schema for homepage, WebPage + BreadcrumbList for other static pages
     let schema;
