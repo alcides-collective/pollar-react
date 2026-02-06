@@ -28,6 +28,7 @@ export function Footer() {
         { label: t('nav.terminal'), to: '/terminal' },
         { label: t('nav.connections'), to: '/powiazania' },
         { label: t('nav.archive'), to: '/archiwum' },
+        { label: t('nav.sources'), to: '/sources' },
         { label: t('nav.about'), to: '/info' },
       ],
     },
@@ -63,6 +64,7 @@ export function Footer() {
   ];
 
   const legalLinks = [
+    { label: t('footer.terms'), to: '/regulamin' },
     { label: t('footer.privacyPolicy'), to: '/polityka-prywatnosci' },
     { label: t('footer.cookies'), to: '/cookies' },
   ];
