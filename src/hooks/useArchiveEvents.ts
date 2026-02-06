@@ -5,9 +5,7 @@ import { CATEGORY_ORDER } from '../constants/categories';
 import { useLanguage, type Language } from '../stores/languageStore';
 import type { Event } from '../types/events';
 
-const ARCHIVE_API_BASE = import.meta.env.DEV
-  ? '/api'  // Vite proxy in development
-  : 'https://pollar-backend-production.up.railway.app/api';
+const ARCHIVE_API_BASE = 'https://pollar-backend-production.up.railway.app/api';
 
 interface UseArchiveEventsOptions {
   limit?: number;
