@@ -465,14 +465,14 @@ export function SourcesPage() {
             <thead>
               <tr className="border-b border-zinc-200 bg-muted">
                 <th
-                  className="text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                  className="w-[30%] text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
                   onClick={() => toggleSort('name')}
                 >
                   {t('sources.colSource')}
                   {sortBy === 'name' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
                 </th>
                 <th
-                  className="text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                  className="w-[25%] text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
                   onClick={() => toggleSort('nationality')}
                 >
                   {t('sources.colCountry')}
