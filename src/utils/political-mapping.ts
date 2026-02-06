@@ -468,6 +468,31 @@ export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
   'Top Agrar': 'center',
   'tygodnik-rolniczy.pl': 'center',
   'Tygodnik Rolniczy': 'center',
+
+  // === Zagraniczne niszowe ===
+  'tooofa.com': 'center',
+  'América Digital': 'center',
+  'america-digital.com': 'center',
+  'publicar.argentina.indymedia.org': 'progressive',
+  'argentina.indymedia.org': 'progressive',
+  'Indymedia Argentina': 'progressive',
+  'ZDNet': 'center',
+  'ZDNET': 'center',
+  'zdnet.com': 'center',
+  'Andhrawatch': 'center',
+  'andhrawatch.com': 'center',
+  'Radio 90 FM': 'center',
+  'eGospodarka.pl': 'center',
+  'egospodarka.pl': 'center',
+  'mjakmama24.pl': 'center',
+  'dzieje.pl': 'center',
+  'infowire.pl': 'center',
+  'Life, For Instance': 'center',
+  'lifeforinstance.com': 'center',
+  'ARTnews.com': 'center',
+  'artnews.com': 'center',
+  'VentureBeat': 'center',
+  'venturebeat.com': 'center',
 };
 
 export function getPoliticalLeaning(source: string): PoliticalLeaning {

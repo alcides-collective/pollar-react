@@ -500,6 +500,31 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'Top Agrar': 'german',
   'tygodnik-rolniczy.pl': 'polish',
   'Tygodnik Rolniczy': 'polish',
+
+  // === Zagraniczne niszowe ===
+  'tooofa.com': 'other',
+  'América Digital': 'other',
+  'america-digital.com': 'other',
+  'publicar.argentina.indymedia.org': 'other',
+  'argentina.indymedia.org': 'other',
+  'Indymedia Argentina': 'other',
+  'ZDNet': 'american',
+  'ZDNET': 'american',
+  'zdnet.com': 'american',
+  'Andhrawatch': 'other',
+  'andhrawatch.com': 'other',
+  'Radio 90 FM': 'polish',
+  'eGospodarka.pl': 'polish',
+  'egospodarka.pl': 'polish',
+  'mjakmama24.pl': 'polish',
+  'dzieje.pl': 'polish',
+  'infowire.pl': 'polish',
+  'Life, For Instance': 'american',
+  'lifeforinstance.com': 'american',
+  'ARTnews.com': 'american',
+  'artnews.com': 'american',
+  'VentureBeat': 'american',
+  'venturebeat.com': 'american',
 };
 
 export function getSourceNationality(source: string): SourceNationality {
