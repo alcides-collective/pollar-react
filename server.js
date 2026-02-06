@@ -489,6 +489,7 @@ app.use(helmet({
         "https://t.co",
         "https://analytics.twitter.com",
         "https://t.contentsquare.net",
+        "https://upload.wikimedia.org",
       ],
       fontSrc: ["'self'", "data:"],
       connectSrc: [
