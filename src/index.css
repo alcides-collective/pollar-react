@@ -936,10 +936,19 @@ body {
   box-decoration-break: clone;
 }
 
-/* Show underline on hover */
-.group\/underline:hover .animated-underline,
-.animated-underline:hover {
-  background-size: 100% 0.15em;
+/* Show underline on hover - desktop only (fine pointer) */
+@media (pointer: fine) {
+  .group\/underline:hover .animated-underline,
+  .animated-underline:hover {
+    background-size: 100% 0.15em;
+  }
+}
+
+/* Touch devices: show underline when centered in viewport */
+@media (pointer: coarse) {
+  .animated-underline[data-centered] {
+    background-size: 100% 0.15em;
+  }
 }
 
 /* Per-line animated underline with stagger delay */
@@ -960,8 +969,17 @@ body {
   transition-delay: var(--line-delay, 0ms);
 }
 
-/* Show underline on hover - per line */
-.group\/underline:hover .animated-underline-line {
-  background-size: 100% 0.15em;
+/* Show underline on hover - per line - desktop only */
+@media (pointer: fine) {
+  .group\/underline:hover .animated-underline-line {
+    background-size: 100% 0.15em;
+  }
+}
+
+/* Touch devices: show underline when centered in viewport - per line */
+@media (pointer: coarse) {
+  [data-centered] .animated-underline-line {
+    background-size: 100% 0.15em;
+  }
 }
 

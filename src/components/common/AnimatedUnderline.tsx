@@ -1,6 +1,94 @@
 import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react';
 import { LocalizedLink } from '../LocalizedLink';
 
+/**
+ * Hook to detect if an element is in the center portion of the viewport.
+ * Used for touch devices where hover doesn't work.
+ * @param ref - Reference to the element to observe
+ * @param enabled - Whether to enable the observer (e.g., only on touch devices)
+ * @returns Whether the element is currently in the center zone
+ */
+function useViewportCenter(
+  ref: React.RefObject<HTMLElement | null>,
+  enabled: boolean
+): boolean {
+  const [isCentered, setIsCentered] = useState(false);
+
+  useEffect(() => {
+    if (!enabled || !ref.current) return;
+
+    // Define the "center zone" - middle 40% of viewport
+    // Top 30% and bottom 30% are excluded
+    const topMargin = Math.floor(window.innerHeight * 0.3);
+    const bottomMargin = Math.floor(window.innerHeight * 0.3);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsCentered(entry.isIntersecting);
+        });
+      },
+      {
+        // Negative margins shrink the intersection area to center zone
+        rootMargin: `-${topMargin}px 0px -${bottomMargin}px 0px`,
+        threshold: 0,
+      }
+    );
+
+    observer.observe(ref.current);
+
+    // Update margins on resize
+    const handleResize = () => {
+      observer.disconnect();
+      if (!ref.current) return;
+
+      const newTopMargin = Math.floor(window.innerHeight * 0.3);
+      const newBottomMargin = Math.floor(window.innerHeight * 0.3);
+
+      const newObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            setIsCentered(entry.isIntersecting);
+          });
+        },
+        {
+          rootMargin: `-${newTopMargin}px 0px -${newBottomMargin}px 0px`,
+          threshold: 0,
+        }
+      );
+      newObserver.observe(ref.current);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [ref, enabled]);
+
+  return isCentered;
+}
+
+/**
+ * Detect if device has touch as primary input (coarse pointer)
+ */
+function useIsTouchDevice(): boolean {
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    // Check for coarse pointer (touch devices)
+    const mediaQuery = window.matchMedia('(pointer: coarse)');
+    setIsTouch(mediaQuery.matches);
+
+    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  return isTouch;
+}
+
 interface AnimatedUnderlineProps {
   children: ReactNode;
   className?: string;
@@ -11,6 +99,7 @@ interface AnimatedUnderlineProps {
 /**
  * Animated underline with staggered per-line effect.
  * Detects text lines and animates each with a slight delay.
+ * On touch devices, triggers when element is in center of viewport.
  */
 export function AnimatedUnderline({
   children,
@@ -19,6 +108,8 @@ export function AnimatedUnderline({
 }: AnimatedUnderlineProps) {
   const containerRef = useRef<HTMLSpanElement>(null);
   const [lines, setLines] = useState<string[] | null>(null);
+  const isTouch = useIsTouchDevice();
+  const isCentered = useViewportCenter(containerRef, isTouch);
 
   const measureLines = useCallback(() => {
     if (!containerRef.current) return;
@@ -97,7 +188,11 @@ export function AnimatedUnderline({
   // Render measurement span (invisible flash, then lines)
   if (lines === null) {
     return (
-      <span ref={containerRef} className={`animated-underline ${className}`}>
+      <span
+        ref={containerRef}
+        className={`animated-underline ${className}`}
+        data-centered={isCentered || undefined}
+      >
         {children}
       </span>
     );
@@ -105,7 +200,7 @@ export function AnimatedUnderline({
 
   // Render lines with stagger
   return (
-    <span className={className}>
+    <span ref={containerRef} className={className} data-centered={isCentered || undefined}>
       {lines.map((line, i) => (
         <span
           key={`${i}-${line.slice(0, 10)}`}
