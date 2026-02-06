@@ -233,29 +233,45 @@ export function SourcesPage() {
           <Skeleton className="h-8 w-48 mb-2" />
           <Skeleton className="h-4 w-96" />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} className="border-zinc-200">
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="lg:col-span-2 space-y-6">
+            <Card className="border-zinc-200">
               <CardContent className="pt-6">
-                <Skeleton className="h-4 w-20 mb-2" />
-                <Skeleton className="h-8 w-24" />
+                <Skeleton className="h-9 w-full" />
               </CardContent>
             </Card>
-          ))}
-        </div>
-        <Card className="mb-6 border-zinc-200">
-          <CardContent className="pt-6">
-            <Skeleton className="h-6 w-full" />
-          </CardContent>
-        </Card>
-        <div className="space-y-2">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <Card key={i} className="border-zinc-200">
+            <div className="space-y-2">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <Card key={i} className="border-zinc-200">
+                  <CardContent className="pt-6">
+                    <Skeleton className="h-6 w-full" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+          <div className="lg:col-span-1 space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Card key={i} className="border-zinc-200">
+                  <CardContent className="pt-6">
+                    <Skeleton className="h-4 w-20 mb-2" />
+                    <Skeleton className="h-8 w-24" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            <Card className="border-zinc-200">
               <CardContent className="pt-6">
                 <Skeleton className="h-6 w-full" />
               </CardContent>
             </Card>
-          ))}
+            <Card className="border-zinc-200">
+              <CardContent className="pt-6">
+                <Skeleton className="h-6 w-full" />
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     );
@@ -266,273 +282,284 @@ export function SourcesPage() {
       {/* Header */}
       <DaneHeader title={t('sources.title')} subtitle={t('sources.subtitle')} icon="ri-newspaper-line" />
 
-      {/* Statistics Cards */}
-      <StatsGrid
-        stats={[
-          { label: t('sources.sourcesCount'), value: sources.length },
-          { label: t('sources.totalArticles'), value: totalArticles.toLocaleString() },
-          { label: t('sources.avgPerSource'), value: avgArticlesPerSource },
-          ...(topSource
-            ? [{ label: `${t('sources.topSource')} (${topSource.count.toLocaleString()} ${t('sources.articles')})`, value: topSource.name }]
-            : []),
-        ]}
-        columns={4}
-        className="mb-6"
-        cardClassName="border-zinc-200"
-      />
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Left column — Filters & Table */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Filters */}
+          <Card className="border-zinc-200">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">{t('sources.filters')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-3 items-center">
+                <Input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t('sources.searchPlaceholder')}
+                  className="w-48"
+                />
+                <select
+                  value={filterNationality}
+                  onChange={(e) => setFilterNationality(e.target.value as SourceNationality | 'all')}
+                  className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
+                >
+                  <option value="all">{t('sources.allNationalities')}</option>
+                  {countryStats.map(({ nationality }) => (
+                    <option key={nationality} value={nationality}>
+                      {nationalityLabels[nationality][lang]}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={filterPolitical}
+                  onChange={(e) => setFilterPolitical(e.target.value as PoliticalLeaning | 'all')}
+                  className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
+                >
+                  <option value="all">{t('sources.allPolitical')}</option>
+                  {activePoliticalLeanings.map((pol) => (
+                    <option key={pol} value={pol}>
+                      {politicalLabels[pol][lang]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </CardContent>
+          </Card>
 
-      {/* Political Balance Bar */}
-      <Card className="mb-6 border-zinc-200">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium">{t('sources.politicalBalance')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex h-6 rounded-lg overflow-hidden bg-muted">
-            {politicalBalance.progressivePct > 0 && (
-              <div
-                className="flex items-center justify-center transition-all duration-300 bg-red-800"
-                style={{ width: `${politicalBalance.progressivePct}%` }}
-                title={`${politicalLabels.progressive[lang]}: ${politicalBalance.progressive}`}
-              >
-                {politicalBalance.progressivePct >= 10 && (
-                  <span className="text-xs font-semibold text-white">{politicalBalance.progressivePct}%</span>
-                )}
-              </div>
-            )}
-            {politicalBalance.centerLeftPct > 0 && (
-              <div
-                className="flex items-center justify-center transition-all duration-300 bg-red-600"
-                style={{ width: `${politicalBalance.centerLeftPct}%` }}
-                title={`${politicalLabels.center_left[lang]}: ${politicalBalance.centerLeft}`}
-              >
-                {politicalBalance.centerLeftPct >= 10 && (
-                  <span className="text-xs font-semibold text-white">{politicalBalance.centerLeftPct}%</span>
-                )}
-              </div>
-            )}
-            {politicalBalance.centerPct > 0 && (
-              <div
-                className="flex items-center justify-center transition-all duration-300 bg-zinc-400"
-                style={{ width: `${politicalBalance.centerPct}%` }}
-                title={`${politicalLabels.center[lang]}: ${politicalBalance.center}`}
-              >
-                {politicalBalance.centerPct >= 10 && (
-                  <span className="text-xs font-semibold text-white">{politicalBalance.centerPct}%</span>
-                )}
-              </div>
-            )}
-            {politicalBalance.centerRightPct > 0 && (
-              <div
-                className="flex items-center justify-center transition-all duration-300 bg-blue-600"
-                style={{ width: `${politicalBalance.centerRightPct}%` }}
-                title={`${politicalLabels.center_right[lang]}: ${politicalBalance.centerRight}`}
-              >
-                {politicalBalance.centerRightPct >= 10 && (
-                  <span className="text-xs font-semibold text-white">{politicalBalance.centerRightPct}%</span>
-                )}
-              </div>
-            )}
-            {politicalBalance.conservativePct > 0 && (
-              <div
-                className="flex items-center justify-center transition-all duration-300 bg-blue-800"
-                style={{ width: `${politicalBalance.conservativePct}%` }}
-                title={`${politicalLabels.conservative[lang]}: ${politicalBalance.conservative}`}
-              >
-                {politicalBalance.conservativePct >= 10 && (
-                  <span className="text-xs font-semibold text-white">{politicalBalance.conservativePct}%</span>
-                )}
-              </div>
-            )}
-          </div>
-          <div className="flex flex-wrap gap-4 mt-3 justify-center">
-            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-800" />
-              {politicalLabels.progressive[lang]} ({politicalBalance.progressive})
-            </span>
-            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-600" />
-              {politicalLabels.center_left[lang]} ({politicalBalance.centerLeft})
-            </span>
-            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <span className="w-2.5 h-2.5 rounded-full bg-zinc-400" />
-              {politicalLabels.center[lang]} ({politicalBalance.center})
-            </span>
-            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
-              {politicalLabels.center_right[lang]} ({politicalBalance.centerRight})
-            </span>
-            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-800" />
-              {politicalLabels.conservative[lang]} ({politicalBalance.conservative})
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Country Distribution */}
-      <Card className="mb-6 border-zinc-200">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium">{t('sources.byCountry')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {countryStats.map((stat) => (
-              <Button
-                key={stat.nationality}
-                variant={filterNationality === stat.nationality ? 'default' : 'outline'}
-                size="sm"
-                className={filterNationality !== stat.nationality ? 'border-zinc-200' : undefined}
-                onClick={() => setFilterNationality(filterNationality === stat.nationality ? 'all' : stat.nationality)}
-              >
-                <FlagIcon nationality={stat.nationality} />
-                <span>{nationalityLabels[stat.nationality][lang]}</span>
-                <span
-                  className={cn(
-                    'text-xs font-semibold px-1.5 py-0.5 rounded',
-                    filterNationality === stat.nationality ? 'bg-white/20 text-white' : 'bg-muted text-muted-foreground',
+          {/* Table */}
+          <Card className="overflow-hidden border-zinc-200">
+            <CardContent className="p-0">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-zinc-200 bg-muted">
+                    <th
+                      className="w-[30%] text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                      onClick={() => toggleSort('name')}
+                    >
+                      {t('sources.colSource')}
+                      {sortBy === 'name' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
+                    </th>
+                    <th
+                      className="w-[25%] text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                      onClick={() => toggleSort('nationality')}
+                    >
+                      {t('sources.colCountry')}
+                      {sortBy === 'nationality' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
+                    </th>
+                    <th
+                      className="text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                      onClick={() => toggleSort('political')}
+                    >
+                      {t('sources.colPolitical')}
+                      {sortBy === 'political' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
+                    </th>
+                    <th
+                      className="text-right px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                      onClick={() => toggleSort('count')}
+                    >
+                      {t('sources.colArticles')}
+                      {sortBy === 'count' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredSources.map((source, i) => (
+                    <motion.tr
+                      key={source.name}
+                      className="border-b border-zinc-200/50 hover:bg-muted/50 transition-colors"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.2, delay: Math.min(i * 0.02, 0.5) }}
+                    >
+                      <td className="px-4 py-3">
+                        <span className="font-medium">{source.name}</span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="inline-flex items-center gap-1.5">
+                          <FlagIcon nationality={source.nationality} />
+                          <span className="text-sm text-muted-foreground">{nationalityLabels[source.nationality][lang]}</span>
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={cn('inline-block px-2 py-0.5 text-xs font-medium rounded', getPoliticalColorClass(source.politicalLeaning))}>
+                          {politicalLabels[source.politicalLeaning][lang]}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <span className="text-muted-foreground font-mono text-sm">{source.count.toLocaleString()}</span>
+                      </td>
+                    </motion.tr>
+                  ))}
+                  {filteredSources.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="px-4 py-12 text-center text-muted-foreground">
+                        {t('sources.noResults')}
+                      </td>
+                    </tr>
                   )}
-                >
-                  {stat.count}
-                </span>
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* Political Spectrum Legend */}
-      <Card className="mb-6 border-zinc-200">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium">{t('sources.spectrumLegend')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {allPoliticalLeanings.map((key) => (
-              <span key={key} className={cn('inline-block px-2.5 py-1 text-xs font-medium rounded', getPoliticalColorClass(key))}>
-                {politicalLabels[key][lang]}
-              </span>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Filters */}
-      <Card className="mb-6 border-zinc-200">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium">{t('sources.filters')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-3 items-center">
-            <Input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t('sources.searchPlaceholder')}
-              className="w-48"
+        {/* Right sidebar — Stats & Info */}
+        <div className="lg:col-span-1">
+          <div className="sticky top-24 space-y-4">
+            {/* Statistics Cards */}
+            <StatsGrid
+              stats={[
+                { label: t('sources.sourcesCount'), value: sources.length },
+                { label: t('sources.totalArticles'), value: totalArticles.toLocaleString() },
+                { label: t('sources.avgPerSource'), value: avgArticlesPerSource },
+                ...(topSource
+                  ? [{ label: `${t('sources.topSource')} (${topSource.count.toLocaleString()} ${t('sources.articles')})`, value: topSource.name }]
+                  : []),
+              ]}
+              columns={2}
+              className="gap-3"
+              cardClassName="border-zinc-200 py-3 gap-0"
+              contentClassName="pt-0"
             />
-            <select
-              value={filterNationality}
-              onChange={(e) => setFilterNationality(e.target.value as SourceNationality | 'all')}
-              className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
-            >
-              <option value="all">{t('sources.allNationalities')}</option>
-              {countryStats.map(({ nationality }) => (
-                <option key={nationality} value={nationality}>
-                  {nationalityLabels[nationality][lang]}
-                </option>
-              ))}
-            </select>
-            <select
-              value={filterPolitical}
-              onChange={(e) => setFilterPolitical(e.target.value as PoliticalLeaning | 'all')}
-              className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
-            >
-              <option value="all">{t('sources.allPolitical')}</option>
-              {activePoliticalLeanings.map((pol) => (
-                <option key={pol} value={pol}>
-                  {politicalLabels[pol][lang]}
-                </option>
-              ))}
-            </select>
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Table */}
-      <Card className="overflow-hidden border-zinc-200">
-        <CardContent className="p-0">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="border-b border-zinc-200 bg-muted">
-                <th
-                  className="w-[30%] text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
-                  onClick={() => toggleSort('name')}
-                >
-                  {t('sources.colSource')}
-                  {sortBy === 'name' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
-                </th>
-                <th
-                  className="w-[25%] text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
-                  onClick={() => toggleSort('nationality')}
-                >
-                  {t('sources.colCountry')}
-                  {sortBy === 'nationality' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
-                </th>
-                <th
-                  className="text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
-                  onClick={() => toggleSort('political')}
-                >
-                  {t('sources.colPolitical')}
-                  {sortBy === 'political' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
-                </th>
-                <th
-                  className="text-right px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
-                  onClick={() => toggleSort('count')}
-                >
-                  {t('sources.colArticles')}
-                  {sortBy === 'count' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredSources.map((source, i) => (
-                <motion.tr
-                  key={source.name}
-                  className="border-b border-zinc-200/50 hover:bg-muted/50 transition-colors"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2, delay: Math.min(i * 0.02, 0.5) }}
-                >
-                  <td className="px-4 py-3">
-                    <span className="font-medium">{source.name}</span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="inline-flex items-center gap-1.5">
-                      <FlagIcon nationality={source.nationality} />
-                      <span className="text-sm text-muted-foreground">{nationalityLabels[source.nationality][lang]}</span>
+            {/* Political Balance Bar */}
+            <Card className="border-zinc-200 py-4 gap-3">
+              <CardHeader className="pb-0">
+                <CardTitle className="text-sm font-medium">{t('sources.politicalBalance')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex h-5 rounded-lg overflow-hidden bg-muted">
+                  {politicalBalance.progressivePct > 0 && (
+                    <div
+                      className="flex items-center justify-center transition-all duration-300 bg-red-800"
+                      style={{ width: `${politicalBalance.progressivePct}%` }}
+                      title={`${politicalLabels.progressive[lang]}: ${politicalBalance.progressive}`}
+                    >
+                      {politicalBalance.progressivePct >= 10 && (
+                        <span className="text-[10px] font-semibold text-white">{politicalBalance.progressivePct}%</span>
+                      )}
+                    </div>
+                  )}
+                  {politicalBalance.centerLeftPct > 0 && (
+                    <div
+                      className="flex items-center justify-center transition-all duration-300 bg-red-600"
+                      style={{ width: `${politicalBalance.centerLeftPct}%` }}
+                      title={`${politicalLabels.center_left[lang]}: ${politicalBalance.centerLeft}`}
+                    >
+                      {politicalBalance.centerLeftPct >= 10 && (
+                        <span className="text-[10px] font-semibold text-white">{politicalBalance.centerLeftPct}%</span>
+                      )}
+                    </div>
+                  )}
+                  {politicalBalance.centerPct > 0 && (
+                    <div
+                      className="flex items-center justify-center transition-all duration-300 bg-zinc-400"
+                      style={{ width: `${politicalBalance.centerPct}%` }}
+                      title={`${politicalLabels.center[lang]}: ${politicalBalance.center}`}
+                    >
+                      {politicalBalance.centerPct >= 10 && (
+                        <span className="text-[10px] font-semibold text-white">{politicalBalance.centerPct}%</span>
+                      )}
+                    </div>
+                  )}
+                  {politicalBalance.centerRightPct > 0 && (
+                    <div
+                      className="flex items-center justify-center transition-all duration-300 bg-blue-600"
+                      style={{ width: `${politicalBalance.centerRightPct}%` }}
+                      title={`${politicalLabels.center_right[lang]}: ${politicalBalance.centerRight}`}
+                    >
+                      {politicalBalance.centerRightPct >= 10 && (
+                        <span className="text-[10px] font-semibold text-white">{politicalBalance.centerRightPct}%</span>
+                      )}
+                    </div>
+                  )}
+                  {politicalBalance.conservativePct > 0 && (
+                    <div
+                      className="flex items-center justify-center transition-all duration-300 bg-blue-800"
+                      style={{ width: `${politicalBalance.conservativePct}%` }}
+                      title={`${politicalLabels.conservative[lang]}: ${politicalBalance.conservative}`}
+                    >
+                      {politicalBalance.conservativePct >= 10 && (
+                        <span className="text-[10px] font-semibold text-white">{politicalBalance.conservativePct}%</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="w-2 h-2 rounded-full bg-red-800" />
+                    {politicalLabels.progressive[lang]} ({politicalBalance.progressive})
+                  </span>
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="w-2 h-2 rounded-full bg-red-600" />
+                    {politicalLabels.center_left[lang]} ({politicalBalance.centerLeft})
+                  </span>
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                    {politicalLabels.center[lang]} ({politicalBalance.center})
+                  </span>
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="w-2 h-2 rounded-full bg-blue-600" />
+                    {politicalLabels.center_right[lang]} ({politicalBalance.centerRight})
+                  </span>
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="w-2 h-2 rounded-full bg-blue-800" />
+                    {politicalLabels.conservative[lang]} ({politicalBalance.conservative})
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Country Distribution */}
+            <Card className="border-zinc-200 py-4 gap-3">
+              <CardHeader className="pb-0">
+                <CardTitle className="text-sm font-medium">{t('sources.byCountry')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-1.5">
+                  {countryStats.map((stat) => (
+                    <Button
+                      key={stat.nationality}
+                      variant={filterNationality === stat.nationality ? 'default' : 'outline'}
+                      size="sm"
+                      className={cn('h-7 text-xs', filterNationality !== stat.nationality ? 'border-zinc-200' : undefined)}
+                      onClick={() => setFilterNationality(filterNationality === stat.nationality ? 'all' : stat.nationality)}
+                    >
+                      <FlagIcon nationality={stat.nationality} />
+                      <span>{nationalityLabels[stat.nationality][lang]}</span>
+                      <span
+                        className={cn(
+                          'text-xs font-semibold px-1 py-0 rounded',
+                          filterNationality === stat.nationality ? 'bg-white/20 text-white' : 'bg-muted text-muted-foreground',
+                        )}
+                      >
+                        {stat.count}
+                      </span>
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Political Spectrum Legend */}
+            <Card className="border-zinc-200 py-4 gap-3">
+              <CardHeader className="pb-0">
+                <CardTitle className="text-sm font-medium">{t('sources.spectrumLegend')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  {allPoliticalLeanings.map((key) => (
+                    <span key={key} className={cn('inline-block px-2.5 py-1 text-xs font-medium rounded', getPoliticalColorClass(key))}>
+                      {politicalLabels[key][lang]}
                     </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className={cn('inline-block px-2 py-0.5 text-xs font-medium rounded', getPoliticalColorClass(source.politicalLeaning))}>
-                      {politicalLabels[source.politicalLeaning][lang]}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <span className="text-muted-foreground font-mono text-sm">{source.count.toLocaleString()}</span>
-                  </td>
-                </motion.tr>
-              ))}
-              {filteredSources.length === 0 && (
-                <tr>
-                  <td colSpan={4} className="px-4 py-12 text-center text-muted-foreground">
-                    {t('sources.noResults')}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </CardContent>
-      </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
