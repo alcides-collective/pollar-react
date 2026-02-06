@@ -7,6 +7,7 @@ import { useLanguage } from '../../stores/languageStore';
 
 interface EventSidebarProps {
   event: Event;
+  wikipediaImages: Record<string, string>;
 }
 
 function formatSourceDate(dateValue: string | { _seconds: number; _nanoseconds: number }, language: string): string {
@@ -37,7 +38,7 @@ function formatSourceDate(dateValue: string | { _seconds: number; _nanoseconds: 
   return `${dateStr}, ${timeStr}`;
 }
 
-export function EventSidebar({ event }: EventSidebarProps) {
+export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
   const { t } = useTranslation('event');
   const language = useLanguage();
   const articles = event.articles || [];
@@ -108,41 +109,58 @@ export function EventSidebar({ event }: EventSidebarProps) {
             {t('sidebar.mentionedPeople')}
           </h3>
           <ul className="space-y-2">
-            {event.metadata.mentionedPeople.map((person, index) => (
-              <li key={index}>
-                {person.wikipediaUrl ? (
-                  <a
-                    href={person.wikipediaUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block p-3 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 transition-colors"
-                  >
-                    <div className="flex items-center gap-2 text-sm text-zinc-900 font-medium">
-                      <i className="ri-user-line text-zinc-400" />
-                      <span>{person.name}</span>
-                      <i className="ri-external-link-line text-zinc-300 text-xs ml-auto" />
-                    </div>
-                    {person.context && (
-                      <p className="text-xs text-zinc-500 mt-1 ml-6 line-clamp-2">
-                        {person.context}
-                      </p>
+            {event.metadata.mentionedPeople.map((person, index) => {
+              const imageUrl = wikipediaImages[person.name];
+              const initials = person.name.split(' ').map(n => n[0]).join('').toUpperCase();
+              const content = (
+                <div className="flex items-start gap-3">
+                  <div className="w-14 h-14 bg-zinc-100 border border-zinc-200 flex items-center justify-center text-xs font-mono text-zinc-500 overflow-hidden shrink-0 rounded-sm">
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={person.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      initials
                     )}
-                  </a>
-                ) : (
-                  <div className="block p-3 rounded-lg border border-zinc-200">
-                    <div className="flex items-center gap-2 text-sm text-zinc-900 font-medium">
-                      <i className="ri-user-line text-zinc-400" />
+                  </div>
+                  <div className="flex-1 flex flex-col justify-center min-h-[3.5rem]">
+                    <div className="flex items-center gap-1.5 text-sm text-zinc-900 font-medium">
                       <span>{person.name}</span>
+                      {person.wikipediaUrl && (
+                        <i className="ri-external-link-line text-zinc-300 text-xs" />
+                      )}
                     </div>
                     {person.context && (
-                      <p className="text-xs text-zinc-500 mt-1 ml-6 line-clamp-2">
+                      <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">
                         {person.context}
                       </p>
                     )}
                   </div>
-                )}
-              </li>
-            ))}
+                </div>
+              );
+
+              return (
+                <li key={index}>
+                  {person.wikipediaUrl ? (
+                    <a
+                      href={person.wikipediaUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block p-3 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 transition-colors"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <div className="block p-3 rounded-lg border border-zinc-200">
+                      {content}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

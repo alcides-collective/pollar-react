@@ -353,42 +353,42 @@ export function sanitizeAndProcessHtml(text: string): string {
       (_, autor, miejsce, text) => {
         const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
         const quotedText = hasQuotes ? text : `„${text}"`;
-        return `\n\n<blockquote class="quote-box"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
+        return `\n\n<blockquote class="quote-box" data-author="${autor}"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
       })
     // Convert <cytat autor='...' miejsce='...'> tags to styled quote box (single quotes)
     .replace(/<cytat\s+autor\s*=\s*'([^']+)'\s+miejsce\s*=\s*'([^']+)'>([\s\S]*?)<\/cytat>/gi,
       (_, autor, miejsce, text) => {
         const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
         const quotedText = hasQuotes ? text : `„${text}"`;
-        return `\n\n<blockquote class="quote-box"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
+        return `\n\n<blockquote class="quote-box" data-author="${autor}"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
       })
     // Convert <cytat miejsce="..." autor="..."> (alternate order, double quotes)
     .replace(/<cytat\s+miejsce\s*=\s*"([^"]+)"\s+autor\s*=\s*"([^"]+)">([\s\S]*?)<\/cytat>/gi,
       (_, miejsce, autor, text) => {
         const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
         const quotedText = hasQuotes ? text : `„${text}"`;
-        return `\n\n<blockquote class="quote-box"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
+        return `\n\n<blockquote class="quote-box" data-author="${autor}"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
       })
     // Convert <cytat miejsce='...' autor='...'> (alternate order, single quotes)
     .replace(/<cytat\s+miejsce\s*=\s*'([^']+)'\s+autor\s*=\s*'([^']+)'>([\s\S]*?)<\/cytat>/gi,
       (_, miejsce, autor, text) => {
         const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
         const quotedText = hasQuotes ? text : `„${text}"`;
-        return `\n\n<blockquote class="quote-box"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
+        return `\n\n<blockquote class="quote-box" data-author="${autor}"><span class="quote-location">${miejsce}</span><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
       })
     // Convert <cytat autor="..."> (without location, double quotes)
     .replace(/<cytat\s+autor\s*=\s*"([^"]+)">([\s\S]*?)<\/cytat>/gi,
       (_, autor, text) => {
         const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
         const quotedText = hasQuotes ? text : `„${text}"`;
-        return `\n\n<blockquote class="quote-box"><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
+        return `\n\n<blockquote class="quote-box" data-author="${autor}"><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
       })
     // Convert <cytat autor='...'> (without location, single quotes)
     .replace(/<cytat\s+autor\s*=\s*'([^']+)'>([\s\S]*?)<\/cytat>/gi,
       (_, autor, text) => {
         const hasQuotes = /^[\u201E„"'\u201C]/.test(text.trim()) && /[\u201D"'\u201C"]$/.test(text.trim());
         const quotedText = hasQuotes ? text : `„${text}"`;
-        return `\n\n<blockquote class="quote-box"><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
+        return `\n\n<blockquote class="quote-box" data-author="${autor}"><p class="quote-text">${quotedText}</p><cite class="quote-author">${autor}</cite></blockquote>\n\n`;
       })
     // Convert <przypis title="..." opis="...">term</przypis> to tooltip (double quotes)
     .replace(/<przypis\s+title\s*=\s*"([^"]+)"\s+opis\s*=\s*"([^"]+)"\s*\/?>([\s\S]*?)<\/przypis>/gi,

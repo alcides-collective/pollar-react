@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useRef } from 'react';
 import { sanitizeAndProcessHtml, removeExtractedElements } from '../../utils/text';
 import { SummaryLineChart, type LineChartData } from '../../components/charts/SummaryLineChart';
 import { SummaryBarChart, type BarChartData } from '../../components/charts/SummaryBarChart';
@@ -6,6 +6,7 @@ import { parseSimpleData } from '../../utils/chartUtils';
 
 interface EventSummaryProps {
   summary: string;
+  wikipediaImages?: Record<string, string>;
 }
 
 interface ContentSegment {
@@ -111,15 +112,55 @@ function parseContentWithCharts(summary: string): ContentSegment[] {
   return segments;
 }
 
-export function EventSummary({ summary }: EventSummaryProps) {
+export function EventSummary({ summary, wikipediaImages = {} }: EventSummaryProps) {
   const segments = useMemo(() => parseContentWithCharts(summary), [summary]);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Inject Wikipedia author photos into quote boxes
+  useEffect(() => {
+    if (!contentRef.current || Object.keys(wikipediaImages).length === 0) return;
+
+    const quoteBoxes = contentRef.current.querySelectorAll('.quote-box[data-author]');
+    quoteBoxes.forEach((box) => {
+      const author = box.getAttribute('data-author');
+      if (!author) return;
+
+      // Skip if already processed
+      if (box.querySelector('.quote-author-photo')) return;
+
+      const imageUrl = wikipediaImages[author];
+      if (!imageUrl) return;
+
+      // Add flex layout class
+      box.classList.add('has-photo');
+
+      // Create image container
+      const photoDiv = document.createElement('div');
+      photoDiv.className = 'quote-author-photo';
+      const img = document.createElement('img');
+      img.src = imageUrl;
+      img.alt = author;
+      img.loading = 'lazy';
+      photoDiv.appendChild(img);
+
+      // Wrap existing content in a div
+      const contentWrapper = document.createElement('div');
+      contentWrapper.className = 'quote-content';
+      while (box.firstChild) {
+        contentWrapper.appendChild(box.firstChild);
+      }
+
+      box.appendChild(photoDiv);
+      box.appendChild(contentWrapper);
+    });
+  }, [segments, wikipediaImages]);
 
   return (
     <section className="event-summary px-6 py-6 border-t border-zinc-200">
       <h2 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-4">
         Podsumowanie
       </h2>
-      <div className="prose prose-zinc max-w-none summary-content">
+      <div ref={contentRef} className="prose prose-zinc max-w-none summary-content">
         {segments.map((segment, index) => {
           if (segment.type === 'linechart' && segment.chartData) {
             return <SummaryLineChart key={`line-${index}`} data={segment.chartData as LineChartData} />;

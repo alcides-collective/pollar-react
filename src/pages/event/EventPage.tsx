@@ -10,6 +10,7 @@ import { useUser } from '../../stores/authStore';
 import { useLanguage } from '../../stores/languageStore';
 import { useReadHistoryStore } from '../../stores/readHistoryStore';
 import { useViewTracking } from '../../hooks/useViewTracking';
+import { useWikipediaImages } from '../../hooks/useWikipediaImages';
 import { prepareOgDescription } from '../../utils/text';
 import { staggerContainer, staggerItem, fadeInUp } from '../../lib/animations';
 import { Skeleton } from '../../components/ui/skeleton';
@@ -33,6 +34,9 @@ export function EventPage() {
     category: event?.category || '',
     disabled: loading || !!error,
   });
+
+  // Wikipedia images for mentioned people
+  const wikipediaImages = useWikipediaImages(event?.metadata?.mentionedPeople);
 
   // SEO meta tags
   const pageTitle = event?.metadata?.ultraShortHeadline || event?.title || '';
@@ -205,7 +209,7 @@ export function EventPage() {
             <EventKeyPoints keyPoints={event.metadata?.keyPoints || []} />
           </motion.div>
           <motion.div variants={staggerItem}>
-            <EventSummary summary={event.summary} />
+            <EventSummary summary={event.summary} wikipediaImages={wikipediaImages} />
           </motion.div>
           <motion.div variants={staggerItem}>
             <EventNavigation previousEvent={previousEvent} nextEvent={nextEvent} />
@@ -218,7 +222,7 @@ export function EventPage() {
           {...fadeInUp}
           transition={{ ...fadeInUp.transition, delay: 0.2 }}
         >
-          <EventSidebar event={event} />
+          <EventSidebar event={event} wikipediaImages={wikipediaImages} />
         </motion.div>
       </div>
 
