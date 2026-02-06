@@ -4,10 +4,10 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useUserProfile, useUserStore } from '@/stores/userStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -134,13 +134,16 @@ export function ConsentRequiredModal() {
           </label>
         </div>
 
-        <Button
-          className="w-full"
-          disabled={!canSubmit}
-          onClick={handleAccept}
-        >
-          {isSubmitting ? '...' : t('consentModal.accept')}
-        </Button>
+        <DialogFooter>
+          <button
+            type="button"
+            disabled={!canSubmit}
+            onClick={handleAccept}
+            className="w-full rounded-lg px-4 py-2.5 text-sm font-medium transition-colors bg-white text-black hover:bg-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? '...' : t('consentModal.accept')}
+          </button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
