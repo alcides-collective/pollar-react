@@ -8,7 +8,7 @@ interface BriefExecutiveSummaryProps {
 export function BriefExecutiveSummary({ summary }: BriefExecutiveSummaryProps) {
   const { t } = useTranslation('brief');
   return (
-    <div>
+    <div className="mb-10">
       <h2 className="text-sm text-zinc-500 mb-3 pb-2 border-b border-zinc-200 font-medium">
         {t('summary')}
       </h2>
