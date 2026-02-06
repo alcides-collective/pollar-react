@@ -24,46 +24,48 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
       priority="high"
     >
       <div className="grid grid-cols-1 md:grid-cols-2">
-      <div className="md:border-r border-zinc-200 relative overflow-hidden">
-        <LocalizedLink to={`/event/${mainEvent.id}`} className="group block">
+      <div className="md:border-r border-zinc-200 relative overflow-hidden p-6 md:p-0">
+        <LocalizedLink to={`/event/${mainEvent.id}`} className="group block relative">
           <EventImage
             event={mainEvent}
-            className="w-full aspect-[4/3] object-cover"
-            style={{
-              maskImage: 'radial-gradient(ellipse 150% 100% at 0% 0%, black 50%, transparent 100%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 150% 100% at 0% 0%, black 50%, transparent 100%)',
-            }}
+            className="w-full aspect-[4/3] object-cover md:[mask-image:radial-gradient(ellipse_150%_100%_at_0%_0%,black_50%,transparent_100%)] md:[-webkit-mask-image:radial-gradient(ellipse_150%_100%_at_0%_0%,black_50%,transparent_100%)]"
             groupHover
             hoverShadow={false}
             width={800}
             height={600}
           />
+          {/* Mobile: badge on photo */}
+          {imageSource && (
+            <span className="md:hidden absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate z-10">
+              Źródło: {imageSource}
+            </span>
+          )}
         </LocalizedLink>
-        {/* Leadbox - only on desktop (overlaid on image) */}
+        {/* Desktop: badge + leadbox overlaid on image */}
         {(imageSource || mainEvent.lead) && (
-          <LocalizedLink to={`/event/${mainEvent.id}`}>
-            <motion.div
-              className="hidden md:block mx-4 mb-4 -mt-16 relative z-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-            >
-              {imageSource && (
-                <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2 max-w-full truncate">
-                  Źródło: {imageSource}
-                </span>
-              )}
-              {mainEvent.lead && (
+          <motion.div
+            className="hidden md:block mx-4 mb-4 -mt-16 relative z-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+          >
+            {imageSource && (
+              <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2 max-w-full truncate">
+                Źródło: {imageSource}
+              </span>
+            )}
+            {mainEvent.lead && (
+              <LocalizedLink to={`/event/${mainEvent.id}`}>
                 <p className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200 hover:bg-zinc-50 transition-colors">
                   {mainEvent.lead}
                 </p>
-              )}
-            </motion.div>
-          </LocalizedLink>
+              </LocalizedLink>
+            )}
+          </motion.div>
         )}
       </div>
 
-      <div className="p-6">
+      <div className="px-6 pt-2 pb-6 md:p-6">
         <span className="text-zinc-500 text-sm">{mainEvent.category}</span>
         <AnimatedHeadline
           to={`/event/${mainEvent.id}`}
@@ -74,7 +76,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
         </AnimatedHeadline>
 
         {/* Leadbox - only on mobile (after headline) */}
-        {(imageSource || mainEvent.lead) && (
+        {mainEvent.lead && (
           <LocalizedLink to={`/event/${mainEvent.id}`}>
             <motion.div
               className="md:hidden mb-4"
@@ -82,16 +84,9 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.2 }}
             >
-              {imageSource && (
-                <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2 max-w-full truncate">
-                  Źródło: {imageSource}
-                </span>
-              )}
-              {mainEvent.lead && (
-                <p className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200 hover:bg-zinc-50 transition-colors">
-                  {mainEvent.lead}
-                </p>
-              )}
+              <p className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200 hover:bg-zinc-50 transition-colors">
+                {mainEvent.lead}
+              </p>
             </motion.div>
           </LocalizedLink>
         )}

@@ -205,23 +205,23 @@ export function CategoryCarousel({ category, events, variant = 'carousel' }: Cat
             <motion.div {...hoverScale}>
               <Button
                 variant="outline"
-                size="icon"
+                size="icon-sm"
                 onClick={() => scroll('left')}
-                className="w-8 h-8 rounded-full"
+                className="rounded-full border-zinc-200 shadow-none flex items-center justify-center"
                 aria-label={t('actions.scrollLeft')}
               >
-                <i className="ri-arrow-left-s-line text-lg text-zinc-900"></i>
+                <i className="ri-arrow-left-s-line text-base text-zinc-600"></i>
               </Button>
             </motion.div>
             <motion.div {...hoverScale}>
               <Button
                 variant="outline"
-                size="icon"
+                size="icon-sm"
                 onClick={() => scroll('right')}
-                className="w-8 h-8 rounded-full"
+                className="rounded-full border-zinc-200 shadow-none flex items-center justify-center"
                 aria-label={t('actions.scrollRight')}
               >
-                <i className="ri-arrow-right-s-line text-lg text-zinc-900"></i>
+                <i className="ri-arrow-right-s-line text-base text-zinc-600"></i>
               </Button>
             </motion.div>
           </div>
