@@ -115,7 +115,7 @@ export function SejmNav() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-[calc(100vw-2rem)]">
+          <DropdownMenuContent align="start" className="w-56">
             {navigationConfig.map((entry, idx) => {
               if (isGroup(entry)) {
                 return (

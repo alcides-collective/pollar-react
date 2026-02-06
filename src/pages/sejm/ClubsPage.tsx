@@ -42,7 +42,7 @@ export function ClubsPage() {
             <LocalizedLink
               key={club.id}
               to={`/sejm/kluby/${club.id}`}
-              className="block rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
+              className="block overflow-hidden rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
             >
               <div className="flex items-center gap-4">
                 {club.logoUrl && (
