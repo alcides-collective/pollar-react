@@ -445,6 +445,12 @@ export function Header() {
                     {t('nav.connectionGraph')}
                   </LocalizedLink>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/sources" className="w-full flex items-center gap-2">
+                    <i className="ri-newspaper-line" />
+                    {t('nav.sources')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
 
               <DropdownMenuSeparator />
