@@ -40,6 +40,7 @@ if (import.meta.env.PROD) {
       /^AbortError: AbortError$/,
       // Stale cache after deployment - user has old chunks
       "is not a valid JavaScript MIME type",
+      /Failed to fetch dynamically imported module/,
       // Mapbox errors - network issues, old devices, or privacy browsers
       'Failed to initialize WebGL',
       /Failed to fetch \(api\.mapbox\.com\)/,
