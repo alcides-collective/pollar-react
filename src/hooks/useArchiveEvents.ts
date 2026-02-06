@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useCallback, useRef } from 'react';
 import { useEventsStore } from '../stores/eventsStore';
-import { API_BASE } from '../config/api';
 import { sanitizeEvent } from '../utils/sanitize';
 import { CATEGORY_ORDER } from '../constants/categories';
 import { useLanguage, type Language } from '../stores/languageStore';
-import type { Event, EventsResponse } from '../types/events';
+import type { Event } from '../types/events';
+
+const ARCHIVE_API_BASE = import.meta.env.DEV
+  ? '/api'  // Vite proxy in development
+  : 'https://pollar-backend-production.up.railway.app/api';
 
 interface UseArchiveEventsOptions {
   limit?: number;
@@ -14,6 +17,47 @@ interface UseArchiveEventsOptions {
 interface CategoryGroup {
   category: string;
   events: Event[];
+}
+
+/** Map pollar-backend /api/archive response item to frontend Event shape */
+function mapArchiveEvent(raw: any): Event {
+  return {
+    id: raw.id,
+    title: raw.title ?? '',
+    lead: raw.lead ?? '',
+    summary: raw.summary ?? '',
+    createdAt: raw.originalCreatedAt ?? raw.archivedAt,
+    updatedAt: raw.originalUpdatedAt ?? raw.archivedAt,
+    lastContentUpdate: raw.originalUpdatedAt ?? raw.archivedAt,
+    lastSummarizationComplete: raw.archivedAt,
+    imageUrl: raw.metadata?.imageUrl ?? '',
+    category: raw.category ?? raw.metadata?.category ?? 'Inne',
+    sources: raw.sources ?? raw.metadata?.sources ?? [],
+    trendingScore: raw.metadata?.trendingScore ?? 0,
+    articleCount: raw.articleCount ?? raw.metadata?.articleCount ?? 0,
+    sourceCount: raw.sources?.length ?? raw.metadata?.sourceCount ?? 0,
+    viewCount: raw.metadata?.viewCount ?? 0,
+    freshnessLevel: 'OLD',
+    metadata: {
+      category: raw.category ?? raw.metadata?.category ?? 'Inne',
+      trending: false,
+      trendingScore: raw.metadata?.trendingScore ?? 0,
+      location: raw.location ?? raw.metadata?.location,
+      locations: raw.metadata?.locations ?? [],
+      keyPoints: raw.keyPoints ?? raw.metadata?.keyPoints ?? [],
+      mentionedPeople: raw.metadata?.mentionedPeople ?? [],
+      mentionedCountries: raw.metadata?.mentionedCountries ?? [],
+      shortHeadline: raw.metadata?.shortHeadline ?? '',
+      ultraShortHeadline: raw.metadata?.ultraShortHeadline ?? '',
+      sources: raw.sources ?? raw.metadata?.sources ?? [],
+      articleCount: raw.articleCount ?? 0,
+      sourceCount: raw.sources?.length ?? 0,
+      imageAttribution: raw.metadata?.imageAttribution ?? null,
+      isLowQualityContent: raw.metadata?.isLowQualityContent ?? false,
+      viewCount: raw.metadata?.viewCount ?? 0,
+    },
+    articles: raw.articles,
+  };
 }
 
 export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
@@ -31,7 +75,8 @@ export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
     const searchParams = new URLSearchParams();
     searchParams.set('limit', String(limit));
     searchParams.set('lang', lang);
-    const archiveUrl = `${API_BASE}/events/archive?${searchParams.toString()}`;
+    searchParams.set('includeArticles', 'true');
+    const archiveUrl = `${ARCHIVE_API_BASE}/archive?${searchParams.toString()}`;
     return { archiveUrl, cacheKey: `archive:${archiveUrl}` };
   }, [limit, lang]);
 
@@ -40,8 +85,9 @@ export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const data: EventsResponse = await response.json();
-    return data.data.map(sanitizeEvent);
+    const json = await response.json();
+    const items: any[] = json.data ?? [];
+    return items.map(item => sanitizeEvent(mapArchiveEvent(item)));
   }, [archiveUrl]);
 
   const cached = cache[cacheKey];
