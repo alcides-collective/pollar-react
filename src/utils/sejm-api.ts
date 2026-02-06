@@ -9,6 +9,7 @@ import type {
   MPVotingHistoryResponse,
   VotingsResponse,
   SejmVoting,
+  SejmPrint,
   PrintsResponse,
   PrintContentResponse,
   InterpellationsResponse,
@@ -178,6 +179,30 @@ export const sejmApi = {
   prints: {
     list: (params?: { limit?: number; offset?: number }) =>
       fetchAPI<PrintsResponse>('/sejm/prints', { params }),
+
+    get: async (printNumber: string): Promise<SejmPrint | null> => {
+      try {
+        const data = await fetchSejmDirect<any>(`prints/${printNumber}`);
+        return {
+          term: data.term || 10,
+          number: data.number,
+          title: data.title,
+          documentDate: data.documentDate,
+          deliveryDate: data.deliveryDate,
+          changeDate: data.changeDate,
+          processPrint: data.processPrint,
+          attachments: data.attachments?.map((a: any) => ({
+            name: a,
+            lastModified: '',
+            URL: `https://api.sejm.gov.pl/sejm/term10/prints/${data.number}/${a}`,
+          })),
+          summary: data.summary,
+          documentType: data.documentType,
+        };
+      } catch {
+        return null;
+      }
+    },
 
     getContent: async (printNumber: string): Promise<PrintContentResponse | null> => {
       try {

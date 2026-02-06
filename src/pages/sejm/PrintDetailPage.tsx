@@ -1,19 +1,16 @@
 import { useParams } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
-import { usePrints, usePrintAISummary, usePrintContent } from '../../hooks/usePrints';
+import { usePrint, usePrintAISummary, usePrintContent } from '../../hooks/usePrints';
 import { useLanguageStore } from '../../stores/languageStore';
 
 export function PrintDetailPage() {
   const { t } = useTranslation('sejm');
   const language = useLanguageStore((s) => s.language);
   const { number } = useParams<{ number: string }>();
-  const { prints } = usePrints();
+  const { print, loading: printLoading } = usePrint(number || null);
   const { summary: aiSummary, loading: aiLoading } = usePrintAISummary(number || null);
   const { content: printContent, loading: contentLoading } = usePrintContent(number || null);
-
-  // Find print in the loaded list
-  const print = prints.find(p => p.number === number);
 
   const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   const formatDate = (dateStr?: string) => {
@@ -25,7 +22,18 @@ export function PrintDetailPage() {
     });
   };
 
-  if (!print && prints.length > 0) {
+  if (printLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="h-4 w-32 bg-zinc-100 animate-pulse rounded" />
+        <div className="h-6 w-24 bg-zinc-100 animate-pulse rounded" />
+        <div className="h-8 w-3/4 bg-zinc-100 animate-pulse rounded" />
+        <div className="h-4 w-40 bg-zinc-100 animate-pulse rounded" />
+      </div>
+    );
+  }
+
+  if (!print) {
     return (
       <div className="text-center py-12">
         <p className="text-zinc-500">{t('printDetail.notFound')}</p>

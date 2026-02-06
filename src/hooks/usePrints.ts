@@ -52,6 +52,23 @@ export function usePrints() {
   };
 }
 
+export function usePrint(printNumber: string | null) {
+  const { data, error, isLoading } = useSWR<SejmPrint | null>(
+    printNumber ? `/sejm/prints/direct/${printNumber}` : null,
+    () => printNumber ? sejmApi.prints.get(printNumber) : null,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 300000,
+    }
+  );
+
+  return {
+    print: data ?? null,
+    loading: isLoading,
+    error: error ?? null,
+  };
+}
+
 export function usePrintAISummary(printNumber: string | null) {
   const { data, error, isLoading } = useSWR<PrintAISummary | null>(
     printNumber ? `/sejm/prints/${printNumber}/ai-summary` : null,
