@@ -56,7 +56,8 @@ export function ConsentRequiredModal() {
   return (
     <Dialog open onOpenChange={() => {}}>
       <DialogContent
-        className="sm:max-w-md [&>button]:hidden"
+        className="sm:max-w-md max-h-[90vh] overflow-y-auto"
+        hideCloseButton
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
@@ -69,8 +70,8 @@ export function ConsentRequiredModal() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-3 my-4">
-          <label className="flex items-start gap-2.5 text-sm cursor-pointer">
+        <div className="space-y-3">
+          <label className="flex items-start gap-2.5 cursor-pointer">
             <input
               type="checkbox"
               checked={acceptTerms}
@@ -95,7 +96,7 @@ export function ConsentRequiredModal() {
             </span>
           </label>
 
-          <label className="flex items-start gap-2.5 text-sm cursor-pointer">
+          <label className="flex items-start gap-2.5 cursor-pointer">
             <input
               type="checkbox"
               checked={acceptPrivacy}
@@ -120,7 +121,7 @@ export function ConsentRequiredModal() {
             </span>
           </label>
 
-          <label className="flex items-start gap-2.5 text-sm cursor-pointer">
+          <label className="flex items-start gap-2.5 cursor-pointer">
             <input
               type="checkbox"
               checked={acceptMarketing}
