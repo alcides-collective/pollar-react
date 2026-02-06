@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useId } from 'react';
 import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
 import { useImageInSection } from '../../hooks/useSectionImages';
-import { getProxiedImageUrl } from '../../utils/imageProxy';
+import { getProxiedImageUrlWithFallbacks } from '../../utils/imageProxy';
 
 const PLACEHOLDER_IMAGE = '/opengraph-image.jpg';
 
@@ -24,8 +24,7 @@ interface EventImageProps {
 }
 
 export function EventImage({ event, className, style, hoverScale = 1.02, grainOpacity = 0.25, groupHover = false, hoverShadow, width, height }: EventImageProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [allFailed, setAllFailed] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   // Section image tracking
   const uniqueId = useId();
@@ -35,53 +34,32 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
   // Determine proxy width based on prop or default
   const proxyWidth = width || 800;
 
-  // Build list of proxied URLs - external images go through /api/image
-  // The proxy returns 302 redirect to Firebase Storage URL
-  const imageUrls = useMemo(() => {
-    const urls: string[] = [];
-    if (event.imageUrl && event.imageUrl.trim()) {
-      urls.push(getProxiedImageUrl(event.imageUrl, proxyWidth, true));
-    }
-    event.articles?.forEach(article => {
-      if (article.imageUrl && article.imageUrl.trim()) {
-        urls.push(getProxiedImageUrl(article.imageUrl, proxyWidth, true));
-      }
-    });
-    return urls;
+  // Build single proxy URL with primary + up to 5 fallback URLs
+  // Backend tries each in order, returns first working image or 404
+  const proxiedImageUrl = useMemo(() => {
+    const primaryUrl = event.imageUrl?.trim() || null;
+    const fallbackUrls = (event.articles || [])
+      .map(a => a.imageUrl?.trim() || null)
+      .filter(Boolean) as string[];
+
+    return getProxiedImageUrlWithFallbacks(primaryUrl, fallbackUrls, proxyWidth, true);
   }, [event.imageUrl, event.articles, proxyWidth]);
 
   // Reset when event changes
   useEffect(() => {
-    setCurrentIndex(0);
-    setAllFailed(false);
+    setFailed(false);
   }, [event.id]);
 
-  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = e.currentTarget;
-    console.warn('[EventImage] Failed to load', {
-      eventId: event.id,
-      failedSrc: img.src,
-      currentIndex,
-      totalUrls: imageUrls.length,
-    });
-    const nextIndex = currentIndex + 1;
-    if (nextIndex < imageUrls.length) {
-      setCurrentIndex(nextIndex);
-    } else {
-      setAllFailed(true);
-      onError();
-    }
-  };
-
-  const handleLoad = () => {
-    onLoad();
+  const handleError = () => {
+    setFailed(true);
+    onError();
   };
 
   // Use placeholder when no images or all failed
-  const isUsingPlaceholder = allFailed || imageUrls.length === 0;
+  const isUsingPlaceholder = failed || !proxiedImageUrl;
   const currentImageUrl = isUsingPlaceholder
     ? PLACEHOLDER_IMAGE
-    : imageUrls[currentIndex];
+    : proxiedImageUrl;
 
   // Only show CSS grain overlay for local images (placeholder)
   // External images have grain baked in by the proxy
@@ -102,13 +80,13 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
       transition={useGroupHover ? undefined : { duration: 0.4 }}
     >
       <img
-        key={`${event.id}-${currentIndex}-${allFailed}`}
+        key={`${event.id}-${failed}`}
         src={currentImageUrl}
         alt=""
         className="w-full h-full object-cover"
         loading={priority === 'high' ? 'eager' : 'lazy'}
-        onLoad={handleLoad}
-        onError={allFailed ? undefined : handleError}
+        onLoad={onLoad}
+        onError={isUsingPlaceholder ? undefined : handleError}
         width={width}
         height={height}
       />

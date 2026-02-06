@@ -1,5 +1,17 @@
 import { API_BASE } from '../config/api';
 
+const MAX_FALLBACK_URLS = 6;
+
+/** Check if a URL should be proxied (external, not already proxied/cached) */
+function isProxiableUrl(url: string): boolean {
+  if (!url || !url.trim()) return false;
+  if (url.startsWith('/')) return false;
+  if (url.startsWith('data:')) return false;
+  if (url.includes('/api/image?')) return false;
+  if (url.includes('storage.googleapis.com')) return false;
+  return true;
+}
+
 /**
  * Build a proxied image URL that goes through our image optimization endpoint.
  *
@@ -19,37 +31,55 @@ export function getProxiedImageUrl(
   width: number = 800,
   grain: boolean = true
 ): string {
-  // Return empty string for falsy values
-  if (!originalUrl) {
-    return '';
-  }
+  if (!originalUrl) return '';
+  if (!isProxiableUrl(originalUrl)) return originalUrl;
 
-  // Don't proxy local images (starting with /)
-  if (originalUrl.startsWith('/')) {
-    return originalUrl;
-  }
-
-  // Don't proxy data URLs
-  if (originalUrl.startsWith('data:')) {
-    return originalUrl;
-  }
-
-  // Don't proxy already proxied URLs
-  if (originalUrl.includes('/api/image?')) {
-    return originalUrl;
-  }
-
-  // Don't proxy Firebase Storage URLs (already optimized)
-  if (originalUrl.includes('storage.googleapis.com')) {
-    return originalUrl;
-  }
-
-  // Build proxy URL
   const params = new URLSearchParams({
     url: originalUrl,
     w: Math.min(Math.max(width, 100), 1200).toString(),
     grain: grain ? '1' : '0',
   });
+
+  return `${API_BASE}/image?${params}`;
+}
+
+/**
+ * Build a proxied image URL with fallback URLs baked in.
+ * The backend tries each URL in order and returns the first that works.
+ *
+ * @param primaryUrl - The primary image URL to try first
+ * @param fallbackUrls - Additional URLs to try if the primary fails
+ * @param width - Target width (default: 800, max: 1200)
+ * @param grain - Whether to apply grain overlay (default: true)
+ * @returns Proxied image URL with multiple url params, or empty string
+ */
+export function getProxiedImageUrlWithFallbacks(
+  primaryUrl: string | undefined | null,
+  fallbackUrls: (string | undefined | null)[],
+  width: number = 800,
+  grain: boolean = true
+): string {
+  const candidates: string[] = [];
+
+  if (primaryUrl && isProxiableUrl(primaryUrl)) {
+    candidates.push(primaryUrl);
+  }
+
+  for (const url of fallbackUrls) {
+    if (url && isProxiableUrl(url) && !candidates.includes(url)) {
+      candidates.push(url);
+      if (candidates.length >= MAX_FALLBACK_URLS) break;
+    }
+  }
+
+  if (candidates.length === 0) return '';
+
+  const params = new URLSearchParams();
+  for (const url of candidates) {
+    params.append('url', url);
+  }
+  params.set('w', Math.min(Math.max(width, 100), 1200).toString());
+  params.set('grain', grain ? '1' : '0');
 
   return `${API_BASE}/image?${params}`;
 }
