@@ -162,7 +162,7 @@ export function SourcesPage() {
     [sources],
   );
   const avgArticlesPerSource = useMemo(
-    () => (sources.length > 0 ? Math.round(totalArticles / sources.length) : 0),
+    () => (sources.length > 0 ? (totalArticles / sources.length).toFixed(3) : '0.000'),
     [sources, totalArticles],
   );
 
