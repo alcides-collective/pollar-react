@@ -1,11 +1,14 @@
 import type { SejmPrint } from '../../types/sejm';
 import { LocalizedLink } from '../LocalizedLink';
+import { usePrintAISummary } from '../../hooks/usePrints';
 
 interface PrintCardProps {
   print: SejmPrint;
 }
 
 export function PrintCard({ print }: PrintCardProps) {
+  const { summary } = usePrintAISummary(print.number);
+
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return '';
     const date = new Date(dateStr);
@@ -36,14 +39,38 @@ export function PrintCard({ print }: PrintCardProps) {
         {print.title}
       </h3>
 
+      {summary && (
+        <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2 mb-2 italic">
+          {summary.analysis.tldr}
+        </p>
+      )}
+
+      {summary && summary.analysis.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1 mb-2">
+          {summary.analysis.tags.slice(0, 4).map((tag, i) => (
+            <span key={i} className="text-[10px] bg-zinc-100 text-zinc-500 px-1.5 py-0.5 rounded">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+
       <div className="flex items-center justify-between text-[11px] text-zinc-500">
         <span>{formatDate(print.deliveryDate)}</span>
-        {print.attachments && print.attachments.length > 0 && (
-          <span className="flex items-center gap-1">
-            <i className="ri-attachment-line text-xs" />
-            {print.attachments.length}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {summary && (
+            <span className="flex items-center gap-0.5 text-blue-500">
+              <i className="ri-sparkling-line text-xs" />
+              AI
+            </span>
+          )}
+          {print.attachments && print.attachments.length > 0 && (
+            <span className="flex items-center gap-1">
+              <i className="ri-attachment-line text-xs" />
+              {print.attachments.length}
+            </span>
+          )}
+        </div>
       </div>
     </LocalizedLink>
   );
