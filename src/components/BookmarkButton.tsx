@@ -31,9 +31,9 @@ export function BookmarkButton({
   };
 
   const iconSizes = {
-    sm: 'h-4 w-4',
-    md: 'h-5 w-5',
-    lg: 'h-6 w-6',
+    sm: 'text-base',
+    md: 'text-lg',
+    lg: 'text-xl',
   };
 
   const handleClick = async () => {
@@ -64,11 +64,7 @@ export function BookmarkButton({
             : 'bg-white text-zinc-900 border-zinc-300 hover:border-zinc-400'
         } disabled:opacity-50 ${className}`}
       >
-        {isSaved ? (
-          <BookmarkFilledIcon className={iconSizes[size]} />
-        ) : (
-          <BookmarkIcon className={iconSizes[size]} />
-        )}
+        <i className={`${isSaved ? 'ri-bookmark-fill' : 'ri-bookmark-line'} ${iconSizes[size]}`} />
         <span className="text-sm font-medium">
           {isSaved ? t('bookmark.saved') : t('bookmark.save')}
         </span>
@@ -80,44 +76,14 @@ export function BookmarkButton({
     <button
       onClick={handleClick}
       disabled={isLoading}
-      className={`${sizeClasses[size]} rounded-full flex items-center justify-center transition-colors ${
+      className={`${sizeClasses[size]} rounded-full flex items-center justify-center transition-colors duration-200 ${
         isSaved
           ? 'bg-zinc-900 text-white hover:bg-zinc-800'
-          : 'bg-white/90 text-zinc-700 hover:bg-white border border-zinc-200'
+          : 'bg-white/90 text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 border border-zinc-200'
       } disabled:opacity-50 ${className}`}
       aria-label={isSaved ? t('bookmark.ariaRemove') : t('bookmark.ariaSave')}
     >
-      {isSaved ? (
-        <BookmarkFilledIcon className={iconSizes[size]} />
-      ) : (
-        <BookmarkIcon className={iconSizes[size]} />
-      )}
+      <i className={`${isSaved ? 'ri-bookmark-fill' : 'ri-bookmark-line'} ${iconSizes[size]}`} />
     </button>
-  );
-}
-
-function BookmarkIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-      />
-    </svg>
-  );
-}
-
-function BookmarkFilledIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-    </svg>
   );
 }

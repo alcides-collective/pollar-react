@@ -4,7 +4,7 @@ import type { Event } from '../../types/events';
 import { AudioPlayer } from './AudioPlayer';
 import { BookmarkButton } from '../../components/BookmarkButton';
 import { ShareButton } from '../../components/ShareButton';
-import { getModelDisplayName, getModelColorClass, getModelDescription, estimateCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
+import { getModelDisplayName, getModelPillClasses, getModelDescription, estimateCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
 
 interface EventHeaderProps {
   event: Event;
@@ -33,7 +33,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
           <span className="font-light">
             {t('header.generatedBy')}{' '}
             <span
-              className={`relative font-medium cursor-help border-b border-dotted border-current ${getModelColorClass(modelId)}`}
+              className={`relative inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ring-1 ring-inset cursor-help ${getModelPillClasses(modelId)}`}
               onMouseEnter={() => setShowModelTooltip(true)}
               onMouseLeave={() => setShowModelTooltip(false)}
             >

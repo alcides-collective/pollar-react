@@ -95,6 +95,7 @@ function computeEventGroups(
     const anchorCountries = new Set(anchor.metadata?.mentionedCountries || []);
 
     return pool.filter(event => {
+      if (event.id === anchor.id) return false;
       if (usedIds.has(event.id)) return false;
       if (event.category !== anchorCategory) return false;
 

@@ -34,6 +34,19 @@ export function getModelColorClass(modelId: string | undefined): string {
   return '';
 }
 
+export function getModelPillClasses(modelId: string | undefined): string {
+  if (!modelId) return 'bg-zinc-100 text-zinc-600';
+  if (modelId.includes('opus')) return 'bg-orange-50 text-orange-700 ring-orange-200/60';
+  if (modelId.includes('sonnet')) return 'bg-violet-50 text-violet-700 ring-violet-200/60';
+  if (modelId.includes('pro')) return 'bg-amber-50 text-amber-700 ring-amber-200/60';
+  if (modelId.includes('flash')) return 'bg-blue-50 text-blue-700 ring-blue-200/60';
+  if (modelId.includes('deepseek')) return 'bg-blue-50 text-blue-700 ring-blue-200/60';
+  if (modelId.includes('glm')) return 'bg-zinc-100 text-zinc-600 ring-zinc-200/60';
+  if (modelId.includes('codex-max')) return 'bg-amber-50 text-amber-700 ring-amber-200/60';
+  if (modelId.includes('codex-mini')) return 'bg-green-50 text-green-700 ring-green-200/60';
+  return 'bg-zinc-100 text-zinc-600 ring-zinc-200/60';
+}
+
 // Calculate total output characters from AI-generated fields
 export function calculateOutputChars(event: Event): number {
   let chars = 0;
