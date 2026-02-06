@@ -284,14 +284,14 @@ export function SourcesPage() {
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Left column — Filters & Table */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4">
           {/* Filters */}
-          <Card className="border-zinc-200">
-            <CardHeader className="pb-3">
+          <Card className="border-zinc-200 py-4 gap-3">
+            <CardHeader className="pb-0">
               <CardTitle className="text-sm font-medium">{t('sources.filters')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-3 items-center">
+              <div className="flex flex-wrap gap-2 items-center">
                 <Input
                   type="text"
                   value={searchQuery}
@@ -328,34 +328,34 @@ export function SourcesPage() {
           </Card>
 
           {/* Table */}
-          <Card className="overflow-hidden border-zinc-200">
+          <Card className="overflow-hidden border-zinc-200 py-0">
             <CardContent className="p-0">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b border-zinc-200 bg-muted">
                     <th
-                      className="w-[30%] text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                      className="w-[30%] text-left px-3 py-2 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
                       onClick={() => toggleSort('name')}
                     >
                       {t('sources.colSource')}
                       {sortBy === 'name' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
                     </th>
                     <th
-                      className="w-[25%] text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                      className="w-[25%] text-left px-3 py-2 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
                       onClick={() => toggleSort('nationality')}
                     >
                       {t('sources.colCountry')}
                       {sortBy === 'nationality' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
                     </th>
                     <th
-                      className="text-left px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                      className="text-left px-3 py-2 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
                       onClick={() => toggleSort('political')}
                     >
                       {t('sources.colPolitical')}
                       {sortBy === 'political' && <span className="ml-1">{sortAsc ? '\u2191' : '\u2193'}</span>}
                     </th>
                     <th
-                      className="text-right px-4 py-3 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                      className="text-right px-3 py-2 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
                       onClick={() => toggleSort('count')}
                     >
                       {t('sources.colArticles')}
@@ -372,28 +372,28 @@ export function SourcesPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2, delay: Math.min(i * 0.02, 0.5) }}
                     >
-                      <td className="px-4 py-3">
-                        <span className="font-medium">{source.name}</span>
+                      <td className="px-3 py-2">
+                        <span className="font-medium text-sm">{source.name}</span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-3 py-2">
                         <span className="inline-flex items-center gap-1.5">
                           <FlagIcon nationality={source.nationality} />
                           <span className="text-sm text-muted-foreground">{nationalityLabels[source.nationality][lang]}</span>
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-3 py-2">
                         <span className={cn('inline-block px-2 py-0.5 text-xs font-medium rounded', getPoliticalColorClass(source.politicalLeaning))}>
                           {politicalLabels[source.politicalLeaning][lang]}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-3 py-2 text-right">
                         <span className="text-muted-foreground font-mono text-sm">{source.count.toLocaleString()}</span>
                       </td>
                     </motion.tr>
                   ))}
                   {filteredSources.length === 0 && (
                     <tr>
-                      <td colSpan={4} className="px-4 py-12 text-center text-muted-foreground">
+                      <td colSpan={4} className="px-3 py-8 text-center text-muted-foreground">
                         {t('sources.noResults')}
                       </td>
                     </tr>
