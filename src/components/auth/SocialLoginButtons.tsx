@@ -1,12 +1,23 @@
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/stores/authStore';
 
-export function SocialLoginButtons() {
+interface SocialLoginButtonsProps {
+  disabled?: boolean;
+  onGoogle?: () => void;
+  onApple?: () => void;
+}
+
+export function SocialLoginButtons({ disabled, onGoogle, onApple }: SocialLoginButtonsProps) {
   const signInWithGoogle = useAuthStore((s) => s.signInWithGoogle);
   const signInWithApple = useAuthStore((s) => s.signInWithApple);
   const isLoading = useAuthStore((s) => s.isLoading);
+  const isDisabled = isLoading || disabled;
 
   const handleGoogle = async () => {
+    if (onGoogle) {
+      onGoogle();
+      return;
+    }
     try {
       await signInWithGoogle();
     } catch {
@@ -15,6 +26,10 @@ export function SocialLoginButtons() {
   };
 
   const handleApple = async () => {
+    if (onApple) {
+      onApple();
+      return;
+    }
     try {
       await signInWithApple();
     } catch {
@@ -30,7 +45,7 @@ export function SocialLoginButtons() {
         variant="outline"
         className="w-full h-10 gap-3 bg-white text-[#1F1F1F] hover:text-[#1F1F1F] border-[#747775] hover:border-[#747775] font-medium transition-all duration-150 hover:opacity-90 hover:shadow-md active:scale-[0.98]"
         onClick={handleGoogle}
-        disabled={isLoading}
+        disabled={isDisabled}
       >
         <GoogleIcon className="h-5 w-5 shrink-0" />
         <span>Kontynuuj z Google</span>
@@ -42,7 +57,7 @@ export function SocialLoginButtons() {
         variant="outline"
         className="w-full h-10 gap-3 bg-black text-white hover:text-white border-black hover:border-zinc-800 hover:bg-zinc-900 font-medium transition-all duration-150 hover:shadow-md active:scale-[0.98]"
         onClick={handleApple}
-        disabled={isLoading}
+        disabled={isDisabled}
       >
         <AppleIcon className="h-5 w-5 shrink-0" />
         <span>Kontynuuj z Apple</span>

@@ -1,15 +1,17 @@
 import { useState, type FormEvent } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuthStore, useAuthError } from '@/stores/authStore';
 import { SocialLoginButtons } from './SocialLoginButtons';
 import { AuthDivider } from './AuthDivider';
+import { LocalizedLink } from '@/components/LocalizedLink';
 import {
   isValidEmail,
   isValidPassword,
   isValidName,
 } from '@/lib/auth-errors';
+import type { ConsentData } from '@/types/auth';
 
 export function RegisterForm() {
   const { t } = useTranslation('auth');
@@ -18,17 +20,37 @@ export function RegisterForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [acceptPrivacy, setAcceptPrivacy] = useState(false);
+  const [acceptMarketing, setAcceptMarketing] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
   const signUp = useAuthStore((s) => s.signUpWithEmail);
+  const signInWithGoogle = useAuthStore((s) => s.signInWithGoogle);
+  const signInWithApple = useAuthStore((s) => s.signInWithApple);
   const setView = useAuthStore((s) => s.setAuthModalView);
   const clearError = useAuthStore((s) => s.clearError);
   const isLoading = useAuthStore((s) => s.isLoading);
   const storeError = useAuthError();
 
   const error = localError || storeError;
+  const consentsValid = acceptTerms && acceptPrivacy;
+
+  const getConsents = (): ConsentData => ({
+    terms: acceptTerms,
+    privacy: acceptPrivacy,
+    marketing: acceptMarketing,
+  });
 
   const validateForm = (): boolean => {
+    if (!acceptTerms) {
+      setLocalError(tErrors('auth.termsRequired'));
+      return false;
+    }
+    if (!acceptPrivacy) {
+      setLocalError(tErrors('auth.privacyRequired'));
+      return false;
+    }
     if (!isValidName(displayName)) {
       setLocalError(tErrors('auth.nameTooShort'));
       return false;
@@ -56,7 +78,23 @@ export function RegisterForm() {
     if (!validateForm()) return;
 
     try {
-      await signUp(email, password, displayName.trim());
+      await signUp(email, password, displayName.trim(), getConsents());
+    } catch {
+      // Error is handled in store
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle(getConsents());
+    } catch {
+      // Error is handled in store
+    }
+  };
+
+  const handleAppleSignIn = async () => {
+    try {
+      await signInWithApple(getConsents());
     } catch {
       // Error is handled in store
     }
@@ -69,7 +107,76 @@ export function RegisterForm() {
 
   return (
     <div className="space-y-4">
-      <SocialLoginButtons />
+      {/* Consent checkboxes — gate both social and email registration */}
+      <div className="space-y-3">
+        <label className="flex items-start gap-2.5 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={acceptTerms}
+            onChange={(e) => setAcceptTerms(e.target.checked)}
+            className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-zinc-500 shrink-0"
+          />
+          <span className="text-zinc-300 text-xs leading-relaxed">
+            <Trans
+              i18nKey="register.acceptTerms"
+              ns="auth"
+              components={{
+                termsLink: (
+                  <LocalizedLink
+                    to="/regulamin"
+                    target="_blank"
+                    className="text-zinc-100 underline hover:text-white"
+                  />
+                ),
+              }}
+            />
+            <span className="text-red-400"> *</span>
+          </span>
+        </label>
+
+        <label className="flex items-start gap-2.5 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={acceptPrivacy}
+            onChange={(e) => setAcceptPrivacy(e.target.checked)}
+            className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-zinc-500 shrink-0"
+          />
+          <span className="text-zinc-300 text-xs leading-relaxed">
+            <Trans
+              i18nKey="register.acceptPrivacy"
+              ns="auth"
+              components={{
+                privacyLink: (
+                  <LocalizedLink
+                    to="/polityka-prywatnosci"
+                    target="_blank"
+                    className="text-zinc-100 underline hover:text-white"
+                  />
+                ),
+              }}
+            />
+            <span className="text-red-400"> *</span>
+          </span>
+        </label>
+
+        <label className="flex items-start gap-2.5 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={acceptMarketing}
+            onChange={(e) => setAcceptMarketing(e.target.checked)}
+            className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-zinc-500 shrink-0"
+          />
+          <span className="text-zinc-400 text-xs leading-relaxed">
+            {t('register.acceptMarketing')}
+          </span>
+        </label>
+      </div>
+
+      <SocialLoginButtons
+        disabled={!consentsValid}
+        onGoogle={handleGoogleSignIn}
+        onApple={handleAppleSignIn}
+      />
       <AuthDivider />
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -130,14 +237,14 @@ export function RegisterForm() {
                     : 'text-zinc-500'
                 }`}
               >
-                <span>{req.met ? '✓' : '○'}</span>
+                <span>{req.met ? '\u2713' : '\u25CB'}</span>
                 <span>{req.text}</span>
               </div>
             ))}
           </div>
         )}
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full" disabled={isLoading || !consentsValid}>
           {isLoading ? t('register.loading') : t('register.title')}
         </Button>
 

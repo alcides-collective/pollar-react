@@ -29,7 +29,9 @@
     "passwordTooShort": "Passwort muss mindestens 6 Zeichen haben",
     "invalidEmailFormat": "Ungültiges E-Mail-Format",
     "nameTooShort": "Name muss mindestens 2 Zeichen haben",
-    "noInternet": "Keine Internetverbindung"
+    "noInternet": "Keine Internetverbindung",
+    "termsRequired": "Sie m\u00fcssen die Nutzungsbedingungen akzeptieren",
+    "privacyRequired": "Sie m\u00fcssen die Datenschutzrichtlinie best\u00e4tigen"
   },
   "general": {
     "eventNotFound": "Ereignis nicht gefunden",

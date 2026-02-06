@@ -18,7 +18,8 @@ import {
   type User,
 } from 'firebase/auth';
 import { db, auth, isFirebaseConfigured } from '@/config/firebase';
-import type { UserProfile, AuthProviderName } from '@/types/auth';
+import type { UserProfile, AuthProviderName, ConsentData } from '@/types/auth';
+import { CURRENT_TERMS_VERSION } from '@/types/auth';
 
 const USERS_COLLECTION = 'users';
 
@@ -28,7 +29,8 @@ const USERS_COLLECTION = 'users';
  */
 export async function createOrUpdateUserProfile(
   user: User,
-  authProvider: AuthProviderName
+  authProvider: AuthProviderName,
+  consents?: ConsentData
 ): Promise<UserProfile> {
   if (!isFirebaseConfigured || !db) {
     throw new Error('Firebase nie jest skonfigurowany');
@@ -46,9 +48,12 @@ export async function createOrUpdateUserProfile(
   }
 
   // Create new profile
-  const newProfile: Omit<UserProfile, 'createdAt' | 'lastActiveAt'> & {
+  const newProfile: Omit<UserProfile, 'createdAt' | 'lastActiveAt' | 'consentTermsAcceptedAt' | 'consentPrivacyAcceptedAt' | 'consentMarketingAcceptedAt'> & {
     createdAt: ReturnType<typeof serverTimestamp>;
     lastActiveAt: ReturnType<typeof serverTimestamp>;
+    consentTermsAcceptedAt?: ReturnType<typeof serverTimestamp> | null;
+    consentPrivacyAcceptedAt?: ReturnType<typeof serverTimestamp> | null;
+    consentMarketingAcceptedAt?: ReturnType<typeof serverTimestamp> | null;
   } = {
     id: user.uid,
     email: user.email || '',
@@ -60,16 +65,29 @@ export async function createOrUpdateUserProfile(
     savedEventIds: [],
     hiddenCategories: [],
     photoURL: user.photoURL,
+    ...(consents && {
+      consentTermsAcceptedAt: consents.terms ? serverTimestamp() : null,
+      consentPrivacyAcceptedAt: consents.privacy ? serverTimestamp() : null,
+      consentMarketingAcceptedAt: consents.marketing ? serverTimestamp() : null,
+      consentTermsVersion: consents.terms ? CURRENT_TERMS_VERSION : null,
+    }),
   };
 
   await setDoc(userRef, newProfile);
 
   // Return the profile (with placeholder timestamps since serverTimestamp is server-side)
+  const now = { seconds: Date.now() / 1000, nanoseconds: 0 } as Timestamp;
   return {
     ...newProfile,
-    createdAt: { seconds: Date.now() / 1000, nanoseconds: 0 } as Timestamp,
-    lastActiveAt: { seconds: Date.now() / 1000, nanoseconds: 0 } as Timestamp,
-  };
+    createdAt: now,
+    lastActiveAt: now,
+    ...(consents && {
+      consentTermsAcceptedAt: consents.terms ? now : null,
+      consentPrivacyAcceptedAt: consents.privacy ? now : null,
+      consentMarketingAcceptedAt: consents.marketing ? now : null,
+      consentTermsVersion: consents.terms ? CURRENT_TERMS_VERSION : null,
+    }),
+  } as UserProfile;
 }
 
 /**
@@ -171,6 +189,26 @@ export async function deleteUserAccount(password?: string): Promise<void> {
 
   // Delete Firebase Auth user
   await deleteUser(user);
+}
+
+/**
+ * Updates consent fields on an existing user profile
+ * Used for existing users who need to accept updated terms
+ */
+export async function updateUserConsents(
+  uid: string,
+  consents: ConsentData
+): Promise<void> {
+  if (!isFirebaseConfigured || !db) {
+    throw new Error('Firebase nie jest skonfigurowany');
+  }
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    consentTermsAcceptedAt: consents.terms ? serverTimestamp() : null,
+    consentPrivacyAcceptedAt: consents.privacy ? serverTimestamp() : null,
+    consentMarketingAcceptedAt: consents.marketing ? serverTimestamp() : null,
+    consentTermsVersion: consents.terms ? CURRENT_TERMS_VERSION : null,
+  });
 }
 
 // ============ Saved Events (Bookmarks) ============

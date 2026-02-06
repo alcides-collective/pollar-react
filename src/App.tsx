@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { Toaster } from 'sonner'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Header } from './components/Header'
-import { AuthModal, EmailVerificationBanner } from './components/auth'
+import { AuthModal, EmailVerificationBanner, ConsentRequiredModal } from './components/auth'
 import { ProModal } from './components/ProModal'
 import { useAuthStore } from './stores/authStore'
 import { useUserStore } from './stores/userStore'
@@ -27,6 +27,7 @@ const BriefPage = lazy(() => import('./pages/brief').then(m => ({ default: m.Bri
 const FelietonPage = lazy(() => import('./pages/felieton').then(m => ({ default: m.FelietonPage })))
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(m => ({ default: m.PrivacyPolicyPage })))
 const CookieSettingsPage = lazy(() => import('./pages/CookieSettingsPage').then(m => ({ default: m.CookieSettingsPage })))
+const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage').then(m => ({ default: m.TermsOfServicePage })))
 const MapPage = lazy(() => import('./pages/mapa').then(m => ({ default: m.MapPage })))
 const TerminalPage = lazy(() => import('./pages/terminal').then(m => ({ default: m.TerminalPage })))
 const InfoPage = lazy(() => import('./pages/info').then(m => ({ default: m.InfoPage })))
@@ -130,6 +131,7 @@ function getAppRoutes(prefix = '') {
     <Route key={`${prefix}-felieton`} path={`${prefix}/felieton/:id`} element={<FelietonPage />} />,
     <Route key={`${prefix}-event`} path={`${prefix}/event/:id`} element={<EventPage />} />,
     <Route key={`${prefix}-privacy`} path={`${prefix}/polityka-prywatnosci`} element={<PrivacyPolicyPage />} />,
+    <Route key={`${prefix}-terms`} path={`${prefix}/regulamin`} element={<TermsOfServicePage />} />,
     <Route key={`${prefix}-cookies`} path={`${prefix}/cookies`} element={<CookieSettingsPage />} />,
     <Route key={`${prefix}-mapa`} path={`${prefix}/mapa`} element={<MapPage />} />,
     <Route key={`${prefix}-terminal`} path={`${prefix}/terminal`} element={<TerminalPage />} />,
@@ -318,6 +320,7 @@ function App() {
         <BrowserRouter>
           <AppContent />
           <AuthModal />
+          <ConsentRequiredModal />
           <ProModal />
           <CookiePopup />
           <Toaster

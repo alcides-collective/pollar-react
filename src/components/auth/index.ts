@@ -5,3 +5,4 @@ export { PasswordResetForm } from './PasswordResetForm';
 export { SocialLoginButtons } from './SocialLoginButtons';
 export { AuthDivider } from './AuthDivider';
 export { EmailVerificationBanner } from './EmailVerificationBanner';
+export { ConsentRequiredModal } from './ConsentRequiredModal';

@@ -53,6 +53,30 @@ export interface UserProfile {
   followedMPIds?: number[];
   /** Notification preferences */
   notificationPreferences?: NotificationPreferences;
+  /** Consent: Terms of Service accepted at */
+  consentTermsAcceptedAt?: Timestamp | null;
+  /** Consent: Privacy Policy acknowledged at */
+  consentPrivacyAcceptedAt?: Timestamp | null;
+  /** Consent: Marketing communications accepted at */
+  consentMarketingAcceptedAt?: Timestamp | null;
+  /** Version of terms the user accepted (e.g. "2026-02-06") */
+  consentTermsVersion?: string | null;
+}
+
+/**
+ * Current terms version — bump this whenever the Terms of Service
+ * or Privacy Policy are materially updated. Existing users whose
+ * consentTermsVersion differs will be prompted to re-accept.
+ */
+export const CURRENT_TERMS_VERSION = '2026-02-06';
+
+/**
+ * Consent data collected during registration
+ */
+export interface ConsentData {
+  terms: boolean;
+  privacy: boolean;
+  marketing: boolean;
 }
 
 /**

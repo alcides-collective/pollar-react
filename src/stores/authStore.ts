@@ -26,6 +26,7 @@ import type {
   AuthUser,
   AuthModalView,
   AuthProvider,
+  ConsentData,
 } from '@/types/auth';
 
 // ============ Types ============
@@ -50,10 +51,11 @@ interface AuthActions {
   signUpWithEmail: (
     email: string,
     password: string,
-    displayName: string
+    displayName: string,
+    consents?: ConsentData
   ) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
-  signInWithApple: () => Promise<void>;
+  signInWithGoogle: (consents?: ConsentData) => Promise<void>;
+  signInWithApple: (consents?: ConsentData) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   resendVerificationEmail: () => Promise<void>;
@@ -141,7 +143,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 
-  signUpWithEmail: async (email, password, displayName) => {
+  signUpWithEmail: async (email, password, displayName, consents) => {
     if (!isFirebaseConfigured || !auth) {
       set({ error: 'Firebase nie jest skonfigurowany' });
       return;
@@ -161,7 +163,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       await sendEmailVerification(credential.user);
 
       // Create Firestore profile
-      await createOrUpdateUserProfile(credential.user, 'email');
+      await createOrUpdateUserProfile(credential.user, 'email', consents);
 
       trackSignUp('email');
       set({
@@ -177,7 +179,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 
-  signInWithGoogle: async () => {
+  signInWithGoogle: async (consents) => {
     if (!isFirebaseConfigured || !auth) {
       set({ error: 'Firebase nie jest skonfigurowany' });
       return;
@@ -188,7 +190,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       provider.addScope('email');
       provider.addScope('profile');
       const credential = await signInWithPopup(auth, provider);
-      await createOrUpdateUserProfile(credential.user, 'google');
+      await createOrUpdateUserProfile(credential.user, 'google', consents);
       trackLogin('google');
       set({ user: transformUser(credential.user), isAuthModalOpen: false });
     } catch (error) {
@@ -203,7 +205,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 
-  signInWithApple: async () => {
+  signInWithApple: async (consents) => {
     if (!isFirebaseConfigured || !auth) {
       set({ error: 'Firebase nie jest skonfigurowany' });
       return;
@@ -214,7 +216,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       provider.addScope('email');
       provider.addScope('name');
       const credential = await signInWithPopup(auth, provider);
-      await createOrUpdateUserProfile(credential.user, 'apple');
+      await createOrUpdateUserProfile(credential.user, 'apple', consents);
       trackLogin('apple');
       set({ user: transformUser(credential.user), isAuthModalOpen: false });
     } catch (error) {

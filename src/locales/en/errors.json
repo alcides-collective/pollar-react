@@ -29,7 +29,9 @@
     "passwordTooShort": "Password must be at least 6 characters",
     "invalidEmailFormat": "Invalid email format",
     "nameTooShort": "Name must be at least 2 characters",
-    "noInternet": "No internet connection"
+    "noInternet": "No internet connection",
+    "termsRequired": "You must accept the Terms of Service",
+    "privacyRequired": "You must acknowledge the Privacy Policy"
   },
   "general": {
     "eventNotFound": "Event not found",

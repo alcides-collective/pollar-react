@@ -29,7 +29,9 @@
     "passwordTooShort": "Hasło musi mieć co najmniej 6 znaków",
     "invalidEmailFormat": "Nieprawidłowy format adresu email",
     "nameTooShort": "Imię musi mieć co najmniej 2 znaki",
-    "noInternet": "Brak połączenia z internetem"
+    "noInternet": "Brak połączenia z internetem",
+    "termsRequired": "Musisz zaakceptować Regulamin",
+    "privacyRequired": "Musisz potwierdzić zapoznanie się z Polityką prywatności"
   },
   "general": {
     "eventNotFound": "Wydarzenie nie zostało znalezione",
