@@ -62,8 +62,8 @@ export function extractKeyNumber(summary: string | undefined): ExtractedKeyNumbe
   if (!match) return null;
 
   return {
-    value: match[1],
-    description: match[2].trim()
+    value: preventWidows(match[1]),
+    description: preventWidows(match[2].trim())
   };
 }
 
@@ -82,8 +82,13 @@ export function extractTimeline(summary: string | undefined): ExtractedTimeline 
     const events = JSON.parse(match[2].trim());
     if (!Array.isArray(events)) return null;
     return {
-      title: match[1],
-      events
+      title: preventWidows(match[1]),
+      events: events.map((e: { data?: string; tytul?: string; opis?: string }) => ({
+        ...e,
+        data: e.data ? preventWidows(e.data) : e.data,
+        tytul: e.tytul ? preventWidows(e.tytul) : e.tytul,
+        opis: e.opis ? preventWidows(e.opis) : e.opis,
+      })),
     };
   } catch {
     return null;
@@ -174,15 +179,32 @@ export function removeExtractedElements(summary: string | undefined): string {
 }
 
 /**
- * Prevents widows/orphans by replacing spaces after single characters with non-breaking spaces
- * Handles Polish characters as well
+ * Prevents widows/orphans by replacing the space AFTER short (1-2 char) tokens
+ * with a non-breaking space (\u00A0) wrapped in Word Joiners (U+2060).
+ * Matches short words (a, i, o, w, do, na, ze...) AND short numbers (5, 12, 60...).
+ * The combination ensures no line break can occur between the short token
+ * and the following word. Uses lookbehind so consecutive short tokens
+ * (e.g. "a w domu", "z 5 lutego") are all matched.
  */
+const NBSP = '\u2060\u00A0\u2060';
+
 export function preventWidows(text: string): string {
   if (!text || typeof text !== 'string') return text ?? '';
 
-  return text
-    .replace(/\s+([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ])\s+/g, ' $1\u00A0')
-    .replace(/\s+([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ])$/g, ' $1');
+  return text.replace(
+    /(?<=\s|^)([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9]{1,2})\s/g,
+    `$1${NBSP}`,
+  );
+}
+
+/**
+ * Applies preventWidows only to text nodes in HTML, skipping tags and attributes.
+ * Splits HTML into tag/text segments and processes only the text parts.
+ */
+export function preventWidowsInHtml(html: string): string {
+  if (!html) return html;
+  const parts = html.split(/(<[^>]*>)/);
+  return parts.map(part => part.startsWith('<') ? part : preventWidows(part)).join('');
 }
 
 /**
@@ -240,9 +262,6 @@ export function sanitizeAndProcessHtml(text: string): string {
     .replace(/&mdash;/g, '—')
     .replace(/&nbsp;/g, ' ')
     .replace(/&hellip;/g, '…');
-
-  // Apply widow prevention
-  processedText = preventWidows(processedText);
 
   // Process custom tags
   processedText = processedText
@@ -846,7 +865,10 @@ export function sanitizeAndProcessHtml(text: string): string {
     .join('');
 
   // Remove event UUID/ID references like (ID: 123), (event bd6b1f5c-...), or just (bd6b1f5c-...)
-  return paragraphs.replace(/\s*\((?:ID:\s*\d+|(?:event\s+)?[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\)/gi, '');
+  const cleaned = paragraphs.replace(/\s*\((?:ID:\s*\d+|(?:event\s+)?[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\)/gi, '');
+
+  // Apply widow prevention to text nodes only (after all HTML processing)
+  return preventWidowsInHtml(cleaned);
 }
 
 /**
@@ -916,8 +938,6 @@ export function sanitizeAndProcessInlineHtml(text: string): string {
     .replace(/&nbsp;/g, ' ')
     .replace(/&hellip;/g, '…');
 
-  processedText = preventWidows(processedText);
-
   processedText = processedText
     .replace(/<br\s*\/?>/gi, ' ')
     .replace(/&lt;(\/?)przypis/gi, '<$1przypis')
@@ -938,5 +958,8 @@ export function sanitizeAndProcessInlineHtml(text: string): string {
     .replace(/<\/b>/gi, '</b>')
     .replace(/<b>/gi, '<b>');
 
-  return processedText.replace(/\s*\((?:ID:\s*\d+|event\s+[a-f0-9-]+)\)/gi, '');
+  const cleaned = processedText.replace(/\s*\((?:ID:\s*\d+|event\s+[a-f0-9-]+)\)/gi, '');
+
+  // Apply widow prevention to text nodes only (after all HTML processing)
+  return preventWidowsInHtml(cleaned);
 }

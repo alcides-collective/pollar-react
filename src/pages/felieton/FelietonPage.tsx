@@ -3,7 +3,7 @@ import { LocalizedLink } from '@/components/LocalizedLink';
 import { useFelieton } from '../../hooks/useFelieton';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
-import { preventWidows, sanitizeAndProcessHtml, prepareOgDescription } from '../../utils/text';
+import { sanitizeAndProcessHtml, prepareOgDescription } from '../../utils/text';
 import { GrainImage } from '../../components/common/GrainImage';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.webp';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
@@ -204,7 +204,7 @@ export function FelietonPage() {
             </div>
 
             <h1 className="text-4xl md:text-5xl font-medium text-zinc-900 mb-5 leading-tight tracking-tight">
-              {preventWidows(felieton.title)}
+              {felieton.title}
             </h1>
 
             <p className="text-lg md:text-xl text-zinc-600 mb-6 leading-relaxed">

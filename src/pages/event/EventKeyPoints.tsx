@@ -6,6 +6,12 @@ interface EventKeyPointsProps {
   keyPoints: KeyPoint[];
 }
 
+const priorityStyles: Record<KeyPoint['priority'], string> = {
+  high: 'bg-red-50 text-red-900',
+  medium: 'bg-amber-50 text-amber-900',
+  low: 'bg-zinc-100 text-zinc-700',
+};
+
 export function EventKeyPoints({ keyPoints }: EventKeyPointsProps) {
   const { t } = useTranslation('event');
   if (!keyPoints || keyPoints.length === 0) return null;
@@ -18,7 +24,7 @@ export function EventKeyPoints({ keyPoints }: EventKeyPointsProps) {
       <ul className="space-y-4">
         {keyPoints.map((point, index) => (
           <li key={index} className="flex gap-3">
-            <span className="shrink-0 w-6 h-6 rounded-full bg-zinc-100 text-zinc-600 text-xs font-medium flex items-center justify-center">
+            <span className={`shrink-0 w-6 h-6 rounded-full text-xs font-medium flex items-center justify-center ${priorityStyles[point.priority] || priorityStyles.low}`}>
               {index + 1}
             </span>
             <div className="key-point-content">

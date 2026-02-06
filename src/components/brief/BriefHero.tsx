@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { DailyBrief } from '../../types/brief';
 import { formatBriefDate } from '../../utils/briefUtils';
-import { preventWidows } from '../../utils/text';
+
 import { AudioPlayer } from '../../pages/event/AudioPlayer';
 import { useLanguage } from '../../stores/languageStore';
 import { getModelDisplayName, getModelColorClass, getModelDescription, estimateBriefCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
@@ -80,7 +80,7 @@ export function BriefHero({ brief }: BriefHeroProps) {
 
       {/* Headline */}
       <h1 className="text-4xl md:text-5xl font-medium text-zinc-900 mb-5 leading-tight tracking-tight">
-        {preventWidows(brief.headline)}
+        {brief.headline}
       </h1>
 
       {/* Lead */}

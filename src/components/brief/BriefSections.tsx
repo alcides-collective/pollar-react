@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import type { BriefSection } from '../../types/brief';
-import { preventWidows, sanitizeAndProcessHtml, sanitizeAndProcessInlineHtml } from '../../utils/text';
+import { sanitizeAndProcessHtml, sanitizeAndProcessInlineHtml } from '../../utils/text';
 
 interface BriefSectionsProps {
   sections: BriefSection[];
@@ -33,7 +33,7 @@ const SectionCard = forwardRef<HTMLDivElement, { section: BriefSection }>(
     return (
       <div ref={ref} className="mt-8 first:mt-0">
         <h3 className="text-xl font-semibold text-zinc-900 mb-4 leading-tight">
-          {preventWidows(section.headline)}
+          {section.headline}
         </h3>
 
         <div

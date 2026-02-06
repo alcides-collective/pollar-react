@@ -1,6 +1,7 @@
-import i18n from 'i18next';
+import i18n, { type PostProcessorModule } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { useLanguageStore } from './stores/languageStore';
+import { preventWidows } from './utils/text';
 
 // Polish translations
 import plCommon from './locales/pl/common.json';
@@ -119,15 +120,27 @@ const resources = {
   },
 };
 
-i18n.use(initReactI18next).init({
-  resources,
-  lng: useLanguageStore.getState().language,
-  fallbackLng: 'pl',
-  defaultNS: 'common',
-  interpolation: {
-    escapeValue: false,
+const preventWidowsPostProcessor: PostProcessorModule = {
+  type: 'postProcessor',
+  name: 'preventWidows',
+  process(value: string) {
+    return preventWidows(value);
   },
-});
+};
+
+i18n
+  .use(initReactI18next)
+  .use(preventWidowsPostProcessor)
+  .init({
+    resources,
+    lng: useLanguageStore.getState().language,
+    fallbackLng: 'pl',
+    defaultNS: 'common',
+    postProcess: ['preventWidows'],
+    interpolation: {
+      escapeValue: false,
+    },
+  });
 
 // Sync with languageStore
 useLanguageStore.subscribe((state) => {

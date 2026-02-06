@@ -118,7 +118,9 @@ export function AnimatedUnderline({
     const text = container.textContent || '';
     if (!text.trim()) return;
 
-    const words = text.split(/\s+/).filter(Boolean);
+    // Split on whitespace EXCEPT non-breaking spaces (\u00A0),
+    // so preventWidows groups like "o\u2060\u00A0\u2060koderów" stay as one unit
+    const words = text.split(/[^\S\u00A0]+/).filter(Boolean);
     if (words.length === 0) return;
 
     // Measure IN-PLACE: temporarily replace content with word spans
