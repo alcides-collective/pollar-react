@@ -3,6 +3,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -63,11 +64,10 @@ export function ConsentRequiredModal() {
           <DialogTitle className="text-center text-xl">
             {t('consentModal.title')}
           </DialogTitle>
+          <DialogDescription className="text-zinc-400 text-sm text-center">
+            {t('consentModal.description')}
+          </DialogDescription>
         </DialogHeader>
-
-        <p className="text-zinc-400 text-sm text-center mb-2">
-          {t('consentModal.description')}
-        </p>
 
         <div className="space-y-3 my-4">
           <label className="flex items-start gap-2.5 text-sm cursor-pointer">
