@@ -4,7 +4,7 @@ import { GrainImage } from '../common/GrainImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { useLanguage } from '../../stores/languageStore';
 import { LocalizedLink } from '../LocalizedLink';
-import { AnimatedHeadline } from '../common/AnimatedUnderline';
+import { AnimatedUnderline } from '../common/AnimatedUnderline';
 import dailyBriefImg from '../../assets/images/daily/day.webp';
 
 interface DailyBriefSectionProps {
@@ -65,13 +65,9 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
               fetchPriority="high"
               loading="eager"
             />
-            <AnimatedHeadline
-              to="/brief"
-              as="h2"
-              className="text-3xl font-bold text-zinc-900 mb-4 mt-4 leading-tight"
-            >
-              {brief.headline}
-            </AnimatedHeadline>
+            <h2 className="text-3xl font-bold text-zinc-900 mb-4 mt-4 leading-tight">
+              <AnimatedUnderline>{brief.headline}</AnimatedUnderline>
+            </h2>
             <p className="text-lg text-zinc-700 leading-snug">
               {brief.lead}
             </p>
@@ -100,13 +96,9 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
             {/* Right column: date + headline + lead */}
             <div>
               <p className="text-sm text-sky-600 mb-2">{formattedDate}</p>
-              <AnimatedHeadline
-                to="/brief"
-                as="h2"
-                className="text-4xl font-bold text-zinc-900 mb-4 leading-tight"
-              >
-                {brief.headline}
-              </AnimatedHeadline>
+              <h2 className="text-4xl font-bold text-zinc-900 mb-4 leading-tight">
+                <AnimatedUnderline>{brief.headline}</AnimatedUnderline>
+              </h2>
               <p className="text-lg text-zinc-700 leading-snug">
                 {brief.lead}
               </p>
