@@ -41,5 +41,10 @@
     "fileTooLarge": "File is too large (maximum {{size}})",
     "failedToLoadArchive": "Failed to load archive",
     "failedToLoadStock": "Failed to load stock data"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "It looks like this page doesn't exist or has been moved.",
+    "backHome": "Back to homepage"
   }
 }

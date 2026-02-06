@@ -14,7 +14,11 @@
     "terminal": "Terminal",
     "connections": "Verbindungen",
     "archive": "Archiv",
-    "about": "Über Pollar"
+    "about": "Über Pollar",
+    "sections": {
+      "essentials": "Täglich",
+      "data": "Daten & Analyse"
+    }
   },
   "categories": {
     "Świat": "Welt",

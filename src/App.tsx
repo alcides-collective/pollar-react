@@ -82,6 +82,12 @@ const IndexDetailPage = lazy(() => import('./pages/gielda').then(m => ({ default
 // Graf page (network visualization)
 const GrafPage = lazy(() => import('./pages/graf').then(m => ({ default: m.GrafPage })))
 
+// Sources page
+const SourcesPage = lazy(() => import('./pages/sources').then(m => ({ default: m.SourcesPage })))
+
+// 404 page
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })))
+
 function HomePage() {
   return <NewsGrid />
 }
@@ -135,6 +141,7 @@ function getAppRoutes(prefix = '') {
     <Route key={`${prefix}-powiadomienia`} path={`${prefix}/powiadomienia`} element={<NotificationsPage />} />,
     <Route key={`${prefix}-archiwum`} path={`${prefix}/archiwum`} element={<ArchivePage />} />,
     <Route key={`${prefix}-archiwum-cat`} path={`${prefix}/archiwum/:category`} element={<CategoryArchivePage />} />,
+    <Route key={`${prefix}-sources`} path={`${prefix}/sources`} element={<SourcesPage />} />,
     /* Sejm routes */
     <Route key={`${prefix}-sejm`} path={`${prefix}/sejm`} element={<SejmLayout />}>
       <Route index element={<SejmDashboard />} />
@@ -177,6 +184,8 @@ function getAppRoutes(prefix = '') {
       <Route path="indeksy/:symbol" element={<IndexDetailPage />} />
       <Route path="watchlist" element={<WatchlistPage />} />
     </Route>,
+    /* 404 catch-all */
+    <Route key={`${prefix}-404`} path={`${prefix}/*`} element={<NotFoundPage />} />,
   ]
 }
 

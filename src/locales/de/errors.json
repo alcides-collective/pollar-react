@@ -41,5 +41,10 @@
     "fileTooLarge": "Datei ist zu groß (maximal {{size}})",
     "failedToLoadArchive": "Archiv konnte nicht geladen werden",
     "failedToLoadStock": "Börsendaten konnten nicht geladen werden"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Diese Seite existiert nicht oder wurde verschoben.",
+    "backHome": "Zurück zur Startseite"
   }
 }

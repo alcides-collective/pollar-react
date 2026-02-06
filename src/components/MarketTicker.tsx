@@ -93,8 +93,10 @@ export function MarketTicker() {
             <LocalizedLink
               key={item.symbol}
               to={`/gielda/indeksy/${encodeURIComponent(item.symbol)}`}
-              className={`flex items-center gap-2 px-3 py-1 rounded text-sm whitespace-nowrap transition-all duration-200 hover:scale-[1.02] hover:shadow-sm ${
-                isPositive ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
+              className={`flex items-center gap-2 px-3 py-1 rounded text-sm whitespace-nowrap transition-colors duration-500 ${
+                isPositive
+                  ? 'bg-green-50 text-green-600 hover:bg-green-100 hover:text-green-700'
+                  : 'bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700'
               }`}
             >
               <span className="text-zinc-700">{item.name}</span>

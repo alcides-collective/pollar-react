@@ -14,7 +14,11 @@
     "terminal": "Terminal",
     "connections": "Powiązania",
     "archive": "Archiwum",
-    "about": "O Pollar"
+    "about": "O Pollar",
+    "sections": {
+      "essentials": "Na co dzień",
+      "data": "Dane i analiza"
+    }
   },
   "categories": {
     "Świat": "Świat",
@@ -333,5 +337,28 @@
       "title": "Felietony AI",
       "description": "Autorskie analizy generowane przez Gemini. Polska polityka, geopolityka i ekonomia - aktualizowane dwa razy dziennie."
     }
+  },
+  "sources": {
+    "title": "Źródła wiadomości",
+    "subtitle": "Wszystkie źródła wiadomości śledzone przez Pollar",
+    "sourcesCount": "Źródeł",
+    "totalArticles": "Artykułów",
+    "avgPerSource": "Śr. na źródło",
+    "topSource": "Najpopularniejsze",
+    "articles": "art.",
+    "politicalBalance": "Balans polityczny",
+    "left": "Lewica",
+    "center": "Centrum",
+    "right": "Prawica",
+    "byCountry": "Źródła według kraju",
+    "spectrumLegend": "Legenda spektrum politycznego",
+    "searchPlaceholder": "Szukaj źródeł...",
+    "allNationalities": "Wszystkie kraje",
+    "allPolitical": "Wszystkie orientacje",
+    "colSource": "Źródło",
+    "colCountry": "Kraj",
+    "colPolitical": "Orientacja polityczna",
+    "colArticles": "Artykułów",
+    "noResults": "Nie znaleziono źródeł"
   }
 }

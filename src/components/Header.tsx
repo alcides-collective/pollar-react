@@ -13,6 +13,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
@@ -385,72 +387,89 @@ export function Header() {
               </svg>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/brief" className="w-full flex items-center gap-2">
-                  <i className="ri-newspaper-line" />
-                  {t('nav.dailyBrief')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/asystent" className="w-full flex items-center gap-2">
-                  <i className="ri-robot-2-line" />
-                  {t('nav.aiAssistant')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/sejm" className="w-full flex items-center gap-2">
-                  <i className="ri-government-line" />
-                  {t('nav.sejm')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/gielda" className="w-full flex items-center gap-2">
-                  <i className="ri-line-chart-line" />
-                  {t('nav.stockExchange')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/mapa" className="w-full flex items-center gap-2">
-                  <i className="ri-map-pin-line" />
-                  {t('nav.eventMap')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/dane" className="w-full flex items-center gap-2">
-                  <i className="ri-database-2-line" />
-                  {t('nav.openData')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/graf" className="w-full flex items-center gap-2">
-                  <i className="ri-share-circle-line" />
-                  {t('nav.connectionGraph')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/terminal" className="w-full flex items-center gap-2">
-                  <i className="ri-terminal-line" />
-                  {t('nav.terminal')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/powiazania" className="w-full flex items-center gap-2">
-                  <i className="ri-mind-map" />
-                  {t('nav.connections')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/archiwum" className="w-full flex items-center gap-2">
-                  <i className="ri-archive-line" />
-                  {t('nav.archive')}
-                </LocalizedLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <LocalizedLink to="/info" className="w-full flex items-center gap-2">
-                  <i className="ri-information-line" />
-                  {t('nav.about')}
-                </LocalizedLink>
-              </DropdownMenuItem>
+              {/* Daily essentials */}
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>{t('nav.sections.essentials')}</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/brief" className="w-full flex items-center gap-2">
+                    <i className="ri-newspaper-line" />
+                    {t('nav.dailyBrief')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/asystent" className="w-full flex items-center gap-2">
+                    <i className="ri-robot-2-line" />
+                    {t('nav.aiAssistant')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/archiwum" className="w-full flex items-center gap-2">
+                    <i className="ri-archive-line" />
+                    {t('nav.archive')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator />
+
+              {/* Data & analysis */}
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>{t('nav.sections.data')}</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/sejm" className="w-full flex items-center gap-2">
+                    <i className="ri-government-line" />
+                    {t('nav.sejm')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/gielda" className="w-full flex items-center gap-2">
+                    <i className="ri-line-chart-line" />
+                    {t('nav.stockExchange')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/dane" className="w-full flex items-center gap-2">
+                    <i className="ri-database-2-line" />
+                    {t('nav.openData')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/mapa" className="w-full flex items-center gap-2">
+                    <i className="ri-map-pin-line" />
+                    {t('nav.eventMap')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/graf" className="w-full flex items-center gap-2">
+                    <i className="ri-share-circle-line" />
+                    {t('nav.connectionGraph')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator />
+
+              {/* Extras */}
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/powiazania" className="w-full flex items-center gap-2">
+                    <i className="ri-gamepad-line" />
+                    {t('nav.connections')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/terminal" className="w-full flex items-center gap-2">
+                    <i className="ri-terminal-line" />
+                    {t('nav.terminal')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/info" className="w-full flex items-center gap-2">
+                    <i className="ri-information-line" />
+                    {t('nav.about')}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
             </DropdownMenu>
           </div>

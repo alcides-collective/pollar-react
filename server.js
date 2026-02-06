@@ -468,6 +468,7 @@ app.use(helmet({
         "https://www.google-analytics.com",
         "https://apis.google.com",
         "https://static.ads-twitter.com",
+        "https://t.contentsquare.net",
       ],
       styleSrc: ["'self'", "'unsafe-inline'", "https://api.mapbox.com"],
       imgSrc: [
@@ -485,6 +486,7 @@ app.use(helmet({
         "https://*.doubleclick.net",
         "https://t.co",
         "https://analytics.twitter.com",
+        "https://t.contentsquare.net",
       ],
       fontSrc: ["'self'", "data:"],
       connectSrc: [
@@ -511,6 +513,7 @@ app.use(helmet({
         "https://static.ads-twitter.com",
         "https://analytics.twitter.com",
         "https://t.co",
+        "https://t.contentsquare.net",
         "wss://*.firebaseio.com",
       ],
       frameSrc: [
