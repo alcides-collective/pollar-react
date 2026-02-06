@@ -228,7 +228,7 @@ export function SourcesPage() {
   // Loading skeleton
   if (loading && sources.length === 0) {
     return (
-      <div className="max-w-[1200px] mx-auto px-6 py-8">
+      <div className="max-w-[1200px] mx-auto px-6 py-8 overflow-hidden">
         <div className="mb-6">
           <Skeleton className="h-8 w-48 mb-2" />
           <Skeleton className="h-4 w-96" />
@@ -278,13 +278,13 @@ export function SourcesPage() {
   }
 
   return (
-    <div className="max-w-[1200px] mx-auto px-6 py-8">
+    <div className="max-w-[1200px] mx-auto px-6 py-8 overflow-hidden">
       {/* Header */}
       <DaneHeader title={t('sources.title')} subtitle={t('sources.subtitle')} icon="ri-newspaper-line" />
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Left column — Filters & Table */}
-        <div className="lg:col-span-2 space-y-4">
+        <div className="order-2 lg:order-1 lg:col-span-2 space-y-4">
           {/* Filters */}
           <Card className="border-zinc-200 py-4 gap-3">
             <CardHeader className="pb-0">
@@ -329,8 +329,8 @@ export function SourcesPage() {
 
           {/* Table */}
           <Card className="overflow-hidden border-zinc-200 py-0">
-            <CardContent className="p-0">
-              <table className="w-full border-collapse">
+            <CardContent className="p-0 overflow-x-auto">
+              <table className="w-full border-collapse min-w-[500px]">
                 <thead>
                   <tr className="border-b border-zinc-200 bg-muted">
                     <th
@@ -405,7 +405,7 @@ export function SourcesPage() {
         </div>
 
         {/* Right sidebar — Stats & Info */}
-        <div className="lg:col-span-1">
+        <div className="order-1 lg:order-2 lg:col-span-1">
           <div className="sticky top-24 space-y-4">
             {/* Statistics Cards */}
             <StatsGrid
