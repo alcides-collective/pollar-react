@@ -1,4 +1,4 @@
-export type SourceNationality = 'polish' | 'american' | 'british' | 'german' | 'swiss_german' | 'swedish' | 'french' | 'qatari' | 'lithuanian' | 'eu' | 'vatican' | 'other';
+export type SourceNationality = 'polish' | 'american' | 'british' | 'german' | 'swiss_german' | 'swedish' | 'french' | 'qatari' | 'lithuanian' | 'eu' | 'vatican' | 'canadian' | 'japanese' | 'portuguese' | 'romanian' | 'other';
 
 export const sourceToNationality: Record<string, SourceNationality> = {
   // === POLSKIE (Polish capital) ===
@@ -207,14 +207,14 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'Economist': 'british',
   'economist.com': 'british',
 
-  // === KANADYJSKIE (Canadian capital - Thomson/Woodbridge) ===
-  'Reuters': 'other',
-  'reuters.com': 'other',
+  // === BRYTYJSKIE (British - Thomson Reuters, London HQ) ===
+  'Reuters': 'british',
+  'reuters.com': 'british',
 
   // === JAPOŃSKIE (Japanese capital - Nikkei) ===
-  'Financial Times': 'other',
-  'Financial Times News': 'other',
-  'ft.com': 'other',
+  'Financial Times': 'japanese',
+  'Financial Times News': 'japanese',
+  'ft.com': 'japanese',
 
   // === NIEMIECKIE (German capital) ===
   // Bauer Media Group
@@ -291,8 +291,8 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'Sky News': 'british',
   'news.sky.com': 'british',
   // Euronews - Alpac Capital (Portuguese) since 2022
-  'Euronews': 'other',
-  'euronews.com': 'other',
+  'Euronews': 'portuguese',
+  'euronews.com': 'portuguese',
   '24kurier.pl': 'polish',
   '24Kurier.pl': 'polish',
   'plotek.pl': 'polish',
@@ -418,8 +418,8 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'IndieWire': 'american',
   'indiewire.com': 'american',
   // The Next Web - Tekpon (Romanian) since Dec 2025
-  'The Next Web': 'other',
-  'thenextweb.com': 'other',
+  'The Next Web': 'romanian',
+  'thenextweb.com': 'romanian',
   'Nauka w Polsce': 'polish',
   'naukawpolsce.pl': 'polish',
   'naukawpolsce.pap.pl': 'polish',
@@ -524,19 +524,24 @@ export function getSourceNationality(source: string): SourceNationality {
   return 'other';
 }
 
-export const nationalityFlags: Record<SourceNationality, string> = {
-  polish: '\u{1F1F5}\u{1F1F1}',
-  american: '\u{1F1FA}\u{1F1F8}',
-  british: '\u{1F1EC}\u{1F1E7}',
-  german: '\u{1F1E9}\u{1F1EA}',
-  swiss_german: '\u{1F1E8}\u{1F1ED}',
-  swedish: '\u{1F1F8}\u{1F1EA}',
-  french: '\u{1F1EB}\u{1F1F7}',
-  qatari: '\u{1F1F6}\u{1F1E6}',
-  lithuanian: '\u{1F1F1}\u{1F1F9}',
-  eu: '\u{1F1EA}\u{1F1FA}',
-  vatican: '\u{1F1FB}\u{1F1E6}',
-  other: '\u{1F30D}',
+/** ISO 3166-1 alpha-2 codes for flag-icons CSS library */
+export const nationalityCodes: Record<SourceNationality, string | null> = {
+  polish: 'pl',
+  american: 'us',
+  british: 'gb',
+  german: 'de',
+  swiss_german: 'ch',
+  swedish: 'se',
+  french: 'fr',
+  qatari: 'qa',
+  lithuanian: 'lt',
+  eu: 'eu',
+  vatican: 'va',
+  canadian: 'ca',
+  japanese: 'jp',
+  portuguese: 'pt',
+  romanian: 'ro',
+  other: null,
 };
 
 export const nationalityLabels: Record<SourceNationality, { en: string; pl: string }> = {
@@ -549,6 +554,12 @@ export const nationalityLabels: Record<SourceNationality, { en: string; pl: stri
   french: { en: 'French', pl: 'Francuskie' },
   qatari: { en: 'Qatari', pl: 'Katarskie' },
   lithuanian: { en: 'Lithuanian', pl: 'Litewskie' },
+  eu: { en: 'EU', pl: 'UE' },
+  vatican: { en: 'Vatican', pl: 'Watykan' },
+  canadian: { en: 'Canadian', pl: 'Kanadyjskie' },
+  japanese: { en: 'Japanese', pl: 'Japońskie' },
+  portuguese: { en: 'Portuguese', pl: 'Portugalskie' },
+  romanian: { en: 'Romanian', pl: 'Rumuńskie' },
   other: { en: 'Other', pl: 'Inne' },
 };
 

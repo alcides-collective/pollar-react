@@ -23,6 +23,7 @@
     "compression": "^1.8.1",
     "express": "^4.21.2",
     "firebase": "^12.8.0",
+    "flag-icons": "^7.5.0",
     "framer-motion": "^12.30.0",
     "helmet": "^8.1.0",
     "i18next": "^25.8.1",

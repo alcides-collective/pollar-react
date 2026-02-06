@@ -5,10 +5,11 @@ import { useEvents } from '@/stores/eventsStore';
 import { useDocumentHead } from '@/hooks/useDocumentHead';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { cn } from '@/lib/utils';
+import 'flag-icons/css/flag-icons.min.css';
 import {
   getSourceNationality,
   isNationalityMapped,
-  nationalityFlags,
+  nationalityCodes,
   nationalityLabels,
   allNationalities,
   type SourceNationality,
@@ -160,12 +161,9 @@ export function SourcesPage() {
 
   // Country stats
   const countryStats = useMemo(() => {
-    const counts: Record<SourceNationality, number> = {
-      polish: 0, american: 0, british: 0, german: 0,
-      swiss_german: 0, swedish: 0, french: 0, other: 0,
-    };
+    const counts = Object.fromEntries(allNationalities.map((n) => [n, 0])) as Record<SourceNationality, number>;
     for (const s of sources) {
-      counts[s.nationality]++;
+      counts[s.nationality] = (counts[s.nationality] || 0) + 1;
     }
     return (Object.keys(counts) as SourceNationality[])
       .filter((key) => counts[key] > 0)
@@ -347,7 +345,11 @@ export function SourcesPage() {
                   : 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50',
               )}
             >
-              <span className="text-lg">{nationalityFlags[stat.nationality]}</span>
+              {nationalityCodes[stat.nationality] ? (
+                <span className={`fi fi-${nationalityCodes[stat.nationality]}`} />
+              ) : (
+                <i className="ri-global-line text-base text-zinc-400" />
+              )}
               <span>{nationalityLabels[stat.nationality][lang]}</span>
               <span
                 className={cn(
@@ -391,7 +393,7 @@ export function SourcesPage() {
           <option value="all">{t('sources.allNationalities')}</option>
           {allNationalities.map((nat) => (
             <option key={nat} value={nat}>
-              {nationalityFlags[nat]} {nationalityLabels[nat][lang]}
+              {nationalityLabels[nat][lang]}
             </option>
           ))}
         </select>
@@ -458,7 +460,11 @@ export function SourcesPage() {
                 </td>
                 <td className="px-4 py-3">
                   <span className="inline-flex items-center gap-1.5">
-                    <span className="text-lg">{nationalityFlags[source.nationality]}</span>
+                    {nationalityCodes[source.nationality] ? (
+                      <span className={`fi fi-${nationalityCodes[source.nationality]}`} />
+                    ) : (
+                      <i className="ri-global-line text-base text-zinc-400" />
+                    )}
                     <span className="text-sm text-zinc-500">{nationalityLabels[source.nationality][lang]}</span>
                   </span>
                 </td>
