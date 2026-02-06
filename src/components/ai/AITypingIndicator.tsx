@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAIDebugSteps, useAIGenerationStartTime } from '../../stores/aiStore';
-import { getTypingLabelKey } from '../../utils/ai-helpers';
+import { useAICurrentStatus, useAIGenerationStartTime } from '../../stores/aiStore';
 
 export function AITypingIndicator() {
   const { t } = useTranslation('ai');
-  const debugSteps = useAIDebugSteps();
+  const currentStatus = useAICurrentStatus();
   const generationStartTime = useAIGenerationStartTime();
-  const labelKey = getTypingLabelKey(debugSteps);
-  const label = t(`status.${labelKey}`);
+
+  // Use status from API, fallback to default
+  const label = currentStatus || t('status.analyzing');
 
   // Live elapsed time counter
   const [elapsedMs, setElapsedMs] = useState(0);

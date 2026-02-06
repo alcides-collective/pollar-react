@@ -51,6 +51,9 @@ interface AIState {
   // Debug (dev mode)
   debugSteps: DebugStep[];
 
+  // Current status from API (e.g. "Analizuję pytanie...", "Szukam wydarzeń...")
+  currentStatus: string | null;
+
   // Follow-ups
   followUps: string[];
 
@@ -93,6 +96,9 @@ interface AIActions {
   addDebugStep: (step: DebugStep) => void;
   clearDebugSteps: () => void;
 
+  // Status Actions
+  setCurrentStatus: (status: string | null) => void;
+
   // Follow-up Actions
   setFollowUps: (followUps: string[]) => void;
 
@@ -120,6 +126,7 @@ export const useAIStore = create<AIStore>()(
       generationStartTime: null,
       remainingQueries: import.meta.env.DEV ? 9999 : 20,
       debugSteps: [],
+      currentStatus: null,
       followUps: [],
       suggestions: DEFAULT_SUGGESTIONS,
 
@@ -323,6 +330,9 @@ export const useAIStore = create<AIStore>()(
 
       clearDebugSteps: () => set({ debugSteps: [] }),
 
+      // Status Actions
+      setCurrentStatus: (status) => set({ currentStatus: status }),
+
       // Follow-up Actions
       setFollowUps: (followUps) => set({ followUps }),
 
@@ -424,4 +434,8 @@ export function useAIVisibleWordCount() {
 
 export function useAIGenerationStartTime() {
   return useAIStore((state) => state.generationStartTime);
+}
+
+export function useAICurrentStatus() {
+  return useAIStore((state) => state.currentStatus);
 }

@@ -52,6 +52,7 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
     setSuggestions,
     startGenerationTimer,
     stopGenerationTimer,
+    setCurrentStatus,
   } = useAIStore();
 
   /**
@@ -111,6 +112,7 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
       setError(null);
       clearDebugSteps();
       setFollowUps([]);
+      setCurrentStatus(null);
       startGenerationTimer();
 
       try {
@@ -166,6 +168,9 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
                 try {
                   const parsed: SSEEvent = JSON.parse(data);
 
+                  if (parsed.status) {
+                    setCurrentStatus(parsed.status);
+                  }
                   if (parsed.debug) {
                     addDebugStep(parsed.debug);
                   }
@@ -256,6 +261,7 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
       addDebugStep,
       clearDebugSteps,
       setFollowUps,
+      setCurrentStatus,
       startGenerationTimer,
       stopGenerationTimer,
       onAnimationStart,

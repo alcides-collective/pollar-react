@@ -79,6 +79,7 @@ export interface SSEEvent {
   done?: boolean;
   blocked?: boolean;
   error?: string;
+  /** Status message from backend (localized, e.g. "Analizuję pytanie...") */
   status?: string;
 }
 
