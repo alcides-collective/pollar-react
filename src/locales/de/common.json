@@ -338,5 +338,29 @@
       "title": "KI-Feuilletons",
       "description": "Originale Analysen von Gemini generiert. Polnische Politik, Geopolitik und Wirtschaft - zweimal täglich aktualisiert."
     }
+  },
+  "sources": {
+    "title": "Nachrichtenquellen",
+    "subtitle": "Alle von Pollar verfolgten Nachrichtenquellen",
+    "sourcesCount": "Quellen",
+    "totalArticles": "Artikel gesamt",
+    "avgPerSource": "Durchschn. pro Quelle",
+    "topSource": "Top-Quelle",
+    "articles": "Artikel",
+    "politicalBalance": "Politische Balance",
+    "left": "Progressiv / Links",
+    "center": "Mitte",
+    "right": "Konservativ / Rechts",
+    "byCountry": "Quellen nach Land",
+    "spectrumLegend": "Legende des politischen Spektrums",
+    "searchPlaceholder": "Quellen suchen...",
+    "allNationalities": "Alle Länder",
+    "allPolitical": "Alle politischen Richtungen",
+    "colSource": "Quelle",
+    "colCountry": "Land",
+    "colPolitical": "Politische Richtung",
+    "colArticles": "Artikel",
+    "noResults": "Keine Quellen gefunden",
+    "filters": "Filter"
   }
 }

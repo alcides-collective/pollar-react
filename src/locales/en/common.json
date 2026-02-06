@@ -348,9 +348,9 @@
     "topSource": "Top source",
     "articles": "articles",
     "politicalBalance": "Political balance",
-    "left": "Left",
+    "left": "Progressive / Left",
     "center": "Center",
-    "right": "Right",
+    "right": "Conservative / Right",
     "byCountry": "Sources by country",
     "spectrumLegend": "Political spectrum legend",
     "searchPlaceholder": "Search sources...",
@@ -360,6 +360,7 @@
     "colCountry": "Country",
     "colPolitical": "Political leaning",
     "colArticles": "Articles",
-    "noResults": "No sources found"
+    "noResults": "No sources found",
+    "filters": "Filters"
   }
 }

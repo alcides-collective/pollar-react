@@ -544,23 +544,23 @@ export const nationalityCodes: Record<SourceNationality, string | null> = {
   other: null,
 };
 
-export const nationalityLabels: Record<SourceNationality, { en: string; pl: string }> = {
-  polish: { en: 'Polish', pl: 'Polskie' },
-  american: { en: 'American', pl: 'Ameryka\u0144skie' },
-  british: { en: 'British', pl: 'Brytyjskie' },
-  german: { en: 'German', pl: 'Niemieckie' },
-  swiss_german: { en: 'Swiss-German', pl: 'Szwajcar.-niem.' },
-  swedish: { en: 'Swedish', pl: 'Szwedzkie' },
-  french: { en: 'French', pl: 'Francuskie' },
-  qatari: { en: 'Qatari', pl: 'Katarskie' },
-  lithuanian: { en: 'Lithuanian', pl: 'Litewskie' },
-  eu: { en: 'EU', pl: 'UE' },
-  vatican: { en: 'Vatican', pl: 'Watykan' },
-  canadian: { en: 'Canadian', pl: 'Kanadyjskie' },
-  japanese: { en: 'Japanese', pl: 'Japońskie' },
-  portuguese: { en: 'Portuguese', pl: 'Portugalskie' },
-  romanian: { en: 'Romanian', pl: 'Rumuńskie' },
-  other: { en: 'Other', pl: 'Inne' },
+export const nationalityLabels: Record<SourceNationality, { en: string; pl: string; de: string }> = {
+  polish: { en: 'Polish', pl: 'Polskie', de: 'Polnisch' },
+  american: { en: 'American', pl: 'Ameryka\u0144skie', de: 'Amerikanisch' },
+  british: { en: 'British', pl: 'Brytyjskie', de: 'Britisch' },
+  german: { en: 'German', pl: 'Niemieckie', de: 'Deutsch' },
+  swiss_german: { en: 'Swiss-German', pl: 'Szwajcar.-niem.', de: 'Schweiz.-dt.' },
+  swedish: { en: 'Swedish', pl: 'Szwedzkie', de: 'Schwedisch' },
+  french: { en: 'French', pl: 'Francuskie', de: 'Französisch' },
+  qatari: { en: 'Qatari', pl: 'Katarskie', de: 'Katarisch' },
+  lithuanian: { en: 'Lithuanian', pl: 'Litewskie', de: 'Litauisch' },
+  eu: { en: 'EU', pl: 'UE', de: 'EU' },
+  vatican: { en: 'Vatican', pl: 'Watykan', de: 'Vatikan' },
+  canadian: { en: 'Canadian', pl: 'Kanadyjskie', de: 'Kanadisch' },
+  japanese: { en: 'Japanese', pl: 'Japońskie', de: 'Japanisch' },
+  portuguese: { en: 'Portuguese', pl: 'Portugalskie', de: 'Portugiesisch' },
+  romanian: { en: 'Romanian', pl: 'Rumuńskie', de: 'Rumänisch' },
+  other: { en: 'Other', pl: 'Inne', de: 'Andere' },
 };
 
 export const allNationalities: SourceNationality[] = Object.keys(nationalityLabels) as SourceNationality[];

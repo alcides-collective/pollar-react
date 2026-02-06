@@ -348,9 +348,9 @@
     "topSource": "Najpopularniejsze",
     "articles": "art.",
     "politicalBalance": "Balans polityczny",
-    "left": "Lewica",
+    "left": "Progresywne / Lewica",
     "center": "Centrum",
-    "right": "Prawica",
+    "right": "Konserwatywne / Prawica",
     "byCountry": "Źródła według kraju",
     "spectrumLegend": "Legenda spektrum politycznego",
     "searchPlaceholder": "Szukaj źródeł...",
@@ -360,6 +360,7 @@
     "colCountry": "Kraj",
     "colPolitical": "Orientacja polityczna",
     "colArticles": "Artykułów",
-    "noResults": "Nie znaleziono źródeł"
+    "noResults": "Nie znaleziono źródeł",
+    "filters": "Filtry"
   }
 }

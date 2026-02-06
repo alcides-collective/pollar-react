@@ -1,38 +1,34 @@
 export type PoliticalLeaning =
-  | 'far_left'
-  | 'left'
+  | 'progressive'
   | 'center_left'
   | 'center'
   | 'center_right'
-  | 'right'
-  | 'far_right'
+  | 'conservative'
   | 'unknown';
 
 export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
-  // === PRAWICOWE (Right) ===
-  'wPolityce.pl': 'right',
-  'wpolityce.pl': 'right',
-  'DoRzeczy': 'right',
-  'dorzeczy.pl': 'right',
-  'Do Rzeczy': 'right',
-  'Niezalezna.pl': 'right',
-  'niezalezna.pl': 'right',
-  'NIEZALEZNA.PL': 'right',
-  'GazetaPolska': 'right',
-  'gazetapolska.pl': 'right',
-  'Gazeta Polska': 'right',
-  'wSieci': 'right',
-  'wsieci.pl': 'right',
-  'Nasz Dziennik': 'right',
-  'naszdziennik.pl': 'right',
-
-  // === SKRAJNA PRAWICA (Far Right) ===
-  'PCh24': 'far_right',
-  'pch24.pl': 'far_right',
-  'MediaNarodowe': 'far_right',
-  'medianarodowe.com': 'far_right',
-  'Fronda': 'far_right',
-  'fronda.pl': 'far_right',
+  // === KONSERWATYWNE / PRAWICOWE (Conservative) ===
+  'wPolityce.pl': 'conservative',
+  'wpolityce.pl': 'conservative',
+  'DoRzeczy': 'conservative',
+  'dorzeczy.pl': 'conservative',
+  'Do Rzeczy': 'conservative',
+  'Niezalezna.pl': 'conservative',
+  'niezalezna.pl': 'conservative',
+  'NIEZALEZNA.PL': 'conservative',
+  'GazetaPolska': 'conservative',
+  'gazetapolska.pl': 'conservative',
+  'Gazeta Polska': 'conservative',
+  'wSieci': 'conservative',
+  'wsieci.pl': 'conservative',
+  'Nasz Dziennik': 'conservative',
+  'naszdziennik.pl': 'conservative',
+  'PCh24': 'conservative',
+  'pch24.pl': 'conservative',
+  'MediaNarodowe': 'conservative',
+  'medianarodowe.com': 'conservative',
+  'Fronda': 'conservative',
+  'fronda.pl': 'conservative',
 
   // === CENTRO-PRAWICOWE (Center-Right) ===
   'Rzeczpospolita': 'center_right',
@@ -232,16 +228,16 @@ export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
   'WSJ': 'center_right',
   'wsj.com': 'center_right',
 
-  // === LEWICOWE (Left) ===
-  'OKO.press': 'left',
-  'oko.press': 'left',
-  'Krytyka Polityczna': 'left',
-  'krytykapolityczna.pl': 'left',
-  'Przekroj': 'left',
-  'Przekrój': 'left',
-  'przekroj.pl': 'left',
-  'Dwutygodnik': 'left',
-  'dwutygodnik.com': 'left',
+  // === LIBERALNE / PROGRESYWNE (Progressive) ===
+  'OKO.press': 'progressive',
+  'oko.press': 'progressive',
+  'Krytyka Polityczna': 'progressive',
+  'krytykapolityczna.pl': 'progressive',
+  'Przekroj': 'progressive',
+  'Przekrój': 'progressive',
+  'przekroj.pl': 'progressive',
+  'Dwutygodnik': 'progressive',
+  'dwutygodnik.com': 'progressive',
 
   // === Warianty z polskimi znakami ===
   'Przegląd Sportowy': 'center',
@@ -257,8 +253,8 @@ export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
   'Polska Agencja Prasowa': 'center',
 
   // === Nowe źródła ===
-  'NCZAS.INFO': 'far_right',
-  'nczas.info': 'far_right',
+  'NCZAS.INFO': 'conservative',
+  'nczas.info': 'conservative',
   'WaWa.info': 'center',
   'wawa.info': 'center',
   'Variety': 'center',
@@ -306,8 +302,8 @@ export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
   'Trojmiasto.pl': 'center',
   'www.sadyogrody.pl': 'center',
   'sadyogrody.pl': 'center',
-  'Filary Biznesu': 'right',
-  'filarybiznesu.pl': 'right',
+  'Filary Biznesu': 'conservative',
+  'filarybiznesu.pl': 'conservative',
   'energetyka24.com': 'center',
   'Energetyka24': 'center',
   'Strefa Biznesu': 'center',
@@ -369,11 +365,11 @@ export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
   'biznesalert.pl': 'center',
   'Gizmodo': 'center',
   'gizmodo.com': 'center',
-  'Kresy': 'right',
-  'kresy.pl': 'right',
-  'Kresy.pl': 'right',
-  'wGospodarce.pl': 'right',
-  'wgospodarce.pl': 'right',
+  'Kresy': 'conservative',
+  'kresy.pl': 'conservative',
+  'Kresy.pl': 'conservative',
+  'wGospodarce.pl': 'conservative',
+  'wgospodarce.pl': 'conservative',
   'MamBiznes.pl': 'center',
   'mambiznes.pl': 'center',
   'Wired': 'center_left',
@@ -497,7 +493,7 @@ export function getPoliticalLeaning(source: string): PoliticalLeaning {
 }
 
 export const allPoliticalLeanings: PoliticalLeaning[] = [
-  'far_left', 'left', 'center_left', 'center', 'center_right', 'right', 'far_right', 'unknown'
+  'progressive', 'center_left', 'center', 'center_right', 'conservative', 'unknown'
 ];
 
 /** Returns true if source has an explicit mapping (even if mapped to 'unknown') */
@@ -514,14 +510,12 @@ export function isPoliticalMapped(source: string): boolean {
 
 export function politicalOrder(leaning: PoliticalLeaning): number {
   const order: Record<PoliticalLeaning, number> = {
-    far_left: 0,
-    left: 1,
-    center_left: 2,
-    center: 3,
-    center_right: 4,
-    right: 5,
-    far_right: 6,
-    unknown: 7,
+    progressive: 0,
+    center_left: 1,
+    center: 2,
+    center_right: 3,
+    conservative: 4,
+    unknown: 5,
   };
   return order[leaning];
 }

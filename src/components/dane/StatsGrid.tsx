@@ -18,6 +18,7 @@ interface StatsGridProps {
   columns?: 2 | 3 | 4;
   loading?: boolean;
   className?: string;
+  cardClassName?: string;
 }
 
 export function StatsGrid({
@@ -25,6 +26,7 @@ export function StatsGrid({
   columns = 4,
   loading,
   className,
+  cardClassName,
 }: StatsGridProps) {
   const gridCols = {
     2: 'grid-cols-2',
@@ -36,7 +38,7 @@ export function StatsGrid({
     return (
       <div className={cn('grid gap-4', gridCols[columns], className)}>
         {Array.from({ length: columns }).map((_, i) => (
-          <Card key={i}>
+          <Card key={i} className={cardClassName}>
             <CardContent className="pt-6">
               <Skeleton className="h-4 w-20 mb-2" />
               <Skeleton className="h-8 w-24" />
@@ -50,7 +52,7 @@ export function StatsGrid({
   return (
     <div className={cn('grid gap-4', gridCols[columns], className)}>
       {stats.map((stat, index) => (
-        <Card key={index}>
+        <Card key={index} className={cardClassName}>
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
             <div className="flex items-baseline gap-1">
