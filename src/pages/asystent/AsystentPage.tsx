@@ -18,10 +18,8 @@ export function AsystentPage() {
       {/* Language selector */}
       <FloatingLanguageSelector />
 
-      {/* Sidebar - hidden on mobile */}
-      <div className="hidden md:block h-full">
-        <AISidebar />
-      </div>
+      {/* Sidebar - overlay on mobile, inline on desktop */}
+      <AISidebar />
 
       {/* Main chat area */}
       <div className="flex-1 h-full min-w-0">
