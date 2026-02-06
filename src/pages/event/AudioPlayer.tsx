@@ -239,7 +239,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
       >
         <button
           className={`inline-flex items-center justify-center rounded border border-zinc-300 hover:border-zinc-400 transition-colors text-zinc-600 ${
-            small ? 'w-6 h-6 text-xs' : 'w-8 h-8 text-sm'
+            small ? 'size-[26px] text-xs' : 'size-[34px] text-sm'
           }`}
           onClick={() => setShowVolumeSlider(!showVolumeSlider)}
         >
@@ -249,7 +249,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
         {showVolumeSlider && (
           <div
             className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-1 rounded border border-zinc-300 bg-white shadow-sm flex items-center justify-center ${
-              small ? 'w-6 h-20 py-2' : 'w-8 h-24 py-3'
+              small ? 'w-[26px] h-20 py-2' : 'w-[34px] h-24 py-3'
             }`}
             onMouseEnter={handleVolumeMouseEnter}
             onMouseLeave={handleVolumeMouseLeave}

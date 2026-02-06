@@ -19,6 +19,7 @@ import { PageLoader } from './components/common/PageLoader'
 import { useEventStream } from './hooks/useEventStream'
 import { useAllSectionsReady } from './stores/imageLoadingStore'
 import { useLanguage, useSetLanguage, type Language } from './stores/languageStore'
+import { useContentsquare } from './hooks/useContentsquare'
 
 // Lazy load all page components for code splitting
 const EventPage = lazy(() => import('./pages/event').then(m => ({ default: m.EventPage })))
@@ -256,6 +257,9 @@ function AppContent() {
 
   // Connect to SSE for real-time event notifications
   useEventStream({ enabled: true })
+
+  // Load Contentsquare/Hotjar analytics when consent granted
+  useContentsquare()
 
   const handleRouteChange = useCallback(() => {
     setShowFooter(false)
