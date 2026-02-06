@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useRef } from 'react';
+import { useMemo } from 'react';
 import { sanitizeAndProcessHtml, removeExtractedElements } from '../../utils/text';
 import { SummaryLineChart, type LineChartData } from '../../components/charts/SummaryLineChart';
 import { SummaryBarChart, type BarChartData } from '../../components/charts/SummaryBarChart';
@@ -112,46 +112,34 @@ function parseContentWithCharts(summary: string): ContentSegment[] {
   return segments;
 }
 
+/**
+ * Inject Wikipedia author photos into quote-box HTML strings.
+ * Replaces <blockquote class="quote-box" data-author="X">...content...</blockquote>
+ * with a version that has the photo on the left and content wrapped.
+ */
+function injectQuotePhotos(html: string, wikipediaImages: Record<string, string>): string {
+  if (Object.keys(wikipediaImages).length === 0) return html;
+
+  return html.replace(
+    /<blockquote class="quote-box" data-author="([^"]+)">([\s\S]*?)<\/blockquote>/gi,
+    (fullMatch, author, innerContent) => {
+      const imageUrl = wikipediaImages[author];
+      if (!imageUrl) return fullMatch;
+
+      return `<blockquote class="quote-box has-photo" data-author="${author}"><div class="quote-author-photo"><img src="${imageUrl}" alt="${author}" loading="lazy" /></div><div class="quote-content">${innerContent}</div></blockquote>`;
+    }
+  );
+}
+
 export function EventSummary({ summary, wikipediaImages = {} }: EventSummaryProps) {
   const segments = useMemo(() => parseContentWithCharts(summary), [summary]);
-  const contentRef = useRef<HTMLDivElement>(null);
 
-  // Inject Wikipedia author photos into quote boxes
-  useEffect(() => {
-    if (!contentRef.current || Object.keys(wikipediaImages).length === 0) return;
-
-    const quoteBoxes = contentRef.current.querySelectorAll('.quote-box[data-author]');
-    quoteBoxes.forEach((box) => {
-      const author = box.getAttribute('data-author');
-      if (!author) return;
-
-      // Skip if already processed
-      if (box.querySelector('.quote-author-photo')) return;
-
-      const imageUrl = wikipediaImages[author];
-      if (!imageUrl) return;
-
-      // Add flex layout class
-      box.classList.add('has-photo');
-
-      // Create image container
-      const photoDiv = document.createElement('div');
-      photoDiv.className = 'quote-author-photo';
-      const img = document.createElement('img');
-      img.src = imageUrl;
-      img.alt = author;
-      img.loading = 'lazy';
-      photoDiv.appendChild(img);
-
-      // Wrap existing content in a div
-      const contentWrapper = document.createElement('div');
-      contentWrapper.className = 'quote-content';
-      while (box.firstChild) {
-        contentWrapper.appendChild(box.firstChild);
-      }
-
-      box.appendChild(photoDiv);
-      box.appendChild(contentWrapper);
+  // Re-process HTML segments with Wikipedia images injected
+  const processedSegments = useMemo(() => {
+    if (Object.keys(wikipediaImages).length === 0) return segments;
+    return segments.map(segment => {
+      if (segment.type !== 'html') return segment;
+      return { ...segment, content: injectQuotePhotos(segment.content, wikipediaImages) };
     });
   }, [segments, wikipediaImages]);
 
@@ -160,8 +148,8 @@ export function EventSummary({ summary, wikipediaImages = {} }: EventSummaryProp
       <h2 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-4">
         Podsumowanie
       </h2>
-      <div ref={contentRef} className="prose prose-zinc max-w-none summary-content">
-        {segments.map((segment, index) => {
+      <div className="prose prose-zinc max-w-none summary-content">
+        {processedSegments.map((segment, index) => {
           if (segment.type === 'linechart' && segment.chartData) {
             return <SummaryLineChart key={`line-${index}`} data={segment.chartData as LineChartData} />;
           }
