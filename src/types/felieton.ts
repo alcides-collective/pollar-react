@@ -1,10 +1,22 @@
 export type FelietonCategory = 'ekonomia' | 'geopolityka' | 'polska-polityka';
 export type FelietonEdition = 'morning' | 'evening';
 
+export interface SourceEventKeyPoint {
+  title: string;
+  description: string;
+  priority: 'low' | 'medium' | 'high';
+}
+
 export interface SourceEvent {
   id: string;
   title: string;
-  date: string | { _seconds: number; _nanoseconds: number };
+  // New format uses createdAt, old format uses date - support both for backward compatibility
+  createdAt?: string;
+  date?: string | { _seconds: number; _nanoseconds: number };
+  metadata?: {
+    ultraShortHeadline?: string;
+    keyPoints?: SourceEventKeyPoint[];
+  };
 }
 
 export interface Felieton {

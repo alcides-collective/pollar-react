@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useFelieton } from '../../hooks/useFelieton';
-import { useEvent } from '../../hooks/useEvent';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
 import { preventWidows, sanitizeAndProcessHtml, prepareOgDescription } from '../../utils/text';
@@ -17,22 +16,16 @@ const FELIETON_IMAGES: Record<FelietonCategory, string> = {
   'polska-polityka': polskaPolitykImg,
 };
 
-function SourceEventCard({ eventId }: { eventId: string }) {
-  const { event, loading } = useEvent(eventId);
-
-  if (loading) {
-    return (
-      <div className="p-4 bg-zinc-50 rounded-lg animate-pulse">
-        <div className="h-4 w-3/4 bg-zinc-200 rounded mb-2" />
-        <div className="h-3 w-full bg-zinc-200 rounded mb-2" />
-        <div className="h-3 w-16 bg-zinc-200 rounded" />
-      </div>
-    );
-  }
-
-  if (!event) return null;
-
-  const date = new Date(event.createdAt);
+function SourceEventCard({ event }: { event: SourceEvent }) {
+  // Handle both new format (createdAt) and old format (date) for backward compatibility
+  const dateValue = event.createdAt || (
+    typeof event.date === 'string'
+      ? event.date
+      : event.date?._seconds
+        ? new Date(event.date._seconds * 1000).toISOString()
+        : new Date().toISOString()
+  );
+  const date = new Date(dateValue);
 
   const formattedDate = date.toLocaleDateString('pl-PL', {
     day: 'numeric',
@@ -79,8 +72,8 @@ function FelietonSidebar({ sourceEvents }: { sourceEvents: SourceEvent[] }) {
           </p>
         </div>
         <div className="p-3 space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto">
-          {sourceEvents.map((event) => (
-            <SourceEventCard key={event.id} eventId={event.id} />
+          {sourceEvents.map((sourceEvent) => (
+            <SourceEventCard key={sourceEvent.id} event={sourceEvent} />
           ))}
         </div>
       </div>
@@ -240,8 +233,8 @@ export function FelietonPage() {
                 Wydarzenia źródłowe
               </h2>
               <div className="space-y-2">
-                {felieton.sourceEvents.map((event) => (
-                  <SourceEventCard key={event.id} eventId={event.id} />
+                {felieton.sourceEvents.map((sourceEvent) => (
+                  <SourceEventCard key={sourceEvent.id} event={sourceEvent} />
                 ))}
               </div>
             </section>

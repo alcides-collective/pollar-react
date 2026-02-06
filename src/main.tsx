@@ -32,13 +32,17 @@ if (import.meta.env.PROD) {
       'Network request failed',
       'Load failed',
       'ChunkLoadError',
-      // Firebase IndexedDB issues on iOS Safari
+      // Firebase IndexedDB issues on iOS Safari and in-app browsers
       "Failed to execute 'transaction' on 'IDBDatabase'",
       'The database connection is closing',
+      'Connection to Indexed Database server lost',
+      'Attempt to get a record from database without an in-progress transaction',
+      /^AbortError: AbortError$/,
       // Stale cache after deployment - user has old chunks
       "is not a valid JavaScript MIME type",
-      // Old devices without WebGL support (Mapbox)
+      // Mapbox errors - network issues or old devices
       'Failed to initialize WebGL',
+      /Failed to fetch \(api\.mapbox\.com\)/,
     ],
   })
 }
