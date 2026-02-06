@@ -232,13 +232,13 @@ export function Header() {
     });
   }, [events]);
 
+  const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';
+
   // Handle category selection - navigate to home if not already there
   const handleCategoryClick = (category: string | null) => {
     setSelectedCategory(category);
     // Scroll to top when changing category
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    // Get path without language prefix to check if we're on home
-    const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';
     if (pathWithoutLang !== '/') {
       // Navigate to localized home
       const prefix = language !== 'pl' ? `/${language}` : '';
@@ -394,18 +394,21 @@ export function Header() {
                   <LocalizedLink to="/brief" className="w-full flex items-center gap-2">
                     <i className="ri-newspaper-line" />
                     {t('nav.dailyBrief')}
+                    {pathWithoutLang.startsWith('/brief') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <LocalizedLink to="/asystent" className="w-full flex items-center gap-2">
                     <i className="ri-robot-2-line" />
                     {t('nav.aiAssistant')}
+                    {pathWithoutLang.startsWith('/asystent') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <LocalizedLink to="/archiwum" className="w-full flex items-center gap-2">
                     <i className="ri-archive-line" />
                     {t('nav.archive')}
+                    {pathWithoutLang.startsWith('/archiwum') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -419,36 +422,42 @@ export function Header() {
                   <LocalizedLink to="/sejm" className="w-full flex items-center gap-2">
                     <i className="ri-government-line" />
                     {t('nav.sejm')}
+                    {pathWithoutLang.startsWith('/sejm') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <LocalizedLink to="/gielda" className="w-full flex items-center gap-2">
                     <i className="ri-line-chart-line" />
                     {t('nav.stockExchange')}
+                    {pathWithoutLang.startsWith('/gielda') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <LocalizedLink to="/dane" className="w-full flex items-center gap-2">
                     <i className="ri-database-2-line" />
                     {t('nav.openData')}
+                    {pathWithoutLang.startsWith('/dane') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <LocalizedLink to="/mapa" className="w-full flex items-center gap-2">
                     <i className="ri-map-pin-line" />
                     {t('nav.eventMap')}
+                    {pathWithoutLang.startsWith('/mapa') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <LocalizedLink to="/graf" className="w-full flex items-center gap-2">
                     <i className="ri-share-circle-line" />
                     {t('nav.connectionGraph')}
+                    {pathWithoutLang.startsWith('/graf') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <LocalizedLink to="/sources" className="w-full flex items-center gap-2">
                     <i className="ri-newspaper-line" />
                     {t('nav.sources')}
+                    {pathWithoutLang.startsWith('/sources') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -461,18 +470,21 @@ export function Header() {
                   <LocalizedLink to="/powiazania" className="w-full flex items-center gap-2">
                     <i className="ri-gamepad-line" />
                     {t('nav.connections')}
+                    {pathWithoutLang.startsWith('/powiazania') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <LocalizedLink to="/terminal" className="w-full flex items-center gap-2">
                     <i className="ri-terminal-line" />
                     {t('nav.terminal')}
+                    {pathWithoutLang.startsWith('/terminal') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <LocalizedLink to="/info" className="w-full flex items-center gap-2">
                     <i className="ri-information-line" />
                     {t('nav.about')}
+                    {pathWithoutLang.startsWith('/info') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
               </DropdownMenuGroup>

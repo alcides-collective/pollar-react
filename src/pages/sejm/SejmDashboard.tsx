@@ -120,7 +120,7 @@ export function SejmDashboard() {
               {t('dashboard.addMore')} <i className="ri-arrow-right-s-line" />
             </LocalizedLink>
           </div>
-          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
+          <div className="flex flex-wrap gap-3">
             {followedMPs.slice(0, 10).map((mp) => {
               const color = getPartyColor(mp.club);
               return (

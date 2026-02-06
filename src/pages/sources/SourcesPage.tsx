@@ -8,6 +8,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { DaneHeader } from '@/components/dane/DaneHeader';
 import { StatsGrid } from '@/components/dane/StatsGrid';
 import {
@@ -282,6 +288,23 @@ export function SourcesPage() {
       {/* Header */}
       <DaneHeader title={t('sources.title')} subtitle={t('sources.subtitle')} icon="ri-newspaper-line" />
 
+      {/* Data provider note */}
+      <div className="mb-6 rounded-lg border border-zinc-200 bg-muted/50 px-4 py-3">
+        <p className="text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">{t('sources.dataProvider')}</span>{' '}
+          <a
+            href="https://eventregistry.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-foreground underline underline-offset-2 hover:text-foreground/80 transition-colors"
+          >
+            Event Registry
+          </a>
+          {' — '}
+          {t('sources.dataProviderDescription')}
+        </p>
+      </div>
+
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Left column — Filters & Table */}
         <div className="order-2 lg:order-1 lg:col-span-2 min-w-0 space-y-4">
@@ -299,30 +322,64 @@ export function SourcesPage() {
                   placeholder={t('sources.searchPlaceholder')}
                   className="w-48"
                 />
-                <select
-                  value={filterNationality}
-                  onChange={(e) => setFilterNationality(e.target.value as SourceNationality | 'all')}
-                  className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
-                >
-                  <option value="all">{t('sources.allNationalities')}</option>
-                  {countryStats.map(({ nationality }) => (
-                    <option key={nationality} value={nationality}>
-                      {nationalityLabels[nationality][lang]}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  value={filterPolitical}
-                  onChange={(e) => setFilterPolitical(e.target.value as PoliticalLeaning | 'all')}
-                  className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
-                >
-                  <option value="all">{t('sources.allPolitical')}</option>
-                  {activePoliticalLeanings.map((pol) => (
-                    <option key={pol} value={pol}>
-                      {politicalLabels[pol][lang]}
-                    </option>
-                  ))}
-                </select>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="h-9 flex items-center gap-1.5 rounded-md border border-input bg-transparent px-3 text-sm shadow-xs hover:bg-muted transition-colors outline-none">
+                    {filterNationality === 'all' ? (
+                      <span>{t('sources.allNationalities')}</span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5">
+                        <FlagIcon nationality={filterNationality} />
+                        {nationalityLabels[filterNationality][lang]}
+                      </span>
+                    )}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="max-h-64 overflow-y-auto">
+                    <DropdownMenuItem onClick={() => setFilterNationality('all')}>
+                      {t('sources.allNationalities')}
+                      {filterNationality === 'all' && <i className="ri-check-line ml-auto" />}
+                    </DropdownMenuItem>
+                    {countryStats.map(({ nationality }) => (
+                      <DropdownMenuItem key={nationality} onClick={() => setFilterNationality(nationality)}>
+                        <span className="inline-flex items-center gap-1.5">
+                          <FlagIcon nationality={nationality} />
+                          {nationalityLabels[nationality][lang]}
+                        </span>
+                        {filterNationality === nationality && <i className="ri-check-line ml-auto" />}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="h-9 flex items-center gap-1.5 rounded-md border border-input bg-transparent px-3 text-sm shadow-xs hover:bg-muted transition-colors outline-none">
+                    {filterPolitical === 'all' ? (
+                      <span>{t('sources.allPolitical')}</span>
+                    ) : (
+                      <span className={cn('inline-block px-2 py-0.5 text-xs font-medium rounded', getPoliticalColorClass(filterPolitical))}>
+                        {politicalLabels[filterPolitical][lang]}
+                      </span>
+                    )}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    <DropdownMenuItem onClick={() => setFilterPolitical('all')}>
+                      {t('sources.allPolitical')}
+                      {filterPolitical === 'all' && <i className="ri-check-line ml-auto" />}
+                    </DropdownMenuItem>
+                    {activePoliticalLeanings.map((pol) => (
+                      <DropdownMenuItem key={pol} onClick={() => setFilterPolitical(pol)}>
+                        <span className={cn('inline-block px-2 py-0.5 text-xs font-medium rounded', getPoliticalColorClass(pol))}>
+                          {politicalLabels[pol][lang]}
+                        </span>
+                        {filterPolitical === pol && <i className="ri-check-line ml-auto" />}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </CardContent>
           </Card>

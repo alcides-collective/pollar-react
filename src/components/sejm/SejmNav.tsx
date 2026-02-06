@@ -1,6 +1,15 @@
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LocalizedNavLink } from '../LocalizedLink';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 type NavItem = { href: string; labelKey: string };
 type NavGroup = { labelKey: string; items: NavItem[] };
@@ -39,6 +48,20 @@ function isGroup(entry: NavEntry): entry is NavGroup {
   return 'items' in entry;
 }
 
+const navIcons: Record<string, string> = {
+  overview: 'ri-dashboard-line',
+  mps: 'ri-user-line',
+  clubs: 'ri-team-line',
+  proceedings: 'ri-calendar-event-line',
+  committees: 'ri-group-line',
+  votings: 'ri-hand-coin-line',
+  videos: 'ri-live-line',
+  prints: 'ri-file-text-line',
+  legislation: 'ri-scales-3-line',
+  interpellations: 'ri-question-answer-line',
+  questions: 'ri-questionnaire-line',
+};
+
 function isActiveLink(href: string, pathname: string): boolean {
   // Remove language prefix for comparison
   const pathWithoutLang = pathname.replace(/^\/(en|de)/, '') || '/';
@@ -48,46 +71,82 @@ function isActiveLink(href: string, pathname: string): boolean {
   return pathWithoutLang.startsWith(href);
 }
 
+function getActiveLabel(
+  pathname: string,
+  t: (key: string) => string,
+): { label: string; icon: string } {
+  for (const entry of navigationConfig) {
+    if (isGroup(entry)) {
+      for (const item of entry.items) {
+        if (isActiveLink(item.href, pathname)) {
+          return {
+            label: t(`navigation.${item.labelKey}`),
+            icon: navIcons[item.labelKey] || 'ri-menu-line',
+          };
+        }
+      }
+    } else if (isActiveLink(entry.href, pathname)) {
+      return {
+        label: t(`navigation.${entry.labelKey}`),
+        icon: navIcons[entry.labelKey] || 'ri-menu-line',
+      };
+    }
+  }
+  return { label: t('navigation.overview'), icon: navIcons.overview };
+}
+
 export function SejmNav() {
   const { t } = useTranslation('sejm');
   const location = useLocation();
   const pathname = location.pathname;
+  const active = getActiveLabel(pathname, t);
 
   return (
     <>
-      {/* Mobile: Horizontal scroll */}
-      <nav className="lg:hidden flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
-        {navigationConfig.map((entry) => {
-          if (isGroup(entry)) {
-            return entry.items.map((item) => (
-              <LocalizedNavLink
-                key={item.href}
-                to={item.href}
-                className={`shrink-0 px-3 py-1.5 rounded text-xs uppercase tracking-wide border transition-colors ${
-                  isActiveLink(item.href, pathname)
-                    ? 'bg-black text-white border-transparent'
-                    : 'text-zinc-600 border-zinc-200 hover:border-zinc-300'
-                }`}
-              >
-                {t(`navigation.${item.labelKey}`)}
-              </LocalizedNavLink>
-            ));
-          }
-          return (
-            <LocalizedNavLink
-              key={entry.href}
-              to={entry.href}
-              className={`shrink-0 px-3 py-1.5 rounded text-xs uppercase tracking-wide border transition-colors ${
-                isActiveLink(entry.href, pathname)
-                  ? 'bg-black text-white border-transparent'
-                  : 'text-zinc-600 border-zinc-200 hover:border-zinc-300'
-              }`}
-            >
-              {t(`navigation.${entry.labelKey}`)}
-            </LocalizedNavLink>
-          );
-        })}
-      </nav>
+      {/* Mobile: Dropdown menu */}
+      <div className="lg:hidden">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="w-full h-10 flex items-center justify-between rounded-lg border border-zinc-200 bg-white px-3 text-sm shadow-xs hover:bg-zinc-50 transition-colors outline-none">
+            <span className="flex items-center gap-2">
+              <i className={`${active.icon} text-base text-zinc-500`} />
+              <span className="font-medium">{active.label}</span>
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-[calc(100vw-2rem)]">
+            {navigationConfig.map((entry, idx) => {
+              if (isGroup(entry)) {
+                return (
+                  <DropdownMenuGroup key={entry.labelKey}>
+                    {idx > 0 && <DropdownMenuSeparator />}
+                    <DropdownMenuLabel>{t(`navigation.${entry.labelKey}`)}</DropdownMenuLabel>
+                    {entry.items.map((item) => (
+                      <DropdownMenuItem key={item.href} asChild>
+                        <LocalizedNavLink to={item.href} className="w-full flex items-center gap-2">
+                          <i className={navIcons[item.labelKey] || 'ri-file-line'} />
+                          {t(`navigation.${item.labelKey}`)}
+                          {isActiveLink(item.href, pathname) && <i className="ri-check-line ml-auto" />}
+                        </LocalizedNavLink>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuGroup>
+                );
+              }
+              return (
+                <DropdownMenuItem key={entry.href} asChild>
+                  <LocalizedNavLink to={entry.href} className="w-full flex items-center gap-2">
+                    <i className={navIcons[entry.labelKey] || 'ri-file-line'} />
+                    <span className="font-medium">{t(`navigation.${entry.labelKey}`)}</span>
+                    {isActiveLink(entry.href, pathname) && <i className="ri-check-line ml-auto" />}
+                  </LocalizedNavLink>
+                </DropdownMenuItem>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       {/* Desktop: Vertical sidebar */}
       <nav className="hidden lg:flex flex-col gap-6">
