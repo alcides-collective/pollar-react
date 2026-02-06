@@ -41,6 +41,24 @@ export interface MPWithStats extends SejmMP {
   votingStats?: MPVotingStats;
 }
 
+// ============ MP Voting History ============
+
+export interface MPVotingHistoryItem {
+  sitting: number;
+  votingNumber: number;
+  date: string;
+  title: string;
+  yes: number;
+  no: number;
+  abstain: number;
+  mpVote: VoteValue;
+}
+
+export interface MPVotingHistoryResponse {
+  items: MPVotingHistoryItem[];
+  count: number;
+}
+
 // ============ Votings (Głosowania) ============
 
 export type VoteValue = 'YES' | 'NO' | 'ABSTAIN' | 'ABSENT' | 'VOTE_VALID';

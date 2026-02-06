@@ -208,7 +208,10 @@
     "for": "For",
     "against": "Against",
     "abstained": "Abstained",
-    "absent": "Absent"
+    "absent": "Absent",
+    "votingHistory": "Voting history",
+    "noVotings": "No votings",
+    "loadingVotings": "Loading votings..."
   },
   "printDetail": {
     "backToList": "Back to list",

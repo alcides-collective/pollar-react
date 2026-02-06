@@ -208,7 +208,10 @@
     "for": "Za",
     "against": "Przeciw",
     "abstained": "Wstrzymał się",
-    "absent": "Nieobecny"
+    "absent": "Nieobecny",
+    "votingHistory": "Historia głosowań",
+    "noVotings": "Brak głosowań",
+    "loadingVotings": "Ładowanie głosowań..."
   },
   "printDetail": {
     "backToList": "Wróć do listy",

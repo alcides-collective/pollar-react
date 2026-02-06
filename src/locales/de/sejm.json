@@ -208,7 +208,10 @@
     "for": "Dafür",
     "against": "Dagegen",
     "abstained": "Enthaltung",
-    "absent": "Abwesend"
+    "absent": "Abwesend",
+    "votingHistory": "Abstimmungshistorie",
+    "noVotings": "Keine Abstimmungen",
+    "loadingVotings": "Abstimmungen laden..."
   },
   "printDetail": {
     "backToList": "Zurück zur Liste",

@@ -6,6 +6,7 @@
 import type {
   MPsResponse,
   MPWithStats,
+  MPVotingHistoryResponse,
   VotingsResponse,
   SejmVoting,
   PrintsResponse,
@@ -161,6 +162,9 @@ export const sejmApi = {
 
     get: (id: number) =>
       fetchAPI<MPWithStats>(`/sejm/MPs/${id}`),
+
+    votings: (id: number, limit?: number) =>
+      fetchAPI<MPVotingHistoryResponse>(`/sejm/MPs/${id}/votings`, { params: { limit } }),
   },
 
   votings: {

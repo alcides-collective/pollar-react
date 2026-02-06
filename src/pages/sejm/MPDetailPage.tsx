@@ -2,15 +2,19 @@ import { useParams } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useMP } from '../../hooks/useMP';
-import { PartyBadge, SejmApiError } from '../../components/sejm';
+import { useMPVotings } from '../../hooks/useMPVotings';
+import { PartyBadge, SejmApiError, VoteIndicator, VotingResultBar } from '../../components/sejm';
 import { FollowMPButton } from '../../components/FollowMPButton';
 import { useLanguageStore } from '../../stores/languageStore';
+import { TitleWithDrukLinks } from '../../utils/druk-parser';
 
 export function MPDetailPage() {
   const { t } = useTranslation('sejm');
   const language = useLanguageStore((s) => s.language);
   const { id } = useParams<{ id: string }>();
-  const { mp, loading, error } = useMP(id ? parseInt(id) : null);
+  const mpId = id ? parseInt(id) : null;
+  const { mp, loading, error } = useMP(mpId);
+  const { votings, loading: votingsLoading } = useMPVotings(mpId);
 
   if (error) {
     return <SejmApiError message={error.message} />;
@@ -153,27 +157,55 @@ export function MPDetailPage() {
             </div>
           </div>
 
-          {/* Stats grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div className="p-3 bg-green-50 rounded-lg">
-              <div className="text-xl font-semibold text-green-700">{mp.votingStats.votingsYes}</div>
-              <div className="text-xs text-green-600">{t('mpDetail.for')}</div>
-            </div>
-            <div className="p-3 bg-red-50 rounded-lg">
-              <div className="text-xl font-semibold text-red-700">{mp.votingStats.votingsNo}</div>
-              <div className="text-xs text-red-600">{t('mpDetail.against')}</div>
-            </div>
-            <div className="p-3 bg-amber-50 rounded-lg">
-              <div className="text-xl font-semibold text-amber-700">{mp.votingStats.votingsAbstain}</div>
-              <div className="text-xs text-amber-600">{t('mpDetail.abstained')}</div>
-            </div>
-            <div className="p-3 bg-zinc-50 rounded-lg">
-              <div className="text-xl font-semibold text-zinc-700">{mp.votingStats.votingsAbsent}</div>
-              <div className="text-xs text-zinc-600">{t('mpDetail.absent')}</div>
-            </div>
-          </div>
         </div>
       )}
+
+      {/* Voting History */}
+      <div className="rounded-lg border border-zinc-200 p-4">
+        <h2 className="text-sm font-medium text-zinc-900 mb-4">{t('mpDetail.votingHistory')}</h2>
+
+        {votingsLoading ? (
+          <div className="space-y-3">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="w-5 h-5 bg-zinc-100 animate-pulse rounded-full shrink-0" />
+                <div className="flex-1 space-y-1">
+                  <div className="h-4 bg-zinc-100 animate-pulse rounded w-3/4" />
+                  <div className="h-3 bg-zinc-100 animate-pulse rounded w-1/4" />
+                </div>
+                <div className="w-24 h-2 bg-zinc-100 animate-pulse rounded shrink-0" />
+              </div>
+            ))}
+          </div>
+        ) : votings.length === 0 ? (
+          <p className="text-sm text-zinc-500">{t('mpDetail.noVotings')}</p>
+        ) : (
+          <div className="space-y-2">
+            {votings.map((v) => (
+              <LocalizedLink
+                key={`${v.sitting}-${v.votingNumber}`}
+                to={`/sejm/glosowania/${v.sitting}/${v.votingNumber}`}
+                className="flex items-start gap-3 p-2 -mx-2 rounded-md hover:bg-zinc-50 transition-colors"
+              >
+                <div className="mt-0.5 shrink-0">
+                  <VoteIndicator vote={v.mpVote} size="md" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm text-zinc-900 leading-snug">
+                    <TitleWithDrukLinks title={v.title} />
+                  </div>
+                  <div className="text-xs text-zinc-400 mt-0.5">
+                    {formatDate(v.date)}
+                  </div>
+                </div>
+                <div className="w-24 shrink-0 mt-1">
+                  <VotingResultBar yes={v.yes} no={v.no} abstain={v.abstain} showNumbers={false} height="sm" />
+                </div>
+              </LocalizedLink>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
