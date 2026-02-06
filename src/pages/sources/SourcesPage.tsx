@@ -381,6 +381,7 @@ export function SourcesPage() {
                 key={stat.nationality}
                 variant={filterNationality === stat.nationality ? 'default' : 'outline'}
                 size="sm"
+                className={filterNationality !== stat.nationality ? 'border-zinc-200' : undefined}
                 onClick={() => setFilterNationality(filterNationality === stat.nationality ? 'all' : stat.nationality)}
               >
                 <FlagIcon nationality={stat.nationality} />
