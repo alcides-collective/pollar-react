@@ -166,7 +166,15 @@ function escapeHtml(str) {
 
 function stripHtml(text) {
   if (!text) return '';
-  return text.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  return text
+    .replace(/<[^>]*>/g, '')
+    .replace(/&bdquo;/g, '\u201E').replace(/&rdquo;/g, '\u201D').replace(/&ldquo;/g, '\u201C')
+    .replace(/&lsquo;/g, '\u2018').replace(/&rsquo;/g, '\u2019')
+    .replace(/&ndash;/g, '\u2013').replace(/&mdash;/g, '\u2014')
+    .replace(/&hellip;/g, '\u2026').replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&apos;/g, "'")
+    .replace(/\s+/g, ' ').trim();
 }
 
 /**
