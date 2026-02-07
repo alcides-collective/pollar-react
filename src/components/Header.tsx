@@ -440,6 +440,13 @@ export function Header() {
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
+                  <LocalizedLink to="/pogoda" className="w-full flex items-center gap-2">
+                    <i className="ri-cloud-line" />
+                    {t('nav.weather', 'Pogoda')}
+                    {pathWithoutLang.startsWith('/pogoda') && <i className="ri-check-line ml-auto" />}
+                  </LocalizedLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <LocalizedLink to="/mapa" className="w-full flex items-center gap-2">
                     <i className="ri-map-pin-line" />
                     {t('nav.eventMap')}

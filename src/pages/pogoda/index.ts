@@ -1,0 +1,1 @@
+export { PogodaPage } from './PogodaPage';

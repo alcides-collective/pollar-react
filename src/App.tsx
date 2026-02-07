@@ -85,6 +85,9 @@ const IndexDetailPage = lazy(() => import('./pages/gielda').then(m => ({ default
 // Graf page (network visualization)
 const GrafPage = lazy(() => import('./pages/graf').then(m => ({ default: m.GrafPage })))
 
+// Pogoda page
+const PogodaPage = lazy(() => import('./pages/pogoda').then(m => ({ default: m.PogodaPage })))
+
 // Sources page
 const SourcesPage = lazy(() => import('./pages/sources').then(m => ({ default: m.SourcesPage })))
 
@@ -147,6 +150,7 @@ function getAppRoutes(prefix = '') {
     <Route key={`${prefix}-archiwum`} path={`${prefix}/archiwum`} element={<ArchivePage />} />,
     <Route key={`${prefix}-archiwum-cat`} path={`${prefix}/archiwum/:category`} element={<CategoryArchivePage />} />,
     <Route key={`${prefix}-kontakt`} path={`${prefix}/kontakt`} element={<ContactPage />} />,
+    <Route key={`${prefix}-pogoda`} path={`${prefix}/pogoda`} element={<PogodaPage />} />,
     <Route key={`${prefix}-sources`} path={`${prefix}/sources`} element={<SourcesPage />} />,
     /* Sejm routes */
     <Route key={`${prefix}-sejm`} path={`${prefix}/sejm`} element={<SejmLayout />}>
