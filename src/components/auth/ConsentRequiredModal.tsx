@@ -84,12 +84,19 @@ export function ConsentRequiredModal() {
               {t('register.selectAll')}
             </button>
           )}
-          <label className="flex items-start gap-2.5 cursor-pointer">
+          <div
+            className="flex items-start gap-2.5 cursor-pointer"
+            onClick={(e) => {
+              const target = e.target as HTMLElement;
+              if (target.closest('a') || target.tagName === 'INPUT') return;
+              setAcceptTerms((v) => !v);
+            }}
+          >
             <input
               type="checkbox"
               checked={acceptTerms}
               onChange={(e) => setAcceptTerms(e.target.checked)}
-              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0"
+              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0 accent-white"
             />
             <span className="text-content-faint text-xs leading-relaxed">
               <Trans
@@ -107,14 +114,21 @@ export function ConsentRequiredModal() {
               />
               <span className="text-red-400"> *</span>
             </span>
-          </label>
+          </div>
 
-          <label className="flex items-start gap-2.5 cursor-pointer">
+          <div
+            className="flex items-start gap-2.5 cursor-pointer"
+            onClick={(e) => {
+              const target = e.target as HTMLElement;
+              if (target.closest('a') || target.tagName === 'INPUT') return;
+              setAcceptPrivacy((v) => !v);
+            }}
+          >
             <input
               type="checkbox"
               checked={acceptPrivacy}
               onChange={(e) => setAcceptPrivacy(e.target.checked)}
-              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0"
+              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0 accent-white"
             />
             <span className="text-content-faint text-xs leading-relaxed">
               <Trans
@@ -132,19 +146,26 @@ export function ConsentRequiredModal() {
               />
               <span className="text-red-400"> *</span>
             </span>
-          </label>
+          </div>
 
-          <label className="flex items-start gap-2.5 cursor-pointer">
+          <div
+            className="flex items-start gap-2.5 cursor-pointer"
+            onClick={(e) => {
+              const target = e.target as HTMLElement;
+              if (target.tagName === 'INPUT') return;
+              setAcceptMarketing((v) => !v);
+            }}
+          >
             <input
               type="checkbox"
               checked={acceptMarketing}
               onChange={(e) => setAcceptMarketing(e.target.checked)}
-              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0"
+              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0 accent-white"
             />
             <span className="text-content-faint text-xs leading-relaxed">
               {t('register.acceptMarketing')}
             </span>
-          </label>
+          </div>
         </div>
 
         <DialogFooter>
