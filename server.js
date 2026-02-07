@@ -155,6 +155,50 @@ function isCrawler(userAgent) {
   return false;
 }
 
+// ── Crawler visit statistics (in-memory) ──
+const crawlerStats = {
+  total: 0,
+  startedAt: new Date().toISOString(),
+  bots: {},   // { 'Googlebot': { count, paths: {}, lastSeen, firstSeen } }
+};
+
+function identifyCrawler(userAgent) {
+  if (!userAgent) return 'unknown';
+  const ua = userAgent.toLowerCase();
+  for (const bot of CRAWLER_USER_AGENTS) {
+    if (ua.includes(bot.toLowerCase())) return bot;
+  }
+  if (!ua.includes('mozilla')) return 'non-browser';
+  return 'unknown';
+}
+
+function trackCrawlerVisit(req) {
+  const ua = req.headers['user-agent'] || '';
+  const bot = identifyCrawler(ua);
+  const path = req.path;
+  const now = new Date().toISOString();
+
+  crawlerStats.total++;
+
+  if (!crawlerStats.bots[bot]) {
+    crawlerStats.bots[bot] = { count: 0, paths: {}, firstSeen: now, lastSeen: now };
+  }
+  const entry = crawlerStats.bots[bot];
+  entry.count++;
+  entry.lastSeen = now;
+  entry.paths[path] = (entry.paths[path] || 0) + 1;
+
+  // Keep only top 50 paths per bot to avoid memory bloat
+  const pathKeys = Object.keys(entry.paths);
+  if (pathKeys.length > 100) {
+    const sorted = pathKeys.sort((a, b) => entry.paths[b] - entry.paths[a]);
+    const keep = new Set(sorted.slice(0, 50));
+    for (const k of pathKeys) {
+      if (!keep.has(k)) delete entry.paths[k];
+    }
+  }
+}
+
 function escapeHtml(str) {
   return str
     .replace(/&/g, '&amp;')
@@ -1586,11 +1630,47 @@ ${items}
   res.send(rss);
 });
 
+// ── Crawler stats endpoint ──
+app.get('/api/crawler-stats', (req, res) => {
+  const uptime = Math.floor((Date.now() - new Date(crawlerStats.startedAt).getTime()) / 1000);
+  const days = Math.floor(uptime / 86400);
+  const hours = Math.floor((uptime % 86400) / 3600);
+  const mins = Math.floor((uptime % 3600) / 60);
+
+  // Sort bots by count descending
+  const sortedBots = Object.entries(crawlerStats.bots)
+    .sort(([, a], [, b]) => b.count - a.count)
+    .map(([name, data]) => {
+      // Top 10 paths per bot
+      const topPaths = Object.entries(data.paths)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10)
+        .map(([path, count]) => ({ path, count }));
+      return {
+        name,
+        count: data.count,
+        firstSeen: data.firstSeen,
+        lastSeen: data.lastSeen,
+        topPaths,
+      };
+    });
+
+  res.json({
+    total: crawlerStats.total,
+    startedAt: crawlerStats.startedAt,
+    uptime: `${days}d ${hours}h ${mins}m`,
+    bots: sortedBots,
+  });
+});
+
 // Crawler middleware
 app.use(async (req, res, next) => {
   if (!isCrawler(req.headers['user-agent'])) {
     return next();
   }
+
+  // Track crawler visit
+  trackCrawlerVisit(req);
 
   // Always use HTTPS in production
   const protocol = process.env.NODE_ENV === 'production' ? 'https' : req.protocol;
@@ -2023,4 +2103,15 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+
+  // Log crawler stats summary every hour
+  setInterval(() => {
+    if (crawlerStats.total === 0) return;
+    const topBots = Object.entries(crawlerStats.bots)
+      .sort(([, a], [, b]) => b.count - a.count)
+      .slice(0, 10)
+      .map(([name, d]) => `${name}: ${d.count}`)
+      .join(', ');
+    console.log(`[CrawlerStats] Total: ${crawlerStats.total} | ${topBots}`);
+  }, 3600000); // every hour
 });
