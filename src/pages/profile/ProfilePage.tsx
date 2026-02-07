@@ -22,6 +22,7 @@ import { DeleteAccountDialog } from '@/components/profile/DeleteAccountDialog';
 import { EventImage } from '@/components/common/EventImage';
 import { Button } from '@/components/ui/button';
 import { isPrivateRelayEmail } from '@/types/auth';
+import { updateMarketingConsent } from '@/services/userService';
 
 // Static category list (same as Header)
 const ALL_CATEGORIES = [
@@ -65,8 +66,11 @@ function ProfileContent() {
   const fetchReadHistory = useReadHistoryStore((s) => s.fetchReadHistory);
   const fetchAllAlerts = useAlertsStore((s) => s.fetchAllAlerts);
 
+  const fetchProfile = useUserStore((s) => s.fetchProfile);
+
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
 
   // Fetch data on mount
   useEffect(() => {
@@ -100,6 +104,21 @@ function ProfileContent() {
       case 'abstain': return { text: tDashboard('voting.abstained'), color: 'text-amber-600 bg-amber-50' };
       case 'absent': return { text: tDashboard('voting.absent'), color: 'text-zinc-500 bg-zinc-100' };
       default: return { text: vote, color: 'text-zinc-600 bg-zinc-50' };
+    }
+  };
+
+  const isNewsletterEnabled = !!profile?.consentMarketingAcceptedAt;
+
+  const handleNewsletterToggle = async () => {
+    if (!user) return;
+    setNewsletterLoading(true);
+    try {
+      await updateMarketingConsent(user.uid, !isNewsletterEnabled);
+      await fetchProfile(user.uid);
+    } catch {
+      // silently fail — profile will show stale state
+    } finally {
+      setNewsletterLoading(false);
     }
   };
 
@@ -404,6 +423,34 @@ function ProfileContent() {
                     </button>
                   );
                 })}
+              </div>
+            </section>
+
+            {/* Newsletter / Marketing Consent */}
+            <section className="bg-white border border-zinc-200 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-zinc-900 mb-2">
+                {t('newsletter.title')}
+              </h3>
+              <p className="text-xs text-zinc-500 mb-3">
+                {t('newsletter.description')}
+              </p>
+              <div className="flex items-center justify-between">
+                <span className={`text-sm ${isNewsletterEnabled ? 'text-green-700' : 'text-zinc-500'}`}>
+                  {isNewsletterEnabled ? t('newsletter.enabled') : t('newsletter.disabled')}
+                </span>
+                <button
+                  onClick={handleNewsletterToggle}
+                  disabled={newsletterLoading}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 disabled:opacity-50 ${
+                    isNewsletterEnabled ? 'bg-zinc-900' : 'bg-zinc-300'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 rounded-full bg-white transition-transform ${
+                      isNewsletterEnabled ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
               </div>
             </section>
 

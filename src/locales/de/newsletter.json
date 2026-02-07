@@ -1,0 +1,21 @@
+{
+  "title": "Wochennewsletter",
+  "topEvents": "Top 10 der Woche",
+  "categories": "Kategorien",
+  "readMore": "Weiterlesen",
+  "subscribe": "Newsletter abonnieren",
+  "subscribeDesc": "Erhalten Sie jede Woche einen Überblick über die wichtigsten Ereignisse",
+  "weekOf": "Woche",
+  "sources": "Quellen",
+  "error": {
+    "title": "Newsletter konnte nicht geladen werden",
+    "back": "Zurück zur Startseite"
+  },
+  "empty": {
+    "title": "Kein Newsletter verfügbar",
+    "description": "Der Newsletter ist noch nicht verfügbar. Schauen Sie am Montag wieder vorbei."
+  },
+  "yourCategories": "Ihre Kategorien",
+  "otherCategories": "Weitere Kategorien",
+  "tableOfContents": "Inhaltsverzeichnis"
+}

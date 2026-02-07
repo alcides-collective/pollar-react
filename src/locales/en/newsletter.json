@@ -1,0 +1,21 @@
+{
+  "title": "Weekly Newsletter",
+  "topEvents": "Top 10 of the week",
+  "categories": "Categories",
+  "readMore": "Read more",
+  "subscribe": "Subscribe to newsletter",
+  "subscribeDesc": "Receive a weekly overview of the most important events",
+  "weekOf": "Week",
+  "sources": "sources",
+  "error": {
+    "title": "Failed to load the newsletter",
+    "back": "Back to homepage"
+  },
+  "empty": {
+    "title": "No newsletter available",
+    "description": "The newsletter is not yet available. Check back on Monday."
+  },
+  "yourCategories": "Your categories",
+  "otherCategories": "Other categories",
+  "tableOfContents": "Table of contents"
+}

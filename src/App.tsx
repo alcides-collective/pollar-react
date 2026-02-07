@@ -37,6 +37,7 @@ const ProfilePage = lazy(() => import('./pages/profile/ProfilePage').then(m => (
 const NotificationsPage = lazy(() => import('./pages/notifications').then(m => ({ default: m.NotificationsPage })))
 const ArchivePage = lazy(() => import('./pages/archiwum').then(m => ({ default: m.ArchivePage })))
 const CategoryArchivePage = lazy(() => import('./pages/archiwum').then(m => ({ default: m.CategoryArchivePage })))
+const NewsletterPage = lazy(() => import('./pages/newsletter').then(m => ({ default: m.NewsletterPage })))
 
 // Sejm section (heavy - lots of data visualization)
 const SejmLayout = lazy(() => import('./pages/sejm').then(m => ({ default: m.SejmLayout })))
@@ -141,6 +142,7 @@ function getAppRoutes(prefix = '') {
     <Route key={`${prefix}-graf`} path={`${prefix}/graf`} element={<GrafPage />} />,
     <Route key={`${prefix}-profil`} path={`${prefix}/profil`} element={<ProfilePage />} />,
     <Route key={`${prefix}-powiadomienia`} path={`${prefix}/powiadomienia`} element={<NotificationsPage />} />,
+    <Route key={`${prefix}-newsletter`} path={`${prefix}/newsletter`} element={<NewsletterPage />} />,
     <Route key={`${prefix}-archiwum`} path={`${prefix}/archiwum`} element={<ArchivePage />} />,
     <Route key={`${prefix}-archiwum-cat`} path={`${prefix}/archiwum/:category`} element={<CategoryArchivePage />} />,
     <Route key={`${prefix}-sources`} path={`${prefix}/sources`} element={<SourcesPage />} />,

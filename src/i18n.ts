@@ -21,6 +21,7 @@ import plEvent from './locales/pl/event.json';
 import plDane from './locales/pl/dane.json';
 import plGraf from './locales/pl/graf.json';
 import plInfo from './locales/pl/info.json';
+import plNewsletter from './locales/pl/newsletter.json';
 
 // English translations
 import enCommon from './locales/en/common.json';
@@ -40,6 +41,7 @@ import enEvent from './locales/en/event.json';
 import enDane from './locales/en/dane.json';
 import enGraf from './locales/en/graf.json';
 import enInfo from './locales/en/info.json';
+import enNewsletter from './locales/en/newsletter.json';
 
 // German translations
 import deCommon from './locales/de/common.json';
@@ -59,6 +61,7 @@ import deEvent from './locales/de/event.json';
 import deDane from './locales/de/dane.json';
 import deGraf from './locales/de/graf.json';
 import deInfo from './locales/de/info.json';
+import deNewsletter from './locales/de/newsletter.json';
 
 const resources = {
   pl: {
@@ -79,6 +82,7 @@ const resources = {
     dane: plDane,
     graf: plGraf,
     info: plInfo,
+    newsletter: plNewsletter,
   },
   en: {
     common: enCommon,
@@ -98,6 +102,7 @@ const resources = {
     dane: enDane,
     graf: enGraf,
     info: enInfo,
+    newsletter: enNewsletter,
   },
   de: {
     common: deCommon,
@@ -117,6 +122,7 @@ const resources = {
     dane: deDane,
     graf: deGraf,
     info: deInfo,
+    newsletter: deNewsletter,
   },
 };
 

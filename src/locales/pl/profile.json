@@ -16,6 +16,14 @@
     "title": "Ukryte kategorie",
     "description": "Wydarzenia z ukrytych kategorii nie będą wyświetlane na stronie głównej."
   },
+  "newsletter": {
+    "title": "Newsletter",
+    "description": "Cotygodniowy przegląd najważniejszych wydarzeń, spersonalizowany pod Twoje ulubione kategorie.",
+    "enabled": "Newsletter włączony",
+    "disabled": "Newsletter wyłączony",
+    "enable": "Włącz",
+    "disable": "Wyłącz"
+  },
   "accountSettings": {
     "title": "Ustawienia konta"
   },

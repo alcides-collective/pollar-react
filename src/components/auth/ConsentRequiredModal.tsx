@@ -71,6 +71,19 @@ export function ConsentRequiredModal() {
         </DialogHeader>
 
         <div className="space-y-3">
+          {!(acceptTerms && acceptPrivacy && acceptMarketing) && (
+            <button
+              type="button"
+              onClick={() => {
+                setAcceptTerms(true);
+                setAcceptPrivacy(true);
+                setAcceptMarketing(true);
+              }}
+              className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors underline"
+            >
+              {t('register.selectAll')}
+            </button>
+          )}
           <label className="flex items-start gap-2.5 cursor-pointer">
             <input
               type="checkbox"

@@ -16,6 +16,14 @@
     "title": "Hidden categories",
     "description": "Events from hidden categories will not be displayed on the home page."
   },
+  "newsletter": {
+    "title": "Newsletter",
+    "description": "Weekly digest of the most important events, personalized to your favorite categories.",
+    "enabled": "Newsletter enabled",
+    "disabled": "Newsletter disabled",
+    "enable": "Enable",
+    "disable": "Disable"
+  },
   "accountSettings": {
     "title": "Account settings"
   },

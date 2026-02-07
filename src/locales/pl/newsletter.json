@@ -1,0 +1,21 @@
+{
+  "title": "Newsletter Tygodniowy",
+  "topEvents": "Top 10 tygodnia",
+  "categories": "Kategorie",
+  "readMore": "Czytaj więcej",
+  "subscribe": "Zapisz się na newsletter",
+  "subscribeDesc": "Otrzymuj co tydzień przegląd najważniejszych wydarzeń",
+  "weekOf": "Tydzień",
+  "sources": "źródeł",
+  "error": {
+    "title": "Nie udało się załadować newslettera",
+    "back": "Wróć na stronę główną"
+  },
+  "empty": {
+    "title": "Brak newslettera",
+    "description": "Newsletter nie jest jeszcze dostępny. Sprawdź ponownie w poniedziałek."
+  },
+  "yourCategories": "Twoje kategorie",
+  "otherCategories": "Pozostałe kategorie",
+  "tableOfContents": "Spis treści"
+}

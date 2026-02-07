@@ -16,6 +16,14 @@
     "title": "Ausgeblendete Kategorien",
     "description": "Ereignisse aus ausgeblendeten Kategorien werden auf der Startseite nicht angezeigt."
   },
+  "newsletter": {
+    "title": "Newsletter",
+    "description": "Wöchentliche Zusammenfassung der wichtigsten Ereignisse, personalisiert nach deinen Lieblingskategorien.",
+    "enabled": "Newsletter aktiviert",
+    "disabled": "Newsletter deaktiviert",
+    "enable": "Aktivieren",
+    "disable": "Deaktivieren"
+  },
   "accountSettings": {
     "title": "Kontoeinstellungen"
   },

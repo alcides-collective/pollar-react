@@ -211,6 +211,23 @@ export async function updateUserConsents(
   });
 }
 
+/**
+ * Updates only the marketing consent field
+ * Used for toggling newsletter subscription from profile page
+ */
+export async function updateMarketingConsent(
+  uid: string,
+  enabled: boolean
+): Promise<void> {
+  if (!isFirebaseConfigured || !db) {
+    throw new Error('Firebase nie jest skonfigurowany');
+  }
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    consentMarketingAcceptedAt: enabled ? serverTimestamp() : null,
+  });
+}
+
 // ============ Saved Events (Bookmarks) ============
 
 /**
