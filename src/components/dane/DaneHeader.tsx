@@ -21,7 +21,7 @@ export function DaneHeader({
   return (
     <div className={cn('mb-6', className)}>
       <div className="flex items-center gap-3 mb-2">
-        {icon && <i className={cn(icon, 'text-2xl text-zinc-600')} />}
+        {icon && <i className={cn(icon, 'text-2xl text-content')} />}
         <h1 className="text-2xl font-bold">{title}</h1>
         {isLive && <LiveBadge />}
       </div>

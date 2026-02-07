@@ -72,13 +72,13 @@ function ConversationItem({
         w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-left
         transition-colors duration-150 group relative
         ${isActive
-          ? 'bg-zinc-200 dark:bg-zinc-700'
-          : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'
+          ? 'bg-divider dark:bg-zinc-700'
+          : 'hover:bg-surface dark:hover:bg-zinc-800'
         }
       `}
     >
-      <MessageSquare className="w-4 h-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
-      <span className="flex-1 text-sm text-zinc-700 dark:text-zinc-200 truncate">
+      <MessageSquare className="w-4 h-4 shrink-0 text-content-subtle dark:text-zinc-400" />
+      <span className="flex-1 text-sm text-content dark:text-zinc-200 truncate">
         {conversation.title}
       </span>
       {showDelete && (
@@ -87,8 +87,8 @@ function ConversationItem({
             e.stopPropagation();
             onDelete();
           }}
-          className="absolute right-2 p-1 rounded hover:bg-zinc-300 dark:hover:bg-zinc-600
-                     text-zinc-400 hover:text-red-500 dark:hover:text-red-400
+          className="absolute right-2 p-1 rounded hover:bg-divider dark:hover:bg-zinc-600
+                     text-content-faint hover:text-red-500 dark:hover:text-red-400
                      transition-colors duration-150"
           aria-label={deleteLabel}
         >
@@ -132,19 +132,19 @@ export function AISidebar() {
   // Collapsed state - show toggle column on desktop only (on mobile, header has the toggle)
   if (!isOpen) {
     return (
-      <div className="hidden md:flex flex-col items-center h-full py-3 px-2 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
+      <div className="hidden md:flex flex-col items-center h-full py-3 px-2 border-r border-divider dark:border-zinc-800 bg-surface dark:bg-zinc-900">
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800
-                     text-zinc-500 dark:text-zinc-400 transition-colors duration-150"
+          className="p-2 rounded-lg hover:bg-surface dark:hover:bg-zinc-800
+                     text-content-subtle dark:text-zinc-400 transition-colors duration-150"
           aria-label={t('sidebar.openPanel')}
         >
           <PanelLeft className="w-5 h-5" />
         </button>
         <button
           onClick={handleNewChat}
-          className="mt-2 p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800
-                     text-zinc-500 dark:text-zinc-400 transition-colors duration-150"
+          className="mt-2 p-2 rounded-lg hover:bg-surface dark:hover:bg-zinc-800
+                     text-content-subtle dark:text-zinc-400 transition-colors duration-150"
           aria-label={t('sidebar.newConversation')}
         >
           <Plus className="w-5 h-5" />
@@ -164,22 +164,22 @@ export function AISidebar() {
       {/* Sidebar panel - fixed overlay on mobile, inline on desktop */}
       <div className="fixed left-0 top-0 z-50 h-full w-72
                       md:relative md:z-auto md:w-64
-                      flex flex-col border-r border-zinc-200 dark:border-zinc-800
-                      bg-zinc-50 dark:bg-zinc-900">
+                      flex flex-col border-r border-divider dark:border-zinc-800
+                      bg-surface dark:bg-zinc-900">
         {/* Header */}
-        <div className="flex items-center justify-between p-3 border-b border-zinc-200 dark:border-zinc-800">
+        <div className="flex items-center justify-between p-3 border-b border-divider dark:border-zinc-800">
           <button
             onClick={toggleSidebar}
-            className="p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800
-                       text-zinc-500 dark:text-zinc-400 transition-colors duration-150"
+            className="p-2 rounded-lg hover:bg-surface dark:hover:bg-zinc-800
+                       text-content-subtle dark:text-zinc-400 transition-colors duration-150"
             aria-label={t('sidebar.closePanel')}
           >
             <PanelLeftClose className="w-5 h-5" />
           </button>
           <button
             onClick={handleNewChat}
-            className="p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800
-                       text-zinc-500 dark:text-zinc-400 transition-colors duration-150"
+            className="p-2 rounded-lg hover:bg-surface dark:hover:bg-zinc-800
+                       text-content-subtle dark:text-zinc-400 transition-colors duration-150"
             aria-label={t('sidebar.newConversation')}
           >
             <Plus className="w-5 h-5" />
@@ -190,12 +190,12 @@ export function AISidebar() {
         <div className="flex-1 overflow-y-auto py-2 px-2">
           {groupedConversations.length === 0 ? (
             <div className="px-3 py-8 text-center">
-              <p className="text-sm text-zinc-400 dark:text-zinc-500">
+              <p className="text-sm text-content-faint dark:text-zinc-500">
                 {t('sidebar.noConversations')}
               </p>
               <button
                 onClick={handleNewChat}
-                className="mt-3 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200
+                className="mt-3 text-sm text-content dark:text-zinc-400 hover:text-content-heading dark:hover:text-zinc-200
                            transition-colors duration-150"
               >
                 {t('sidebar.startNewConversation')}
@@ -204,7 +204,7 @@ export function AISidebar() {
           ) : (
             groupedConversations.map((group) => (
               <div key={group.key} className="mb-4">
-                <h3 className="px-3 py-1.5 text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                <h3 className="px-3 py-1.5 text-xs font-medium text-content-faint dark:text-zinc-500 uppercase tracking-wider">
                   {group.label}
                 </h3>
                 <div className="flex flex-col gap-0.5">

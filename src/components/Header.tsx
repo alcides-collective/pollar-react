@@ -26,7 +26,11 @@ import {
 } from '@/components/ui/tooltip';
 import { SearchModal } from '@/components/search';
 import { AlertsBell } from '@/components/AlertsBell';
-import logoImg from '../assets/logo.png';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { useThemePreference, useSetThemePreference } from '@/stores/themeStore';
+import { updateUserThemePreference } from '@/services/userService';
+import type { ThemePreference } from '@/types/auth';
+import logoImg from '../assets/logo-white.png';
 
 // Language config
 const LANGUAGES: { code: Language; label: string }[] = [
@@ -76,6 +80,88 @@ function LanguageSelector() {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+// Theme options for mobile settings
+const THEME_OPTIONS: { value: ThemePreference; icon: string; labelKey: string }[] = [
+  { value: 'light', icon: 'ri-sun-line', labelKey: 'theme.light' },
+  { value: 'dark', icon: 'ri-moon-line', labelKey: 'theme.dark' },
+  { value: 'system', icon: 'ri-computer-line', labelKey: 'theme.system' },
+];
+
+// Mobile-only combined settings (language + theme)
+function MobileSettingsMenu() {
+  const { t } = useTranslation('common');
+  const language = useLanguage();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isAuthenticated = useIsAuthenticated();
+  const preference = useThemePreference();
+  const setPreference = useSetThemePreference();
+  const user = useUser();
+
+  const handleLanguageChange = (newLang: Language) => {
+    const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
+    const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
+    const newPath = newPrefix + currentPath + location.search;
+    navigate(newPath);
+  };
+
+  const handleThemeChange = (value: ThemePreference) => {
+    setPreference(value);
+    if (user) {
+      updateUserThemePreference(user.uid, value).catch(console.error);
+    }
+  };
+
+  return (
+    <div className="sm:hidden">
+      <DropdownMenu>
+        <DropdownMenuTrigger className="h-9 w-9 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors outline-none">
+          <i className="ri-settings-3-line text-lg" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>{t('nav.language', 'Język')}</DropdownMenuLabel>
+            {LANGUAGES.map((lang) => (
+              <DropdownMenuItem
+                key={lang.code}
+                onClick={() => handleLanguageChange(lang.code)}
+                className={`flex items-center gap-2 cursor-pointer ${language === lang.code ? 'bg-zinc-800 text-white' : ''}`}
+              >
+                <span>{lang.label}</span>
+                {language === lang.code && (
+                  <i className="ri-check-line ml-auto" />
+                )}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuGroup>
+
+          {isAuthenticated && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>{t('nav.theme', 'Motyw')}</DropdownMenuLabel>
+                {THEME_OPTIONS.map((opt) => (
+                  <DropdownMenuItem
+                    key={opt.value}
+                    onClick={() => handleThemeChange(opt.value)}
+                    className={`flex items-center gap-2 cursor-pointer ${preference === opt.value ? 'bg-zinc-800 text-white' : ''}`}
+                  >
+                    <i className={opt.icon} />
+                    <span>{t(opt.labelKey)}</span>
+                    {preference === opt.value && (
+                      <i className="ri-check-line ml-auto" />
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
 
@@ -176,6 +262,7 @@ export function Header() {
   const selectedCategory = useUIStore((state) => state.selectedCategory);
   const setSelectedCategory = useUIStore((state) => state.setSelectedCategory);
   const openSearch = useSearchStore((state) => state.openSearch);
+  const isAuthenticated = useIsAuthenticated();
   // const openProModal = useProStore((state) => state.openProModal);
   const navigate = useNavigate();
   const location = useLocation();
@@ -250,14 +337,14 @@ export function Header() {
     <>
     <motion.header
       ref={headerRef}
-      className="bg-black fixed z-50 -top-3 -left-3 -right-3 pt-3 pl-3 pr-3 overflow-hidden"
+      className="bg-black dark:bg-zinc-900 fixed z-50 -top-3 -left-3 -right-3 pt-3 pl-3 pr-3 overflow-hidden"
       initial={false}
       animate={{ y: isVisible ? 0 : '-100%', opacity: isVisible ? 1 : 0, filter: isVisible ? 'blur(0px)' : 'blur(8px)' }}
       transition={{ type: 'spring', stiffness: isVisible ? 150 : 300, damping: isVisible ? 20 : 30 }}
     >
       <div className="max-w-[1400px] mx-auto px-6">
         {/* Top bar */}
-        <div className="relative flex items-center justify-between py-4 border-b border-zinc-800">
+        <div className="relative flex items-center justify-between py-4 border-b border-zinc-800 dark:border-zinc-700">
           {/* Border Glow Trail */}
           <div className="absolute bottom-0 left-0 right-0 h-[1px] pointer-events-none overflow-hidden">
             <motion.div
@@ -283,7 +370,7 @@ export function Header() {
               <img
                 src={logoImg}
                 alt="Pollar"
-                className="h-6 w-auto invert"
+                className="h-6 w-auto"
                 width={172}
                 height={20}
               />
@@ -297,7 +384,9 @@ export function Header() {
               {t('nav.privacy')}
             </LocalizedLink>
             <AlertsBell />
-            <LanguageSelector />
+            {isAuthenticated && <div className="hidden sm:block"><ThemeToggle variant="header" /></div>}
+            <div className="hidden sm:block"><LanguageSelector /></div>
+            <MobileSettingsMenu />
             <AuthButton />
             {/* <button
               onClick={openProModal}
@@ -373,7 +462,7 @@ export function Header() {
               </button>
             ))}
           </div>
-          <div className="bg-black pl-2 shrink-0 relative z-10">
+          <div className="bg-black dark:bg-zinc-900 pl-2 shrink-0 relative z-10">
             <DropdownMenu>
               <DropdownMenuTrigger className="text-sm text-zinc-400 hover:text-white flex items-center gap-1 transition-colors outline-none pb-3">
               <span className="hidden sm:inline">{t('nav.discover')}</span>

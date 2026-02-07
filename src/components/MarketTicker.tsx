@@ -71,18 +71,18 @@ export function MarketTicker() {
 
   if (loading && indices.length === 0) {
     return (
-      <div className="bg-zinc-50 border-b border-zinc-200 px-4 py-2 flex items-center gap-2">
-        <LocalizedLink to="/gielda" className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors shrink-0">
+      <div className="bg-surface border-b border-divider px-4 py-2 flex items-center gap-2">
+        <LocalizedLink to="/gielda" className="text-sm text-content-subtle hover:text-content-heading transition-colors shrink-0">
           Notowania
         </LocalizedLink>
-        <div className="text-sm text-zinc-400">Ładowanie...</div>
+        <div className="text-sm text-content-faint">Ładowanie...</div>
       </div>
     );
   }
 
   return (
-    <div className="bg-zinc-50 border-b border-zinc-200 px-4 py-2 flex items-center gap-2">
-      <LocalizedLink to="/gielda" className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors shrink-0">
+    <div className="bg-surface border-b border-divider px-4 py-2 flex items-center gap-2">
+      <LocalizedLink to="/gielda" className="text-sm text-content-subtle hover:text-content-heading transition-colors shrink-0">
         Notowania
       </LocalizedLink>
 
@@ -95,11 +95,11 @@ export function MarketTicker() {
               to={`/gielda/indeksy/${encodeURIComponent(item.symbol)}`}
               className={`flex items-center gap-2 px-3 py-1 rounded text-sm whitespace-nowrap transition-colors duration-500 ${
                 isPositive
-                  ? 'bg-green-50 text-green-600 hover:bg-green-100 hover:text-green-700'
-                  : 'bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700'
+                  ? 'bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/40 hover:text-green-700 dark:hover:text-green-300'
+                  : 'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 hover:text-red-700 dark:hover:text-red-300'
               }`}
             >
-              <span className="text-zinc-700">{item.name}</span>
+              <span className="text-content">{item.name}</span>
               <AnimatedValue
                 value={item.value}
                 format={(n) => n.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -117,10 +117,10 @@ export function MarketTicker() {
       </div>
 
       <div className="flex items-center shrink-0 ml-auto">
-        <button onClick={() => scroll('left')} className="text-zinc-400 hover:text-zinc-900 transition-colors">
+        <button onClick={() => scroll('left')} className="text-content-faint hover:text-content-heading transition-colors">
           <i className="ri-arrow-left-s-line text-lg" />
         </button>
-        <button onClick={() => scroll('right')} className="text-zinc-400 hover:text-zinc-900 transition-colors">
+        <button onClick={() => scroll('right')} className="text-content-faint hover:text-content-heading transition-colors">
           <i className="ri-arrow-right-s-line text-lg" />
         </button>
       </div>

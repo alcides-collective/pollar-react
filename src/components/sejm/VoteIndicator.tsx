@@ -28,7 +28,7 @@ export function VoteIndicator({ vote, showLabel = false, size = 'sm' }: VoteIndi
         {icons[vote]}
       </span>
       {showLabel && (
-        <span className="text-xs text-zinc-600">{color.label}</span>
+        <span className="text-xs text-content">{color.label}</span>
       )}
     </span>
   );

@@ -70,7 +70,7 @@ export function AIChat({ variant = 'page', showHeader = true }: AIChatProps) {
   }, [setError]);
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-zinc-950">
+    <div className="flex flex-col h-full bg-background dark:bg-zinc-950">
       {/* Header */}
       {showHeader && <AIHeader />}
 

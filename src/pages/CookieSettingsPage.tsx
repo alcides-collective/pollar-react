@@ -21,7 +21,7 @@ function ToggleSwitch({ checked, onChange, disabled = false }: ToggleSwitchProps
         relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent
         transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2
         focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white
-        ${checked ? 'bg-red-600' : 'bg-zinc-300'}
+        ${checked ? 'bg-red-600' : 'bg-content-faint'}
         ${disabled ? 'opacity-60 cursor-not-allowed' : ''}
       `}
     >
@@ -47,17 +47,17 @@ interface CookieSettingRowProps {
 
 function CookieSettingRow({ title, description, checked, onChange, disabled = false, alwaysOnLabel }: CookieSettingRowProps) {
   return (
-    <div className="flex items-start justify-between gap-4 py-5 border-b border-zinc-200 last:border-b-0">
+    <div className="flex items-start justify-between gap-4 py-5 border-b border-divider last:border-b-0">
       <div className="flex-1">
         <div className="flex items-center gap-2">
-          <h3 className="text-base font-semibold text-zinc-900">{title}</h3>
+          <h3 className="text-base font-semibold text-content-heading">{title}</h3>
           {alwaysOnLabel && (
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-zinc-100 text-zinc-600">
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-surface text-content">
               {alwaysOnLabel}
             </span>
           )}
         </div>
-        <p className="mt-1 text-sm text-zinc-600">{description}</p>
+        <p className="mt-1 text-sm text-content">{description}</p>
       </div>
       <div className="shrink-0 pt-0.5">
         <ToggleSwitch checked={checked} onChange={onChange} disabled={disabled} />
@@ -94,8 +94,8 @@ export function CookieSettingsPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <article>
-        <h1 className="text-3xl font-bold mb-2 text-zinc-900">{t('settings.title')}</h1>
-        <p className="text-zinc-600 mb-8">
+        <h1 className="text-3xl font-bold mb-2 text-content-heading">{t('settings.title')}</h1>
+        <p className="text-content mb-8">
           {t('settings.description')}{' '}
           <LocalizedLink to="/polityka-prywatnosci" className="text-red-600 hover:underline">
             {t('settings.privacyPolicy')}
@@ -103,7 +103,7 @@ export function CookieSettingsPage() {
           .
         </p>
 
-        <div className="bg-white border border-zinc-200 rounded-lg divide-y divide-zinc-200">
+        <div className="bg-surface-alt border border-divider rounded-lg divide-y divide-divider">
           <div className="px-6">
             <CookieSettingRow
               title={t('settings.necessary.title')}
@@ -134,9 +134,9 @@ export function CookieSettingsPage() {
           </div>
         </div>
 
-        <div className="mt-6 p-4 bg-zinc-50 rounded-lg">
-          <p className="text-sm text-zinc-600">
-            <span className="font-medium text-zinc-900">{t('settings.noticeLabel')}</span> {t('settings.notice')}
+        <div className="mt-6 p-4 bg-surface rounded-lg">
+          <p className="text-sm text-content">
+            <span className="font-medium text-content-heading">{t('settings.noticeLabel')}</span> {t('settings.notice')}
           </p>
         </div>
       </article>

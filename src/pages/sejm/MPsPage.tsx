@@ -62,10 +62,10 @@ export function MPsPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-12 bg-zinc-100 animate-pulse rounded-lg" />
+        <div className="h-12 bg-surface animate-pulse rounded-lg" />
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 gap-1">
           {[...Array(12)].map((_, i) => (
-            <div key={i} className="aspect-[3/4] bg-zinc-100 animate-pulse rounded-lg" />
+            <div key={i} className="aspect-[3/4] bg-surface animate-pulse rounded-lg" />
           ))}
         </div>
       </div>
@@ -74,22 +74,22 @@ export function MPsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">{t('mpsPage.title')}</h1>
+      <h1 className="text-xl font-semibold text-content-heading">{t('mpsPage.title')}</h1>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3 items-center p-3 bg-zinc-50 rounded-lg">
+      <div className="flex flex-wrap gap-3 items-center p-3 bg-surface rounded-lg">
         <input
           type="text"
           placeholder={t('mpsPage.searchPlaceholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 min-w-[200px] px-3 py-2 text-sm border border-zinc-200 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300"
+          className="flex-1 min-w-[200px] px-3 py-2 text-sm border border-divider rounded-md focus:outline-none focus:ring-2 focus:ring-divider"
         />
 
         <select
           value={selectedClub || ''}
           onChange={(e) => setSelectedClub(e.target.value || null)}
-          className="px-3 py-2 text-sm border border-zinc-200 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-zinc-300"
+          className="px-3 py-2 text-sm border border-divider rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-divider"
         >
           <option value="">{t('mpsPage.allClubs')}</option>
           {clubs.map((club) => (
@@ -100,7 +100,7 @@ export function MPsPage() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortOption)}
-          className="px-3 py-2 text-sm border border-zinc-200 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-zinc-300"
+          className="px-3 py-2 text-sm border border-divider rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-divider"
         >
           <option value="votes">{t('mpsPage.sortByVotes')}</option>
           <option value="name">{t('mpsPage.sortByName')}</option>
@@ -108,19 +108,19 @@ export function MPsPage() {
           <option value="voivodeship">{t('mpsPage.sortByVoivodeship')}</option>
         </select>
 
-        <label className="flex items-center gap-2 text-sm text-zinc-600">
+        <label className="flex items-center gap-2 text-sm text-content">
           <input
             type="checkbox"
             checked={showInactive}
             onChange={(e) => setShowInactive(e.target.checked)}
-            className="rounded border-zinc-300"
+            className="rounded border-divider"
           />
           {t('mpsPage.showInactive')}
         </label>
       </div>
 
       {/* Results count */}
-      <p className="text-sm text-zinc-500">
+      <p className="text-sm text-content-subtle">
         {t('mpsPage.found', { count: filteredMPs.length })}
       </p>
 
@@ -132,7 +132,7 @@ export function MPsPage() {
       </div>
 
       {filteredMPs.length === 0 && (
-        <p className="text-center text-zinc-500 py-8">
+        <p className="text-center text-content-subtle py-8">
           {t('mpsPage.noResults')}
         </p>
       )}

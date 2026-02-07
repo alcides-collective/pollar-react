@@ -10,7 +10,7 @@ export function MPCard({ mp }: MPCardProps) {
   return (
     <LocalizedLink
       to={`/sejm/poslowie/${mp.id}`}
-      className="block rounded overflow-hidden border border-zinc-200 hover:border-zinc-300 transition-all"
+      className="block rounded overflow-hidden border border-divider hover:border-divider transition-all"
     >
       <div className="relative aspect-[3/4]">
         <img

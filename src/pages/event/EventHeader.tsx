@@ -28,7 +28,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
   return (
     <header className="px-6 pt-8 pb-6">
       {/* AI generation info */}
-      <div className="flex items-center gap-3 mb-4 text-xs text-zinc-500">
+      <div className="flex items-center gap-3 mb-4 text-xs text-content-subtle">
         {modelId && (
           <span className="font-light">
             {t('header.generatedBy')}{' '}
@@ -46,7 +46,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
             </span>{' '}
             {t('header.emitting')}{' '}
             <span
-              className="relative cursor-help border-b border-dotted border-zinc-400"
+              className="relative cursor-help border-b border-dotted border-content-faint"
               onMouseEnter={() => setShowCO2Tooltip(true)}
               onMouseLeave={() => setShowCO2Tooltip(false)}
             >
@@ -63,7 +63,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
         )}
         {displayViewCount > 0 && (
           <>
-            {modelId && <span className="text-zinc-300">•</span>}
+            {modelId && <span className="text-content-faint">•</span>}
             <span className="flex items-center gap-1">
               <i className="ri-eye-line" />
               {displayViewCount.toLocaleString()}
@@ -74,7 +74,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
 
       {/* Title with actions */}
       <div className="flex items-start gap-4 mb-4">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-zinc-900 leading-tight flex-1">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-content-heading leading-tight flex-1">
           {event.title}
         </h1>
         <div className="flex gap-2 shrink-0 mt-1">
@@ -88,7 +88,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
       </div>
 
       {/* Lead */}
-      <p className="text-lg text-zinc-600 leading-relaxed">
+      <p className="text-lg text-content leading-relaxed">
         {event.lead}
       </p>
 

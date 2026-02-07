@@ -6,6 +6,7 @@ import { useMapEvents } from '../../hooks/useMapEvents';
 import { EventCard } from './EventCard';
 import { ClusterPanel } from './ClusterPanel';
 import type { Event } from '../../types/events';
+import { useIsDarkMode } from '@/stores/themeStore';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFrdWJkdWRlayIsImEiOiJjbWRyMWx1Z3EwOTR6MmtzYjJvYzJncmZhIn0.5Fn6PxkRaqVkEwJLhP-8_Q';
 
@@ -15,6 +16,7 @@ mapboxgl.workerClass = null;
 (mapboxgl as unknown as { collectResourceTiming: boolean }).collectResourceTiming = false;
 
 export function EventsMap() {
+  const isDark = useIsDarkMode();
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -29,7 +31,7 @@ export function EventsMap() {
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
+      style: isDark ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11',
       center: [19.0122, 52.2297], // Poland center
       zoom: 5,
       attributionControl: false,
@@ -52,6 +54,17 @@ export function EventsMap() {
       map.current = null;
     };
   }, []);
+
+  // Update map style when dark mode changes
+  useEffect(() => {
+    if (!map.current) return;
+    const style = isDark ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
+    map.current.setStyle(style);
+    setMapLoaded(false);
+    map.current.once('style.load', () => {
+      setMapLoaded(true);
+    });
+  }, [isDark]);
 
   // Add source and layers when map is loaded and data is available
   useEffect(() => {
@@ -286,14 +299,14 @@ export function EventsMap() {
 
       {/* Loading indicator */}
       {loading && (
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg text-sm text-zinc-600">
+        <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg text-sm text-content">
           Ładowanie wydarzeń...
         </div>
       )}
 
       {/* Event count */}
       {!loading && totalCount > 0 && (
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg text-sm text-zinc-600">
+        <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg text-sm text-content">
           {totalCount} wydarzeń na mapie
         </div>
       )}

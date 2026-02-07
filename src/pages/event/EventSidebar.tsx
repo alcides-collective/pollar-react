@@ -105,7 +105,7 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
       {/* Mentioned People */}
       {event.metadata?.mentionedPeople?.length > 0 && (
         <div className="px-6 lg:px-0">
-          <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-3">
+          <h3 className="text-xs font-medium uppercase tracking-wider text-content-subtle mb-3">
             {t('sidebar.mentionedPeople')}
           </h3>
           <ul className="space-y-2">
@@ -114,7 +114,7 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
               const initials = person.name.split(' ').map(n => n[0]).join('').toUpperCase();
               const content = (
                 <div className="flex items-start gap-3">
-                  <div className="w-14 h-14 bg-zinc-100 border border-zinc-200 flex items-center justify-center text-xs font-mono text-zinc-500 overflow-hidden shrink-0 rounded-sm">
+                  <div className="w-14 h-14 bg-surface border border-divider flex items-center justify-center text-xs font-mono text-content-subtle overflow-hidden shrink-0 rounded-sm">
                     {imageUrl ? (
                       <img
                         src={imageUrl}
@@ -127,14 +127,14 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
                     )}
                   </div>
                   <div className="flex-1 flex flex-col justify-center min-h-[3.5rem]">
-                    <div className="flex items-center gap-1.5 text-sm text-zinc-900 font-medium">
+                    <div className="flex items-center gap-1.5 text-sm text-content-heading font-medium">
                       <span>{person.name}</span>
                       {person.wikipediaUrl && (
-                        <i className="ri-external-link-line text-zinc-300 text-xs" />
+                        <i className="ri-external-link-line text-content-faint text-xs" />
                       )}
                     </div>
                     {person.context && (
-                      <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">
+                      <p className="text-xs text-content-subtle mt-0.5 line-clamp-2">
                         {person.context}
                       </p>
                     )}
@@ -149,12 +149,12 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
                       href={person.wikipediaUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block p-3 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 transition-colors"
+                      className="block p-3 rounded-lg border border-divider hover:border-divider hover:bg-surface transition-colors"
                     >
                       {content}
                     </a>
                   ) : (
-                    <div className="block p-3 rounded-lg border border-zinc-200">
+                    <div className="block p-3 rounded-lg border border-divider">
                       {content}
                     </div>
                   )}
@@ -168,7 +168,7 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
       {/* Sources */}
       {articles.length > 0 && (
         <div className="px-6 lg:px-0">
-          <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-3">
+          <h3 className="text-xs font-medium uppercase tracking-wider text-content-subtle mb-3">
             {t('sidebar.sources', { count: articles.length })}
           </h3>
           <ul className="space-y-2">
@@ -178,27 +178,27 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block p-3 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 transition-colors"
+                  className="block p-3 rounded-lg border border-divider hover:border-divider hover:bg-surface transition-colors"
                 >
                   <div className="flex items-start gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm text-zinc-900 font-medium line-clamp-2 mb-1">
+                      <p className="text-sm text-content-heading font-medium line-clamp-2 mb-1">
                         {article.title}
                       </p>
-                      <div className="flex items-center gap-2 text-xs text-zinc-500">
+                      <div className="flex items-center gap-2 text-xs text-content-subtle">
                         <span>{article.source}</span>
                         <span>•</span>
                         <span>{formatSourceDate(article.publishDate, language)}</span>
                       </div>
                     </div>
-                    <i className="ri-external-link-line text-zinc-400 shrink-0" />
+                    <i className="ri-external-link-line text-content-faint shrink-0" />
                   </div>
                 </a>
               </li>
             ))}
           </ul>
           {articles.length > 10 && (
-            <p className="text-xs text-zinc-500 mt-3 text-center">
+            <p className="text-xs text-content-subtle mt-3 text-center">
               {t('sidebar.moreSources', { count: articles.length - 10 })}
             </p>
           )}

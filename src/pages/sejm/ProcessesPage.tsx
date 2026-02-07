@@ -32,10 +32,10 @@ export function ProcessesPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-8 w-48 bg-zinc-100 animate-pulse rounded" />
+        <div className="h-8 w-48 bg-surface animate-pulse rounded" />
         <div className="space-y-3">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-24 bg-zinc-100 animate-pulse rounded-lg" />
+            <div key={i} className="h-24 bg-surface animate-pulse rounded-lg" />
           ))}
         </div>
       </div>
@@ -54,7 +54,7 @@ export function ProcessesPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">{t('processesPage.title')}</h1>
+      <h1 className="text-xl font-semibold text-content-heading">{t('processesPage.title')}</h1>
 
       {/* Filters */}
       <div className="flex gap-2">
@@ -68,8 +68,8 @@ export function ProcessesPage() {
             onClick={() => setFilter(option.value as FilterOption)}
             className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
               filter === option.value
-                ? 'bg-zinc-900 text-white'
-                : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-surface text-content hover:bg-surface'
             }`}
           >
             {option.label}
@@ -85,7 +85,7 @@ export function ProcessesPage() {
         {filteredProcesses.map((process) => (
           <div
             key={process.number}
-            className="block rounded-lg border border-zinc-200 p-4"
+            className="block rounded-lg border border-divider p-4"
           >
             <div className="flex items-start gap-3 mb-2">
               <span className={`shrink-0 w-1 h-full rounded-full ${
@@ -94,25 +94,25 @@ export function ProcessesPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   {process.documentType && (
-                    <span className="text-xs text-zinc-500 uppercase tracking-wide">
+                    <span className="text-xs text-content-subtle uppercase tracking-wide">
                       {process.documentType}
                     </span>
                   )}
                   <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                     process.passed
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-amber-100 text-amber-700'
+                      ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
+                      : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
                   }`}>
                     {process.passed ? t('processesPage.passedLabel') : t('processesPage.pendingLabel')}
                   </span>
                 </div>
-                <h3 className="font-medium text-zinc-900 line-clamp-2">{process.title}</h3>
+                <h3 className="font-medium text-content-heading line-clamp-2">{process.title}</h3>
                 {process.createdBy && (
-                  <p className="text-sm text-zinc-500 mt-1">
+                  <p className="text-sm text-content-subtle mt-1">
                     {t('processesPage.submitter')}: {process.createdBy}
                   </p>
                 )}
-                <div className="flex items-center gap-4 mt-2 text-xs text-zinc-400">
+                <div className="flex items-center gap-4 mt-2 text-xs text-content-faint">
                   <span>{t('processesPage.started')}: {formatDate(process.processStartDate)}</span>
                   {process.printsNumbers && process.printsNumbers.length > 0 && (
                     <span className="flex items-center gap-1">
@@ -121,7 +121,7 @@ export function ProcessesPage() {
                         <LocalizedLink
                           key={num}
                           to={`/sejm/druki/${num}`}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 dark:text-blue-400 hover:underline"
                         >
                           {num}
                         </LocalizedLink>
@@ -139,7 +139,7 @@ export function ProcessesPage() {
       </div>
 
       {filteredProcesses.length === 0 && (
-        <p className="text-center text-zinc-500 py-8">
+        <p className="text-center text-content-subtle py-8">
           {t('processesPage.noResults')}
         </p>
       )}

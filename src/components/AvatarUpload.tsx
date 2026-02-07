@@ -100,14 +100,14 @@ export function AvatarUpload({
           />
         ) : (
           <div
-            className={`h-20 w-20 rounded-full bg-zinc-200 flex items-center justify-center text-2xl font-medium text-zinc-600 ${isUploading ? 'opacity-50' : ''}`}
+            className={`h-20 w-20 rounded-full bg-divider flex items-center justify-center text-2xl font-medium text-content ${isUploading ? 'opacity-50' : ''}`}
           >
             {initials}
           </div>
         )}
         {isUploading && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="h-6 w-6 border-2 border-zinc-400 border-t-transparent rounded-full animate-spin" />
+            <div className="h-6 w-6 border-2 border-content-faint border-t-transparent rounded-full animate-spin" />
           </div>
         )}
       </div>
@@ -136,12 +136,12 @@ export function AvatarUpload({
             type="button"
             onClick={handleRemoveAvatar}
             disabled={isUploading}
-            className="text-xs text-zinc-500 hover:text-red-600 transition-colors disabled:opacity-50"
+            className="text-xs text-content-subtle hover:text-red-600 transition-colors disabled:opacity-50"
           >
             {t('avatar.remove')}
           </button>
         )}
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-content-faint">
           {t('avatar.hint')}
         </p>
       </div>

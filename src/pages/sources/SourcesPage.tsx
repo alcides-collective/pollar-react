@@ -241,14 +241,14 @@ export function SourcesPage() {
         </div>
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
-            <Card className="border-zinc-200">
+            <Card className="border-divider">
               <CardContent className="pt-6">
                 <Skeleton className="h-9 w-full" />
               </CardContent>
             </Card>
             <div className="space-y-2">
               {Array.from({ length: 8 }).map((_, i) => (
-                <Card key={i} className="border-zinc-200">
+                <Card key={i} className="border-divider">
                   <CardContent className="pt-6">
                     <Skeleton className="h-6 w-full" />
                   </CardContent>
@@ -259,7 +259,7 @@ export function SourcesPage() {
           <div className="lg:col-span-1 space-y-6">
             <div className="grid grid-cols-2 gap-4">
               {Array.from({ length: 4 }).map((_, i) => (
-                <Card key={i} className="border-zinc-200">
+                <Card key={i} className="border-divider">
                   <CardContent className="pt-6">
                     <Skeleton className="h-4 w-20 mb-2" />
                     <Skeleton className="h-8 w-24" />
@@ -267,12 +267,12 @@ export function SourcesPage() {
                 </Card>
               ))}
             </div>
-            <Card className="border-zinc-200">
+            <Card className="border-divider">
               <CardContent className="pt-6">
                 <Skeleton className="h-6 w-full" />
               </CardContent>
             </Card>
-            <Card className="border-zinc-200">
+            <Card className="border-divider">
               <CardContent className="pt-6">
                 <Skeleton className="h-6 w-full" />
               </CardContent>
@@ -289,7 +289,7 @@ export function SourcesPage() {
       <DaneHeader title={t('sources.title')} subtitle={t('sources.subtitle')} icon="ri-newspaper-line" />
 
       {/* Data provider note */}
-      <div className="mb-6 rounded-lg border border-zinc-200 bg-muted/50 px-4 py-3">
+      <div className="mb-6 rounded-lg border border-divider bg-muted/50 px-4 py-3">
         <p className="text-sm text-muted-foreground">
           <span className="font-medium text-foreground">{t('sources.dataProvider')}</span>{' '}
           <a
@@ -309,7 +309,7 @@ export function SourcesPage() {
         {/* Left column — Filters & Table */}
         <div className="order-2 lg:order-1 lg:col-span-2 min-w-0 space-y-4">
           {/* Filters */}
-          <Card className="border-zinc-200 py-4 gap-3">
+          <Card className="border-divider py-4 gap-3">
             <CardHeader className="pb-0">
               <CardTitle className="text-sm font-medium">{t('sources.filters')}</CardTitle>
             </CardHeader>
@@ -385,11 +385,11 @@ export function SourcesPage() {
           </Card>
 
           {/* Table */}
-          <Card className="overflow-hidden border-zinc-200 py-0">
+          <Card className="overflow-hidden border-divider py-0">
             <CardContent className="p-0 overflow-x-auto">
               <table className="w-full border-collapse min-w-[500px]">
                 <thead>
-                  <tr className="border-b border-zinc-200 bg-muted">
+                  <tr className="border-b border-divider bg-muted">
                     <th
                       className="w-[30%] text-left px-3 py-2 text-xs uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
                       onClick={() => toggleSort('name')}
@@ -424,7 +424,7 @@ export function SourcesPage() {
                   {filteredSources.map((source, i) => (
                     <motion.tr
                       key={source.name}
-                      className="border-b border-zinc-200/50 hover:bg-muted/50 transition-colors"
+                      className="border-b border-divider/50 hover:bg-muted/50 transition-colors"
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2, delay: Math.min(i * 0.02, 0.5) }}
@@ -476,12 +476,12 @@ export function SourcesPage() {
               ]}
               columns={2}
               className="gap-3"
-              cardClassName="border-zinc-200 py-3 gap-0"
+              cardClassName="border-divider py-3 gap-0"
               contentClassName="pt-0"
             />
 
             {/* Political Balance Bar */}
-            <Card className="border-zinc-200 py-4 gap-3">
+            <Card className="border-divider py-4 gap-3">
               <CardHeader className="pb-0">
                 <CardTitle className="text-sm font-medium">{t('sources.politicalBalance')}</CardTitle>
               </CardHeader>
@@ -569,7 +569,7 @@ export function SourcesPage() {
             </Card>
 
             {/* Country Distribution */}
-            <Card className="border-zinc-200 py-4 gap-3">
+            <Card className="border-divider py-4 gap-3">
               <CardHeader className="pb-0">
                 <CardTitle className="text-sm font-medium">{t('sources.byCountry')}</CardTitle>
               </CardHeader>
@@ -580,7 +580,7 @@ export function SourcesPage() {
                       key={stat.nationality}
                       variant={filterNationality === stat.nationality ? 'default' : 'outline'}
                       size="sm"
-                      className={cn('h-7 text-xs', filterNationality !== stat.nationality ? 'border-zinc-200' : undefined)}
+                      className={cn('h-7 text-xs', filterNationality !== stat.nationality ? 'border-divider' : undefined)}
                       onClick={() => setFilterNationality(filterNationality === stat.nationality ? 'all' : stat.nationality)}
                     >
                       <FlagIcon nationality={stat.nationality} />
@@ -600,7 +600,7 @@ export function SourcesPage() {
             </Card>
 
             {/* Political Spectrum Legend */}
-            <Card className="border-zinc-200 py-4 gap-3">
+            <Card className="border-divider py-4 gap-3">
               <CardHeader className="pb-0">
                 <CardTitle className="text-sm font-medium">{t('sources.spectrumLegend')}</CardTitle>
               </CardHeader>

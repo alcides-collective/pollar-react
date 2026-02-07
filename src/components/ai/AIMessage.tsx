@@ -37,8 +37,8 @@ export const AIMessage = memo(function AIMessage({
   if (message.role === 'user') {
     return (
       <div className="self-end max-w-[90%] animate-fade-in">
-        <div className="bg-zinc-100 dark:bg-zinc-800/60 px-4 py-3 rounded-2xl rounded-br-sm">
-          <p className="text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200">
+        <div className="bg-surface dark:bg-zinc-800/60 px-4 py-3 rounded-2xl rounded-br-sm">
+          <p className="text-[15px] leading-relaxed text-content-heading dark:text-zinc-200">
             {message.content}
           </p>
         </div>
@@ -61,7 +61,7 @@ export const AIMessage = memo(function AIMessage({
       className="self-start w-full animate-fade-in"
       onClick={handleClick}
     >
-      <div className="text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200">
+      <div className="text-[15px] leading-relaxed text-content-heading dark:text-zinc-200">
         {visibleTokens.map((token, i) => (
           <span
             key={`${message.id}-${i}`}
@@ -73,7 +73,7 @@ export const AIMessage = memo(function AIMessage({
 
       {/* Generation time - show after animation completes */}
       {!isAnimating && generationTimeLabel && (
-        <div className="mt-2 text-xs text-zinc-400 dark:text-zinc-500 animate-fade-in">
+        <div className="mt-2 text-xs text-content-faint dark:text-zinc-500 animate-fade-in">
           <i className="ri-time-line mr-1" />
           {generationTimeLabel}
         </div>

@@ -27,22 +27,22 @@ export function NewsletterHero({ newsletter }: NewsletterHeroProps) {
     <header className="mb-14">
       {/* Row: label --- date range */}
       <div className="flex items-center gap-4 mb-4">
-        <span className="text-sm text-zinc-500 font-medium uppercase tracking-wider">
+        <span className="text-sm text-content-subtle font-medium uppercase tracking-wider">
           {t('title')}
         </span>
-        <span className="flex-1 h-px bg-zinc-200" />
-        <span className="text-sm text-zinc-500 font-medium">
+        <span className="flex-1 h-px bg-divider" />
+        <span className="text-sm text-content-subtle font-medium">
           {weekStart} – {weekEnd} {year}
         </span>
       </div>
 
       {/* Headline */}
-      <h1 className="text-4xl md:text-5xl font-medium text-zinc-900 mb-5 leading-tight tracking-tight">
+      <h1 className="text-4xl md:text-5xl font-medium text-content-heading mb-5 leading-tight tracking-tight">
         {newsletter.headline}
       </h1>
 
       {/* Intro */}
-      <p className="text-lg md:text-xl text-zinc-600 mb-6 leading-relaxed">
+      <p className="text-lg md:text-xl text-content mb-6 leading-relaxed">
         {newsletter.intro}
       </p>
     </header>

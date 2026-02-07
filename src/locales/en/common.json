@@ -20,7 +20,9 @@
     "sections": {
       "essentials": "Essentials",
       "data": "Data & Analysis"
-    }
+    },
+    "language": "Language",
+    "theme": "Theme"
   },
   "categories": {
     "Świat": "World",
@@ -366,5 +368,10 @@
     "filters": "Filters",
     "dataProvider": "Data provided by",
     "dataProviderDescription": "Event Registry is a news analytics platform that monitors over 150,000 sources in 60+ languages. Articles are collected in real time and enriched by AI with entity recognition, categorization, and sentiment analysis. Pollar uses their API as a raw data provider — all further analysis, event clustering, and political classification is done independently by us."
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   }
 }

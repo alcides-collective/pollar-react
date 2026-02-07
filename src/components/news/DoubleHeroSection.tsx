@@ -26,7 +26,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
       priority="auto"
     >
       <div className={`grid grid-cols-1 ${gridCols}`}>
-      <LocalizedLink to={`/event/${leftEvent.id}`} className="group/underline p-6 hover:bg-zinc-50 transition-colors border-b md:border-b-0 md:border-r border-zinc-200">
+      <LocalizedLink to={`/event/${leftEvent.id}`} className="group/underline p-6 hover:bg-surface transition-colors border-b md:border-b-0 md:border-r border-divider">
         <article>
           <div className="mb-4 relative">
             <EventImage
@@ -37,22 +37,22 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
               height={450}
             />
             {getImageSource(leftEvent) && (
-              <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">
+              <span className="absolute bottom-2 left-2 text-[10px] text-content/80 bg-background/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">
                 Źródło: {getImageSource(leftEvent)}
               </span>
             )}
           </div>
-          <span className="text-zinc-400 text-xs">{t(`categories.${leftEvent.category}`, { defaultValue: leftEvent.category })}</span>
-          <h3 className={`text-zinc-900 font-semibold leading-tight ${leftIsLarger ? 'text-2xl' : 'text-xl'}`}>
+          <span className="text-content-faint text-xs">{t(`categories.${leftEvent.category}`, { defaultValue: leftEvent.category })}</span>
+          <h3 className={`text-content-heading font-semibold leading-tight ${leftIsLarger ? 'text-2xl' : 'text-xl'}`}>
             <AnimatedUnderline>{leftEvent.title}</AnimatedUnderline>
           </h3>
-          <p className={`text-zinc-600 leading-snug ${leftIsLarger ? 'mt-3' : 'mt-2 text-sm'}`}>
+          <p className={`text-content leading-snug ${leftIsLarger ? 'mt-3' : 'mt-2 text-sm'}`}>
             {leftEvent.lead}
           </p>
         </article>
       </LocalizedLink>
 
-      <LocalizedLink to={`/event/${rightEvent.id}`} className="group/underline p-6 hover:bg-zinc-50 transition-colors">
+      <LocalizedLink to={`/event/${rightEvent.id}`} className="group/underline p-6 hover:bg-surface transition-colors">
         <article>
           <div className="mb-4 relative">
             <EventImage
@@ -63,16 +63,16 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
               height={450}
             />
             {getImageSource(rightEvent) && (
-              <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">
+              <span className="absolute bottom-2 left-2 text-[10px] text-content/80 bg-background/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">
                 Źródło: {getImageSource(rightEvent)}
               </span>
             )}
           </div>
-          <span className="text-zinc-400 text-xs">{t(`categories.${rightEvent.category}`, { defaultValue: rightEvent.category })}</span>
-          <h3 className={`text-zinc-900 font-semibold leading-tight ${rightIsLarger ? 'text-2xl' : 'text-xl'}`}>
+          <span className="text-content-faint text-xs">{t(`categories.${rightEvent.category}`, { defaultValue: rightEvent.category })}</span>
+          <h3 className={`text-content-heading font-semibold leading-tight ${rightIsLarger ? 'text-2xl' : 'text-xl'}`}>
             <AnimatedUnderline>{rightEvent.title}</AnimatedUnderline>
           </h3>
-          <p className={`text-zinc-600 leading-snug ${rightIsLarger ? 'mt-3' : 'mt-2 text-sm'}`}>
+          <p className={`text-content leading-snug ${rightIsLarger ? 'mt-3' : 'mt-2 text-sm'}`}>
             {rightEvent.lead}
           </p>
         </article>

@@ -93,7 +93,7 @@ body {
    ========================================== */
 
 .summary-content p {
-  @apply text-zinc-700 leading-relaxed mb-4;
+  @apply text-content leading-relaxed mb-4;
 }
 
 .summary-content p:last-child {
@@ -120,11 +120,11 @@ body {
 }
 
 .section-title {
-  @apply text-xl font-semibold text-zinc-900 mb-4;
+  @apply text-xl font-semibold text-content-heading mb-4;
 }
 
 .section-content {
-  @apply text-base text-zinc-700 leading-relaxed;
+  @apply text-base text-content leading-relaxed;
 }
 
 .section-content p {
@@ -137,16 +137,16 @@ body {
 
 /* Context Box */
 .context-box {
-  @apply my-6 p-4 bg-zinc-50 border border-zinc-200 rounded-lg;
+  @apply my-6 p-4 bg-surface border border-divider rounded-lg;
 }
 
 .context-text {
-  @apply text-sm text-zinc-600 leading-relaxed m-0;
+  @apply text-sm text-content leading-relaxed m-0;
 }
 
 /* Quote Box */
 .quote-box {
-  @apply my-6 p-4 bg-zinc-50 border border-zinc-200 rounded-lg overflow-hidden;
+  @apply my-6 p-4 bg-surface border border-divider rounded-lg overflow-hidden;
 }
 
 .quote-box.has-photo {
@@ -166,24 +166,24 @@ body {
 }
 
 .quote-location {
-  @apply block text-[10px] font-medium uppercase tracking-wider text-zinc-400 mb-3;
+  @apply block text-[10px] font-medium uppercase tracking-wider text-content-faint mb-3;
 }
 
 .quote-text {
-  @apply text-zinc-700 text-base leading-relaxed m-0 mb-3;
+  @apply text-content text-base leading-relaxed m-0 mb-3;
 }
 
 .quote-author {
-  @apply block text-xs text-zinc-500 pt-3 border-t border-zinc-200;
+  @apply block text-xs text-content-subtle pt-3 border-t border-divider;
 }
 
 /* Bias Box */
 .bias-wrapper {
-  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+  @apply my-6 bg-surface rounded-lg border border-divider overflow-hidden;
 }
 
 .bias-header {
-  @apply block text-[10px] font-semibold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+  @apply block text-[10px] font-semibold uppercase tracking-wider text-content-subtle px-4 py-2 border-b border-divider;
 }
 
 .bias-columns {
@@ -207,16 +207,16 @@ body {
 }
 
 .bias-text {
-  @apply text-sm text-zinc-600 leading-relaxed m-0;
+  @apply text-sm text-content leading-relaxed m-0;
 }
 
 .bias-left {
-  @apply border-r border-zinc-200;
+  @apply border-r border-divider;
 }
 
 /* Manipulation Box */
 .manipulation-box {
-  @apply my-6 p-4 bg-zinc-50 border border-zinc-200 rounded-lg;
+  @apply my-6 p-4 bg-surface border border-divider rounded-lg;
 }
 
 .manipulation-label {
@@ -224,33 +224,33 @@ body {
 }
 
 .manipulation-source {
-  @apply text-xs text-zinc-500 mb-2 truncate;
+  @apply text-xs text-content-subtle mb-2 truncate;
 }
 
 .manipulation-quote {
-  @apply text-zinc-700 text-sm leading-relaxed pl-3 my-3 border-l-2 border-red-300;
+  @apply text-content text-sm leading-relaxed pl-3 my-3 border-l-2 border-red-300;
 }
 
 .manipulation-explanation {
-  @apply text-sm text-zinc-600 leading-relaxed m-0 pt-3 border-t border-zinc-200;
+  @apply text-sm text-content leading-relaxed m-0 pt-3 border-t border-divider;
 }
 
 /* Key Number Box */
 .key-number-box {
-  @apply my-6 text-center py-8 px-4 bg-zinc-50 rounded-lg border border-zinc-200;
+  @apply my-6 text-center py-8 px-4 bg-surface rounded-lg border border-divider;
 }
 
 .key-number-value {
-  @apply block text-4xl font-bold text-zinc-900 mb-2;
+  @apply block text-4xl font-bold text-content-heading mb-2;
 }
 
 .key-number-description {
-  @apply block text-sm text-zinc-500 leading-relaxed;
+  @apply block text-sm text-content-subtle leading-relaxed;
 }
 
 /* Fact Check Box */
 .factcheck-box {
-  @apply my-6 p-4 rounded-lg bg-zinc-50 border border-zinc-200;
+  @apply my-6 p-4 rounded-lg bg-surface border border-divider;
 }
 
 .factcheck-box.verdict-true {
@@ -266,7 +266,7 @@ body {
 }
 
 .factcheck-label {
-  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-3;
+  @apply block text-[10px] font-bold uppercase tracking-wider text-content-subtle mb-3;
 }
 
 .factcheck-verdict {
@@ -282,24 +282,24 @@ body {
 .verdict-partial .verdict-icon { @apply text-amber-500; }
 
 .verdict-text {
-  @apply text-sm font-medium text-zinc-700;
+  @apply text-sm font-medium text-content;
 }
 
 .factcheck-explanation {
-  @apply text-sm text-zinc-600 leading-relaxed m-0 mb-3;
+  @apply text-sm text-content leading-relaxed m-0 mb-3;
 }
 
 .factcheck-source {
-  @apply text-xs text-zinc-400 pt-3 border-t border-zinc-200 truncate;
+  @apply text-xs text-content-faint pt-3 border-t border-divider truncate;
 }
 
 /* Timeline Box */
 .timeline-box {
-  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 p-4;
+  @apply my-6 bg-surface rounded-lg border border-divider p-4;
 }
 
 .timeline-title {
-  @apply text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-4 pb-2 border-b border-zinc-200;
+  @apply text-xs font-semibold uppercase tracking-wider text-content-subtle mb-4 pb-2 border-b border-divider;
 }
 
 .timeline-events {
@@ -313,7 +313,7 @@ body {
   top: 6px;
   bottom: 6px;
   width: 2px;
-  background-color: #d4d4d8;
+  background-color: var(--divider);
   transform: translateX(-50%);
 }
 
@@ -331,9 +331,9 @@ body {
   position: absolute;
   width: 12px;
   height: 12px;
-  background-color: #a1a1aa;
+  background-color: var(--content-subtle);
   border-radius: 50%;
-  border: 2px solid #fafafa;
+  border: 2px solid var(--surface);
   left: -18px;
   top: 1px;
   transform: translateX(-50%);
@@ -344,30 +344,30 @@ body {
 }
 
 .timeline-date {
-  @apply text-[10px] font-medium text-zinc-400 uppercase tracking-wider;
+  @apply text-[10px] font-medium text-content-faint uppercase tracking-wider;
   margin-bottom: 2px;
 }
 
 .timeline-event-title {
-  @apply text-sm text-zinc-800 leading-snug;
+  @apply text-sm text-content-heading leading-snug;
 }
 
 .timeline-event-desc {
-  @apply text-xs text-zinc-500 leading-relaxed;
+  @apply text-xs text-content-subtle leading-relaxed;
   margin-top: 4px;
 }
 
 /* Comparison Box */
 .comparison-box {
-  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 p-4;
+  @apply my-6 bg-surface rounded-lg border border-divider p-4;
 }
 
 .comparison-label {
-  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-2;
+  @apply block text-[10px] font-bold uppercase tracking-wider text-content-subtle mb-2;
 }
 
 .comparison-title {
-  @apply text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-4 pb-2 border-b border-zinc-200;
+  @apply text-xs font-semibold uppercase tracking-wider text-content-subtle mb-4 pb-2 border-b border-divider;
 }
 
 .comparison-cards {
@@ -375,11 +375,11 @@ body {
 }
 
 .comparison-card {
-  @apply bg-white rounded border border-zinc-200 overflow-hidden;
+  @apply bg-surface-alt rounded border border-divider overflow-hidden;
 }
 
 .comparison-aspect {
-  @apply text-[10px] font-semibold uppercase tracking-wider text-zinc-500 px-3 py-2 border-b border-zinc-100;
+  @apply text-[10px] font-semibold uppercase tracking-wider text-content-subtle px-3 py-2 border-b border-divider-subtle;
 }
 
 .comparison-columns {
@@ -392,7 +392,7 @@ body {
 }
 
 .comparison-before {
-  @apply border-r border-zinc-100;
+  @apply border-r border-divider-subtle;
 }
 
 .comparison-change-label {
@@ -408,12 +408,12 @@ body {
 }
 
 .comparison-change-text {
-  @apply block text-sm text-zinc-700 leading-relaxed;
+  @apply block text-sm text-content leading-relaxed;
 }
 
 /* Results Box (Sports) */
 .results-box {
-  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+  @apply my-6 bg-surface rounded-lg border border-divider overflow-hidden;
 }
 
 .results-box-single {
@@ -421,11 +421,11 @@ body {
 }
 
 .results-label {
-  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+  @apply block text-[10px] font-bold uppercase tracking-wider text-content-subtle px-4 py-2 border-b border-divider;
 }
 
 .results-title {
-  @apply text-sm font-medium text-zinc-700 px-4 py-2;
+  @apply text-sm font-medium text-content px-4 py-2;
 }
 
 .results-single-header {
@@ -437,23 +437,23 @@ body {
 }
 
 .match-team {
-  @apply text-sm text-zinc-600;
+  @apply text-sm text-content;
 }
 
 .match-winner {
-  @apply font-medium text-zinc-900;
+  @apply font-medium text-content-heading;
 }
 
 .match-score {
-  @apply text-2xl font-bold text-zinc-900;
+  @apply text-2xl font-bold text-content-heading;
 }
 
 .results-single-round {
-  @apply text-xs text-zinc-400 mt-3;
+  @apply text-xs text-content-faint mt-3;
 }
 
 .results-matches {
-  @apply divide-y divide-zinc-200;
+  @apply divide-y divide-divider;
 }
 
 .match-row {
@@ -461,7 +461,7 @@ body {
 }
 
 .match-round {
-  @apply text-[10px] text-zinc-400 uppercase tracking-wider mb-1;
+  @apply text-[10px] text-content-faint uppercase tracking-wider mb-1;
 }
 
 .match-teams {
@@ -471,15 +471,15 @@ body {
 /* Ranking Box */
 .ranking-box,
 .ranking-list-box {
-  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+  @apply my-6 bg-surface rounded-lg border border-divider overflow-hidden;
 }
 
 .ranking-label {
-  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+  @apply block text-[10px] font-bold uppercase tracking-wider text-content-subtle px-4 py-2 border-b border-divider;
 }
 
 .ranking-title {
-  @apply text-sm font-medium text-zinc-700 px-4 py-2 border-b border-zinc-100;
+  @apply text-sm font-medium text-content px-4 py-2 border-b border-divider-subtle;
 }
 
 .ranking-table {
@@ -487,7 +487,7 @@ body {
 }
 
 .ranking-row {
-  @apply border-b border-zinc-100 last:border-0;
+  @apply border-b border-divider-subtle last:border-0;
 }
 
 .ranking-row td {
@@ -495,23 +495,23 @@ body {
 }
 
 .ranking-position {
-  @apply w-10 text-center text-zinc-400;
+  @apply w-10 text-center text-content-faint;
 }
 
 .ranking-name {
-  @apply text-zinc-700;
+  @apply text-content;
 }
 
 .ranking-info {
-  @apply block text-xs text-zinc-400 mt-0.5;
+  @apply block text-xs text-content-faint mt-0.5;
 }
 
 .ranking-score {
-  @apply text-right text-zinc-600;
+  @apply text-right text-content;
 }
 
 .ranking-items {
-  @apply divide-y divide-zinc-100;
+  @apply divide-y divide-divider-subtle;
 }
 
 .ranking-item {
@@ -519,7 +519,7 @@ body {
 }
 
 .ranking-pos {
-  @apply text-zinc-400 w-6;
+  @apply text-content-faint w-6;
 }
 
 .ranking-trophy {
@@ -528,15 +528,15 @@ body {
 
 /* Calendar Box */
 .calendar-box {
-  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+  @apply my-6 bg-surface rounded-lg border border-divider overflow-hidden;
 }
 
 .calendar-label {
-  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+  @apply block text-[10px] font-bold uppercase tracking-wider text-content-subtle px-4 py-2 border-b border-divider;
 }
 
 .calendar-title {
-  @apply text-sm font-medium text-zinc-700 px-4 py-2 border-b border-zinc-100;
+  @apply text-sm font-medium text-content px-4 py-2 border-b border-divider-subtle;
 }
 
 .calendar-table {
@@ -544,28 +544,28 @@ body {
 }
 
 .calendar-row td {
-  @apply px-4 py-2.5 text-sm border-b border-zinc-100 last:border-0;
+  @apply px-4 py-2.5 text-sm border-b border-divider-subtle last:border-0;
 }
 
 .calendar-date {
-  @apply w-28 text-zinc-500;
+  @apply w-28 text-content-subtle;
 }
 
 .calendar-desc {
-  @apply text-zinc-700;
+  @apply text-content;
 }
 
 /* Chart Box (Bar Charts) */
 .chart-box {
-  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+  @apply my-6 bg-surface rounded-lg border border-divider overflow-hidden;
 }
 
 .chart-label {
-  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+  @apply block text-[10px] font-bold uppercase tracking-wider text-content-subtle px-4 py-2 border-b border-divider;
 }
 
 .chart-title {
-  @apply text-sm font-medium text-zinc-700 px-4 py-2 border-b border-zinc-100;
+  @apply text-sm font-medium text-content px-4 py-2 border-b border-divider-subtle;
 }
 
 .chart-bars {
@@ -577,32 +577,32 @@ body {
 }
 
 .chart-bar-label {
-  @apply text-xs text-zinc-600 flex-1 order-1;
+  @apply text-xs text-content flex-1 order-1;
 }
 
 .chart-bar-track {
-  @apply w-full h-3 bg-zinc-200 rounded-full overflow-hidden order-3 mt-1;
+  @apply w-full h-3 bg-divider rounded-full overflow-hidden order-3 mt-1;
 }
 
 .chart-bar-fill {
-  @apply h-full bg-zinc-600 rounded-full transition-all duration-500;
+  @apply h-full bg-content rounded-full transition-all duration-500;
 }
 
 .chart-bar-value {
-  @apply text-xs text-zinc-500 text-right order-2;
+  @apply text-xs text-content-subtle text-right order-2;
 }
 
 /* Stacked Bar (Pie Chart Alternative) */
 .stacked-box {
-  @apply my-6 bg-zinc-50 rounded-lg border border-zinc-200 overflow-hidden;
+  @apply my-6 bg-surface rounded-lg border border-divider overflow-hidden;
 }
 
 .stacked-label {
-  @apply block text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-4 py-2 border-b border-zinc-200;
+  @apply block text-[10px] font-bold uppercase tracking-wider text-content-subtle px-4 py-2 border-b border-divider;
 }
 
 .stacked-title {
-  @apply text-sm font-medium text-zinc-700 px-4 py-2 border-b border-zinc-100;
+  @apply text-sm font-medium text-content px-4 py-2 border-b border-divider-subtle;
 }
 
 .stacked-bar {
@@ -626,11 +626,11 @@ body {
 }
 
 .stacked-legend-text {
-  @apply text-zinc-600;
+  @apply text-content;
 }
 
 .stacked-legend-pct {
-  @apply text-zinc-500;
+  @apply text-content-subtle;
 }
 
 /* Footnote Tooltip */
@@ -639,7 +639,7 @@ body {
 }
 
 .footnote-term {
-  @apply border-b border-dotted border-zinc-400;
+  @apply border-b border-dotted border-content-faint;
 }
 
 .footnote-tooltip {
@@ -660,7 +660,7 @@ body {
 }
 
 .footnote-desc {
-  @apply block text-xs text-zinc-400 leading-relaxed;
+  @apply block text-xs text-content-faint leading-relaxed;
 }
 
 /* ==========================================
@@ -669,24 +669,24 @@ body {
 
 /* Key Number Sidebar */
 .key-number-sidebar {
-  @apply text-center py-8 px-5 bg-zinc-50 rounded-lg border border-zinc-200;
+  @apply text-center py-8 px-5 bg-surface rounded-lg border border-divider;
 }
 
 .key-number-sidebar-value {
-  @apply block text-3xl font-bold text-zinc-900 mb-2;
+  @apply block text-3xl font-bold text-content-heading mb-2;
 }
 
 .key-number-sidebar-desc {
-  @apply block text-sm text-zinc-500 leading-relaxed;
+  @apply block text-sm text-content-subtle leading-relaxed;
 }
 
 /* Timeline Sidebar */
 .timeline-sidebar {
-  @apply bg-zinc-50 rounded-lg border border-zinc-200 p-4;
+  @apply bg-surface rounded-lg border border-divider p-4;
 }
 
 .timeline-sidebar-title {
-  @apply text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-4 pb-2 border-b border-zinc-200;
+  @apply text-xs font-semibold uppercase tracking-wider text-content-subtle mb-4 pb-2 border-b border-divider;
 }
 
 .timeline-sidebar-events {
@@ -700,7 +700,7 @@ body {
   top: 6px;
   bottom: 6px;
   width: 2px;
-  background-color: #d4d4d8;
+  background-color: var(--divider);
   transform: translateX(-50%);
 }
 
@@ -717,9 +717,9 @@ body {
   position: absolute;
   width: 12px;
   height: 12px;
-  background-color: #a1a1aa;
+  background-color: var(--content-subtle);
   border-radius: 50%;
-  border: 2px solid #fafafa;
+  border: 2px solid var(--surface);
   left: -18px;
   top: 1px;
   transform: translateX(-50%);
@@ -730,16 +730,16 @@ body {
 }
 
 .timeline-sidebar-date {
-  @apply text-[10px] font-medium text-zinc-400 uppercase tracking-wider;
+  @apply text-[10px] font-medium text-content-faint uppercase tracking-wider;
   margin-bottom: 2px;
 }
 
 .timeline-sidebar-event-title {
-  @apply text-sm text-zinc-800 leading-snug;
+  @apply text-sm text-content-heading leading-snug;
 }
 
 .timeline-sidebar-event-desc {
-  @apply text-xs text-zinc-500 leading-relaxed;
+  @apply text-xs text-content-subtle leading-relaxed;
   margin-top: 4px;
 }
 
@@ -782,6 +782,14 @@ body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-content: var(--content);
+  --color-content-heading: var(--content-heading);
+  --color-content-subtle: var(--content-subtle);
+  --color-content-faint: var(--content-faint);
+  --color-divider: var(--divider);
+  --color-divider-subtle: var(--divider-subtle);
 }
 
 :root {
@@ -817,6 +825,15 @@ body {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* Extended semantic tokens */
+  --surface: oklch(0.985 0 0);
+  --surface-alt: oklch(1 0 0);
+  --content: oklch(0.37 0 0);
+  --content-heading: oklch(0.21 0 0);
+  --content-subtle: oklch(0.55 0 0);
+  --content-faint: oklch(0.65 0 0);
+  --divider: oklch(0.922 0 0);
+  --divider-subtle: oklch(0.96 0 0);
 }
 
 .dark {
@@ -851,11 +868,37 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  /* Extended semantic tokens */
+  --surface: oklch(0.21 0 0);
+  --surface-alt: oklch(0.17 0 0);
+  --content: oklch(0.82 0 0);
+  --content-heading: oklch(0.96 0 0);
+  --content-subtle: oklch(0.65 0 0);
+  --content-faint: oklch(0.55 0 0);
+  --divider: oklch(1 0 0 / 12%);
+  --divider-subtle: oklch(1 0 0 / 6%);
 }
 
 @layer base {
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Smooth dark mode transitions */
+  *,
+  *::before,
+  *::after {
+    transition-property: color, background-color, border-color, outline-color, fill, stroke;
+    transition-timing-function: ease-in-out;
+    transition-duration: 250ms;
+  }
+
+  /* Disable theme transitions for animations, transforms, and Framer Motion */
+  [class*="animate-"],
+  [data-state],
+  .motion-reduce *,
+  [style*="transform"] {
+    transition-property: none;
   }
 }
 
@@ -934,11 +977,11 @@ body {
   /* Shimmer gradient underline - more visible */
   background-image: linear-gradient(
     135deg,
-    #18181b 0%,
-    #18181b 25%,
-    #52525b 50%,
-    #18181b 75%,
-    #18181b 100%
+    var(--content-heading) 0%,
+    var(--content-heading) 25%,
+    var(--content-subtle) 50%,
+    var(--content-heading) 75%,
+    var(--content-heading) 100%
   );
   background-repeat: no-repeat;
   background-position: 0% 100%;
@@ -972,11 +1015,11 @@ body {
   display: inline;
   background-image: linear-gradient(
     135deg,
-    #18181b 0%,
-    #18181b 25%,
-    #52525b 50%,
-    #18181b 75%,
-    #18181b 100%
+    var(--content-heading) 0%,
+    var(--content-heading) 25%,
+    var(--content-subtle) 50%,
+    var(--content-heading) 75%,
+    var(--content-heading) 100%
   );
   background-repeat: no-repeat;
   background-position: 0% 100%;

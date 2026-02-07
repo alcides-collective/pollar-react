@@ -64,10 +64,10 @@ export function QuestionsPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-8 w-48 bg-zinc-100 animate-pulse rounded" />
+        <div className="h-8 w-48 bg-surface animate-pulse rounded" />
         <div className="grid gap-3 md:grid-cols-2">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-32 bg-zinc-100 animate-pulse rounded-lg" />
+            <div key={i} className="h-32 bg-surface animate-pulse rounded-lg" />
           ))}
         </div>
       </div>
@@ -76,7 +76,7 @@ export function QuestionsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">{t('questionsPage.title')}</h1>
+      <h1 className="text-xl font-semibold text-content-heading">{t('questionsPage.title')}</h1>
 
       {/* Filters */}
       <div className="flex gap-2">
@@ -90,8 +90,8 @@ export function QuestionsPage() {
             onClick={() => setFilter(option.value as FilterOption)}
             className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
               filter === option.value
-                ? 'bg-zinc-900 text-white'
-                : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-surface text-content hover:bg-surface'
             }`}
           >
             {option.label}
@@ -110,36 +110,36 @@ export function QuestionsPage() {
             <button
               key={question.num}
               onClick={() => handleOpenQuestion(question)}
-              className="block w-full text-left rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
+              className="block w-full text-left rounded-lg border border-divider hover:border-divider hover:shadow-sm transition-all p-4"
             >
               <div className="flex items-start justify-between gap-3 mb-2">
-                <span className="shrink-0 bg-zinc-100 text-zinc-600 text-xs font-mono px-2 py-0.5 rounded">
+                <span className="shrink-0 bg-surface text-content text-xs font-mono px-2 py-0.5 rounded">
                   #{question.num}
                 </span>
                 <span
                   className={`shrink-0 text-[10px] font-medium px-2 py-0.5 rounded ${
                     hasReply
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-amber-100 text-amber-700'
+                      ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
+                      : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
                   }`}
                 >
                   {hasReply ? t('questionsPage.answeredStatus') : t('questionsPage.pendingStatus')}
                 </span>
               </div>
 
-              <h3 className="text-sm font-medium text-zinc-900 leading-tight line-clamp-2 mb-2">
+              <h3 className="text-sm font-medium text-content-heading leading-tight line-clamp-2 mb-2">
                 {question.title}
               </h3>
 
-              <div className="text-[11px] text-zinc-500 space-y-1">
+              <div className="text-[11px] text-content-subtle space-y-1">
                 <div>
-                  <span className="text-zinc-400">{t('questionsPage.to')}:</span>{' '}
+                  <span className="text-content-faint">{t('questionsPage.to')}:</span>{' '}
                   {question.to.join(', ')}
                 </div>
                 <div className="flex items-center justify-between pt-1">
                   <span>{formatDate(question.sentDate)}</span>
                   {hasReply && (
-                    <span className="text-green-600">
+                    <span className="text-green-600 dark:text-green-400">
                       {question.replies!.length} {t('questionsPage.replies')}
                     </span>
                   )}
@@ -151,7 +151,7 @@ export function QuestionsPage() {
       </div>
 
       {filteredQuestions.length === 0 && (
-        <p className="text-center text-zinc-500 py-8">
+        <p className="text-center text-content-subtle py-8">
           {t('questionsPage.noResults')}
         </p>
       )}
@@ -161,7 +161,7 @@ export function QuestionsPage() {
           <button
             onClick={loadMore}
             disabled={loadingMore}
-            className="px-6 py-2 bg-zinc-100 text-zinc-700 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-surface text-content rounded-md hover:bg-surface transition-colors disabled:opacity-50"
           >
             {loadingMore ? t('questionsPage.loading') : t('questionsPage.loadMore')}
           </button>
@@ -172,17 +172,17 @@ export function QuestionsPage() {
       {selectedQuestion && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={closeModal}>
           <div
-            className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
+            className="bg-background rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-zinc-200 flex items-start justify-between">
+            <div className="p-4 border-b border-divider flex items-start justify-between">
               <div>
-                <span className="text-xs text-zinc-500">{t('questionsPage.questionNumber', { num: selectedQuestion.num })}</span>
-                <h2 className="font-medium text-zinc-900 mt-1">{selectedQuestion.title}</h2>
+                <span className="text-xs text-content-subtle">{t('questionsPage.questionNumber', { num: selectedQuestion.num })}</span>
+                <h2 className="font-medium text-content-heading mt-1">{selectedQuestion.title}</h2>
               </div>
               <button
                 onClick={closeModal}
-                className="text-zinc-400 hover:text-zinc-600"
+                className="text-content-faint hover:text-content"
               >
                 <i className="ri-close-line text-2xl" />
               </button>
@@ -190,13 +190,13 @@ export function QuestionsPage() {
             <div className="p-4 overflow-y-auto flex-1">
               {loadingBody ? (
                 <div className="space-y-2">
-                  <div className="h-4 bg-zinc-100 animate-pulse rounded" />
-                  <div className="h-4 bg-zinc-100 animate-pulse rounded w-3/4" />
-                  <div className="h-4 bg-zinc-100 animate-pulse rounded w-1/2" />
+                  <div className="h-4 bg-surface animate-pulse rounded" />
+                  <div className="h-4 bg-surface animate-pulse rounded w-3/4" />
+                  <div className="h-4 bg-surface animate-pulse rounded w-1/2" />
                 </div>
               ) : (
                 <div
-                  className="prose prose-sm max-w-none text-zinc-700"
+                  className="prose prose-sm max-w-none text-content"
                   dangerouslySetInnerHTML={{ __html: bodyContent || '' }}
                 />
               )}

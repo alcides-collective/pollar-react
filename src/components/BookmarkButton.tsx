@@ -60,8 +60,8 @@ export function BookmarkButton({
         disabled={isLoading}
         className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
           isSaved
-            ? 'bg-zinc-900 text-white border-zinc-900 hover:bg-zinc-800'
-            : 'bg-white text-zinc-900 border-zinc-300 hover:border-zinc-400'
+            ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/80'
+            : 'bg-background text-content-heading border-divider hover:border-content-faint'
         } disabled:opacity-50 ${className}`}
       >
         <i className={`${isSaved ? 'ri-bookmark-fill' : 'ri-bookmark-line'} ${iconSizes[size]}`} />
@@ -78,8 +78,8 @@ export function BookmarkButton({
       disabled={isLoading}
       className={`${sizeClasses[size]} rounded-full flex items-center justify-center transition-colors duration-200 ${
         isSaved
-          ? 'bg-zinc-900 text-white hover:bg-zinc-800'
-          : 'bg-white/90 text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 border border-zinc-200'
+          ? 'bg-primary text-primary-foreground hover:bg-primary/80'
+          : 'bg-background/90 text-content hover:bg-surface hover:text-content-heading border border-divider'
       } disabled:opacity-50 ${className}`}
       aria-label={isSaved ? t('bookmark.ariaRemove') : t('bookmark.ariaSave')}
     >

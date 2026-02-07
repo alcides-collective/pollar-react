@@ -55,33 +55,33 @@ export function BriefPage() {
               {/* Header skeleton */}
               <div className="mb-14">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="h-4 w-24 bg-zinc-200 rounded" />
-                  <div className="flex-1 h-px bg-zinc-200" />
-                  <div className="h-4 w-32 bg-zinc-200 rounded" />
+                  <div className="h-4 w-24 bg-divider rounded" />
+                  <div className="flex-1 h-px bg-divider" />
+                  <div className="h-4 w-32 bg-divider rounded" />
                 </div>
-                <div className="h-12 w-3/4 bg-zinc-200 rounded mb-3" />
-                <div className="h-12 w-1/2 bg-zinc-200 rounded mb-5" />
-                <div className="h-6 w-full bg-zinc-200 rounded mb-2" />
-                <div className="h-6 w-4/5 bg-zinc-200 rounded mb-6" />
-                <div className="h-10 w-40 bg-zinc-200 rounded" />
+                <div className="h-12 w-3/4 bg-divider rounded mb-3" />
+                <div className="h-12 w-1/2 bg-divider rounded mb-5" />
+                <div className="h-6 w-full bg-divider rounded mb-2" />
+                <div className="h-6 w-4/5 bg-divider rounded mb-6" />
+                <div className="h-10 w-40 bg-divider rounded" />
               </div>
 
               {/* Summary skeleton */}
               <div className="mb-10 space-y-3">
-                <div className="h-4 w-24 bg-zinc-200 rounded" />
-                <div className="h-4 w-full bg-zinc-200 rounded" />
-                <div className="h-4 w-full bg-zinc-200 rounded" />
-                <div className="h-4 w-3/4 bg-zinc-200 rounded" />
+                <div className="h-4 w-24 bg-divider rounded" />
+                <div className="h-4 w-full bg-divider rounded" />
+                <div className="h-4 w-full bg-divider rounded" />
+                <div className="h-4 w-3/4 bg-divider rounded" />
               </div>
 
               {/* Sections skeleton */}
               <div className="space-y-6">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="p-5 rounded-lg border border-zinc-200">
-                    <div className="h-6 w-2/3 bg-zinc-200 rounded mb-4" />
-                    <div className="h-4 w-full bg-zinc-200 rounded mb-2" />
-                    <div className="h-4 w-full bg-zinc-200 rounded mb-2" />
-                    <div className="h-4 w-3/4 bg-zinc-200 rounded" />
+                  <div key={i} className="p-5 rounded-lg border border-divider">
+                    <div className="h-6 w-2/3 bg-divider rounded mb-4" />
+                    <div className="h-4 w-full bg-divider rounded mb-2" />
+                    <div className="h-4 w-full bg-divider rounded mb-2" />
+                    <div className="h-4 w-3/4 bg-divider rounded" />
                   </div>
                 ))}
               </div>
@@ -90,8 +90,8 @@ export function BriefPage() {
             {/* Right column skeleton (desktop only) */}
             <div className="hidden lg:block">
               <div className="space-y-4">
-                <div className="h-48 bg-zinc-200 rounded-xl" />
-                <div className="h-64 bg-zinc-200 rounded-xl" />
+                <div className="h-48 bg-divider rounded-xl" />
+                <div className="h-64 bg-divider rounded-xl" />
               </div>
             </div>
           </div>
@@ -104,18 +104,18 @@ export function BriefPage() {
     return (
       <div className="max-w-[1200px] mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-100 flex items-center justify-center">
-            <i className="ri-error-warning-line text-2xl text-zinc-400" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+            <i className="ri-error-warning-line text-2xl text-content-faint" />
           </div>
-          <h1 className="text-xl font-medium text-zinc-900 mb-2">
+          <h1 className="text-xl font-medium text-content-heading mb-2">
             {t('error.title')}
           </h1>
-          <p className="text-zinc-600 mb-6">
+          <p className="text-content mb-6">
             {error.message}
           </p>
           <LocalizedLink
             to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('error.backHome')}
@@ -129,18 +129,18 @@ export function BriefPage() {
     return (
       <div className="max-w-[1200px] mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-100 flex items-center justify-center">
-            <i className="ri-file-text-line text-2xl text-zinc-400" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+            <i className="ri-file-text-line text-2xl text-content-faint" />
           </div>
-          <h1 className="text-xl font-medium text-zinc-900 mb-2">
+          <h1 className="text-xl font-medium text-content-heading mb-2">
             {t('empty.title')}
           </h1>
-          <p className="text-zinc-600 mb-6">
+          <p className="text-content mb-6">
             {t('empty.description')}
           </p>
           <LocalizedLink
             to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('error.backHome')}
@@ -169,19 +169,19 @@ export function BriefPage() {
 
           {/* Mobile: Word of the Day */}
           {brief.wordOfTheDay && (
-            <section className="lg:hidden mt-10 pt-8 border-t border-zinc-200">
-              <h2 className="text-sm text-zinc-500 mb-4 font-medium flex items-center gap-2">
+            <section className="lg:hidden mt-10 pt-8 border-t border-divider">
+              <h2 className="text-sm text-content-subtle mb-4 font-medium flex items-center gap-2">
                 <i className="ri-book-2-line" />
                 {t('wordOfTheDay')}
               </h2>
-              <div className="p-4 rounded-xl border border-zinc-200 bg-gradient-to-br from-indigo-50/50 to-purple-50/50">
+              <div className="p-4 rounded-xl border border-divider bg-gradient-to-br from-indigo-50/50 to-purple-50/50 dark:from-indigo-950/30 dark:to-purple-950/30">
                 <div className="mb-3">
-                  <span className="text-xl font-medium text-zinc-900">{brief.wordOfTheDay.word}</span>
-                  <span className="block text-xs italic text-zinc-500 mt-0.5">
+                  <span className="text-xl font-medium text-content-heading">{brief.wordOfTheDay.word}</span>
+                  <span className="block text-xs italic text-content-subtle mt-0.5">
                     {brief.wordOfTheDay.etymology}
                   </span>
                 </div>
-                <p className="text-sm text-zinc-700 leading-relaxed">
+                <p className="text-sm text-content leading-relaxed">
                   {brief.wordOfTheDay.encyclopedicDefinition}
                 </p>
               </div>

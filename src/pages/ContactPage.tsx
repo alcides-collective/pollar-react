@@ -68,7 +68,7 @@ function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Name */}
       <div>
-        <label htmlFor="contact-name" className="block text-sm font-medium text-zinc-900 mb-1.5">
+        <label htmlFor="contact-name" className="block text-sm font-medium text-content-heading mb-1.5">
           {t('form.name')}
         </label>
         <input
@@ -76,8 +76,8 @@ function ContactForm() {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-colors focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
-            errors.name ? 'border-red-400' : 'border-zinc-200'
+          className={`w-full rounded-lg border bg-background px-3.5 py-2.5 text-sm text-content-heading outline-none transition-colors focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
+            errors.name ? 'border-red-400' : 'border-divider'
           }`}
         />
         {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
@@ -85,7 +85,7 @@ function ContactForm() {
 
       {/* Email */}
       <div>
-        <label htmlFor="contact-email" className="block text-sm font-medium text-zinc-900 mb-1.5">
+        <label htmlFor="contact-email" className="block text-sm font-medium text-content-heading mb-1.5">
           {t('form.email')}
         </label>
         <input
@@ -93,8 +93,8 @@ function ContactForm() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-colors focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
-            errors.email ? 'border-red-400' : 'border-zinc-200'
+          className={`w-full rounded-lg border bg-background px-3.5 py-2.5 text-sm text-content-heading outline-none transition-colors focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
+            errors.email ? 'border-red-400' : 'border-divider'
           }`}
         />
         {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
@@ -102,14 +102,14 @@ function ContactForm() {
 
       {/* Subject */}
       <div>
-        <label htmlFor="contact-subject" className="block text-sm font-medium text-zinc-900 mb-1.5">
+        <label htmlFor="contact-subject" className="block text-sm font-medium text-content-heading mb-1.5">
           {t('form.subject')}
         </label>
         <select
           id="contact-subject"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
-          className="w-full rounded-lg border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-colors focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
+          className="w-full rounded-lg border border-divider bg-background px-3.5 py-2.5 text-sm text-content-heading outline-none transition-colors focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
         >
           <option value="">{t('form.subjectPlaceholder')}</option>
           {SUBJECT_KEYS.map((key) => (
@@ -122,7 +122,7 @@ function ContactForm() {
 
       {/* Message */}
       <div>
-        <label htmlFor="contact-message" className="block text-sm font-medium text-zinc-900 mb-1.5">
+        <label htmlFor="contact-message" className="block text-sm font-medium text-content-heading mb-1.5">
           {t('form.message')}
         </label>
         <textarea
@@ -131,8 +131,8 @@ function ContactForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder={t('form.messagePlaceholder')}
-          className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-colors resize-y focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
-            errors.message ? 'border-red-400' : 'border-zinc-200'
+          className={`w-full rounded-lg border bg-background px-3.5 py-2.5 text-sm text-content-heading outline-none transition-colors resize-y focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
+            errors.message ? 'border-red-400' : 'border-divider'
           }`}
         />
         {errors.message && <p className="mt-1 text-xs text-red-600">{errors.message}</p>}
@@ -153,15 +153,15 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-zinc-200 last:border-b-0">
+    <div className="border-b border-divider last:border-b-0">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between py-4 text-left"
       >
-        <span className="text-sm font-medium text-zinc-900 pr-4">{question}</span>
+        <span className="text-sm font-medium text-content-heading pr-4">{question}</span>
         <i
-          className={`ri-arrow-down-s-line text-lg text-zinc-400 shrink-0 transition-transform duration-200 ${
+          className={`ri-arrow-down-s-line text-lg text-content-faint shrink-0 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
@@ -172,7 +172,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         }`}
       >
         <div className="overflow-hidden">
-          <p className="pb-4 text-sm text-zinc-600 leading-relaxed">{answer}</p>
+          <p className="pb-4 text-sm text-content leading-relaxed">{answer}</p>
         </div>
       </div>
     </div>
@@ -186,23 +186,23 @@ export function ContactPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
       {/* Header */}
-      <h1 className="text-3xl font-bold mb-2 text-zinc-900">{t('title')}</h1>
-      <p className="text-zinc-600 mb-10">{t('description')}</p>
+      <h1 className="text-3xl font-bold mb-2 text-content-heading">{t('title')}</h1>
+      <p className="text-content mb-10">{t('description')}</p>
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-10">
         {/* Left column — form + FAQ */}
         <div className="space-y-12 min-w-0">
           {/* Contact form */}
           <section>
-            <div className="bg-white border border-zinc-200 rounded-lg p-6">
+            <div className="bg-background border border-divider rounded-lg p-6">
               <ContactForm />
             </div>
           </section>
 
           {/* FAQ */}
           <section>
-            <h2 className="text-xl font-semibold text-zinc-900 mb-4">{t('faq.title')}</h2>
-            <div className="bg-white border border-zinc-200 rounded-lg px-6">
+            <h2 className="text-xl font-semibold text-content-heading mb-4">{t('faq.title')}</h2>
+            <div className="bg-background border border-divider rounded-lg px-6">
               {Array.isArray(faqItems) &&
                 faqItems.map((item, i) => (
                   <FAQItem key={i} question={item.question} answer={item.answer} />
@@ -215,12 +215,12 @@ export function ContactPage() {
         <aside className="space-y-8">
           {/* Team */}
           <section>
-            <h2 className="text-lg font-semibold text-zinc-900 mb-3">{t('team.title')}</h2>
+            <h2 className="text-lg font-semibold text-content-heading mb-3">{t('team.title')}</h2>
             <div className="space-y-3">
               {(['jakub', 'bartosz'] as const).map((key) => (
-                <div key={key} className="bg-white border border-zinc-200 rounded-lg p-4">
-                  <p className="font-medium text-zinc-900">{t(`team.${key}.name`)}</p>
-                  <p className="text-sm text-zinc-500 mt-0.5">{t(`team.${key}.role`)}</p>
+                <div key={key} className="bg-background border border-divider rounded-lg p-4">
+                  <p className="font-medium text-content-heading">{t(`team.${key}.name`)}</p>
+                  <p className="text-sm text-content-subtle mt-0.5">{t(`team.${key}.role`)}</p>
                   <a
                     href={`mailto:${t(`team.${key}.email`)}`}
                     className="inline-block mt-2 text-sm text-red-600 hover:underline"
@@ -234,13 +234,13 @@ export function ContactPage() {
 
           {/* Social media */}
           <section>
-            <h2 className="text-lg font-semibold text-zinc-900 mb-3">{t('social.title')}</h2>
+            <h2 className="text-lg font-semibold text-content-heading mb-3">{t('social.title')}</h2>
             <div className="flex flex-col gap-2">
               <a
                 href="https://x.com/pollarpl"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-700 hover:border-zinc-300 hover:text-zinc-900 transition-colors"
+                className="inline-flex items-center gap-2 rounded-lg border border-divider bg-background px-4 py-2.5 text-sm text-content hover:border-divider hover:text-content-heading transition-colors"
               >
                 <i className="ri-twitter-x-line text-base" />
                 @pollarpl
@@ -249,7 +249,7 @@ export function ContactPage() {
                 href="https://www.linkedin.com/company/108790026"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-700 hover:border-zinc-300 hover:text-zinc-900 transition-colors"
+                className="inline-flex items-center gap-2 rounded-lg border border-divider bg-background px-4 py-2.5 text-sm text-content hover:border-divider hover:text-content-heading transition-colors"
               >
                 <i className="ri-linkedin-line text-base" />
                 LinkedIn
@@ -259,9 +259,9 @@ export function ContactPage() {
 
           {/* Company details */}
           <section>
-            <h2 className="text-lg font-semibold text-zinc-900 mb-3">{t('company.title')}</h2>
-            <div className="bg-zinc-50 rounded-lg p-4 text-sm text-zinc-600 space-y-1">
-              <p className="font-medium text-zinc-900">{t('company.name')}</p>
+            <h2 className="text-lg font-semibold text-content-heading mb-3">{t('company.title')}</h2>
+            <div className="bg-surface rounded-lg p-4 text-sm text-content space-y-1">
+              <p className="font-medium text-content-heading">{t('company.name')}</p>
               <p>{t('company.address')}</p>
               <p>{t('company.krs')}</p>
               <p>{t('company.nip')}</p>

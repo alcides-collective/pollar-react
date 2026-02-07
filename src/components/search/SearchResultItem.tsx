@@ -42,40 +42,40 @@ export function SearchResultItem({ result, onClick }: SearchResultItemProps) {
       </div>
 
       <div className="flex-1 min-w-0">
-        <div className="font-medium text-zinc-100 line-clamp-2">
+        <div className="font-medium text-content-heading line-clamp-2">
           {result.title}
         </div>
 
         {result.subtitle && (
-          <div className="text-sm text-zinc-400 line-clamp-1 mt-0.5">
+          <div className="text-sm text-content-faint line-clamp-1 mt-0.5">
             {result.subtitle}
           </div>
         )}
 
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-xs text-zinc-500">
+          <span className="text-xs text-content-subtle">
             {t(`resultTypes.${result.type}`)}
           </span>
           {result.metadata?.category && (
             <>
-              <span className="text-xs text-zinc-600">•</span>
-              <span className="text-xs text-zinc-500">
+              <span className="text-xs text-content">•</span>
+              <span className="text-xs text-content-subtle">
                 {result.metadata.category}
               </span>
             </>
           )}
           {result.metadata?.club && (
             <>
-              <span className="text-xs text-zinc-600">•</span>
-              <span className="text-xs text-zinc-500">
+              <span className="text-xs text-content">•</span>
+              <span className="text-xs text-content-subtle">
                 {result.metadata.club}
               </span>
             </>
           )}
           {result.metadata?.date && (
             <>
-              <span className="text-xs text-zinc-600">•</span>
-              <span className="text-xs text-zinc-500">
+              <span className="text-xs text-content">•</span>
+              <span className="text-xs text-content-subtle">
                 {new Date(result.metadata.date).toLocaleDateString('pl-PL')}
               </span>
             </>

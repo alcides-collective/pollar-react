@@ -18,7 +18,7 @@ import {
   type User,
 } from 'firebase/auth';
 import { db, auth, isFirebaseConfigured } from '@/config/firebase';
-import type { UserProfile, AuthProviderName, ConsentData } from '@/types/auth';
+import type { UserProfile, AuthProviderName, ConsentData, ThemePreference } from '@/types/auth';
 import { CURRENT_TERMS_VERSION } from '@/types/auth';
 
 const USERS_COLLECTION = 'users';
@@ -225,6 +225,23 @@ export async function updateMarketingConsent(
   const userRef = doc(db, USERS_COLLECTION, uid);
   await updateDoc(userRef, {
     consentMarketingAcceptedAt: enabled ? serverTimestamp() : null,
+  });
+}
+
+// ============ User Preferences ============
+
+/**
+ * Updates user's theme preference in Firestore
+ * Stored under preferences.theme for extensibility
+ */
+export async function updateUserThemePreference(
+  uid: string,
+  theme: ThemePreference
+): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    'preferences.theme': theme,
   });
 }
 

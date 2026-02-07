@@ -32,15 +32,15 @@ function normalizeCategoryKey(category: string): string {
 function formatVote(vote: string, t: (key: string) => string): { text: string; color: string; bg: string } {
   switch (vote) {
     case 'yes':
-      return { text: t('voting.for'), color: 'text-green-700', bg: 'bg-green-100' };
+      return { text: t('voting.for'), color: 'text-green-700 dark:text-green-400', bg: 'bg-green-100 dark:bg-green-900/40' };
     case 'no':
-      return { text: t('voting.against'), color: 'text-red-700', bg: 'bg-red-100' };
+      return { text: t('voting.against'), color: 'text-red-700 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/40' };
     case 'abstain':
-      return { text: t('voting.abstained'), color: 'text-amber-700', bg: 'bg-amber-100' };
+      return { text: t('voting.abstained'), color: 'text-amber-700 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/40' };
     case 'absent':
-      return { text: t('voting.absent'), color: 'text-zinc-600', bg: 'bg-zinc-100' };
+      return { text: t('voting.absent'), color: 'text-content', bg: 'bg-surface' };
     default:
-      return { text: vote, color: 'text-zinc-600', bg: 'bg-zinc-100' };
+      return { text: vote, color: 'text-content', bg: 'bg-surface' };
   }
 }
 
@@ -258,11 +258,11 @@ function NotificationsContent() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-zinc-900">{t('title')}</h1>
+        <h1 className="text-2xl font-bold text-content-heading">{t('title')}</h1>
         {totalUnreadCount > 0 && (
           <button
             onClick={() => markAllAlertsAsRead()}
-            className="text-sm text-zinc-500 hover:text-zinc-700"
+            className="text-sm text-content-subtle hover:text-content"
           >
             {t('markAllAsRead', { count: totalUnreadCount })}
           </button>
@@ -270,13 +270,13 @@ function NotificationsContent() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3 mb-6 p-4 bg-zinc-50 rounded-lg">
+      <div className="flex flex-wrap gap-3 mb-6 p-4 bg-surface rounded-lg">
         <div>
-          <label className="block text-xs text-zinc-500 mb-1">{t('filters.type')}</label>
+          <label className="block text-xs text-content-subtle mb-1">{t('filters.type')}</label>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value as FilterType)}
-            className="text-sm border border-zinc-200 rounded px-2 py-1"
+            className="text-sm border border-divider rounded px-2 py-1"
           >
             <option value="all">{t('filters.all')}</option>
             <option value="voting">{t('filters.votings')}</option>
@@ -286,11 +286,11 @@ function NotificationsContent() {
 
         {filterType !== 'category' && (
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">{t('filters.vote')}</label>
+            <label className="block text-xs text-content-subtle mb-1">{t('filters.vote')}</label>
             <select
               value={voteFilter}
               onChange={(e) => setVoteFilter(e.target.value as VoteFilter)}
-              className="text-sm border border-zinc-200 rounded px-2 py-1"
+              className="text-sm border border-divider rounded px-2 py-1"
             >
               <option value="all">{t('filters.all')}</option>
               <option value="yes">{t('voting.for')}</option>
@@ -303,11 +303,11 @@ function NotificationsContent() {
 
         {filterType !== 'category' && followedMPs.length > 0 && (
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">{t('filters.mp')}</label>
+            <label className="block text-xs text-content-subtle mb-1">{t('filters.mp')}</label>
             <select
               value={mpFilter}
               onChange={(e) => setMpFilter(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-              className="text-sm border border-zinc-200 rounded px-2 py-1"
+              className="text-sm border border-divider rounded px-2 py-1"
             >
               <option value="all">{t('filters.allMPs', { count: followedMPs.length })}</option>
               {followedMPs.map((mp) => (
@@ -321,11 +321,11 @@ function NotificationsContent() {
 
         {filterType !== 'voting' && favoriteCategories.length > 0 && (
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">{t('filters.category')}</label>
+            <label className="block text-xs text-content-subtle mb-1">{t('filters.category')}</label>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="text-sm border border-zinc-200 rounded px-2 py-1"
+              className="text-sm border border-divider rounded px-2 py-1"
             >
               <option value="all">{t('filters.allCategories', { count: favoriteCategories.length })}</option>
               {favoriteCategories.map((cat) => (
@@ -346,7 +346,7 @@ function NotificationsContent() {
                 onChange={(e) => setShowHistorical(e.target.checked)}
                 className="rounded"
               />
-              <span className="text-zinc-600">{t('filters.showHistorical')}</span>
+              <span className="text-content">{t('filters.showHistorical')}</span>
             </label>
           </div>
         )}
@@ -354,38 +354,38 @@ function NotificationsContent() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-white border border-zinc-200 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-zinc-900">{followedMPIds.length}</div>
-          <div className="text-xs text-zinc-500">{t('stats.followedMPs')}</div>
+        <div className="bg-surface-alt border border-divider rounded-lg p-3 text-center">
+          <div className="text-2xl font-bold text-content-heading">{followedMPIds.length}</div>
+          <div className="text-xs text-content-subtle">{t('stats.followedMPs')}</div>
         </div>
-        <div className="bg-white border border-zinc-200 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-zinc-900">{favoriteCategories.length}</div>
-          <div className="text-xs text-zinc-500">{t('stats.favoriteCategories')}</div>
+        <div className="bg-surface-alt border border-divider rounded-lg p-3 text-center">
+          <div className="text-2xl font-bold text-content-heading">{favoriteCategories.length}</div>
+          <div className="text-xs text-content-subtle">{t('stats.favoriteCategories')}</div>
         </div>
-        <div className="bg-white border border-zinc-200 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-zinc-900">{filteredAlerts.length}</div>
-          <div className="text-xs text-zinc-500">{t('stats.notifications')}</div>
+        <div className="bg-surface-alt border border-divider rounded-lg p-3 text-center">
+          <div className="text-2xl font-bold text-content-heading">{filteredAlerts.length}</div>
+          <div className="text-xs text-content-subtle">{t('stats.notifications')}</div>
         </div>
       </div>
 
       {/* No preferences message */}
       {followedMPIds.length === 0 && favoriteCategories.length === 0 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 text-center mb-6">
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-6 text-center mb-6">
           <i className="ri-notification-off-line text-3xl text-amber-500 mb-2" />
-          <h3 className="font-medium text-zinc-900 mb-1">{t('noPreferences.title')}</h3>
-          <p className="text-sm text-zinc-600 mb-4">
+          <h3 className="font-medium text-content-heading mb-1">{t('noPreferences.title')}</h3>
+          <p className="text-sm text-content mb-4">
             {t('noPreferences.description')}
           </p>
           <div className="flex gap-3 justify-center">
             <LocalizedLink
               to="/sejm/poslowie"
-              className="text-sm px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800"
+              className="text-sm px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
             >
               {t('noPreferences.browseMPs')}
             </LocalizedLink>
             <LocalizedLink
               to="/profil"
-              className="text-sm px-4 py-2 border border-zinc-300 rounded-lg hover:bg-zinc-50"
+              className="text-sm px-4 py-2 border border-divider rounded-lg hover:bg-muted"
             >
               {t('noPreferences.setCategories')}
             </LocalizedLink>
@@ -395,20 +395,20 @@ function NotificationsContent() {
 
       {/* Alerts list */}
       <section>
-        <h2 className="text-lg font-semibold text-zinc-900 mb-4">
+        <h2 className="text-lg font-semibold text-content-heading mb-4">
           {t('title')}
           {isLoadingHistorical && (
-            <span className="ml-2 text-sm font-normal text-zinc-500">
+            <span className="ml-2 text-sm font-normal text-content-subtle">
               ({t('loadingHistorical')})
             </span>
           )}
         </h2>
 
         {filteredAlerts.length === 0 ? (
-          <div className="bg-zinc-50 rounded-lg p-6 text-center">
-            <p className="text-zinc-500">{t('noNotifications')}</p>
+          <div className="bg-surface rounded-lg p-6 text-center">
+            <p className="text-content-subtle">{t('noNotifications')}</p>
             {followedMPIds.length === 0 && favoriteCategories.length === 0 && (
-              <p className="text-sm text-zinc-400 mt-2">
+              <p className="text-sm text-content-faint mt-2">
                 {t('noPreferences.hint')}
               </p>
             )}
@@ -431,31 +431,31 @@ function NotificationsContent() {
                     to={`/event/${alert.eventId}`}
                     className={`block p-4 rounded-lg border transition-colors ${
                       isUnread
-                        ? 'bg-blue-50 border-blue-200 hover:border-blue-300'
-                        : 'bg-white border-zinc-200 hover:border-zinc-300'
+                        ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-700'
+                        : 'bg-surface-alt border-divider hover:border-divider'
                     }`}
                     onClick={() => handleAlertClick(alert)}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">
+                          <span className="text-xs px-2 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 rounded font-medium">
                             {categoryLabel}
                           </span>
                           {isUnread && (
                             <span className="h-2 w-2 bg-blue-500 rounded-full" />
                           )}
                         </div>
-                        <p className="font-medium text-zinc-900 line-clamp-2">
+                        <p className="font-medium text-content-heading line-clamp-2">
                           {displayTitle}
                         </p>
                         {displayLead && (
-                          <p className="text-sm text-zinc-500 line-clamp-1 mt-1">
+                          <p className="text-sm text-content-subtle line-clamp-1 mt-1">
                             {displayLead}
                           </p>
                         )}
                       </div>
-                      <div className="text-xs text-zinc-400 whitespace-nowrap">
+                      <div className="text-xs text-content-faint whitespace-nowrap">
                         {formatDate(alert.createdAt as any, language, t('noDate'))}
                       </div>
                     </div>
@@ -475,24 +475,24 @@ function NotificationsContent() {
                     to={`/sejm/glosowania/${votingAlert.sitting}/${votingAlert.votingNumber}`}
                     className={`block p-4 rounded-lg border transition-colors ${
                       isUnread
-                        ? 'bg-blue-50 border-blue-200 hover:border-blue-300'
+                        ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-700'
                         : isHistorical
-                        ? 'bg-zinc-50 border-zinc-200 hover:border-zinc-300'
-                        : 'bg-white border-zinc-200 hover:border-zinc-300'
+                        ? 'bg-surface border-divider hover:border-divider'
+                        : 'bg-surface-alt border-divider hover:border-divider'
                     }`}
                     onClick={() => handleAlertClick(alert)}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium text-zinc-900">
+                          <span className="font-medium text-content-heading">
                             {votingAlert.mpName}
                           </span>
                           <span className={`text-xs px-2 py-0.5 rounded ${voteInfo.bg} ${voteInfo.color}`}>
                             {voteInfo.text}
                           </span>
                           {isHistorical && (
-                            <span className="text-xs px-2 py-0.5 bg-zinc-200 text-zinc-600 rounded">
+                            <span className="text-xs px-2 py-0.5 bg-divider text-content rounded">
                               {t('historical')}
                             </span>
                           )}
@@ -500,11 +500,11 @@ function NotificationsContent() {
                             <span className="h-2 w-2 bg-blue-500 rounded-full" />
                           )}
                         </div>
-                        <p className="text-sm text-zinc-600 line-clamp-2">
+                        <p className="text-sm text-content line-clamp-2">
                           {votingAlert.votingTitle}
                         </p>
                       </div>
-                      <div className="text-xs text-zinc-400 whitespace-nowrap">
+                      <div className="text-xs text-content-faint whitespace-nowrap">
                         {formatDate(dateStr, language, t('noDate'))}
                       </div>
                     </div>
@@ -518,7 +518,7 @@ function NotificationsContent() {
               <button
                 onClick={loadMoreHistorical}
                 disabled={isLoadingHistorical}
-                className="w-full mt-4 py-3 text-sm text-zinc-600 hover:text-zinc-900 border border-zinc-200 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full mt-4 py-3 text-sm text-content hover:text-content-heading border border-divider rounded-lg hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoadingHistorical ? t('loading') : t('loadMore')}
               </button>

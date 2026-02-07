@@ -68,5 +68,9 @@
     "add": "Avatar hinzufügen",
     "remove": "Avatar entfernen",
     "hint": "JPG, PNG oder GIF. Max 5MB."
+  },
+  "appearance": {
+    "title": "Erscheinungsbild",
+    "description": "Wählen Sie das Farbthema der Benutzeroberfläche."
   }
 }

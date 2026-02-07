@@ -15,7 +15,7 @@ function DebugStepItem({ step }: { step: DebugStep }) {
               <strong>Keywords</strong>
               {step.model && ` (${step.model})`}
               {step.timeMs && (
-                <span className="text-zinc-400 dark:text-zinc-500 ml-2">
+                <span className="text-content-faint dark:text-zinc-500 ml-2">
                   {step.timeMs}ms
                 </span>
               )}
@@ -30,7 +30,7 @@ function DebugStepItem({ step }: { step: DebugStep }) {
             <span className="flex-1">
               <strong>Search</strong>
               {step.timeMs && (
-                <span className="text-zinc-400 dark:text-zinc-500 ml-2">
+                <span className="text-content-faint dark:text-zinc-500 ml-2">
                   {step.timeMs}ms
                 </span>
               )}
@@ -46,7 +46,7 @@ function DebugStepItem({ step }: { step: DebugStep }) {
               <strong>Fusion</strong>
               {step.method && ` (${step.method})`}
               {step.output && (
-                <span className="text-zinc-400 dark:text-zinc-500 ml-2">
+                <span className="text-content-faint dark:text-zinc-500 ml-2">
                   {step.output} results
                 </span>
               )}
@@ -62,7 +62,7 @@ function DebugStepItem({ step }: { step: DebugStep }) {
               <strong>Rerank</strong>
               {step.model && ` (${step.model})`}
               {step.timeMs && (
-                <span className="text-zinc-400 dark:text-zinc-500 ml-2">
+                <span className="text-content-faint dark:text-zinc-500 ml-2">
                   {step.timeMs}ms
                 </span>
               )}
@@ -77,12 +77,12 @@ function DebugStepItem({ step }: { step: DebugStep }) {
             <span className="flex-1">
               <strong>Search Complete</strong>
               {step.finalResults && (
-                <span className="text-zinc-400 dark:text-zinc-500 ml-2">
+                <span className="text-content-faint dark:text-zinc-500 ml-2">
                   {step.finalResults} events
                 </span>
               )}
               {step.totalTimeMs && (
-                <span className="text-zinc-400 dark:text-zinc-500 ml-2">
+                <span className="text-content-faint dark:text-zinc-500 ml-2">
                   ({step.totalTimeMs}ms)
                 </span>
               )}
@@ -108,7 +108,7 @@ function DebugStepItem({ step }: { step: DebugStep }) {
             <span className="flex-1">
               <strong>Complete</strong>
               {step.totalTimeMs && (
-                <span className="text-zinc-400 dark:text-zinc-500 ml-2">
+                <span className="text-content-faint dark:text-zinc-500 ml-2">
                   {step.totalTimeMs}ms total
                 </span>
               )}
@@ -129,7 +129,7 @@ function DebugStepItem({ step }: { step: DebugStep }) {
   };
 
   return (
-    <div className="flex items-center gap-2 py-1 text-[12px] text-zinc-600 dark:text-zinc-400 border-b border-zinc-100 dark:border-zinc-800/50 last:border-b-0">
+    <div className="flex items-center gap-2 py-1 text-[12px] text-content dark:text-zinc-400 border-b border-divider-subtle dark:border-zinc-800/50 last:border-b-0">
       {renderContent()}
     </div>
   );

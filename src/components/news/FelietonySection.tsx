@@ -23,7 +23,7 @@ function FelietonCard({ felieton }: { felieton: Felieton }) {
   const imageSrc = FELIETON_IMAGES[felieton.category];
 
   return (
-    <LocalizedLink to={`/felieton/${felieton.id}`} className="group/underline block p-6 hover:bg-sky-100 transition-colors h-full">
+    <LocalizedLink to={`/felieton/${felieton.id}`} className="group/underline block p-6 hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors h-full">
       <article>
         <div className="mb-4">
           <GrainImage
@@ -34,11 +34,11 @@ function FelietonCard({ felieton }: { felieton: Felieton }) {
             height={225}
           />
         </div>
-        <span className="text-zinc-400 text-xs">{categoryName}</span>
-        <h3 className="text-zinc-900 font-semibold text-xl leading-tight">
+        <span className="text-content-faint text-xs">{categoryName}</span>
+        <h3 className="text-content-heading font-semibold text-xl leading-tight">
           <AnimatedUnderline>{felieton.title}</AnimatedUnderline>
         </h3>
-        <p className="text-sm text-zinc-600 mt-2 leading-snug line-clamp-3">
+        <p className="text-sm text-content mt-2 leading-snug line-clamp-3">
           {felieton.lead}
         </p>
       </article>
@@ -61,8 +61,8 @@ function PlaceholderCard({ category }: { category: FelietonCategory }) {
             height={225}
           />
         </div>
-        <span className="text-zinc-400 text-xs">{categoryName}</span>
-        <h3 className="text-zinc-400 font-semibold text-xl leading-tight">
+        <span className="text-content-faint text-xs">{categoryName}</span>
+        <h3 className="text-content-faint font-semibold text-xl leading-tight">
           Felieton w przygotowaniu...
         </h3>
       </article>
@@ -82,14 +82,14 @@ export function FelietonySection({ felietony }: FelietonySectionProps) {
       sectionId="felietony-section"
       priority="low"
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 bg-sky-50">
+      <div className="grid grid-cols-1 md:grid-cols-3 bg-sky-50 dark:bg-sky-950/40">
         {categories.map((category, index) => {
           const felieton = felietonyByCategory.get(category);
           const isLast = index === categories.length - 1;
           return (
             <div
               key={category}
-              className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}
+              className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-divider`}
             >
               {felieton ? (
                 <FelietonCard felieton={felieton} />

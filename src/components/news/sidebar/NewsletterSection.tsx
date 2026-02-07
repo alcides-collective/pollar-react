@@ -23,8 +23,8 @@ export function NewsletterSection() {
 
   return (
     <div className="p-6">
-      <h3 className="text-zinc-900 font-semibold mb-2">Newsletter</h3>
-      <p className="text-sm text-zinc-600 mb-4">
+      <h3 className="text-content-heading font-semibold mb-2">Newsletter</h3>
+      <p className="text-sm text-content mb-4">
         Otrzymuj codzienny przegląd najważniejszych wydarzeń.
       </p>
 
@@ -55,7 +55,7 @@ export function NewsletterSection() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Twój email"
-              className="flex-1 text-sm text-zinc-900 placeholder:text-zinc-400 bg-white border-zinc-300"
+              className="flex-1 text-sm text-content-heading placeholder:text-content-faint bg-background border-divider"
               required
             />
             <Button

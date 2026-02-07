@@ -11,7 +11,7 @@ export function NewsletterTopEvents({ events }: NewsletterTopEventsProps) {
 
   return (
     <section className="mb-10">
-      <h2 className="text-sm text-zinc-500 mb-5 pb-2 border-b border-zinc-200 font-medium">
+      <h2 className="text-sm text-content-subtle mb-5 pb-2 border-b border-divider font-medium">
         {t('topEvents')}
       </h2>
       <div className="space-y-4">
@@ -30,7 +30,7 @@ function TopEventCard({ event, rank }: { event: NewsletterEvent; rank: number })
   return (
     <div className="flex gap-4 items-start group">
       {/* Number badge */}
-      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-zinc-900 text-white flex items-center justify-center text-sm font-semibold">
+      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
         {rank}
       </div>
 
@@ -38,22 +38,22 @@ function TopEventCard({ event, rank }: { event: NewsletterEvent; rank: number })
         {/* Title */}
         <LocalizedLink
           to={`/event/${event.eventId}`}
-          className="text-base font-semibold text-zinc-900 hover:text-zinc-600 transition-colors leading-snug block mb-1"
+          className="text-base font-semibold text-content-heading hover:text-content transition-colors leading-snug block mb-1"
         >
           {event.title}
         </LocalizedLink>
 
         {/* Lead */}
-        <p className="text-sm text-zinc-600 leading-relaxed line-clamp-2 mb-2">
+        <p className="text-sm text-content leading-relaxed line-clamp-2 mb-2">
           {event.lead}
         </p>
 
         {/* Meta row: category badge + source count */}
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-700">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-surface text-content">
             {tCommon(`categories.${event.category}`, { defaultValue: event.category })}
           </span>
-          <span className="text-xs text-zinc-400">
+          <span className="text-xs text-content-faint">
             {event.sourceCount} {t('sources')}
           </span>
         </div>

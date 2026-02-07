@@ -26,7 +26,7 @@ export function VotingResultBar({
 
   return (
     <div className="w-full">
-      <div className={`flex ${heightClass} rounded-full overflow-hidden bg-zinc-100`}>
+      <div className={`flex ${heightClass} rounded-full overflow-hidden bg-surface`}>
         <div
           className="transition-all duration-300"
           style={{
@@ -54,7 +54,7 @@ export function VotingResultBar({
         <div className="flex justify-between mt-1 text-xs font-mono">
           <span style={{ color: 'oklch(55% 0.15 145)' }}>{yes}</span>
           <span style={{ color: 'oklch(50% 0.17 25)' }}>{no}</span>
-          <span className="text-zinc-400">{abstain}</span>
+          <span className="text-content-faint">{abstain}</span>
         </div>
       )}
     </div>

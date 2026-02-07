@@ -18,8 +18,8 @@ export function ProceedingDetailPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-6 w-32 bg-zinc-100 animate-pulse rounded" />
-        <div className="h-32 bg-zinc-100 animate-pulse rounded-lg" />
+        <div className="h-6 w-32 bg-surface animate-pulse rounded" />
+        <div className="h-32 bg-surface animate-pulse rounded-lg" />
       </div>
     );
   }
@@ -44,8 +44,8 @@ export function ProceedingDetailPage() {
   if (!proceeding) {
     return (
       <div className="text-center py-12">
-        <p className="text-zinc-500">{t('proceedingDetail.notFound')}</p>
-        <LocalizedLink to="/sejm/posiedzenia" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+        <p className="text-content-subtle">{t('proceedingDetail.notFound')}</p>
+        <LocalizedLink to="/sejm/posiedzenia" className="text-sm text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
           <i className="ri-arrow-left-s-line" /> {t('proceedingDetail.backToList')}
         </LocalizedLink>
       </div>
@@ -55,14 +55,14 @@ export function ProceedingDetailPage() {
   return (
     <div className="space-y-6">
       {/* Back link */}
-      <LocalizedLink to="/sejm/posiedzenia" className="text-sm text-zinc-500 hover:text-zinc-700">
+      <LocalizedLink to="/sejm/posiedzenia" className="text-sm text-content-subtle hover:text-content">
         <i className="ri-arrow-left-s-line" /> {t('proceedingDetail.allProceedings')}
       </LocalizedLink>
 
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <span className="text-lg font-semibold text-zinc-900">
+          <span className="text-lg font-semibold text-content-heading">
             {t('proceedingDetail.sejmSession', { number: proceeding.number })}
           </span>
           {proceeding.current && (
@@ -71,16 +71,16 @@ export function ProceedingDetailPage() {
             </span>
           )}
         </div>
-        <h1 className="text-xl text-zinc-700">{proceeding.title}</h1>
-        <p className="text-zinc-500 mt-2">{formatDates(proceeding.dates)}</p>
+        <h1 className="text-xl text-content">{proceeding.title}</h1>
+        <p className="text-content-subtle mt-2">{formatDates(proceeding.dates)}</p>
       </div>
 
       {/* Agenda */}
       {proceeding.agenda && (
-        <div className="rounded-lg border border-zinc-200 p-4">
-          <h2 className="text-sm font-medium text-zinc-900 mb-3">{t('proceedingDetail.agenda')}</h2>
+        <div className="rounded-lg border border-divider p-4">
+          <h2 className="text-sm font-medium text-content-heading mb-3">{t('proceedingDetail.agenda')}</h2>
           <div
-            className="prose prose-sm max-w-none text-zinc-700"
+            className="prose prose-sm max-w-none text-content"
             dangerouslySetInnerHTML={{ __html: proceeding.agenda }}
           />
         </div>

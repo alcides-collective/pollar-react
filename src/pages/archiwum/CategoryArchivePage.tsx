@@ -40,16 +40,16 @@ export function CategoryArchivePage() {
     return (
       <div className="max-w-[1000px] mx-auto px-6 py-8">
         <div className="mb-8">
-          <div className="h-4 w-24 bg-zinc-100 rounded animate-pulse mb-3" />
-          <div className="h-8 w-48 bg-zinc-200 rounded animate-pulse mb-2" />
-          <div className="h-4 w-32 bg-zinc-100 rounded animate-pulse" />
+          <div className="h-4 w-24 bg-surface rounded animate-pulse mb-3" />
+          <div className="h-8 w-48 bg-divider rounded animate-pulse mb-2" />
+          <div className="h-4 w-32 bg-surface rounded animate-pulse" />
         </div>
         <div className="space-y-4">
           {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="bg-white border border-zinc-200 rounded-xl p-5 animate-pulse">
-              <div className="h-3 w-24 bg-zinc-100 rounded mb-2" />
-              <div className="h-5 w-full bg-zinc-200 rounded mb-2" />
-              <div className="h-4 w-3/4 bg-zinc-100 rounded" />
+            <div key={i} className="bg-surface-alt border border-divider rounded-xl p-5 animate-pulse">
+              <div className="h-3 w-24 bg-surface rounded mb-2" />
+              <div className="h-5 w-full bg-divider rounded mb-2" />
+              <div className="h-4 w-3/4 bg-surface rounded" />
             </div>
           ))}
         </div>
@@ -62,16 +62,16 @@ export function CategoryArchivePage() {
     return (
       <div className="max-w-[1000px] mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-100 flex items-center justify-center">
-            <i className="ri-error-warning-line text-2xl text-zinc-400" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+            <i className="ri-error-warning-line text-2xl text-content-faint" />
           </div>
-          <h1 className="text-xl font-medium text-zinc-900 mb-2">
+          <h1 className="text-xl font-medium text-content-heading mb-2">
             {t('archive.failedToLoad')}
           </h1>
-          <p className="text-zinc-600 mb-6">{error.message}</p>
+          <p className="text-content mb-6">{error.message}</p>
           <LocalizedLink
             to="/archiwum"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('archive.backToArchive')}
@@ -86,16 +86,16 @@ export function CategoryArchivePage() {
     return (
       <div className="max-w-[1000px] mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-100 flex items-center justify-center">
-            <i className="ri-folder-open-line text-2xl text-zinc-400" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+            <i className="ri-folder-open-line text-2xl text-content-faint" />
           </div>
-          <h1 className="text-xl font-medium text-zinc-900 mb-2">
+          <h1 className="text-xl font-medium text-content-heading mb-2">
             {t('archive.noEventsInCategory', { category: translatedCategory })}
           </h1>
-          <p className="text-zinc-600 mb-6">{t('archive.noEventsFound')}</p>
+          <p className="text-content mb-6">{t('archive.noEventsFound')}</p>
           <LocalizedLink
             to="/archiwum"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('archive.backToArchive')}
@@ -111,7 +111,7 @@ export function CategoryArchivePage() {
       <div className="mb-6">
         <LocalizedLink
           to="/archiwum"
-          className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
+          className="inline-flex items-center gap-1 text-sm text-content-subtle hover:text-content-heading transition-colors"
         >
           <i className="ri-arrow-left-s-line" />
           {t('archive.title')}
@@ -120,8 +120,8 @@ export function CategoryArchivePage() {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-zinc-900 mb-1">{translatedCategory}</h1>
-        <p className="text-zinc-500">
+        <h1 className="text-2xl font-bold text-content-heading mb-1">{translatedCategory}</h1>
+        <p className="text-content-subtle">
           {t('archive.eventsInArchive', { count: categoryEvents.length })}
         </p>
       </div>
@@ -137,21 +137,21 @@ export function CategoryArchivePage() {
           <motion.div key={event.id} variants={staggerItem}>
             <LocalizedLink
               to={`/event/${event.id}`}
-              className="block bg-white border border-zinc-200 rounded-xl p-5 hover:border-zinc-300 hover:shadow-sm transition-all group"
+              className="block bg-surface-alt border border-divider rounded-xl p-5 hover:border-divider hover:shadow-sm transition-all group"
             >
               <div className="flex items-center gap-2 text-xs mb-2">
                 <LiveTimeAgo date={event.updatedAt} className="text-red-500" />
-                <span className="text-zinc-300">•</span>
-                <span className="text-zinc-400">
+                <span className="text-content-faint">•</span>
+                <span className="text-content-faint">
                   {event.sourceCount || event.sources?.length || 0}{' '}
                   {(event.sourceCount || event.sources?.length || 0) === 1 ? t('archive.source') : t('archive.sources')}
                 </span>
               </div>
-              <h2 className="text-base font-medium text-zinc-900 group-hover:text-zinc-700 transition-colors mb-1">
+              <h2 className="text-base font-medium text-content-heading group-hover:text-content transition-colors mb-1">
                 {event.title}
               </h2>
               {event.lead && (
-                <p className="text-sm text-zinc-500 line-clamp-2">
+                <p className="text-sm text-content-subtle line-clamp-2">
                   {event.lead}
                 </p>
               )}

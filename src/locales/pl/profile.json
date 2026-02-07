@@ -68,5 +68,9 @@
     "add": "Dodaj avatar",
     "remove": "Usuń avatar",
     "hint": "JPG, PNG lub GIF. Maks. 5MB."
+  },
+  "appearance": {
+    "title": "Wygląd",
+    "description": "Wybierz motyw kolorystyczny interfejsu."
   }
 }

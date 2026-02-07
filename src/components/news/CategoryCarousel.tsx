@@ -24,7 +24,7 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
   return (
     <LocalizedLink
       to={`/event/${event.id}`}
-      className={`group/underline p-6 hover:bg-zinc-50 transition-colors h-full block ${hideBorder ? '' : 'border-r border-zinc-200'}`}
+      className={`group/underline p-6 hover:bg-surface transition-colors h-full block ${hideBorder ? '' : 'border-r border-divider'}`}
     >
       <article>
         <div className="mb-4 relative">
@@ -36,12 +36,12 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
             height={225}
           />
           {imageSource && (
-            <span className="absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">
+            <span className="absolute bottom-2 left-2 text-[10px] text-content/80 bg-background/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate">
               {t('image.source', { source: imageSource })}
             </span>
           )}
         </div>
-        <h3 className="text-zinc-900 font-semibold leading-tight">
+        <h3 className="text-content-heading font-semibold leading-tight">
           <AnimatedUnderline>{event.title}</AnimatedUnderline>
         </h3>
       </article>
@@ -150,7 +150,7 @@ export function CategoryCarousel({ category, events, variant = 'carousel' }: Cat
   if (variant === 'list') {
     if (events.length === 0) return null;
     return (
-      <div className="divide-y divide-zinc-200">
+      <div className="divide-y divide-divider">
         {events.map(event => (
           <EventCarouselItem key={event.id} event={event} hideBorder />
         ))}
@@ -166,9 +166,9 @@ export function CategoryCarousel({ category, events, variant = 'carousel' }: Cat
   if (isMeasuring) {
     return (
       <SectionImageContext.Provider value={carouselContext}>
-        <div className="border-b border-zinc-200 relative">
-          <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
-            <h2 className="text-xl font-bold text-zinc-900">{translatedCategory}</h2>
+        <div className="border-b border-divider relative">
+          <div className="flex items-center justify-between px-6 py-4 bg-surface border-b border-divider">
+            <h2 className="text-xl font-bold text-content-heading">{translatedCategory}</h2>
           </div>
           <div
             ref={measureRef}
@@ -198,19 +198,19 @@ export function CategoryCarousel({ category, events, variant = 'carousel' }: Cat
 
   return (
     <SectionImageContext.Provider value={carouselContext}>
-      <div className="border-b border-zinc-200">
-        <div className="flex items-center justify-between px-6 py-4 bg-zinc-50 border-b border-zinc-200">
-          <h2 className="text-xl font-bold text-zinc-900">{translatedCategory}</h2>
+      <div className="border-b border-divider">
+        <div className="flex items-center justify-between px-6 py-4 bg-surface border-b border-divider">
+          <h2 className="text-xl font-bold text-content-heading">{translatedCategory}</h2>
           <div className="flex gap-2">
             <motion.div {...hoverScale}>
               <Button
                 variant="outline"
                 size="icon-sm"
                 onClick={() => scroll('left')}
-                className="rounded-full border-zinc-200 shadow-none flex items-center justify-center"
+                className="rounded-full border-divider shadow-none flex items-center justify-center"
                 aria-label={t('actions.scrollLeft')}
               >
-                <i className="ri-arrow-left-s-line text-base text-zinc-600"></i>
+                <i className="ri-arrow-left-s-line text-base text-content"></i>
               </Button>
             </motion.div>
             <motion.div {...hoverScale}>
@@ -218,10 +218,10 @@ export function CategoryCarousel({ category, events, variant = 'carousel' }: Cat
                 variant="outline"
                 size="icon-sm"
                 onClick={() => scroll('right')}
-                className="rounded-full border-zinc-200 shadow-none flex items-center justify-center"
+                className="rounded-full border-divider shadow-none flex items-center justify-center"
                 aria-label={t('actions.scrollRight')}
               >
-                <i className="ri-arrow-right-s-line text-base text-zinc-600"></i>
+                <i className="ri-arrow-right-s-line text-base text-content"></i>
               </Button>
             </motion.div>
           </div>

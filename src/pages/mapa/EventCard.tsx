@@ -31,7 +31,7 @@ export function EventCard({ event, onClose }: EventCardProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.2 }}
-      className="absolute bottom-3 md:bottom-4 left-3 right-3 md:left-4 md:right-auto bg-white rounded-xl overflow-hidden shadow-2xl"
+      className="absolute bottom-3 md:bottom-4 left-3 right-3 md:left-4 md:right-auto bg-background rounded-xl overflow-hidden shadow-2xl"
       style={{
         maxWidth: '400px',
         border: '0.5px solid rgba(160, 160, 160, 0.15)',
@@ -41,26 +41,26 @@ export function EventCard({ event, onClose }: EventCardProps) {
         {/* Meta header */}
         <div className="flex items-center gap-3 mb-3 text-[11px] tracking-wide uppercase font-medium">
           {event.category && (
-            <span className="text-zinc-500">
+            <span className="text-content-subtle">
               {categoryLabels[event.category] || event.category}
             </span>
           )}
-          <span className="flex-1 h-px bg-zinc-200" />
+          <span className="flex-1 h-px bg-divider" />
           {event.articleCount > 0 && (
-            <span className="text-zinc-400">
+            <span className="text-content-faint">
               {event.articleCount} źródeł
             </span>
           )}
         </div>
 
         {/* Title */}
-        <h2 className="text-lg md:text-xl font-semibold mb-2 leading-tight text-zinc-900">
+        <h2 className="text-lg md:text-xl font-semibold mb-2 leading-tight text-content-heading">
           {event.title}
         </h2>
 
         {/* Short headline */}
         {event.metadata?.shortHeadline && (
-          <p className="text-sm text-zinc-600 mb-4 line-clamp-2">
+          <p className="text-sm text-content mb-4 line-clamp-2">
             {event.metadata.shortHeadline}
           </p>
         )}
@@ -69,13 +69,13 @@ export function EventCard({ event, onClose }: EventCardProps) {
         <div className="flex items-center gap-2">
           <button
             onClick={handleDetails}
-            className="flex-1 text-xs tracking-wide uppercase px-3 py-2 rounded-md bg-zinc-900 text-white font-semibold transition-opacity hover:opacity-80"
+            className="flex-1 text-xs tracking-wide uppercase px-3 py-2 rounded-md bg-primary text-primary-foreground font-semibold transition-opacity hover:opacity-80"
           >
             Szczegóły
           </button>
           <button
             onClick={onClose}
-            className="text-xs tracking-wide uppercase px-3 py-2 rounded-md border border-zinc-200 text-zinc-500 hover:text-zinc-900 hover:border-zinc-300 transition-colors"
+            className="text-xs tracking-wide uppercase px-3 py-2 rounded-md border border-divider text-content-subtle hover:text-content-heading hover:border-divider transition-colors"
           >
             Zamknij
           </button>

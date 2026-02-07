@@ -19,11 +19,11 @@ export function ProceedingsPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-8 w-48 bg-zinc-100 animate-pulse rounded" />
-        <div className="h-24 bg-zinc-100 animate-pulse rounded-lg" />
+        <div className="h-8 w-48 bg-surface animate-pulse rounded" />
+        <div className="h-24 bg-surface animate-pulse rounded-lg" />
         <div className="space-y-3">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-20 bg-zinc-100 animate-pulse rounded-lg" />
+            <div key={i} className="h-20 bg-surface animate-pulse rounded-lg" />
           ))}
         </div>
       </div>
@@ -50,24 +50,24 @@ export function ProceedingsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">{t('proceedingsPage.title')}</h1>
+      <h1 className="text-xl font-semibold text-content-heading">{t('proceedingsPage.title')}</h1>
 
       {/* Current proceeding */}
       {currentProceeding && (
         <LocalizedLink
           to={`/sejm/posiedzenia/${currentProceeding.number}`}
-          className="block rounded-lg border-2 border-green-500 bg-green-50 p-4 hover:bg-green-100 transition-colors"
+          className="block rounded-lg border-2 border-green-500 dark:border-green-700 bg-green-50 dark:bg-green-950/30 p-4 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
         >
           <div className="flex items-center gap-3 mb-2">
             <span className="bg-green-500 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded animate-pulse">
               {t('proceedingsPage.live')}
             </span>
-            <span className="text-sm text-zinc-600">
+            <span className="text-sm text-content">
               {t('proceedingsPage.proceeding', { number: currentProceeding.number })}
             </span>
           </div>
-          <h3 className="font-medium text-zinc-900">{currentProceeding.title}</h3>
-          <p className="text-sm text-zinc-500 mt-1">{formatDates(currentProceeding.dates)}</p>
+          <h3 className="font-medium text-content-heading">{currentProceeding.title}</h3>
+          <p className="text-sm text-content-subtle mt-1">{formatDates(currentProceeding.dates)}</p>
         </LocalizedLink>
       )}
 
@@ -77,23 +77,23 @@ export function ProceedingsPage() {
           <LocalizedLink
             key={proceeding.number}
             to={`/sejm/posiedzenia/${proceeding.number}`}
-            className="block rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
+            className="block rounded-lg border border-divider hover:border-divider hover:shadow-sm transition-all p-4"
           >
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-medium text-zinc-900">
+                  <span className="text-sm font-medium text-content-heading">
                     {t('proceedingsPage.proceeding', { number: proceeding.number })}
                   </span>
                   {proceeding.current && (
-                    <span className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">
+                    <span className="bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 text-[10px] px-1.5 py-0.5 rounded">
                       {t('proceedingsPage.current')}
                     </span>
                   )}
                 </div>
-                <h3 className="text-zinc-700">{proceeding.title}</h3>
+                <h3 className="text-content">{proceeding.title}</h3>
               </div>
-              <span className="text-sm text-zinc-400 shrink-0">
+              <span className="text-sm text-content-faint shrink-0">
                 {formatDates(proceeding.dates)}
               </span>
             </div>

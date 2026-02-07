@@ -13,6 +13,8 @@ import {
 } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
 import type { CrimeTimeSeriesPoint } from '@/types/dane';
+import { useIsDarkMode } from '@/stores/themeStore';
+import { CHART_COLORS } from '@/utils/chartUtils';
 
 ChartJS.register(
   CategoryScale,
@@ -33,6 +35,9 @@ interface CrimeBarChartProps {
 
 export function CrimeBarChart({ data, title }: CrimeBarChartProps) {
   const { t } = useTranslation('dane');
+  const isDark = useIsDarkMode();
+  const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
+  const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
 
   const chartData = {
     labels: data.map((d) => d.year.toString()),
@@ -55,6 +60,17 @@ export function CrimeBarChart({ data, title }: CrimeBarChartProps) {
       title: {
         display: true,
         text: title ?? t('charts.crime.crimesTitle'),
+        color: tickColor,
+      },
+    },
+    scales: {
+      x: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
+      },
+      y: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
       },
     },
   };
@@ -73,6 +89,9 @@ interface DetectionChartProps {
 
 export function DetectionChart({ data, title }: DetectionChartProps) {
   const { t } = useTranslation('dane');
+  const isDark = useIsDarkMode();
+  const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
+  const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
 
   const chartData = {
     labels: data.map((d) => d.year.toString()),
@@ -98,12 +117,19 @@ export function DetectionChart({ data, title }: DetectionChartProps) {
       title: {
         display: true,
         text: title ?? t('charts.crime.detectionTitle'),
+        color: tickColor,
       },
     },
     scales: {
+      x: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
+      },
       y: {
         min: 0,
         max: 100,
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
       },
     },
   };
@@ -128,6 +154,9 @@ interface CrimeCategoriesChartProps {
 
 export function CrimeCategoriesChart({ data, title }: CrimeCategoriesChartProps) {
   const { t } = useTranslation('dane');
+  const isDark = useIsDarkMode();
+  const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
+  const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
 
   const chartData = {
     labels: data.map((d) => d.label),
@@ -151,6 +180,17 @@ export function CrimeCategoriesChart({ data, title }: CrimeCategoriesChartProps)
       title: {
         display: true,
         text: title ?? t('charts.crime.categoriesTitle'),
+        color: tickColor,
+      },
+    },
+    scales: {
+      x: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
+      },
+      y: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
       },
     },
   };

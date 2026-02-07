@@ -49,19 +49,19 @@ export function VersionSection() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-zinc-900 font-semibold">{t('sidebar.whatsNew')}</h3>
-        <span className="text-[10px] font-medium text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">
+        <h3 className="text-content-heading font-semibold">{t('sidebar.whatsNew')}</h3>
+        <span className="text-[10px] font-medium text-content-faint bg-surface px-1.5 py-0.5 rounded">
           v0.3.0
         </span>
       </div>
       <div className="space-y-3">
         {changelog.map((item) => (
           <div key={item.titleKey}>
-            <p className="text-xs font-medium text-zinc-700 flex items-center gap-1.5">
-              <i className={`${item.icon} text-zinc-400`} />
+            <p className="text-xs font-medium text-content flex items-center gap-1.5">
+              <i className={`${item.icon} text-content-faint`} />
               {t(item.titleKey)}
             </p>
-            <p className="text-[11px] text-zinc-500 leading-relaxed mt-0.5 pl-[18px]">
+            <p className="text-[11px] text-content-subtle leading-relaxed mt-0.5 pl-[18px]">
               {t(item.descriptionKey)}
             </p>
           </div>

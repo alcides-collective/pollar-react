@@ -13,10 +13,10 @@ export function PrintsPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-8 w-48 bg-zinc-100 animate-pulse rounded" />
+        <div className="h-8 w-48 bg-surface animate-pulse rounded" />
         <div className="grid gap-3 md:grid-cols-2">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-32 bg-zinc-100 animate-pulse rounded-lg" />
+            <div key={i} className="h-32 bg-surface animate-pulse rounded-lg" />
           ))}
         </div>
       </div>
@@ -25,7 +25,7 @@ export function PrintsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">{t('printsPage.title')}</h1>
+      <h1 className="text-xl font-semibold text-content-heading">{t('printsPage.title')}</h1>
 
       <div className="grid gap-3 md:grid-cols-2">
         {prints.map((print) => (
@@ -34,7 +34,7 @@ export function PrintsPage() {
       </div>
 
       {prints.length === 0 && (
-        <p className="text-center text-zinc-500 py-8">
+        <p className="text-center text-content-subtle py-8">
           {t('printsPage.noResults')}
         </p>
       )}
@@ -44,7 +44,7 @@ export function PrintsPage() {
           <button
             onClick={loadMore}
             disabled={loadingMore}
-            className="px-6 py-2 bg-zinc-100 text-zinc-700 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-surface text-content rounded-md hover:bg-surface transition-colors disabled:opacity-50"
           >
             {loadingMore ? t('printsPage.loading') : t('printsPage.loadMore')}
           </button>

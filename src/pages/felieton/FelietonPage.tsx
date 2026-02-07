@@ -40,17 +40,17 @@ function SourceEventCard({ event }: { event: SourceEvent }) {
   return (
     <LocalizedLink
       to={`/event/${event.id}`}
-      className="block p-4 bg-zinc-50 hover:bg-zinc-100 rounded-lg transition-colors group"
+      className="block p-4 bg-surface hover:bg-muted rounded-lg transition-colors group"
     >
-      <p className="text-sm font-medium text-zinc-900 group-hover:text-zinc-700 mb-1">
+      <p className="text-sm font-medium text-content-heading group-hover:text-content mb-1">
         {event.metadata?.ultraShortHeadline || event.title}
       </p>
       {firstKeyPoint?.description && (
-        <p className="text-xs text-zinc-600 line-clamp-3 mb-2">
+        <p className="text-xs text-content line-clamp-3 mb-2">
           {firstKeyPoint.description.replace(/<[^>]*>/g, '')}
         </p>
       )}
-      <p className="text-xs text-zinc-400">{formattedDate}</p>
+      <p className="text-xs text-content-faint">{formattedDate}</p>
     </LocalizedLink>
   );
 }
@@ -62,13 +62,13 @@ function FelietonSidebar({ sourceEvents }: { sourceEvents: SourceEvent[] }) {
 
   return (
     <aside className="lg:sticky lg:top-6">
-      <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden">
-        <div className="px-4 py-3 border-b border-zinc-200 bg-zinc-50">
-          <h2 className="text-sm font-semibold text-zinc-900 flex items-center gap-2">
-            <i className="ri-links-line text-zinc-500" />
+      <div className="bg-surface-alt rounded-xl border border-divider overflow-hidden">
+        <div className="px-4 py-3 border-b border-divider bg-surface">
+          <h2 className="text-sm font-semibold text-content-heading flex items-center gap-2">
+            <i className="ri-links-line text-content-subtle" />
             Wydarzenia źródłowe
           </h2>
-          <p className="text-xs text-zinc-500 mt-0.5">
+          <p className="text-xs text-content-subtle mt-0.5">
             {sourceEvents.length} {sourceEvents.length === 1 ? 'wydarzenie' : sourceEvents.length < 5 ? 'wydarzenia' : 'wydarzeń'}
           </p>
         </div>
@@ -106,24 +106,24 @@ export function FelietonPage() {
             <div>
               <div className="mb-8">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="h-4 w-24 bg-zinc-200 rounded" />
-                  <div className="flex-1 h-px bg-zinc-200" />
-                  <div className="h-4 w-32 bg-zinc-200 rounded" />
+                  <div className="h-4 w-24 bg-divider rounded" />
+                  <div className="flex-1 h-px bg-divider" />
+                  <div className="h-4 w-32 bg-divider rounded" />
                 </div>
-                <div className="h-12 w-3/4 bg-zinc-200 rounded mb-3" />
-                <div className="h-12 w-1/2 bg-zinc-200 rounded mb-5" />
-                <div className="h-6 w-full bg-zinc-200 rounded mb-2" />
-                <div className="h-6 w-4/5 bg-zinc-200 rounded mb-6" />
-                <div className="h-48 w-full bg-zinc-200 rounded-lg" />
+                <div className="h-12 w-3/4 bg-divider rounded mb-3" />
+                <div className="h-12 w-1/2 bg-divider rounded mb-5" />
+                <div className="h-6 w-full bg-divider rounded mb-2" />
+                <div className="h-6 w-4/5 bg-divider rounded mb-6" />
+                <div className="h-48 w-full bg-divider rounded-lg" />
               </div>
               <div className="space-y-4">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="h-4 w-full bg-zinc-200 rounded" />
+                  <div key={i} className="h-4 w-full bg-divider rounded" />
                 ))}
               </div>
             </div>
             <div className="hidden lg:block">
-              <div className="h-64 bg-zinc-200 rounded-xl" />
+              <div className="h-64 bg-divider rounded-xl" />
             </div>
           </div>
         </div>
@@ -135,18 +135,18 @@ export function FelietonPage() {
     return (
       <div className="max-w-[1200px] mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-100 flex items-center justify-center">
-            <i className="ri-error-warning-line text-2xl text-zinc-400" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+            <i className="ri-error-warning-line text-2xl text-content-faint" />
           </div>
-          <h1 className="text-xl font-medium text-zinc-900 mb-2">
+          <h1 className="text-xl font-medium text-content-heading mb-2">
             Nie udało się załadować felietonu
           </h1>
-          <p className="text-zinc-600 mb-6">
+          <p className="text-content mb-6">
             {error.message}
           </p>
           <LocalizedLink
             to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             Wróć do strony głównej
@@ -160,18 +160,18 @@ export function FelietonPage() {
     return (
       <div className="max-w-[1200px] mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-100 flex items-center justify-center">
-            <i className="ri-file-text-line text-2xl text-zinc-400" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+            <i className="ri-file-text-line text-2xl text-content-faint" />
           </div>
-          <h1 className="text-xl font-medium text-zinc-900 mb-2">
+          <h1 className="text-xl font-medium text-content-heading mb-2">
             Felieton nie został znaleziony
           </h1>
-          <p className="text-zinc-600 mb-6">
+          <p className="text-content mb-6">
             Ten felieton nie istnieje lub został usunięty.
           </p>
           <LocalizedLink
             to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             Wróć do strony głównej
@@ -200,15 +200,15 @@ export function FelietonPage() {
           <header className="mb-10">
             <div className="flex items-center gap-4 mb-4">
               <span className="text-sm text-sky-600 font-medium">{categoryName}</span>
-              <span className="flex-1 h-px bg-zinc-200" />
-              <span className="text-sm text-zinc-500 font-medium">{formattedDate} · {editionLabel}</span>
+              <span className="flex-1 h-px bg-divider" />
+              <span className="text-sm text-content-subtle font-medium">{formattedDate} · {editionLabel}</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-medium text-zinc-900 mb-5 leading-tight tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-medium text-content-heading mb-5 leading-tight tracking-tight">
               {felieton.title}
             </h1>
 
-            <p className="text-lg md:text-xl text-zinc-600 mb-6 leading-relaxed">
+            <p className="text-lg md:text-xl text-content mb-6 leading-relaxed">
               {felieton.lead}
             </p>
 
@@ -230,9 +230,9 @@ export function FelietonPage() {
 
           {/* Mobile: Source Events */}
           {felieton.sourceEvents && felieton.sourceEvents.length > 0 && (
-            <section className="lg:hidden mt-10 pt-8 border-t border-zinc-200">
-              <h2 className="text-sm font-semibold text-zinc-900 mb-4 flex items-center gap-2">
-                <i className="ri-links-line text-zinc-500" />
+            <section className="lg:hidden mt-10 pt-8 border-t border-divider">
+              <h2 className="text-sm font-semibold text-content-heading mb-4 flex items-center gap-2">
+                <i className="ri-links-line text-content-subtle" />
                 Wydarzenia źródłowe
               </h2>
               <div className="space-y-2">

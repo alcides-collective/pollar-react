@@ -108,7 +108,7 @@ export function EventPage() {
             </div>
 
             {/* EventKeyPoints skeleton */}
-            <div className="px-6 py-6 border-t border-zinc-200">
+            <div className="px-6 py-6 border-t border-divider">
               <Skeleton className="h-3 w-28 mb-4" />
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
@@ -125,7 +125,7 @@ export function EventPage() {
             </div>
 
             {/* EventSummary skeleton */}
-            <div className="px-6 py-6 border-t border-zinc-200">
+            <div className="px-6 py-6 border-t border-divider">
               <Skeleton className="h-3 w-24 mb-4" />
               <div className="space-y-3">
                 <Skeleton className="h-4 w-full" />
@@ -139,7 +139,7 @@ export function EventPage() {
             </div>
 
             {/* EventNavigation skeleton */}
-            <div className="px-6 py-6 border-t border-zinc-200">
+            <div className="px-6 py-6 border-t border-divider">
               <div className="flex gap-3">
                 <Skeleton className="flex-1 h-24" />
                 <Skeleton className="flex-1 h-24" />
@@ -172,18 +172,18 @@ export function EventPage() {
     return (
       <div className="max-w-[1200px] mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-100 flex items-center justify-center">
-            <i className="ri-error-warning-line text-2xl text-zinc-400" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+            <i className="ri-error-warning-line text-2xl text-content-faint" />
           </div>
-          <h1 className="text-xl font-medium text-zinc-900 mb-2">
+          <h1 className="text-xl font-medium text-content-heading mb-2">
             {t('error.title')}
           </h1>
-          <p className="text-zinc-600 mb-6">
+          <p className="text-content mb-6">
             {t('error.description')}
           </p>
           <LocalizedLink
             to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('error.backHome')}
@@ -235,24 +235,24 @@ export function EventPage() {
 
       {/* Debug info - DEV only */}
       {import.meta.env.DEV && (
-        <div className="mt-8 mx-6 p-4 bg-zinc-100 rounded-lg font-mono text-xs text-zinc-600">
+        <div className="mt-8 mx-6 p-4 bg-surface rounded-lg font-mono text-xs text-content">
           <p className="font-semibold mb-2">Debug Info:</p>
-          <p>trendingScore: <span className="text-zinc-900">{event.trendingScore}</span></p>
-          <p>sourceCount: <span className="text-zinc-900">{event.sourceCount}</span></p>
-          <p>articleCount: <span className="text-zinc-900">{event.articleCount}</span></p>
-          <p>viewCount: <span className="text-zinc-900">{event.viewCount}</span></p>
-          <p>freshnessLevel: <span className="text-zinc-900">{event.freshnessLevel}</span></p>
-          <p>category: <span className="text-zinc-900">{event.category}</span></p>
+          <p>trendingScore: <span className="text-content-heading">{event.trendingScore}</span></p>
+          <p>sourceCount: <span className="text-content-heading">{event.sourceCount}</span></p>
+          <p>articleCount: <span className="text-content-heading">{event.articleCount}</span></p>
+          <p>viewCount: <span className="text-content-heading">{event.viewCount}</span></p>
+          <p>freshnessLevel: <span className="text-content-heading">{event.freshnessLevel}</span></p>
+          <p>category: <span className="text-content-heading">{event.category}</span></p>
           <p className="mt-2">summary (raw):</p>
-          <pre className="text-zinc-900 whitespace-pre-wrap text-[10px] mt-1 max-h-40 overflow-auto">{event.summary}</pre>
+          <pre className="text-content-heading whitespace-pre-wrap text-[10px] mt-1 max-h-40 overflow-auto">{event.summary}</pre>
           <p className="font-semibold mt-3 mb-1">SEO: {event.metadata?.seo ? '' : <span className="text-orange-500 font-normal">brak (event sprzed deploy)</span>}</p>
           {event.metadata?.seo && (
             <>
-              <p>metaTitle: <span className="text-zinc-900">{event.metadata.seo.metaTitle}</span></p>
-              <p>metaDescription: <span className="text-zinc-900">{event.metadata.seo.metaDescription}</span></p>
-              <p>ogDescription: <span className="text-zinc-900">{event.metadata.seo.ogDescription}</span></p>
-              <p>keywords: <span className="text-zinc-900">{event.metadata.seo.keywords?.join(', ')}</span></p>
-              <p>hashtags: <span className="text-zinc-900">{event.metadata.seo.hashtags?.map(h => `#${h}`).join(' ')}</span></p>
+              <p>metaTitle: <span className="text-content-heading">{event.metadata.seo.metaTitle}</span></p>
+              <p>metaDescription: <span className="text-content-heading">{event.metadata.seo.metaDescription}</span></p>
+              <p>ogDescription: <span className="text-content-heading">{event.metadata.seo.ogDescription}</span></p>
+              <p>keywords: <span className="text-content-heading">{event.metadata.seo.keywords?.join(', ')}</span></p>
+              <p>hashtags: <span className="text-content-heading">{event.metadata.seo.hashtags?.map(h => `#${h}`).join(' ')}</span></p>
             </>
           )}
         </div>

@@ -10,6 +10,8 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import type { EurostatTimeSeriesPoint } from '@/types/dane';
+import { useIsDarkMode } from '@/stores/themeStore';
+import { CHART_COLORS } from '@/utils/chartUtils';
 
 ChartJS.register(
   CategoryScale,
@@ -34,6 +36,10 @@ export function EurostatLineChart({
   color = '#3b82f6',
   unit = ''
 }: EurostatLineChartProps) {
+  const isDark = useIsDarkMode();
+  const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
+  const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
+
   const chartData = {
     labels: data.map((d) => d.period ?? d.year?.toString() ?? ''),
     datasets: [
@@ -57,6 +63,17 @@ export function EurostatLineChart({
       title: {
         display: true,
         text: title,
+        color: tickColor,
+      },
+    },
+    scales: {
+      x: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
+      },
+      y: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
       },
     },
   };

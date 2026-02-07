@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { EventLocation } from '../../types/events';
+import { useIsDarkMode } from '@/stores/themeStore';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFrdWJkdWRlayIsImEiOiJjbWRyMWx1Z3EwOTR6MmtzYjJvYzJncmZhIn0.5Fn6PxkRaqVkEwJLhP-8_Q';
 
@@ -12,6 +13,7 @@ interface EventMapProps {
 
 export function EventMap({ location }: EventMapProps) {
   const { t } = useTranslation('event');
+  const isDark = useIsDarkMode();
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markerRef = useRef<mapboxgl.Marker | null>(null);
@@ -23,7 +25,7 @@ export function EventMap({ location }: EventMapProps) {
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
+      style: isDark ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11',
       center: [location.coordinates.longitude, location.coordinates.latitude],
       zoom: 5,
       attributionControl: false,
@@ -53,16 +55,23 @@ export function EventMap({ location }: EventMapProps) {
     };
   }, [hasCoordinates, location]);
 
+  // Update map style when dark mode changes
+  useEffect(() => {
+    if (!map.current) return;
+    const style = isDark ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
+    map.current.setStyle(style);
+  }, [isDark]);
+
   // Fallback: show city name if no coordinates
   if (!hasCoordinates) {
     if (!location?.city) return null;
 
     return (
-      <div className="h-32 bg-zinc-100 flex items-center justify-center">
+      <div className="h-32 bg-surface flex items-center justify-center">
         <div className="text-center">
-          <p className="font-mono text-sm text-zinc-600">{location.city}</p>
+          <p className="font-mono text-sm text-content">{location.city}</p>
           {location.country && (
-            <p className="font-mono text-xs text-zinc-400">{location.country}</p>
+            <p className="font-mono text-xs text-content-faint">{location.country}</p>
           )}
         </div>
       </div>
@@ -71,11 +80,11 @@ export function EventMap({ location }: EventMapProps) {
 
   return (
     <div>
-      <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-3">
+      <h3 className="text-xs font-medium uppercase tracking-wider text-content-subtle mb-3">
         {t('location')}
       </h3>
-      <div ref={mapContainer} className="h-48 overflow-hidden border border-zinc-200" />
-      <p className="text-xs text-zinc-500 mt-2">
+      <div ref={mapContainer} className="h-48 overflow-hidden border border-divider" />
+      <p className="text-xs text-content-subtle mt-2">
         {location.city}{location.country ? `, ${location.country}` : ''}
       </p>
     </div>

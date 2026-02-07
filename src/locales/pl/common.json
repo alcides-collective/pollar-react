@@ -20,7 +20,9 @@
     "sections": {
       "essentials": "Na co dzień",
       "data": "Dane i analiza"
-    }
+    },
+    "language": "Język",
+    "theme": "Motyw"
   },
   "categories": {
     "Świat": "Świat",
@@ -366,5 +368,10 @@
     "filters": "Filtry",
     "dataProvider": "Dane dostarczane przez",
     "dataProviderDescription": "Event Registry to platforma analityki newsowej, która monitoruje ponad 150 000 źródeł w 60+ językach. Artykuły są zbierane w czasie rzeczywistym i wzbogacane przez AI o rozpoznawanie podmiotów, kategoryzację i analizę sentymentu. Pollar korzysta z ich API jako dostawcy surowych danych — wszelkie dalsze analizy, grupowanie wydarzeń i klasyfikacja polityczna są realizowane przez nas niezależnie."
+  },
+  "theme": {
+    "light": "Jasny",
+    "dark": "Ciemny",
+    "system": "System"
   }
 }

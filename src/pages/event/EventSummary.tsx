@@ -147,8 +147,8 @@ export function EventSummary({ summary, wikipediaImages = {} }: EventSummaryProp
   const { t } = useTranslation('event');
 
   return (
-    <section className="event-summary px-6 py-6 border-t border-zinc-200">
-      <h2 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-4">
+    <section className="event-summary px-6 py-6 border-t border-divider">
+      <h2 className="text-xs font-medium uppercase tracking-wider text-content-subtle mb-4">
         {t('summary')}
       </h2>
       <div className="prose prose-zinc max-w-none summary-content">

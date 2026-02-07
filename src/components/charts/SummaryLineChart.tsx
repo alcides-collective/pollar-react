@@ -22,6 +22,7 @@ import {
   CHART_COLORS,
   POLISH_MONTHS_SHORT,
 } from '../../utils/chartUtils';
+import { useIsDarkMode } from '@/stores/themeStore';
 
 ChartJS.register(
   CategoryScale,
@@ -48,6 +49,7 @@ interface SummaryLineChartProps {
 
 export function SummaryLineChart({ data }: SummaryLineChartProps) {
   const chartRef = useRef<ChartJS<'line'>>(null);
+  const isDark = useIsDarkMode();
 
   useEffect(() => {
     return () => {
@@ -63,10 +65,10 @@ export function SummaryLineChart({ data }: SummaryLineChartProps) {
     const values = data.items.map((d) => d.value);
     const dateScale = detectDateScale(rawLabels);
 
-    // Colors (light mode - TODO: add dark mode support)
-    const colors = CHART_COLORS.line.light;
-    const gridColor = CHART_COLORS.grid.light;
-    const tickColor = CHART_COLORS.tick.light;
+    // Colors (theme-aware)
+    const colors = isDark ? CHART_COLORS.line.dark : CHART_COLORS.line.light;
+    const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
+    const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
 
     // Calculate smart Y bounds
     const { yMin, yMax } = calculateYBounds(values);
@@ -282,7 +284,7 @@ export function SummaryLineChart({ data }: SummaryLineChartProps) {
 
       return { chartData, options };
     }
-  }, [data]);
+  }, [data, isDark]);
 
   return (
     <div className="chart-box">

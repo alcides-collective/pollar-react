@@ -122,7 +122,7 @@ export function HeroSection() {
         </motion.h1>
 
         <motion.p
-          className="text-lg md:text-xl text-zinc-300 max-w-2xl mb-10 leading-relaxed"
+          className="text-lg md:text-xl text-content-faint max-w-2xl mb-10 leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
@@ -152,7 +152,7 @@ export function HeroSection() {
               <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-1">
                 <AnimatedCounter value={stat.value} suffix={stat.suffix} />
               </div>
-              <div className="text-xs md:text-sm text-zinc-400 uppercase tracking-wider">
+              <div className="text-xs md:text-sm text-content-faint uppercase tracking-wider">
                 {stat.label}
               </div>
             </div>
@@ -161,7 +161,7 @@ export function HeroSection() {
 
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-8 flex flex-col items-center gap-2 text-zinc-400"
+          className="absolute bottom-8 flex flex-col items-center gap-2 text-content-faint"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.7 }}

@@ -22,25 +22,25 @@ export function PrintCard({ print }: PrintCardProps) {
   return (
     <LocalizedLink
       to={`/sejm/druki/${print.number}`}
-      className="block rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
+      className="block rounded-lg border border-divider hover:border-divider hover:shadow-sm transition-all p-4"
     >
       <div className="flex items-start gap-3 mb-2">
-        <span className="shrink-0 bg-zinc-100 text-zinc-600 text-xs font-mono px-2 py-0.5 rounded">
+        <span className="shrink-0 bg-surface text-content text-xs font-mono px-2 py-0.5 rounded">
           {print.number}
         </span>
         {print.documentType && (
-          <span className="text-[10px] text-zinc-500 uppercase tracking-wide">
+          <span className="text-[10px] text-content-subtle uppercase tracking-wide">
             {print.documentType}
           </span>
         )}
       </div>
 
-      <h3 className="text-sm font-medium text-zinc-900 leading-tight line-clamp-2 mb-2">
+      <h3 className="text-sm font-medium text-content-heading leading-tight line-clamp-2 mb-2">
         {print.title}
       </h3>
 
       {summary && (
-        <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2 mb-2 italic">
+        <p className="text-xs text-content-subtle leading-relaxed line-clamp-2 mb-2 italic">
           {summary.analysis.tldr}
         </p>
       )}
@@ -48,14 +48,14 @@ export function PrintCard({ print }: PrintCardProps) {
       {summary && summary.analysis.tags.length > 0 && (
         <div className="flex flex-wrap gap-1 mb-2">
           {summary.analysis.tags.slice(0, 4).map((tag, i) => (
-            <span key={i} className="text-[10px] bg-zinc-100 text-zinc-500 px-1.5 py-0.5 rounded">
+            <span key={i} className="text-[10px] bg-surface text-content-subtle px-1.5 py-0.5 rounded">
               {tag}
             </span>
           ))}
         </div>
       )}
 
-      <div className="flex items-center justify-between text-[11px] text-zinc-500">
+      <div className="flex items-center justify-between text-[11px] text-content-subtle">
         <span>{formatDate(print.deliveryDate)}</span>
         <div className="flex items-center gap-2">
           {summary && (

@@ -20,25 +20,25 @@ export function AboutSection() {
 
   return (
     <div className="p-6">
-      <h3 className="text-zinc-900 font-semibold mb-4">{t("about.manifest")}</h3>
+      <h3 className="text-content-heading font-semibold mb-4">{t("about.manifest")}</h3>
 
       {/* Tabs */}
-      <div className="flex justify-center border-b border-zinc-200 mb-4">
+      <div className="flex justify-center border-b border-divider mb-4">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`relative text-sm px-4 py-2 transition-colors ${
               activeTab === tab.id
-                ? "text-zinc-900 font-medium"
-                : "text-zinc-500 hover:text-zinc-700"
+                ? "text-content-heading font-medium"
+                : "text-content-subtle hover:text-content"
             }`}
           >
             {tab.label}
             {activeTab === tab.id && (
               <motion.div
                 layoutId="manifestTabIndicator"
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-zinc-900"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
                 transition={{ duration: 0.2 }}
               />
             )}
@@ -57,10 +57,10 @@ export function AboutSection() {
             transition={{ duration: 0.15 }}
             className="space-y-2"
           >
-            <p className="text-zinc-900 font-semibold text-sm">
+            <p className="text-content-heading font-semibold text-sm">
               {activeContent.title}
             </p>
-            <p className="text-sm text-zinc-600 leading-relaxed">
+            <p className="text-sm text-content leading-relaxed">
               {activeContent.content}
             </p>
           </motion.div>

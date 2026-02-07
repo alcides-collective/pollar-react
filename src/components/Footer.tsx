@@ -26,6 +26,11 @@ export function Footer() {
         { label: t('nav.eventMap'), to: '/mapa' },
         { label: t('nav.connectionGraph'), to: '/graf' },
         { label: t('nav.terminal'), to: '/terminal' },
+      ],
+    },
+    {
+      title: t('footer.more', 'Więcej'),
+      links: [
         { label: t('nav.connections'), to: '/powiazania' },
         { label: t('nav.archive'), to: '/archiwum' },
         { label: t('nav.weather', 'Pogoda'), to: '/pogoda' },
@@ -72,7 +77,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-zinc-900 border-t border-zinc-800 mt-auto">
+    <footer className="bg-zinc-900 dark:bg-zinc-800 border-t border-zinc-800 dark:border-zinc-700 mt-auto">
       <div className="max-w-[1400px] mx-auto px-6 py-12">
         {/* Logo i tagline */}
         <motion.div
@@ -94,7 +99,7 @@ export function Footer() {
 
         {/* Sekcje linków */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12"
+          className="grid grid-cols-2 md:grid-cols-6 gap-8 md:gap-12"
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"
@@ -142,7 +147,7 @@ export function Footer() {
 
         {/* Dolna sekcja */}
         <motion.div
-          className="border-t border-zinc-800 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
+          className="border-t border-zinc-800 dark:border-zinc-700 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

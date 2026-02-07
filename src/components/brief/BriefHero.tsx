@@ -37,14 +37,14 @@ export function BriefHero({ brief }: BriefHeroProps) {
     <header className="mb-14">
       {/* Row: pora dnia --- data */}
       <div className="flex items-center gap-4 mb-4">
-        <span className="text-sm text-zinc-500 font-medium">{timeHeadline}</span>
-        <span className="flex-1 h-px bg-zinc-200" />
-        <span className="text-sm text-zinc-500 font-medium">{formattedDate}</span>
+        <span className="text-sm text-content-subtle font-medium">{timeHeadline}</span>
+        <span className="flex-1 h-px bg-divider" />
+        <span className="text-sm text-content-subtle font-medium">{formattedDate}</span>
       </div>
 
       {/* AI generation info */}
       {modelId && (
-        <div className="flex items-center gap-3 mb-4 text-xs text-zinc-500">
+        <div className="flex items-center gap-3 mb-4 text-xs text-content-subtle">
           <span className="font-light">
             {t('header.generatedBy', 'Wygenerowany przez')}{' '}
             <span
@@ -61,7 +61,7 @@ export function BriefHero({ brief }: BriefHeroProps) {
             </span>{' '}
             {t('header.emitting', 'emitując')}{' '}
             <span
-              className="relative cursor-help border-b border-dotted border-zinc-400"
+              className="relative cursor-help border-b border-dotted border-content-faint"
               onMouseEnter={() => setShowCO2Tooltip(true)}
               onMouseLeave={() => setShowCO2Tooltip(false)}
             >
@@ -79,12 +79,12 @@ export function BriefHero({ brief }: BriefHeroProps) {
       )}
 
       {/* Headline */}
-      <h1 className="text-4xl md:text-5xl font-medium text-zinc-900 mb-5 leading-tight tracking-tight">
+      <h1 className="text-4xl md:text-5xl font-medium text-content-heading mb-5 leading-tight tracking-tight">
         {brief.headline}
       </h1>
 
       {/* Lead */}
-      <p className="text-lg md:text-xl text-zinc-600 mb-6 leading-relaxed">
+      <p className="text-lg md:text-xl text-content mb-6 leading-relaxed">
         {brief.lead}
       </p>
 

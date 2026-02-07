@@ -83,12 +83,12 @@ export function PogodaPage() {
 				columns={4}
 				loading={loading}
 				className="mb-6"
-				cardClassName="border-zinc-200 py-3 gap-0"
+				cardClassName="border-divider py-3 gap-0"
 			contentClassName="pt-0"
 			/>
 
 			{loading ? (
-				<Card className="border-zinc-200 py-0 gap-0">
+				<Card className="border-divider py-0 gap-0">
 					<CardContent className="p-0">
 						<div className="grid lg:grid-cols-[1fr_320px]">
 							<Skeleton className="h-[500px] rounded-l-lg rounded-r-none" />
@@ -101,7 +101,7 @@ export function PogodaPage() {
 					</CardContent>
 				</Card>
 			) : weather ? (
-				<Card className="overflow-hidden mb-6 border-zinc-200 py-0 gap-0">
+				<Card className="overflow-hidden mb-6 border-divider py-0 gap-0">
 					<CardHeader className="px-4 py-3">
 						<CardTitle className="text-sm font-medium">
 							Mapa i lista miast
@@ -118,7 +118,7 @@ export function PogodaPage() {
 							</div>
 
 							{/* City list */}
-							<div className="border-t lg:border-t-0 lg:border-l border-zinc-200">
+							<div className="border-t lg:border-t-0 lg:border-l border-divider">
 								<CityList
 									cities={weather.cities}
 									onCityClick={handleCityClick}
@@ -129,7 +129,7 @@ export function PogodaPage() {
 					</CardContent>
 				</Card>
 			) : (
-				<Card className="mb-6 border-zinc-200 py-4 gap-0">
+				<Card className="mb-6 border-divider py-4 gap-0">
 					<CardContent className="py-12 text-center text-muted-foreground">
 						Dane pogodowe są tymczasowo niedostępne.
 					</CardContent>

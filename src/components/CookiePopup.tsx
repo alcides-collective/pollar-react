@@ -48,13 +48,13 @@ export function CookiePopup() {
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
-                    <i className="ri-shield-check-line text-xl text-zinc-300" />
+                    <i className="ri-shield-check-line text-xl text-content-faint" />
                   </div>
                   <div>
                     <h3 className="text-white font-semibold text-base">
                       {t('popup.title')}
                     </h3>
-                    <p className="text-zinc-500 text-xs">
+                    <p className="text-content-subtle text-xs">
                       Pollar P.S.A.
                     </p>
                   </div>
@@ -62,15 +62,15 @@ export function CookiePopup() {
               </div>
 
               {/* Description */}
-              <p className="text-zinc-300 text-sm leading-relaxed mb-4">
+              <p className="text-content-faint text-sm leading-relaxed mb-4">
                 {t('popup.description')}
               </p>
 
               {/* Legal text box */}
               <div className="bg-zinc-900 rounded-md p-4 mb-4">
-                <p className="text-zinc-400 text-xs leading-relaxed">
+                <p className="text-content-faint text-xs leading-relaxed">
                   Administratorem Twoich danych jest Pollar P.S.A. z siedzibą w Krakowie przy ul. Piastowskiej 46/12, 30-067 Kraków, zarejestrowaną w rejestrze przedsiębiorców Krajowego Rejestru Sądowego prowadzonym przez Sąd Rejonowy dla Krakowa - Śródmieścia w Krakowie, XI Wydział Gospodarczy KRS, pod numerem KRS 0001194489, o numerze NIP: 6772540681. Szczegółowe informacje znajdziesz w naszej{' '}
-                  <LocalizedLink to="/polityka-prywatnosci" className="text-zinc-300 underline hover:text-white">
+                  <LocalizedLink to="/polityka-prywatnosci" className="text-content-faint underline hover:text-white">
                     {t('settings.privacyPolicy')}
                   </LocalizedLink>
                   .
@@ -79,15 +79,15 @@ export function CookiePopup() {
 
               {/* Cookie categories */}
               <div className="flex flex-wrap gap-2 mb-5">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 rounded text-xs text-zinc-400">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 rounded text-xs text-content-faint">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                   {t('popup.essential')}
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 rounded text-xs text-zinc-400">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 rounded text-xs text-content-faint">
                   <span className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
                   {t('popup.analytics')}
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 rounded text-xs text-zinc-400">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 rounded text-xs text-content-faint">
                   <span className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
                   {t('popup.marketing')}
                 </span>
@@ -97,20 +97,20 @@ export function CookiePopup() {
               <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={rejectOptional}
-                  className="flex-1 px-4 py-2.5 text-sm font-medium text-zinc-300 bg-zinc-900 hover:bg-zinc-800 rounded transition-colors"
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-content-faint bg-zinc-900 hover:bg-zinc-800 rounded transition-colors"
                 >
                   {t('popup.essentialOnly')}
                 </button>
                 <button
                   onClick={acceptAll}
-                  className="flex-1 px-4 py-2.5 text-sm font-medium text-black bg-zinc-100 hover:bg-white rounded transition-colors"
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-content-heading bg-surface hover:bg-background rounded transition-colors"
                 >
                   {t('popup.acceptAll')}
                 </button>
               </div>
 
               {/* Footer note */}
-              <p className="text-zinc-600 text-[10px] mt-4 text-center">
+              <p className="text-content text-[10px] mt-4 text-center">
                 {t('popup.footer')}
               </p>
             </div>

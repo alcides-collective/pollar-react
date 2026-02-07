@@ -16,7 +16,7 @@ export function PopularSearches({ searches, onSelect }: PopularSearchesProps) {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2 text-xs font-medium text-zinc-500 uppercase tracking-wider">
+      <div className="flex items-center gap-2 text-xs font-medium text-content-subtle uppercase tracking-wider">
         <TrendingUp className="size-3.5" />
         <span>{t('popularSearches')}</span>
       </div>
@@ -27,7 +27,7 @@ export function PopularSearches({ searches, onSelect }: PopularSearchesProps) {
             key={search.term}
             type="button"
             onClick={() => onSelect(search.term)}
-            className="px-3 py-1.5 text-sm rounded-lg bg-white/10 text-zinc-300 hover:bg-white/15 hover:text-white border border-white/5 hover:border-white/10 transition-all duration-150"
+            className="px-3 py-1.5 text-sm rounded-lg bg-white/10 text-content-faint hover:bg-white/15 hover:text-white border border-white/5 hover:border-white/10 transition-all duration-150"
           >
             {search.term}
           </button>

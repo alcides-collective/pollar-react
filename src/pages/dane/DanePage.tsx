@@ -182,7 +182,7 @@ export function DanePage() {
               <Card className="hover:border-foreground/20 transition-colors cursor-pointer h-full">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <i className={`${category.icon} text-2xl text-zinc-500`} />
+                    <i className={`${category.icon} text-2xl text-content-subtle`} />
                     <h3 className="font-semibold">{category.name}</h3>
                   </div>
                   <div className="space-y-1">

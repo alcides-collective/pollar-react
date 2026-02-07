@@ -65,7 +65,7 @@ export function ConsentRequiredModal() {
           <DialogTitle className="text-center text-xl">
             {t('consentModal.title')}
           </DialogTitle>
-          <DialogDescription className="text-zinc-400 text-sm text-center">
+          <DialogDescription className="text-content-faint text-sm text-center">
             {t('consentModal.description')}
           </DialogDescription>
         </DialogHeader>
@@ -79,7 +79,7 @@ export function ConsentRequiredModal() {
                 setAcceptPrivacy(true);
                 setAcceptMarketing(true);
               }}
-              className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors underline"
+              className="text-xs text-content-faint hover:text-content transition-colors underline"
             >
               {t('register.selectAll')}
             </button>
@@ -89,9 +89,9 @@ export function ConsentRequiredModal() {
               type="checkbox"
               checked={acceptTerms}
               onChange={(e) => setAcceptTerms(e.target.checked)}
-              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-zinc-500 shrink-0"
+              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0"
             />
-            <span className="text-zinc-300 text-xs leading-relaxed">
+            <span className="text-content-faint text-xs leading-relaxed">
               <Trans
                 i18nKey="register.acceptTerms"
                 ns="auth"
@@ -100,7 +100,7 @@ export function ConsentRequiredModal() {
                     <LocalizedLink
                       to="/regulamin"
                       target="_blank"
-                      className="text-zinc-100 underline hover:text-white"
+                      className="text-content underline hover:text-white"
                     />
                   ),
                 }}
@@ -114,9 +114,9 @@ export function ConsentRequiredModal() {
               type="checkbox"
               checked={acceptPrivacy}
               onChange={(e) => setAcceptPrivacy(e.target.checked)}
-              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-zinc-500 shrink-0"
+              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0"
             />
-            <span className="text-zinc-300 text-xs leading-relaxed">
+            <span className="text-content-faint text-xs leading-relaxed">
               <Trans
                 i18nKey="register.acceptPrivacy"
                 ns="auth"
@@ -125,7 +125,7 @@ export function ConsentRequiredModal() {
                     <LocalizedLink
                       to="/polityka-prywatnosci"
                       target="_blank"
-                      className="text-zinc-100 underline hover:text-white"
+                      className="text-content underline hover:text-white"
                     />
                   ),
                 }}
@@ -139,9 +139,9 @@ export function ConsentRequiredModal() {
               type="checkbox"
               checked={acceptMarketing}
               onChange={(e) => setAcceptMarketing(e.target.checked)}
-              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-zinc-500 shrink-0"
+              className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0"
             />
-            <span className="text-zinc-400 text-xs leading-relaxed">
+            <span className="text-content-faint text-xs leading-relaxed">
               {t('register.acceptMarketing')}
             </span>
           </label>
@@ -152,7 +152,7 @@ export function ConsentRequiredModal() {
             type="button"
             disabled={!canSubmit}
             onClick={handleAccept}
-            className="w-full rounded-lg px-4 py-2.5 text-sm font-medium transition-colors bg-white text-black hover:bg-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full rounded-lg px-4 py-2.5 text-sm font-medium transition-colors bg-background text-content-heading hover:bg-divider disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isSubmitting ? '...' : t('consentModal.accept')}
           </button>

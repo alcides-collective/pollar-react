@@ -55,10 +55,10 @@ export function InterpellationsPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-8 w-48 bg-zinc-100 animate-pulse rounded" />
+        <div className="h-8 w-48 bg-surface animate-pulse rounded" />
         <div className="grid gap-3 md:grid-cols-2">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-32 bg-zinc-100 animate-pulse rounded-lg" />
+            <div key={i} className="h-32 bg-surface animate-pulse rounded-lg" />
           ))}
         </div>
       </div>
@@ -73,7 +73,7 @@ export function InterpellationsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">{t('interpellationsPage.title')}</h1>
+      <h1 className="text-xl font-semibold text-content-heading">{t('interpellationsPage.title')}</h1>
 
       {/* Filters */}
       <div className="flex gap-2">
@@ -83,8 +83,8 @@ export function InterpellationsPage() {
             onClick={() => setFilter(option.value as FilterOption)}
             className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
               filter === option.value
-                ? 'bg-zinc-900 text-white'
-                : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-surface text-content hover:bg-surface'
             }`}
           >
             {option.label}
@@ -108,7 +108,7 @@ export function InterpellationsPage() {
       </div>
 
       {filteredInterpellations.length === 0 && (
-        <p className="text-center text-zinc-500 py-8">
+        <p className="text-center text-content-subtle py-8">
           {t('interpellationsPage.noResults')}
         </p>
       )}
@@ -118,7 +118,7 @@ export function InterpellationsPage() {
           <button
             onClick={loadMore}
             disabled={loadingMore}
-            className="px-6 py-2 bg-zinc-100 text-zinc-700 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-surface text-content rounded-md hover:bg-surface transition-colors disabled:opacity-50"
           >
             {loadingMore ? t('interpellationsPage.loading') : t('interpellationsPage.loadMore')}
           </button>
@@ -129,37 +129,37 @@ export function InterpellationsPage() {
       {selectedInterpellation && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={closeModal}>
           <div
-            className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
+            className="bg-background rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="p-4 border-b border-zinc-200 flex items-start justify-between gap-4">
+            <div className="p-4 border-b border-divider flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs bg-zinc-100 text-zinc-600 font-mono px-2 py-0.5 rounded">
+                  <span className="text-xs bg-surface text-content font-mono px-2 py-0.5 rounded">
                     #{selectedInterpellation.num}
                   </span>
                   <span className={`text-[10px] font-medium px-2 py-0.5 rounded ${
                     selectedInterpellation.replies && selectedInterpellation.replies.length > 0
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-amber-100 text-amber-700'
+                      ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
+                      : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
                   }`}>
                     {selectedInterpellation.replies && selectedInterpellation.replies.length > 0 ? 'Odpowiedziano' : 'Oczekuje'}
                   </span>
                 </div>
-                <h2 className="font-medium text-zinc-900">{selectedInterpellation.title}</h2>
+                <h2 className="font-medium text-content-heading">{selectedInterpellation.title}</h2>
               </div>
               <button
                 onClick={closeModal}
-                className="shrink-0 text-zinc-400 hover:text-zinc-600"
+                className="shrink-0 text-content-faint hover:text-content"
               >
                 <i className="ri-close-line text-2xl" />
               </button>
             </div>
 
             {/* Authors */}
-            <div className="px-4 py-3 border-b border-zinc-100 bg-zinc-50">
-              <div className="text-xs text-zinc-500 mb-2">{t('interpellationsPage.authors')}</div>
+            <div className="px-4 py-3 border-b border-divider-subtle bg-surface">
+              <div className="text-xs text-content-subtle mb-2">{t('interpellationsPage.authors')}</div>
               <div className="flex flex-wrap gap-2">
                 {selectedInterpellation.from.map((idStr) => {
                   const id = parseInt(idStr, 10);
@@ -169,25 +169,25 @@ export function InterpellationsPage() {
                     <LocalizedLink
                       key={id}
                       to={`/sejm/poslowie/${id}`}
-                      className="flex items-center gap-2 bg-white rounded-full pr-3 pl-1 py-1 border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all"
+                      className="flex items-center gap-2 bg-background rounded-full pr-3 pl-1 py-1 border border-divider hover:border-divider hover:shadow-sm transition-all"
                       onClick={closeModal}
                     >
                       <img
                         src={mp.photoMiniUrl || mp.photoUrl}
                         alt={mp.firstLastName}
-                        className="w-6 h-6 rounded-full object-cover bg-zinc-100"
+                        className="w-6 h-6 rounded-full object-cover bg-surface"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = `https://api.sejm.gov.pl/sejm/term10/MP/${id}/photo-mini`;
                         }}
                       />
-                      <span className="text-sm text-zinc-700">{mp.firstLastName}</span>
-                      <span className="text-[10px] text-zinc-400">{mp.club}</span>
+                      <span className="text-sm text-content">{mp.firstLastName}</span>
+                      <span className="text-[10px] text-content-faint">{mp.club}</span>
                     </LocalizedLink>
                   );
                 })}
               </div>
-              <div className="text-xs text-zinc-500 mt-3 mb-1">{t('interpellationsPage.recipients')}</div>
-              <div className="text-sm text-zinc-700">
+              <div className="text-xs text-content-subtle mt-3 mb-1">{t('interpellationsPage.recipients')}</div>
+              <div className="text-sm text-content">
                 {selectedInterpellation.to.join(', ')}
               </div>
             </div>
@@ -196,13 +196,13 @@ export function InterpellationsPage() {
             <div className="p-4 overflow-y-auto flex-1">
               {loadingBody ? (
                 <div className="space-y-2">
-                  <div className="h-4 bg-zinc-100 animate-pulse rounded" />
-                  <div className="h-4 bg-zinc-100 animate-pulse rounded w-3/4" />
-                  <div className="h-4 bg-zinc-100 animate-pulse rounded w-1/2" />
+                  <div className="h-4 bg-surface animate-pulse rounded" />
+                  <div className="h-4 bg-surface animate-pulse rounded w-3/4" />
+                  <div className="h-4 bg-surface animate-pulse rounded w-1/2" />
                 </div>
               ) : (
                 <div
-                  className="prose prose-sm max-w-none text-zinc-700"
+                  className="prose prose-sm max-w-none text-content"
                   dangerouslySetInnerHTML={{ __html: bodyContent || '' }}
                 />
               )}

@@ -106,12 +106,12 @@ export function SejmNav() {
       {/* Mobile: Dropdown menu */}
       <div className="lg:hidden">
         <DropdownMenu>
-          <DropdownMenuTrigger className="w-full h-10 flex items-center justify-between rounded-lg border border-zinc-200 bg-white px-3 text-sm shadow-xs hover:bg-zinc-50 transition-colors outline-none">
+          <DropdownMenuTrigger className="w-full h-10 flex items-center justify-between rounded-lg border border-divider bg-background px-3 text-sm shadow-xs hover:bg-surface transition-colors outline-none">
             <span className="flex items-center gap-2">
-              <i className={`${active.icon} text-base text-zinc-500`} />
+              <i className={`${active.icon} text-base text-content-subtle`} />
               <span className="font-medium">{active.label}</span>
             </span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-content-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </DropdownMenuTrigger>
@@ -154,7 +154,7 @@ export function SejmNav() {
           if (isGroup(entry)) {
             return (
               <div key={entry.labelKey} className="flex flex-col gap-1">
-                <div className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider px-2 mb-1">
+                <div className="text-[10px] font-medium text-content-faint uppercase tracking-wider px-2 mb-1">
                   {t(`navigation.${entry.labelKey}`)}
                 </div>
                 {entry.items.map((item) => (
@@ -163,8 +163,8 @@ export function SejmNav() {
                     to={item.href}
                     className={`px-3 py-2 rounded-md text-sm transition-colors ${
                       isActiveLink(item.href, pathname)
-                        ? 'bg-zinc-100 text-zinc-900 font-medium'
-                        : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
+                        ? 'bg-surface text-content-heading font-medium'
+                        : 'text-content hover:bg-surface hover:text-content-heading'
                     }`}
                   >
                     {t(`navigation.${item.labelKey}`)}
@@ -177,10 +177,10 @@ export function SejmNav() {
             <LocalizedNavLink
               key={entry.href}
               to={entry.href}
-              className={`px-3 py-2 rounded-md text-sm font-medium border-b border-zinc-100 pb-3 mb-2 transition-colors ${
+              className={`px-3 py-2 rounded-md text-sm font-medium border-b border-divider-subtle pb-3 mb-2 transition-colors ${
                 isActiveLink(entry.href, pathname)
-                  ? 'text-zinc-900'
-                  : 'text-zinc-600 hover:text-zinc-900'
+                  ? 'text-content-heading'
+                  : 'text-content hover:text-content-heading'
               }`}
             >
               {t(`navigation.${entry.labelKey}`)}

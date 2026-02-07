@@ -127,7 +127,7 @@ function StepCard({ stepKey, iconClass, glowColor, index, total, scrollYProgress
         </h3>
 
         {/* Description */}
-        <p className="text-xs text-zinc-400 leading-relaxed">
+        <p className="text-xs text-content-faint leading-relaxed">
           {t(`howItWorks.steps.${stepKey}.description`)}
         </p>
       </div>
@@ -202,7 +202,7 @@ export function HowItWorksSection() {
           className="absolute top-16 lg:top-24 left-0 right-0 text-center px-6"
           style={{ opacity: headerOpacity }}
         >
-          <h2 className="text-xs lg:text-sm font-medium text-zinc-500 uppercase tracking-widest mb-3">
+          <h2 className="text-xs lg:text-sm font-medium text-content-subtle uppercase tracking-widest mb-3">
             {t('howItWorks.sectionTitle')}
           </h2>
           <h3 className="text-2xl lg:text-4xl font-bold text-white tracking-tight">

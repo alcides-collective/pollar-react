@@ -34,10 +34,10 @@ export function AITypingIndicator() {
 
   return (
     <div className="self-start w-full animate-fade-in">
-      <div className="flex items-center gap-2 py-2 text-[15px] text-zinc-500 dark:text-zinc-400">
+      <div className="flex items-center gap-2 py-2 text-[15px] text-content-subtle dark:text-zinc-400">
         <i className="ri-sparkling-2-fill text-base animate-pulse" />
         <span className="italic">{label}</span>
-        <span className="text-zinc-400 dark:text-zinc-500 tabular-nums">
+        <span className="text-content-faint dark:text-zinc-500 tabular-nums">
           {elapsedSeconds}s
         </span>
       </div>

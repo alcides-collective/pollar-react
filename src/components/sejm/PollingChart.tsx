@@ -25,14 +25,14 @@ export function PollingChart() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-zinc-900" />
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-content-heading" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-sm text-red-600 py-4">
+      <div className="text-sm text-red-600 dark:text-red-400 py-4">
         Błąd pobierania sondaży: {error.message}
       </div>
     );
@@ -40,7 +40,7 @@ export function PollingChart() {
 
   if (!average) {
     return (
-      <p className="text-sm text-zinc-500 py-4">
+      <p className="text-sm text-content-subtle py-4">
         Brak danych sondażowych
       </p>
     );
@@ -78,7 +78,7 @@ export function PollingChart() {
     <div className="w-full min-w-0">
       {/* Average bars */}
       <div className="mb-6">
-        <h4 className="text-xs text-zinc-500 uppercase tracking-wide mb-3">
+        <h4 className="text-xs text-content-subtle uppercase tracking-wide mb-3">
           Średnia ważona
           {meta && (
             <span className="text-[9px] normal-case opacity-60 ml-1">
@@ -91,10 +91,10 @@ export function PollingChart() {
             const trendColor = t > 0 ? '#22c55e' : t < 0 ? '#ef4444' : '#9ca3af';
             return (
               <div key={party} className="flex items-center gap-2">
-                <div className="text-xs text-zinc-700 w-16 truncate font-medium">
+                <div className="text-xs text-content w-16 truncate font-medium">
                   {getPartyShort(internalName)}
                 </div>
-                <div className="flex-1 h-5 bg-zinc-100 rounded-r overflow-hidden">
+                <div className="flex-1 h-5 bg-surface rounded-r overflow-hidden">
                   <div
                     className="h-full rounded-r transition-all duration-500"
                     style={{
@@ -103,15 +103,15 @@ export function PollingChart() {
                     }}
                   />
                 </div>
-                <div className="text-xs text-zinc-900 flex items-center gap-1 shrink-0 font-mono">
+                <div className="text-xs text-content-heading flex items-center gap-1 shrink-0 font-mono">
                   <span className="w-12 text-right">{value?.toFixed(1)}%</span>
                   <span
                     className={`text-[10px] px-1 rounded-sm ${
                       t > 0
-                        ? 'text-green-600 bg-green-500/10'
+                        ? 'text-green-600 dark:text-green-400 bg-green-500/10'
                         : t < 0
-                        ? 'text-red-600 bg-red-500/10'
-                        : 'text-zinc-400 bg-zinc-100'
+                        ? 'text-red-600 dark:text-red-400 bg-red-500/10'
+                        : 'text-content-faint bg-surface'
                     }`}
                   >
                     {t > 0 ? '↑' : t < 0 ? '↓' : '•'}
@@ -129,7 +129,7 @@ export function PollingChart() {
         <div>
           {/* Toggle button */}
           <button
-            className="w-full py-1.5 flex items-center justify-center gap-1.5 text-[10px] text-zinc-400 hover:text-zinc-600 transition-colors uppercase tracking-wide"
+            className="w-full py-1.5 flex items-center justify-center gap-1.5 text-[10px] text-content-faint hover:text-content transition-colors uppercase tracking-wide"
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
           >
@@ -141,7 +141,7 @@ export function PollingChart() {
             <div className="mt-3 overflow-x-auto">
               <table className="text-xs w-max">
                 <thead>
-                  <tr className="text-[10px] text-zinc-400 uppercase tracking-wide">
+                  <tr className="text-[10px] text-content-faint uppercase tracking-wide">
                     <th className="pb-2 text-left pr-3 whitespace-nowrap">Sondaż</th>
                     <th className="pb-2 text-left pr-3 whitespace-nowrap">Data</th>
                     {averageData.map(({ party, internalName }) => (
@@ -157,11 +157,11 @@ export function PollingChart() {
                 </thead>
                 <tbody>
                   {latestPolls.map((poll, idx) => (
-                    <tr key={idx} className="border-t border-zinc-100">
-                      <td className="py-2 pr-3 text-zinc-700 whitespace-nowrap text-[11px]">
+                    <tr key={idx} className="border-t border-divider-subtle">
+                      <td className="py-2 pr-3 text-content whitespace-nowrap text-[11px]">
                         {poll.pollster}
                       </td>
-                      <td className="py-2 pr-3 text-zinc-500 whitespace-nowrap">
+                      <td className="py-2 pr-3 text-content-subtle whitespace-nowrap">
                         {formatDate(poll.date)}
                       </td>
                       {averageData.map(({ party }) => {
@@ -169,9 +169,9 @@ export function PollingChart() {
                         return (
                           <td key={party} className="py-2 px-1.5 text-right whitespace-nowrap font-mono">
                             {val ? (
-                              <span className="text-zinc-800">{val.toFixed(1)}</span>
+                              <span className="text-content-heading">{val.toFixed(1)}</span>
                             ) : (
-                              <span className="text-zinc-300">—</span>
+                              <span className="text-content-faint">—</span>
                             )}
                           </td>
                         );
@@ -186,12 +186,12 @@ export function PollingChart() {
       )}
 
       {/* Source */}
-      <div className="mt-4 pt-3 border-t border-zinc-100">
+      <div className="mt-4 pt-3 border-t border-divider-subtle">
         <a
           href={data?.source}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] text-zinc-400 hover:text-zinc-600"
+          className="text-[10px] text-content-faint hover:text-content"
         >
           Źródło: Wikipedia · Aktualizacja: {new Date(data?.lastUpdate || '').toLocaleDateString('pl-PL')}
         </a>

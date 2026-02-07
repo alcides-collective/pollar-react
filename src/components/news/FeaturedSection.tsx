@@ -26,7 +26,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
       priority="high"
     >
       <div className="grid grid-cols-1 md:grid-cols-2">
-      <div className="md:border-r border-zinc-200 relative overflow-hidden p-6 md:p-0">
+      <div className="md:border-r border-divider relative overflow-hidden p-6 md:p-0">
         <LocalizedLink to={`/event/${mainEvent.id}`} className="group block relative">
           <EventImage
             event={mainEvent}
@@ -38,7 +38,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
           />
           {/* Mobile: badge on photo */}
           {imageSource && (
-            <span className="md:hidden absolute bottom-2 left-2 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate z-10">
+            <span className="md:hidden absolute bottom-2 left-2 text-[10px] text-content/80 bg-background/60 backdrop-blur-sm px-2 py-0.5 rounded max-w-[calc(100%-1rem)] truncate z-10">
               Źródło: {imageSource}
             </span>
           )}
@@ -52,13 +52,13 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             {imageSource && (
-              <span className="inline-block text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2 max-w-full truncate">
+              <span className="inline-block text-[10px] text-content/80 bg-background/60 backdrop-blur-sm px-2 py-0.5 rounded mb-2 max-w-full truncate">
                 Źródło: {imageSource}
               </span>
             )}
             {mainEvent.lead && (
               <LocalizedLink to={`/event/${mainEvent.id}`}>
-                <p className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200 hover:bg-zinc-50 transition-colors">
+                <p className="text-content leading-relaxed p-4 bg-background border border-divider hover:bg-surface transition-colors">
                   {mainEvent.lead}
                 </p>
               </LocalizedLink>
@@ -68,11 +68,11 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
       </div>
 
       <div className="px-6 pt-2 pb-6 md:p-6">
-        <span className="text-zinc-500 text-sm">{t(`categories.${mainEvent.category}`, { defaultValue: mainEvent.category })}</span>
+        <span className="text-content-subtle text-sm">{t(`categories.${mainEvent.category}`, { defaultValue: mainEvent.category })}</span>
         <AnimatedHeadline
           to={`/event/${mainEvent.id}`}
           as="h2"
-          className="text-3xl md:text-4xl font-bold text-zinc-900 mt-1 mb-3 leading-tight"
+          className="text-3xl md:text-4xl font-bold text-content-heading mt-1 mb-3 leading-tight"
         >
           {mainEvent.title}
         </AnimatedHeadline>
@@ -86,7 +86,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.2 }}
             >
-              <p className="text-zinc-600 leading-relaxed p-4 bg-white border border-zinc-200 hover:bg-zinc-50 transition-colors">
+              <p className="text-content leading-relaxed p-4 bg-background border border-divider hover:bg-surface transition-colors">
                 {mainEvent.lead}
               </p>
             </motion.div>
@@ -96,7 +96,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
         {secondaryEvents.length > 0 && (
           <motion.div
             key={secondaryEvents.map(e => e.id).join(',')}
-            className="border-t border-zinc-200 pt-5 mt-4 space-y-4"
+            className="border-t border-divider pt-5 mt-4 space-y-4"
             variants={staggerContainer}
             initial="initial"
             animate="animate"
@@ -105,7 +105,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
               <motion.div key={event.id} variants={staggerItem}>
                 <LocalizedLink
                   to={`/event/${event.id}`}
-                  className="group hover:bg-zinc-50 transition-colors flex gap-4 p-2 -mx-2 rounded"
+                  className="group hover:bg-surface transition-colors flex gap-4 p-2 -mx-2 rounded"
                 >
                   <div className="w-40 shrink-0">
                     <div className="relative">
@@ -117,15 +117,15 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                         height={180}
                       />
                       {getImageSource(event) && (
-                        <span className="absolute bottom-1 left-1 text-[10px] text-zinc-700/80 bg-white/60 backdrop-blur-sm px-1.5 py-0.5 rounded z-10 max-w-[calc(100%-0.5rem)] truncate">
+                        <span className="absolute bottom-1 left-1 text-[10px] text-content/80 bg-background/60 backdrop-blur-sm px-1.5 py-0.5 rounded z-10 max-w-[calc(100%-0.5rem)] truncate">
                           Źródło: {getImageSource(event)}
                         </span>
                       )}
                     </div>
                   </div>
                   <div className="flex flex-col justify-center group/underline">
-                    <span className="text-zinc-400 text-xs">{t(`categories.${event.category}`, { defaultValue: event.category })}</span>
-                    <h3 className="text-zinc-900 font-semibold text-base leading-snug">
+                    <span className="text-content-faint text-xs">{t(`categories.${event.category}`, { defaultValue: event.category })}</span>
+                    <h3 className="text-content-heading font-semibold text-base leading-snug">
                       <AnimatedUnderline>
                         {event.title}
                       </AnimatedUnderline>

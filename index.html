@@ -63,6 +63,10 @@
     </script>
   </head>
   <body>
+    <script>
+      // Prevent FOUC: apply dark class before React mounts
+      (function(){try{var t=localStorage.getItem('pollar-theme');if(t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

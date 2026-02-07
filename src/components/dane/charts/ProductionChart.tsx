@@ -10,6 +10,8 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import type { EnergyProductionTimeSeries } from '@/types/dane';
+import { useIsDarkMode } from '@/stores/themeStore';
+import { CHART_COLORS } from '@/utils/chartUtils';
 
 ChartJS.register(
   CategoryScale,
@@ -34,6 +36,9 @@ export function ProductionChart({
   unit = 'GWh'
 }: ProductionChartProps) {
   const { t } = useTranslation('dane');
+  const isDark = useIsDarkMode();
+  const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
+  const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
 
   const chartData = {
     labels: data.map((d) => d.year.toString()),
@@ -56,11 +61,18 @@ export function ProductionChart({
       title: {
         display: true,
         text: title ?? t('charts.energy.productionTitle'),
+        color: tickColor,
       },
     },
     scales: {
+      x: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
+      },
       y: {
         beginAtZero: true,
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
       },
     },
   };

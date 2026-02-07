@@ -50,13 +50,13 @@ export function NewsGrid() {
     <section className="max-w-[1400px] mx-auto px-0 lg:px-6 pb-10 -mt-3">
       {/* SEO: Hidden h1 for search engines and screen readers */}
       <h1 className="sr-only">Pollar News - Wszystkie najważniejsze wiadomości w jednym miejscu</h1>
-      <div className="border border-zinc-200">
+      <div className="border border-divider">
         {/* Market Ticker */}
         <MarketTicker />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px]">
         {/* Main Content */}
-        <div className="min-w-0 overflow-hidden lg:border-r border-zinc-200 divide-y divide-zinc-200 [&>*:last-child]:border-b [&>*:last-child]:border-zinc-200">
+        <div className="min-w-0 overflow-hidden lg:border-r border-divider divide-y divide-divider [&>*:last-child]:border-b [&>*:last-child]:border-divider">
           {!isFiltered && brief && <DailyBriefSection brief={brief} />}
 
           <FeaturedSection events={featured} />
@@ -97,7 +97,7 @@ export function NewsGrid() {
         </div>
 
         {/* Sidebar - hidden on mobile */}
-        <aside className="hidden lg:block divide-y divide-zinc-200 [&>*:last-child]:border-b [&>*:last-child]:border-zinc-200">
+        <aside className="hidden lg:block divide-y divide-divider [&>*:last-child]:border-b [&>*:last-child]:border-divider">
           <AISidebarWidget />
           <LatestEvents events={latestEvents} />
           {/* <NewsletterSection /> */}
@@ -123,7 +123,7 @@ export function NewsGrid() {
       </div>
 
       {/* More News - Mobile only (desktop has it in sidebar) */}
-      <div className="lg:hidden border border-t-0 border-zinc-200">
+      <div className="lg:hidden border border-t-0 border-divider">
         {eventsByCategory.map(({ category, events }) => (
           isFiltered ? (
             <CategoryCarousel

@@ -68,10 +68,10 @@ export function MapSection() {
   }, [allLocations]);
 
   return (
-    <LocalizedLink to="/mapa" className="block p-6 group hover:bg-zinc-50 transition-colors">
+    <LocalizedLink to="/mapa" className="block p-6 group hover:bg-surface transition-colors">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-zinc-900 font-semibold">Mapa wydarzeń</h3>
-        <i className="ri-arrow-right-line text-zinc-400 group-hover:text-zinc-900 group-hover:translate-x-1 transition-all" />
+        <h3 className="text-content-heading font-semibold">Mapa wydarzeń</h3>
+        <i className="ri-arrow-right-line text-content-faint group-hover:text-content-heading group-hover:translate-x-1 transition-all" />
       </div>
       <div ref={mapContainer} className="h-48 overflow-hidden rounded-lg" />
     </LocalizedLink>

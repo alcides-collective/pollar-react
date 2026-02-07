@@ -16,14 +16,14 @@ export function BriefMentions({ people, organizations }: BriefMentionsProps) {
         {/* People */}
         {people?.length > 0 && (
           <div>
-            <h2 className="text-sm text-zinc-500 mb-3 pb-2 border-b border-zinc-200 font-medium">
+            <h2 className="text-sm text-content-subtle mb-3 pb-2 border-b border-divider font-medium">
               {t('mentions.people')}
             </h2>
             <div className="flex flex-wrap gap-2">
               {people.map((person, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 text-sm bg-zinc-100 border border-zinc-200 text-zinc-700 rounded hover:bg-zinc-200 transition-colors cursor-default"
+                  className="px-3 py-1 text-sm bg-surface border border-divider text-content rounded hover:bg-muted transition-colors cursor-default"
                   title={person.context}
                 >
                   {person.name}
@@ -36,14 +36,14 @@ export function BriefMentions({ people, organizations }: BriefMentionsProps) {
         {/* Organizations */}
         {organizations?.length > 0 && (
           <div>
-            <h2 className="text-sm text-zinc-500 mb-3 pb-2 border-b border-zinc-200 font-medium">
+            <h2 className="text-sm text-content-subtle mb-3 pb-2 border-b border-divider font-medium">
               {t('mentions.organizations')}
             </h2>
             <div className="flex flex-wrap gap-2">
               {organizations.map((org, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 text-sm bg-zinc-100 border border-zinc-200 text-zinc-700 rounded hover:bg-zinc-200 transition-colors cursor-default"
+                  className="px-3 py-1 text-sm bg-surface border border-divider text-content rounded hover:bg-muted transition-colors cursor-default"
                 >
                   {org}
                 </span>

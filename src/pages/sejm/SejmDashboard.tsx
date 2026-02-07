@@ -94,9 +94,9 @@ export function SejmDashboard() {
   if (statsLoading || mpsLoading || votingsLoading) {
     return (
       <div className="space-y-6">
-        <div className="h-40 bg-zinc-100 animate-pulse rounded-lg" />
-        <div className="h-60 bg-zinc-100 animate-pulse rounded-lg" />
-        <div className="h-40 bg-zinc-100 animate-pulse rounded-lg" />
+        <div className="h-40 bg-surface animate-pulse rounded-lg" />
+        <div className="h-60 bg-surface animate-pulse rounded-lg" />
+        <div className="h-40 bg-surface animate-pulse rounded-lg" />
       </div>
     );
   }
@@ -108,14 +108,14 @@ export function SejmDashboard() {
     <div className="space-y-6">
       {/* Followed MPs Section - only for authenticated users */}
       {isAuthenticated && followedMPs.length > 0 && (
-        <div className="rounded-lg border-2 border-blue-200 bg-blue-50 p-4">
+        <div className="rounded-lg border-2 border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30 p-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-zinc-900">
+            <h3 className="text-sm font-medium text-content-heading">
               {t('dashboard.followedMPs', { count: followedMPs.length })}
             </h3>
             <LocalizedLink
               to="/sejm/poslowie"
-              className="text-xs text-zinc-500 hover:text-zinc-700"
+              className="text-xs text-content-subtle hover:text-content"
             >
               {t('dashboard.addMore')} <i className="ri-arrow-right-s-line" />
             </LocalizedLink>
@@ -133,14 +133,14 @@ export function SejmDashboard() {
                     <img
                       src={mp.photoUrl}
                       alt={mp.firstLastName}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm group-hover:border-blue-300 transition-colors"
+                      className="w-12 h-12 rounded-full object-cover border-2 border-background shadow-sm group-hover:border-blue-300 dark:group-hover:border-blue-700 transition-colors"
                     />
                     <span
-                      className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white"
+                      className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-background"
                       style={{ backgroundColor: color.bg }}
                     />
                   </div>
-                  <p className="text-[10px] text-zinc-600 mt-1 line-clamp-1 max-w-full">
+                  <p className="text-[10px] text-content mt-1 line-clamp-1 max-w-full">
                     {mp.lastName}
                   </p>
                 </LocalizedLink>
@@ -148,7 +148,7 @@ export function SejmDashboard() {
             })}
           </div>
           {followedMPs.length > 10 && (
-            <p className="text-xs text-zinc-500 mt-3 text-center">
+            <p className="text-xs text-content-subtle mt-3 text-center">
               {t('dashboard.andMore', { count: followedMPs.length - 10 })}
             </p>
           )}
@@ -160,8 +160,8 @@ export function SejmDashboard() {
         {stats && <SejmStats stats={stats} />}
 
         {/* Polling */}
-        <div className="rounded-lg border border-zinc-200 p-4 min-w-0 overflow-hidden">
-          <h3 className="text-sm font-medium text-zinc-900 mb-4">{t('dashboard.polls')}</h3>
+        <div className="rounded-lg border border-divider p-4 min-w-0 overflow-hidden">
+          <h3 className="text-sm font-medium text-content-heading mb-4">{t('dashboard.polls')}</h3>
           <PollingChart />
         </div>
       </div>
@@ -170,29 +170,29 @@ export function SejmDashboard() {
       {currentProceeding && (
         <LocalizedLink
           to={`/sejm/posiedzenia/${currentProceeding.number}`}
-          className="block rounded-lg border-2 border-green-500 bg-green-50 p-4 hover:bg-green-100 transition-colors"
+          className="block rounded-lg border-2 border-green-500 dark:border-green-700 bg-green-50 dark:bg-green-950/30 p-4 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
         >
           <div className="flex items-center gap-3 mb-2">
             <span className="bg-green-500 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded animate-pulse">
               {t('dashboard.live')}
             </span>
-            <span className="text-sm text-zinc-600">
+            <span className="text-sm text-content">
               {t('dashboard.proceedingNumber', { number: currentProceeding.number })}
             </span>
           </div>
-          <h3 className="font-medium text-zinc-900">{currentProceeding.title}</h3>
+          <h3 className="font-medium text-content-heading">{currentProceeding.title}</h3>
         </LocalizedLink>
       )}
 
       {/* Top MPs */}
-      <div className="rounded-lg border border-zinc-200 p-4">
+      <div className="rounded-lg border border-divider p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-medium text-zinc-900">{t('dashboard.mps')}</h3>
+          <h3 className="text-sm font-medium text-content-heading">{t('dashboard.mps')}</h3>
           <div className="flex items-center gap-3">
             <select
               value={selectedSort}
               onChange={(e) => setSelectedSort(e.target.value as SortOption)}
-              className="text-[10px] text-zinc-600 bg-transparent border border-zinc-200 rounded px-2 py-1 cursor-pointer hover:border-zinc-300 transition-colors focus:outline-none"
+              className="text-[10px] text-content bg-transparent border border-divider rounded px-2 py-1 cursor-pointer hover:border-divider transition-colors focus:outline-none"
             >
               {sortOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -202,7 +202,7 @@ export function SejmDashboard() {
             </select>
             <LocalizedLink
               to="/sejm/poslowie"
-              className="text-[10px] text-zinc-400 hover:text-zinc-600 transition-colors"
+              className="text-[10px] text-content-faint hover:text-content transition-colors"
             >
               {t('dashboard.all')} <i className="ri-arrow-right-s-line" />
             </LocalizedLink>
@@ -215,7 +215,7 @@ export function SejmDashboard() {
               <LocalizedLink
                 key={mp.id}
                 to={`/sejm/poslowie/${mp.id}`}
-                className="block rounded overflow-hidden border border-zinc-200 hover:border-zinc-300 transition-all"
+                className="block rounded overflow-hidden border border-divider hover:border-divider transition-all"
               >
                 <div className="relative aspect-[3/4]">
                   <img
@@ -247,12 +247,12 @@ export function SejmDashboard() {
       </div>
 
       {/* Recent Votings */}
-      <div className="rounded-lg border border-zinc-200 p-4">
+      <div className="rounded-lg border border-divider p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-medium text-zinc-900">{t('dashboard.recentVotings')}</h3>
+          <h3 className="text-sm font-medium text-content-heading">{t('dashboard.recentVotings')}</h3>
           <LocalizedLink
             to="/sejm/glosowania"
-            className="text-xs text-zinc-500 hover:text-zinc-700"
+            className="text-xs text-content-subtle hover:text-content"
           >
             {t('dashboard.allVotings')} <i className="ri-arrow-right-s-line" />
           </LocalizedLink>
@@ -268,33 +268,33 @@ export function SejmDashboard() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <LocalizedLink
           to="/sejm/druki"
-          className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
+          className="rounded-lg border border-divider p-4 hover:border-divider hover:bg-surface transition-all text-center"
         >
-          <i className="ri-file-text-line text-2xl text-zinc-600 mb-1" />
-          <div className="text-sm font-medium text-zinc-900">{t('dashboard.prints')}</div>
-          <div className="text-xs text-zinc-500">{t('dashboard.recent', { count: stats?.prints.recent || 0 })}</div>
+          <i className="ri-file-text-line text-2xl text-content mb-1" />
+          <div className="text-sm font-medium text-content-heading">{t('dashboard.prints')}</div>
+          <div className="text-xs text-content-subtle">{t('dashboard.recent', { count: stats?.prints.recent || 0 })}</div>
         </LocalizedLink>
         <LocalizedLink
           to="/sejm/interpelacje"
-          className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
+          className="rounded-lg border border-divider p-4 hover:border-divider hover:bg-surface transition-all text-center"
         >
-          <i className="ri-question-answer-line text-2xl text-zinc-600 mb-1" />
-          <div className="text-sm font-medium text-zinc-900">{t('dashboard.interpellations')}</div>
-          <div className="text-xs text-zinc-500">{t('dashboard.recent', { count: stats?.interpellations.recent || 0 })}</div>
+          <i className="ri-question-answer-line text-2xl text-content mb-1" />
+          <div className="text-sm font-medium text-content-heading">{t('dashboard.interpellations')}</div>
+          <div className="text-xs text-content-subtle">{t('dashboard.recent', { count: stats?.interpellations.recent || 0 })}</div>
         </LocalizedLink>
         <LocalizedLink
           to="/sejm/komisje"
-          className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
+          className="rounded-lg border border-divider p-4 hover:border-divider hover:bg-surface transition-all text-center"
         >
-          <i className="ri-team-line text-2xl text-zinc-600 mb-1" />
-          <div className="text-sm font-medium text-zinc-900">{t('dashboard.committees')}</div>
+          <i className="ri-team-line text-2xl text-content mb-1" />
+          <div className="text-sm font-medium text-content-heading">{t('dashboard.committees')}</div>
         </LocalizedLink>
         <LocalizedLink
           to="/sejm/transmisje"
-          className="rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all text-center"
+          className="rounded-lg border border-divider p-4 hover:border-divider hover:bg-surface transition-all text-center"
         >
-          <i className="ri-live-line text-2xl text-zinc-600 mb-1" />
-          <div className="text-sm font-medium text-zinc-900">{t('dashboard.broadcasts')}</div>
+          <i className="ri-live-line text-2xl text-content mb-1" />
+          <div className="text-sm font-medium text-content-heading">{t('dashboard.broadcasts')}</div>
         </LocalizedLink>
       </div>
     </div>

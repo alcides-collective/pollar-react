@@ -16,7 +16,7 @@ export function TeamSection() {
   }));
 
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="py-20 lg:py-28 bg-background">
       <div className="max-w-[1200px] mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -25,10 +25,10 @@ export function TeamSection() {
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-4xl lg:text-5xl font-bold text-zinc-900 mb-4 tracking-tight">
+          <h2 className="text-4xl lg:text-5xl font-bold text-content-heading mb-4 tracking-tight">
             {t('team.title')}
           </h2>
-          <p className="text-lg text-zinc-600 max-w-2xl mx-auto">
+          <p className="text-lg text-content max-w-2xl mx-auto">
             {t('team.subtitle')}
           </p>
         </motion.div>
@@ -36,7 +36,7 @@ export function TeamSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Photo */}
           <motion.div
-            className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-100"
+            className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-surface"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-100px' }}
@@ -66,14 +66,14 @@ export function TeamSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             {team.map((member, index) => (
-              <div key={member.name} className={index > 0 ? 'pt-10 border-t border-zinc-200' : ''}>
-                <h3 className="text-xl font-semibold text-zinc-900 mb-1">
+              <div key={member.name} className={index > 0 ? 'pt-10 border-t border-divider' : ''}>
+                <h3 className="text-xl font-semibold text-content-heading mb-1">
                   {member.name}
                 </h3>
                 <p className="text-sky-600 font-medium mb-3">
                   {member.role} • {member.location}
                 </p>
-                <p className="text-zinc-600 leading-relaxed mb-3">
+                <p className="text-content leading-relaxed mb-3">
                   {member.description}
                 </p>
                 <a

@@ -14,10 +14,10 @@ interface DailyBriefSectionProps {
 /* function WordOfTheDayBox({ word, etymology, editorialDefinition }: { word: string; etymology: string; editorialDefinition: string }) {
   return (
     <div className="p-3 bg-sky-100/50 border border-sky-200/50 h-fit">
-      <p className="text-xs text-sky-600 font-medium mb-1">Słowo dnia</p>
-      <p className="text-lg font-semibold text-zinc-900">{word}</p>
-      <p className="text-xs text-zinc-500 italic mb-2">{etymology}</p>
-      <p className="text-xs text-zinc-600">{editorialDefinition}</p>
+      <p className="text-xs text-sky-600 dark:text-sky-400 font-medium mb-1">Słowo dnia</p>
+      <p className="text-lg font-semibold text-content-heading">{word}</p>
+      <p className="text-xs text-content-subtle italic mb-2">{etymology}</p>
+      <p className="text-xs text-content">{editorialDefinition}</p>
     </div>
   );
 } */
@@ -49,12 +49,12 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
       priority="high"
     >
       <LocalizedLink to="/brief" className="group group/underline block">
-        <div className="bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer p-6">
+        <div className="bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/40 dark:hover:bg-sky-900/40 transition-colors cursor-pointer p-6">
           {/* Mobile layout */}
           <div className="md:hidden">
-            <p className="text-2xl font-semibold text-zinc-900">Daily Brief</p>
+            <p className="text-2xl font-semibold text-content-heading">Daily Brief</p>
             {brief.greeting && (
-              <p className="text-sm text-sky-700 mt-1">{brief.greeting}</p>
+              <p className="text-sm text-sky-700 dark:text-sky-300 mt-1">{brief.greeting}</p>
             )}
             <GrainImage
               src={dailyBriefImg}
@@ -65,10 +65,10 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
               fetchPriority="high"
               loading="eager"
             />
-            <h2 className="text-3xl font-bold text-zinc-900 mb-4 mt-4 leading-tight">
+            <h2 className="text-3xl font-bold text-content-heading mb-4 mt-4 leading-tight">
               <AnimatedUnderline>{brief.headline}</AnimatedUnderline>
             </h2>
-            <p className="text-lg text-zinc-700 leading-snug">
+            <p className="text-lg text-content leading-snug">
               {brief.lead}
             </p>
           </div>
@@ -78,10 +78,10 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
           {/* Desktop layout */}
           <div className="hidden md:grid md:grid-cols-[1fr_2fr] gap-6">
             {/* Left column: greeting + image */}
-            <div className="border-r border-sky-200 pr-6">
-              <p className="text-2xl font-semibold text-zinc-900">Daily Brief</p>
+            <div className="border-r border-sky-200 dark:border-sky-800 pr-6">
+              <p className="text-2xl font-semibold text-content-heading">Daily Brief</p>
               {brief.greeting && (
-                <p className="text-sm text-sky-700 mt-1">{brief.greeting}</p>
+                <p className="text-sm text-sky-700 dark:text-sky-300 mt-1">{brief.greeting}</p>
               )}
               <GrainImage
                 src={dailyBriefImg}
@@ -95,11 +95,11 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
             </div>
             {/* Right column: date + headline + lead */}
             <div>
-              <p className="text-sm text-sky-600 mb-2">{formattedDate}</p>
-              <h2 className="text-4xl font-bold text-zinc-900 mb-4 leading-tight">
+              <p className="text-sm text-sky-600 dark:text-sky-400 mb-2">{formattedDate}</p>
+              <h2 className="text-4xl font-bold text-content-heading mb-4 leading-tight">
                 <AnimatedUnderline>{brief.headline}</AnimatedUnderline>
               </h2>
-              <p className="text-lg text-zinc-700 leading-snug">
+              <p className="text-lg text-content leading-snug">
                 {brief.lead}
               </p>
             </div>

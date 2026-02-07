@@ -21,11 +21,11 @@ export function ClubDetailPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-6 w-32 bg-zinc-100 animate-pulse rounded" />
-        <div className="h-24 bg-zinc-100 animate-pulse rounded-lg" />
+        <div className="h-6 w-32 bg-surface animate-pulse rounded" />
+        <div className="h-24 bg-surface animate-pulse rounded-lg" />
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-1">
           {[...Array(12)].map((_, i) => (
-            <div key={i} className="aspect-[3/4] bg-zinc-100 animate-pulse rounded-lg" />
+            <div key={i} className="aspect-[3/4] bg-surface animate-pulse rounded-lg" />
           ))}
         </div>
       </div>
@@ -35,8 +35,8 @@ export function ClubDetailPage() {
   if (!club) {
     return (
       <div className="text-center py-12">
-        <p className="text-zinc-500">{t('clubDetail.notFound')}</p>
-        <LocalizedLink to="/sejm/kluby" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+        <p className="text-content-subtle">{t('clubDetail.notFound')}</p>
+        <LocalizedLink to="/sejm/kluby" className="text-sm text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
           <i className="ri-arrow-left-s-line" /> {t('clubDetail.backToList')}
         </LocalizedLink>
       </div>
@@ -46,7 +46,7 @@ export function ClubDetailPage() {
   return (
     <div className="space-y-6">
       {/* Back link */}
-      <LocalizedLink to="/sejm/kluby" className="text-sm text-zinc-500 hover:text-zinc-700">
+      <LocalizedLink to="/sejm/kluby" className="text-sm text-content-subtle hover:text-content">
         <i className="ri-arrow-left-s-line" /> {t('clubDetail.allClubs')}
       </LocalizedLink>
 
@@ -60,34 +60,34 @@ export function ClubDetailPage() {
           />
         )}
         <div>
-          <h1 className="text-xl font-semibold text-zinc-900">{club.name}</h1>
-          <p className="text-zinc-500">{t('clubDetail.membersCount', { count: club.membersCount })}</p>
+          <h1 className="text-xl font-semibold text-content-heading">{club.name}</h1>
+          <p className="text-content-subtle">{t('clubDetail.membersCount', { count: club.membersCount })}</p>
         </div>
       </div>
 
       {/* Contact info */}
       {(club.email || club.phone || club.fax) && (
-        <div className="rounded-lg border border-zinc-200 p-4">
-          <h2 className="text-sm font-medium text-zinc-900 mb-3">{t('clubDetail.contact')}</h2>
+        <div className="rounded-lg border border-divider p-4">
+          <h2 className="text-sm font-medium text-content-heading mb-3">{t('clubDetail.contact')}</h2>
           <div className="space-y-2 text-sm">
             {club.email && (
               <div>
-                <span className="text-zinc-500">{t('clubDetail.email')}:</span>{' '}
-                <a href={`mailto:${club.email}`} className="text-blue-600 hover:underline">
+                <span className="text-content-subtle">{t('clubDetail.email')}:</span>{' '}
+                <a href={`mailto:${club.email}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                   {club.email}
                 </a>
               </div>
             )}
             {club.phone && (
               <div>
-                <span className="text-zinc-500">{t('clubDetail.phone')}:</span>{' '}
-                <span className="text-zinc-900">{club.phone}</span>
+                <span className="text-content-subtle">{t('clubDetail.phone')}:</span>{' '}
+                <span className="text-content-heading">{club.phone}</span>
               </div>
             )}
             {club.fax && (
               <div>
-                <span className="text-zinc-500">{t('clubDetail.fax')}:</span>{' '}
-                <span className="text-zinc-900">{club.fax}</span>
+                <span className="text-content-subtle">{t('clubDetail.fax')}:</span>{' '}
+                <span className="text-content-heading">{club.fax}</span>
               </div>
             )}
           </div>
@@ -96,7 +96,7 @@ export function ClubDetailPage() {
 
       {/* Members */}
       <div>
-        <h2 className="text-sm font-medium text-zinc-900 mb-4">
+        <h2 className="text-sm font-medium text-content-heading mb-4">
           {t('clubDetail.members')} ({clubMPs.length})
         </h2>
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 gap-1">

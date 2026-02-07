@@ -14,7 +14,7 @@ export function AsystentPage() {
   }, []);
 
   return (
-    <div className="h-dvh w-full overflow-hidden bg-white dark:bg-zinc-950 flex">
+    <div className="h-dvh w-full overflow-hidden bg-background dark:bg-zinc-950 flex">
       {/* Language selector */}
       <FloatingLanguageSelector />
 

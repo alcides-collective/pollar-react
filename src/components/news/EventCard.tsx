@@ -45,13 +45,13 @@ export function EventCard({
           </div>
         )}
         {showCategory && (
-          <span className="text-zinc-400 text-xs">{t(`categories.${event.category}`, { defaultValue: event.category })}</span>
+          <span className="text-content-faint text-xs">{t(`categories.${event.category}`, { defaultValue: event.category })}</span>
         )}
-        <h3 className={`text-zinc-900 font-semibold leading-tight group-hover:underline ${styles.title}`}>
+        <h3 className={`text-content-heading font-semibold leading-tight group-hover:underline ${styles.title}`}>
           {event.title}
         </h3>
         {showLead && event.lead && (
-          <p className={`text-zinc-600 mt-2 leading-snug ${styles.lead}`}>
+          <p className={`text-content mt-2 leading-snug ${styles.lead}`}>
             {event.lead}
           </p>
         )}

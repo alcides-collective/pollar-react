@@ -19,6 +19,7 @@ import { PageLoader } from './components/common/PageLoader'
 import { useEventStream } from './hooks/useEventStream'
 import { useAllSectionsReady } from './stores/imageLoadingStore'
 import { useLanguage, useSetLanguage, type Language } from './stores/languageStore'
+import { useResolvedTheme, useThemeStore } from './stores/themeStore'
 import { useContentsquare } from './hooks/useContentsquare'
 
 // Lazy load all page components for code splitting
@@ -257,22 +258,51 @@ function AppContent() {
   const clearAlertsStore = useAlertsStore((s) => s.clearStore)
   const clearReadHistoryStore = useReadHistoryStore((s) => s.clearStore)
 
+  // Theme
+  const resolvedTheme = useResolvedTheme()
+  const onSystemThemeChange = useThemeStore((s) => s._onSystemThemeChange)
+  const resetTheme = useThemeStore((s) => s.reset)
+
   useEffect(() => {
     const unsubscribe = initializeAuth()
     return () => unsubscribe()
   }, [initializeAuth])
 
+  // Apply theme class to <html>
+  useEffect(() => {
+    const root = document.documentElement
+    if (resolvedTheme === 'dark') {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+  }, [resolvedTheme])
+
+  // Listen for system theme changes
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const handler = () => onSystemThemeChange()
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [onSystemThemeChange])
+
   // Fetch user profile when user changes
   useEffect(() => {
     if (user) {
-      fetchProfile(user.uid)
+      fetchProfile(user.uid).then(() => {
+        const profile = useUserStore.getState().profile
+        if (profile?.preferences?.theme) {
+          useThemeStore.getState().syncFromProfile(profile.preferences.theme)
+        }
+      })
     } else {
       // Clear all user-related stores on logout
       clearProfile()
       clearAlertsStore()
       clearReadHistoryStore()
+      resetTheme()
     }
-  }, [user, fetchProfile, clearProfile, clearAlertsStore, clearReadHistoryStore])
+  }, [user, fetchProfile, clearProfile, clearAlertsStore, clearReadHistoryStore, resetTheme])
 
   // Connect to SSE for real-time event notifications
   useEventStream({ enabled: true })
@@ -304,7 +334,7 @@ function AppContent() {
     <>
       <LanguageRouteHandler />
       <ScrollToTop />
-      <div className="min-h-screen flex flex-col bg-white">
+      <div className="min-h-screen flex flex-col bg-background">
         <Header />
         <EmailVerificationBanner />
         <main className="flex-1">

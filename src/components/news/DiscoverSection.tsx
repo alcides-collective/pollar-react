@@ -44,7 +44,7 @@ function DiscoverCard({ link, t }: { link: DiscoverLink; t: (key: string) => str
   const description = t(link.descriptionKey);
 
   return (
-    <LocalizedLink to={link.path} className="group/underline block p-6 hover:bg-amber-100 transition-colors h-full">
+    <LocalizedLink to={link.path} className="group/underline block p-6 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors h-full">
       <article>
         <div className="mb-4">
           {link.image ? (
@@ -61,11 +61,11 @@ function DiscoverCard({ link, t }: { link: DiscoverLink; t: (key: string) => str
             </div>
           )}
         </div>
-        <span className="text-zinc-400 text-xs uppercase tracking-wide">{t('discover.title')}</span>
-        <h3 className="text-zinc-900 font-semibold text-xl leading-tight">
+        <span className="text-content-faint text-xs uppercase tracking-wide">{t('discover.title')}</span>
+        <h3 className="text-content-heading font-semibold text-xl leading-tight">
           <AnimatedUnderline>{title}</AnimatedUnderline>
         </h3>
-        <p className="text-sm text-zinc-600 mt-2 leading-snug line-clamp-3">
+        <p className="text-sm text-content mt-2 leading-snug line-clamp-3">
           {description}
         </p>
       </article>
@@ -81,13 +81,13 @@ export function DiscoverSection() {
       sectionId="discover-section"
       priority="low"
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 bg-amber-50">
+      <div className="grid grid-cols-1 md:grid-cols-3 bg-amber-50 dark:bg-amber-950/40">
         {DISCOVER_LINKS.map((link, index) => {
           const isLast = index === DISCOVER_LINKS.length - 1;
           return (
             <div
               key={link.path}
-              className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-zinc-200`}
+              className={`${isLast ? '' : 'border-b md:border-b-0 md:border-r'} border-divider`}
             >
               <DiscoverCard link={link} t={t} />
             </div>

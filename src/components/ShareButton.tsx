@@ -69,7 +69,7 @@ export function ShareButton({
     <button
       onClick={handleShare}
       disabled={isSharing}
-      className={`${sizeClasses[size]} rounded-full flex items-center justify-center transition-colors duration-200 bg-white/90 text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 border border-zinc-200 disabled:opacity-50 ${className}`}
+      className={`${sizeClasses[size]} rounded-full flex items-center justify-center transition-colors duration-200 bg-background/90 text-content hover:bg-surface hover:text-content-heading border border-divider disabled:opacity-50 ${className}`}
       aria-label={t('share.share')}
     >
       <i className={`ri-share-line ${iconSizes[size]}`} />

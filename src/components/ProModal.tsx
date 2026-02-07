@@ -38,7 +38,7 @@ export function ProModal() {
         <ul className="space-y-2 my-4">
           {featureIcons.map((feature) => (
             <li key={feature.key} className="flex items-center gap-3 text-sm">
-              <i className={`${feature.icon} text-zinc-400`} />
+              <i className={`${feature.icon} text-content-faint`} />
               <span>{t(`pro.features.${feature.key}`)}</span>
             </li>
           ))}
@@ -47,7 +47,7 @@ export function ProModal() {
         <div className="border-t pt-4">
           <div className="flex items-baseline justify-between mb-4">
             <span className="text-2xl font-semibold">{t('pro.price')}</span>
-            <span className="text-sm text-zinc-500">{t('pro.perMonth')}</span>
+            <span className="text-sm text-content-subtle">{t('pro.perMonth')}</span>
           </div>
           <Button className="w-full" disabled>
             {t('pro.comingSoon')}

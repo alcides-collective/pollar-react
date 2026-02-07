@@ -58,14 +58,14 @@ export function PasswordResetForm() {
           </svg>
         </div>
         <div>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-content-faint">
             {t('reset.emailSent')}
           </p>
-          <p className="mt-1 font-medium text-zinc-100">
+          <p className="mt-1 font-medium text-content">
             {email}
           </p>
         </div>
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-content-subtle">
           {t('reset.checkSpam')}
         </p>
         <Button
@@ -82,7 +82,7 @@ export function PasswordResetForm() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-zinc-400">
+      <p className="text-sm text-content-faint">
         {t('reset.instructions')}
       </p>
 
@@ -110,7 +110,7 @@ export function PasswordResetForm() {
         <button
           type="button"
           onClick={() => setView('login')}
-          className="w-full text-center text-sm text-zinc-400 hover:text-zinc-200 transition-colors"
+          className="w-full text-center text-sm text-content-faint hover:text-content transition-colors"
         >
           {t('reset.backToLogin')}
         </button>

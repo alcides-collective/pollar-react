@@ -73,13 +73,13 @@ function ValueCard({ value, index, total, scrollYProgress }: ValueCardProps) {
       className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
       style={{ opacity, y, scale }}
     >
-      <div className="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 rounded-3xl bg-zinc-100 text-zinc-900 mb-8">
+      <div className="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 rounded-3xl bg-surface text-content-heading mb-8">
         {value.icon}
       </div>
-      <h3 className="text-3xl lg:text-5xl font-bold text-zinc-900 mb-4 tracking-tight max-w-2xl">
+      <h3 className="text-3xl lg:text-5xl font-bold text-content-heading mb-4 tracking-tight max-w-2xl">
         {value.title}
       </h3>
-      <p className="text-lg lg:text-xl text-zinc-600 leading-relaxed max-w-xl">
+      <p className="text-lg lg:text-xl text-content leading-relaxed max-w-xl">
         {value.description}
       </p>
     </motion.div>
@@ -107,7 +107,7 @@ export function ManifestSection() {
   return (
     <section
       ref={containerRef}
-      className="relative bg-white"
+      className="relative bg-background"
       style={{ height: `${values.length * 60 + 40}vh` }}
     >
       {/* Sticky container */}
@@ -119,7 +119,7 @@ export function ManifestSection() {
             opacity: useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]),
           }}
         >
-          <h2 className="text-sm lg:text-base font-medium text-zinc-400 uppercase tracking-widest">
+          <h2 className="text-sm lg:text-base font-medium text-content-faint uppercase tracking-widest">
             {t('manifest.sectionTitle')}
           </h2>
         </motion.div>
@@ -181,7 +181,7 @@ function ProgressDot({ index, scrollYProgress, total }: ProgressDotProps) {
 
   return (
     <motion.div
-      className="w-2 h-2 rounded-full bg-zinc-900"
+      className="w-2 h-2 rounded-full bg-content-heading"
       style={{ scale, opacity }}
     />
   );

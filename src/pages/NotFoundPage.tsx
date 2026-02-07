@@ -13,7 +13,7 @@ export function NotFoundPage() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
-          className="text-[8rem] font-bold leading-none text-zinc-200 dark:text-zinc-800 select-none"
+          className="text-[8rem] font-bold leading-none text-content-faint select-none"
         >
           404
         </motion.div>
@@ -22,7 +22,7 @@ export function NotFoundPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
-          className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mt-4 mb-3"
+          className="text-2xl font-bold text-content-heading mt-4 mb-3"
         >
           {t('notFound.title')}
         </motion.h1>
@@ -31,7 +31,7 @@ export function NotFoundPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
-          className="text-zinc-500 dark:text-zinc-400 mb-8"
+          className="text-content-subtle mb-8"
         >
           {t('notFound.description')}
         </motion.p>

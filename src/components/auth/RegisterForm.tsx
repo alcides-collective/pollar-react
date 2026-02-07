@@ -117,7 +117,7 @@ export function RegisterForm() {
               setAcceptPrivacy(true);
               setAcceptMarketing(true);
             }}
-            className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors underline"
+            className="text-xs text-content-faint hover:text-content transition-colors underline"
           >
             {t('register.selectAll')}
           </button>
@@ -127,9 +127,9 @@ export function RegisterForm() {
             type="checkbox"
             checked={acceptTerms}
             onChange={(e) => setAcceptTerms(e.target.checked)}
-            className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-zinc-500 shrink-0"
+            className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0"
           />
-          <span className="text-zinc-300 text-xs leading-relaxed">
+          <span className="text-content-faint text-xs leading-relaxed">
             <Trans
               i18nKey="register.acceptTerms"
               ns="auth"
@@ -138,7 +138,7 @@ export function RegisterForm() {
                   <LocalizedLink
                     to="/regulamin"
                     target="_blank"
-                    className="text-zinc-100 underline hover:text-white"
+                    className="text-content underline hover:text-white"
                   />
                 ),
               }}
@@ -152,9 +152,9 @@ export function RegisterForm() {
             type="checkbox"
             checked={acceptPrivacy}
             onChange={(e) => setAcceptPrivacy(e.target.checked)}
-            className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-zinc-500 shrink-0"
+            className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0"
           />
-          <span className="text-zinc-300 text-xs leading-relaxed">
+          <span className="text-content-faint text-xs leading-relaxed">
             <Trans
               i18nKey="register.acceptPrivacy"
               ns="auth"
@@ -163,7 +163,7 @@ export function RegisterForm() {
                   <LocalizedLink
                     to="/polityka-prywatnosci"
                     target="_blank"
-                    className="text-zinc-100 underline hover:text-white"
+                    className="text-content underline hover:text-white"
                   />
                 ),
               }}
@@ -177,9 +177,9 @@ export function RegisterForm() {
             type="checkbox"
             checked={acceptMarketing}
             onChange={(e) => setAcceptMarketing(e.target.checked)}
-            className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-zinc-500 shrink-0"
+            className="mt-0.5 rounded border-zinc-600 bg-zinc-800 text-zinc-100 focus:ring-divider shrink-0"
           />
-          <span className="text-zinc-400 text-xs leading-relaxed">
+          <span className="text-content-faint text-xs leading-relaxed">
             {t('register.acceptMarketing')}
           </span>
         </label>
@@ -247,7 +247,7 @@ export function RegisterForm() {
                 className={`flex items-center gap-1.5 ${
                   req.met
                     ? 'text-green-400'
-                    : 'text-zinc-500'
+                    : 'text-content-subtle'
                 }`}
               >
                 <span>{req.met ? '\u2713' : '\u25CB'}</span>
@@ -261,12 +261,12 @@ export function RegisterForm() {
           {isLoading ? t('register.loading') : t('register.title')}
         </Button>
 
-        <p className="text-center text-sm text-zinc-400">
+        <p className="text-center text-sm text-content-faint">
           {t('register.hasAccount')}{' '}
           <button
             type="button"
             onClick={() => setView('login')}
-            className="font-medium text-zinc-100 hover:text-white hover:underline transition-colors"
+            className="font-medium text-content hover:text-white hover:underline transition-colors"
           >
             {t('register.login')}
           </button>

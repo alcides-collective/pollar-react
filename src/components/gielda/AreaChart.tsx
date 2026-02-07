@@ -160,7 +160,7 @@ export function AreaChart({
                       maximumFractionDigits: 2,
                     })}
                   </span>
-                  <span className="text-[10px] text-zinc-400">{hoveredPoint.date}</span>
+                  <span className="text-[10px] text-content-faint">{hoveredPoint.date}</span>
                 </div>
                 <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 border-l-6 border-r-6 border-t-6 border-transparent border-t-zinc-900/70" />
               </div>

@@ -61,6 +61,16 @@ export interface UserProfile {
   consentMarketingAcceptedAt?: Timestamp | null;
   /** Version of terms the user accepted (e.g. "2026-02-06") */
   consentTermsVersion?: string | null;
+  /** User preferences (extensible) */
+  preferences?: UserPreferences;
+}
+
+/** User's theme preference */
+export type ThemePreference = 'light' | 'dark' | 'system';
+
+/** Extensible user preferences object */
+export interface UserPreferences {
+  theme: ThemePreference;
 }
 
 /**

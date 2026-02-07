@@ -36,7 +36,7 @@ export function DataPanel({
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="flex items-center gap-2">
-          {icon && <i className={cn(icon, 'text-lg text-zinc-500')} />}
+          {icon && <i className={cn(icon, 'text-lg text-content-subtle')} />}
           <CardTitle className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             {title}
           </CardTitle>

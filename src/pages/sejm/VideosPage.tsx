@@ -57,10 +57,10 @@ export function VideosPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-8 w-48 bg-zinc-100 animate-pulse rounded" />
+        <div className="h-8 w-48 bg-surface animate-pulse rounded" />
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-32 bg-zinc-100 animate-pulse rounded-lg" />
+            <div key={i} className="h-32 bg-surface animate-pulse rounded-lg" />
           ))}
         </div>
       </div>
@@ -75,12 +75,12 @@ export function VideosPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-zinc-900">{t('videosPage.title')}</h1>
+      <h1 className="text-xl font-semibold text-content-heading">{t('videosPage.title')}</h1>
 
       {/* Today's broadcasts */}
       {todayVideos.length > 0 && (
-        <div className="rounded-lg border-2 border-green-500 bg-green-50 p-4">
-          <h2 className="text-sm font-medium text-green-900 mb-3 flex items-center gap-2">
+        <div className="rounded-lg border-2 border-green-500 dark:border-green-700 bg-green-50 dark:bg-green-950/30 p-4">
+          <h2 className="text-sm font-medium text-green-900 dark:text-green-300 mb-3 flex items-center gap-2">
             <span className="bg-green-500 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded animate-pulse">
               {t('videosPage.today')}
             </span>
@@ -91,10 +91,10 @@ export function VideosPage() {
               <button
                 key={video.unid}
                 onClick={() => setSelectedVideo(video)}
-                className="text-left p-3 bg-white rounded-lg border border-green-200 hover:border-green-300 transition-colors"
+                className="text-left p-3 bg-background rounded-lg border border-green-200 dark:border-green-800 hover:border-green-300 dark:hover:border-green-700 transition-colors"
               >
-                <h3 className="text-sm font-medium text-zinc-900 line-clamp-2">{video.title}</h3>
-                <p className="text-xs text-zinc-500 mt-1">
+                <h3 className="text-sm font-medium text-content-heading line-clamp-2">{video.title}</h3>
+                <p className="text-xs text-content-subtle mt-1">
                   {formatDateTime(video.startDateTime)}
                   {video.room && ` · ${video.room}`}
                 </p>
@@ -116,8 +116,8 @@ export function VideosPage() {
             onClick={() => setFilter(option.value as FilterOption)}
             className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
               filter === option.value
-                ? 'bg-zinc-900 text-white'
-                : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-surface text-content hover:bg-surface'
             }`}
           >
             {option.label}
@@ -134,31 +134,31 @@ export function VideosPage() {
           <button
             key={video.unid}
             onClick={() => setSelectedVideo(video)}
-            className="text-left rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
+            className="text-left rounded-lg border border-divider hover:border-divider hover:shadow-sm transition-all p-4"
           >
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xl">▶️</span>
               <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                video.type === 'sitting' ? 'bg-blue-100 text-blue-700' :
-                video.type === 'committee' ? 'bg-purple-100 text-purple-700' :
-                'bg-zinc-100 text-zinc-600'
+                video.type === 'sitting' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400' :
+                video.type === 'committee' ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400' :
+                'bg-surface text-content'
               }`}>
                 {typeLabels[video.type]}
               </span>
             </div>
-            <h3 className="text-sm font-medium text-zinc-900 line-clamp-2">{video.title}</h3>
-            <p className="text-xs text-zinc-500 mt-2">
+            <h3 className="text-sm font-medium text-content-heading line-clamp-2">{video.title}</h3>
+            <p className="text-xs text-content-subtle mt-2">
               {formatDateTime(video.startDateTime)}
             </p>
             {video.room && (
-              <p className="text-xs text-zinc-400 mt-1">{t('videosPage.room')}: {video.room}</p>
+              <p className="text-xs text-content-faint mt-1">{t('videosPage.room')}: {video.room}</p>
             )}
           </button>
         ))}
       </div>
 
       {filteredVideos.length === 0 && (
-        <p className="text-center text-zinc-500 py-8">
+        <p className="text-center text-content-subtle py-8">
           {t('videosPage.noResults')}
         </p>
       )}
@@ -167,23 +167,23 @@ export function VideosPage() {
       {selectedVideo && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50" onClick={closeModal}>
           <div
-            className="bg-white rounded-lg max-w-4xl w-full overflow-hidden"
+            className="bg-background rounded-lg max-w-4xl w-full overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-zinc-200 flex items-start justify-between">
+            <div className="p-4 border-b border-divider flex items-start justify-between">
               <div>
                 <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                  selectedVideo.type === 'sitting' ? 'bg-blue-100 text-blue-700' :
-                  selectedVideo.type === 'committee' ? 'bg-purple-100 text-purple-700' :
-                  'bg-zinc-100 text-zinc-600'
+                  selectedVideo.type === 'sitting' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400' :
+                  selectedVideo.type === 'committee' ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400' :
+                  'bg-surface text-content'
                 }`}>
                   {typeLabels[selectedVideo.type]}
                 </span>
-                <h2 className="font-medium text-zinc-900 mt-1">{selectedVideo.title}</h2>
+                <h2 className="font-medium text-content-heading mt-1">{selectedVideo.title}</h2>
               </div>
               <button
                 onClick={closeModal}
-                className="text-zinc-400 hover:text-zinc-600"
+                className="text-content-faint hover:text-content"
               >
                 <i className="ri-close-line text-2xl" />
               </button>

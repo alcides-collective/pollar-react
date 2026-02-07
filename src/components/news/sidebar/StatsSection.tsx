@@ -107,22 +107,22 @@ export function StatsSection() {
 
   return (
     <div className="p-6">
-      <h3 className="text-zinc-900 font-semibold mb-4">{t('stats.title')}</h3>
+      <h3 className="text-content-heading font-semibold mb-4">{t('stats.title')}</h3>
       <div className="grid grid-cols-2 gap-3">
         {statItems.map((item) => (
           <div
             key={item.labelKey}
-            className="bg-zinc-50 rounded-lg p-3 text-center"
+            className="bg-surface rounded-lg p-3 text-center"
           >
-            <i className={`${item.icon} text-lg text-zinc-400 mb-1`} />
+            <i className={`${item.icon} text-lg text-content-faint mb-1`} />
             <div
-              className={`text-xl font-semibold text-zinc-900 ${
+              className={`text-xl font-semibold text-content-heading ${
                 loading ? 'animate-pulse' : ''
               }`}
             >
               {loading ? '...' : formatNumber(item.value)}
             </div>
-            <div className="text-[11px] text-zinc-500 mt-0.5">
+            <div className="text-[11px] text-content-subtle mt-0.5">
               {t(item.labelKey)}
             </div>
           </div>
@@ -132,7 +132,7 @@ export function StatsSection() {
       {/* Top 10 most mentioned people */}
       {topMentioned.length > 0 && (
         <div className="mt-4">
-          <div className="flex items-center gap-2 text-zinc-500 text-[11px] mb-2">
+          <div className="flex items-center gap-2 text-content-subtle text-[11px] mb-2">
             <i className="ri-user-star-line" />
             {t('stats.mostMentioned')}
           </div>
@@ -142,11 +142,11 @@ export function StatsSection() {
                 key={person.name}
                 className="flex items-center justify-between text-sm"
               >
-                <span className="text-zinc-700 truncate flex-1">
-                  <span className="text-zinc-400 text-xs mr-1.5">{index + 1}.</span>
+                <span className="text-content truncate flex-1">
+                  <span className="text-content-faint text-xs mr-1.5">{index + 1}.</span>
                   {person.name}
                 </span>
-                <span className="text-zinc-400 text-xs ml-2">{person.count}×</span>
+                <span className="text-content-faint text-xs ml-2">{person.count}×</span>
               </div>
             ))}
           </div>
@@ -156,7 +156,7 @@ export function StatsSection() {
       {/* Top 10 cities */}
       {topCities.length > 0 && (
         <div className="mt-4">
-          <div className="flex items-center gap-2 text-zinc-500 text-[11px] mb-2">
+          <div className="flex items-center gap-2 text-content-subtle text-[11px] mb-2">
             <i className="ri-map-pin-line" />
             {t('stats.topCities')}
           </div>
@@ -166,11 +166,11 @@ export function StatsSection() {
                 key={city.name}
                 className="flex items-center justify-between text-sm"
               >
-                <span className="text-zinc-700 truncate flex-1">
-                  <span className="text-zinc-400 text-xs mr-1.5">{index + 1}.</span>
+                <span className="text-content truncate flex-1">
+                  <span className="text-content-faint text-xs mr-1.5">{index + 1}.</span>
                   {city.name}
                 </span>
-                <span className="text-zinc-400 text-xs ml-2">{city.count}×</span>
+                <span className="text-content-faint text-xs ml-2">{city.count}×</span>
               </div>
             ))}
           </div>

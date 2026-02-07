@@ -43,13 +43,13 @@ export function LatestEvents({ events }: LatestEventsProps) {
               >
                 <div className="flex items-center gap-2 text-xs mb-1">
                   <LiveTimeAgo date={event.updatedAt} className="text-red-500" />
-                  <span className="text-zinc-300">•</span>
-                  <span className="text-zinc-400">{t(`categories.${event.category}`, { defaultValue: event.category })}</span>
+                  <span className="text-content-faint">•</span>
+                  <span className="text-content-faint">{t(`categories.${event.category}`, { defaultValue: event.category })}</span>
                 </div>
                 <h4 className={`text-sm leading-tight transition-colors duration-300 ${
                   isNew
                     ? 'text-red-600 font-semibold'
-                    : 'text-zinc-600 group-hover:text-zinc-900'
+                    : 'text-content group-hover:text-content-heading'
                 }`}>
                   {event.title}
                 </h4>

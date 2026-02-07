@@ -23,13 +23,13 @@ export function MPDetailPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-8 w-32 bg-zinc-100 animate-pulse rounded" />
+        <div className="h-8 w-32 bg-surface animate-pulse rounded" />
         <div className="flex gap-6">
-          <div className="w-48 h-64 bg-zinc-100 animate-pulse rounded-lg" />
+          <div className="w-48 h-64 bg-surface animate-pulse rounded-lg" />
           <div className="flex-1 space-y-3">
-            <div className="h-8 w-64 bg-zinc-100 animate-pulse rounded" />
-            <div className="h-4 w-48 bg-zinc-100 animate-pulse rounded" />
-            <div className="h-4 w-56 bg-zinc-100 animate-pulse rounded" />
+            <div className="h-8 w-64 bg-surface animate-pulse rounded" />
+            <div className="h-4 w-48 bg-surface animate-pulse rounded" />
+            <div className="h-4 w-56 bg-surface animate-pulse rounded" />
           </div>
         </div>
       </div>
@@ -39,8 +39,8 @@ export function MPDetailPage() {
   if (!mp) {
     return (
       <div className="text-center py-12">
-        <p className="text-zinc-500">{t('mpDetail.notFound')}</p>
-        <LocalizedLink to="/sejm/poslowie" className="text-sm text-blue-600 hover:underline mt-2 inline-block">
+        <p className="text-content-subtle">{t('mpDetail.notFound')}</p>
+        <LocalizedLink to="/sejm/poslowie" className="text-sm text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
           <i className="ri-arrow-left-s-line" /> {t('mpDetail.backToList')}
         </LocalizedLink>
       </div>
@@ -60,7 +60,7 @@ export function MPDetailPage() {
   return (
     <div className="space-y-6">
       {/* Back link */}
-      <LocalizedLink to="/sejm/poslowie" className="text-sm text-zinc-500 hover:text-zinc-700">
+      <LocalizedLink to="/sejm/poslowie" className="text-sm text-content-subtle hover:text-content">
         <i className="ri-arrow-left-s-line" /> {t('mpDetail.allMPs')}
       </LocalizedLink>
 
@@ -77,9 +77,9 @@ export function MPDetailPage() {
         <div className="flex-1">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-semibold text-zinc-900">{mp.firstLastName}</h1>
+              <h1 className="text-2xl font-semibold text-content-heading">{mp.firstLastName}</h1>
               {!mp.active && (
-                <span className="bg-zinc-200 text-zinc-600 text-xs px-2 py-0.5 rounded">
+                <span className="bg-divider text-content text-xs px-2 py-0.5 rounded">
                   {t('mpDetail.inactive')}
                 </span>
               )}
@@ -93,42 +93,42 @@ export function MPDetailPage() {
 
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="text-zinc-500">{t('mpDetail.district')}:</span>
-              <p className="text-zinc-900">{mp.districtName} ({mp.districtNum})</p>
+              <span className="text-content-subtle">{t('mpDetail.district')}:</span>
+              <p className="text-content-heading">{mp.districtName} ({mp.districtNum})</p>
             </div>
             <div>
-              <span className="text-zinc-500">{t('mpDetail.voivodeship')}:</span>
-              <p className="text-zinc-900">{mp.voivodeship}</p>
+              <span className="text-content-subtle">{t('mpDetail.voivodeship')}:</span>
+              <p className="text-content-heading">{mp.voivodeship}</p>
             </div>
             {mp.profession && (
               <div>
-                <span className="text-zinc-500">{t('mpDetail.profession')}:</span>
-                <p className="text-zinc-900">{mp.profession}</p>
+                <span className="text-content-subtle">{t('mpDetail.profession')}:</span>
+                <p className="text-content-heading">{mp.profession}</p>
               </div>
             )}
             {mp.educationLevel && (
               <div>
-                <span className="text-zinc-500">{t('mpDetail.education')}:</span>
-                <p className="text-zinc-900">{mp.educationLevel}</p>
+                <span className="text-content-subtle">{t('mpDetail.education')}:</span>
+                <p className="text-content-heading">{mp.educationLevel}</p>
               </div>
             )}
             {mp.birthDate && (
               <div>
-                <span className="text-zinc-500">{t('mpDetail.birthDate')}:</span>
-                <p className="text-zinc-900">{formatDate(mp.birthDate)}</p>
+                <span className="text-content-subtle">{t('mpDetail.birthDate')}:</span>
+                <p className="text-content-heading">{formatDate(mp.birthDate)}</p>
               </div>
             )}
             {mp.numberOfVotes && (
               <div>
-                <span className="text-zinc-500">{t('mpDetail.numberOfVotes')}:</span>
-                <p className="text-zinc-900 font-medium">{mp.numberOfVotes.toLocaleString(localeMap[language] || 'pl-PL')}</p>
+                <span className="text-content-subtle">{t('mpDetail.numberOfVotes')}:</span>
+                <p className="text-content-heading font-medium">{mp.numberOfVotes.toLocaleString(localeMap[language] || 'pl-PL')}</p>
               </div>
             )}
             {mp.email && (
               <div className="col-span-2">
-                <span className="text-zinc-500">{t('mpDetail.email')}:</span>
-                <p className="text-zinc-900">
-                  <a href={`mailto:${mp.email}`} className="text-blue-600 hover:underline">
+                <span className="text-content-subtle">{t('mpDetail.email')}:</span>
+                <p className="text-content-heading">
+                  <a href={`mailto:${mp.email}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                     {mp.email}
                   </a>
                 </p>
@@ -140,16 +140,16 @@ export function MPDetailPage() {
 
       {/* Voting Stats */}
       {mp.votingStats && (
-        <div className="rounded-lg border border-zinc-200 p-4">
-          <h2 className="text-sm font-medium text-zinc-900 mb-4">{t('mpDetail.votingStats')}</h2>
+        <div className="rounded-lg border border-divider p-4">
+          <h2 className="text-sm font-medium text-content-heading mb-4">{t('mpDetail.votingStats')}</h2>
 
           {/* Attendance bar */}
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-zinc-600">{t('mpDetail.attendance')}</span>
+              <span className="text-content">{t('mpDetail.attendance')}</span>
               <span className="font-medium">{mp.votingStats.votingsAttendance.toFixed(1)}%</span>
             </div>
-            <div className="h-2 bg-zinc-100 rounded-full overflow-hidden">
+            <div className="h-2 bg-surface rounded-full overflow-hidden">
               <div
                 className="h-full bg-green-500 rounded-full"
                 style={{ width: `${mp.votingStats.votingsAttendance}%` }}
@@ -161,40 +161,40 @@ export function MPDetailPage() {
       )}
 
       {/* Voting History */}
-      <div className="rounded-lg border border-zinc-200 p-4">
-        <h2 className="text-sm font-medium text-zinc-900 mb-4">{t('mpDetail.votingHistory')}</h2>
+      <div className="rounded-lg border border-divider p-4">
+        <h2 className="text-sm font-medium text-content-heading mb-4">{t('mpDetail.votingHistory')}</h2>
 
         {votingsLoading ? (
           <div className="space-y-3">
             {[...Array(5)].map((_, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="w-5 h-5 bg-zinc-100 animate-pulse rounded-full shrink-0" />
+                <div className="w-5 h-5 bg-surface animate-pulse rounded-full shrink-0" />
                 <div className="flex-1 space-y-1">
-                  <div className="h-4 bg-zinc-100 animate-pulse rounded w-3/4" />
-                  <div className="h-3 bg-zinc-100 animate-pulse rounded w-1/4" />
+                  <div className="h-4 bg-surface animate-pulse rounded w-3/4" />
+                  <div className="h-3 bg-surface animate-pulse rounded w-1/4" />
                 </div>
-                <div className="w-24 h-2 bg-zinc-100 animate-pulse rounded shrink-0" />
+                <div className="w-24 h-2 bg-surface animate-pulse rounded shrink-0" />
               </div>
             ))}
           </div>
         ) : votings.length === 0 ? (
-          <p className="text-sm text-zinc-500">{t('mpDetail.noVotings')}</p>
+          <p className="text-sm text-content-subtle">{t('mpDetail.noVotings')}</p>
         ) : (
           <div className="space-y-2">
             {votings.map((v) => (
               <LocalizedLink
                 key={`${v.sitting}-${v.votingNumber}`}
                 to={`/sejm/glosowania/${v.sitting}/${v.votingNumber}`}
-                className="flex items-start gap-3 p-2 -mx-2 rounded-md hover:bg-zinc-50 transition-colors"
+                className="flex items-start gap-3 p-2 -mx-2 rounded-md hover:bg-muted transition-colors"
               >
                 <div className="mt-0.5 shrink-0">
                   <VoteIndicator vote={v.mpVote} size="md" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm text-zinc-900 leading-snug">
+                  <div className="text-sm text-content-heading leading-snug">
                     <TitleWithDrukLinks title={v.title} />
                   </div>
-                  <div className="text-xs text-zinc-400 mt-0.5">
+                  <div className="text-xs text-content-faint mt-0.5">
                     {formatDate(v.date)}
                   </div>
                 </div>

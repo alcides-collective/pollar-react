@@ -72,16 +72,16 @@ export function AISidebarWidget() {
       <button
         onClick={handleClick}
         className="w-full flex items-center gap-3 px-4 py-3
-                   bg-white dark:bg-zinc-900
-                   border border-zinc-200 dark:border-zinc-800 rounded-lg
-                   hover:border-zinc-300 dark:hover:border-zinc-700
+                   bg-background dark:bg-zinc-900
+                   border border-divider dark:border-zinc-800 rounded-lg
+                   hover:border-divider dark:hover:border-zinc-700
                    hover:shadow-sm
                    transition-all duration-200 cursor-pointer
                    group"
       >
         {/* Sparks icon */}
         <svg
-          className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0"
+          className="w-4 h-4 text-content-faint dark:text-zinc-500 shrink-0"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -95,7 +95,7 @@ export function AISidebarWidget() {
         {/* Placeholder text - fixed height to prevent layout shift */}
         <div className="flex-1 text-left overflow-hidden min-h-[20px]">
           <span
-            className="text-sm text-zinc-400 dark:text-zinc-500 block truncate transition-opacity duration-200"
+            className="text-sm text-content-faint dark:text-zinc-500 block truncate transition-opacity duration-200"
             style={{ opacity: isVisible ? 1 : 0 }}
           >
             {currentText}

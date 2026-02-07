@@ -29,7 +29,7 @@ export function CTASection() {
         </motion.h2>
 
         <motion.p
-          className="text-lg text-zinc-400 mb-10 max-w-xl mx-auto"
+          className="text-lg text-content-faint mb-10 max-w-xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
@@ -48,7 +48,7 @@ export function CTASection() {
           <Button size="lg" asChild className="text-base px-8 py-6 shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_50px_rgba(59,130,246,0.7)] transition-shadow duration-300">
             <LocalizedLink to="/">{t('cta.primaryButton')}</LocalizedLink>
           </Button>
-          <Button size="lg" variant="outline" asChild className="text-base px-8 py-6 bg-white text-zinc-900 border-white hover:bg-zinc-100 hover:text-zinc-900 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.5)] transition-shadow duration-300">
+          <Button size="lg" variant="outline" asChild className="text-base px-8 py-6 bg-background text-content-heading border-white hover:bg-surface hover:text-content-heading shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.5)] transition-shadow duration-300">
             <LocalizedLink to="/brief">{t('cta.secondaryButton')}</LocalizedLink>
           </Button>
         </motion.div>

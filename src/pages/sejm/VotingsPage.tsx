@@ -58,56 +58,56 @@ function StackItem({
   return (
     <div className={`rounded-lg border transition-all overflow-hidden ${
       majorityPassed
-        ? 'border-green-200 bg-green-50/30 hover:border-green-300'
-        : 'border-red-200 bg-red-50/30 hover:border-red-300'
+        ? 'border-green-200 dark:border-green-800 bg-green-50/30 dark:bg-green-950/20 hover:border-green-300 dark:hover:border-green-700'
+        : 'border-red-200 dark:border-red-800 bg-red-50/30 dark:bg-red-950/20 hover:border-red-300 dark:hover:border-red-700'
     }`}>
       {/* Header - card-like style */}
       <button
         onClick={onToggle}
-        className="w-full text-left pt-4 px-4 hover:bg-zinc-50/50 transition-colors"
+        className="w-full text-left pt-4 px-4 hover:bg-muted/50 transition-colors"
       >
         {/* Title */}
-        <h3 className="text-zinc-900 text-sm leading-snug font-medium mb-1 break-words overflow-hidden">
+        <h3 className="text-content-heading text-sm leading-snug font-medium mb-1 break-words overflow-hidden">
           <TitleWithDrukLinks
             title={stack.votings[0].title}
-            linkClassName="text-blue-600 hover:text-blue-800 hover:underline font-mono"
+            linkClassName="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline font-mono"
           />
         </h3>
 
         {/* Meta pills */}
         <div className="flex items-center flex-wrap gap-1 mb-3">
-          <span className="px-1.5 py-0.5 text-[10px] rounded bg-zinc-100 text-zinc-600">
+          <span className="px-1.5 py-0.5 text-[10px] rounded bg-surface text-content">
             {t('votingsPage.sitting', { number: stack.sitting })}
           </span>
-          <span className="px-1.5 py-0.5 text-[10px] rounded bg-zinc-100 text-zinc-600">
+          <span className="px-1.5 py-0.5 text-[10px] rounded bg-surface text-content">
             {t('votingsPage.votingsCount', { count: stack.votings.length })}
           </span>
           {passedCount > 0 && (
-            <span className="px-1.5 py-0.5 text-[10px] rounded font-medium bg-green-100 text-green-700">
+            <span className="px-1.5 py-0.5 text-[10px] rounded font-medium bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400">
               {t('votingsPage.passedCount', { count: passedCount })}
             </span>
           )}
           {rejectedCount > 0 && (
-            <span className="px-1.5 py-0.5 text-[10px] rounded font-medium bg-red-100 text-red-700">
+            <span className="px-1.5 py-0.5 text-[10px] rounded font-medium bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400">
               {t('votingsPage.rejectedCount', { count: rejectedCount })}
             </span>
           )}
-          <i className={`ri-arrow-down-s-line text-zinc-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+          <i className={`ri-arrow-down-s-line text-content-faint transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
         </div>
 
         {/* Vote percentages grid - for groups show % not absolute */}
         <div className="grid grid-cols-3 gap-2 text-center">
           <div>
-            <p className="text-lg font-mono text-green-600">{Math.round((totalYes / total) * 100)}%</p>
-            <p className="text-xs text-zinc-500">{t('votingsPage.for')}</p>
+            <p className="text-lg font-mono text-green-600 dark:text-green-400">{Math.round((totalYes / total) * 100)}%</p>
+            <p className="text-xs text-content-subtle">{t('votingsPage.for')}</p>
           </div>
           <div>
-            <p className="text-lg font-mono text-red-600">{Math.round((totalNo / total) * 100)}%</p>
-            <p className="text-xs text-zinc-500">{t('votingsPage.against')}</p>
+            <p className="text-lg font-mono text-red-600 dark:text-red-400">{Math.round((totalNo / total) * 100)}%</p>
+            <p className="text-xs text-content-subtle">{t('votingsPage.against')}</p>
           </div>
           <div>
-            <p className="text-lg font-mono text-amber-600">{Math.round((totalAbstain / total) * 100)}%</p>
-            <p className="text-xs text-zinc-500">{t('votingsPage.abstain')}</p>
+            <p className="text-lg font-mono text-amber-600 dark:text-amber-400">{Math.round((totalAbstain / total) * 100)}%</p>
+            <p className="text-xs text-content-subtle">{t('votingsPage.abstain')}</p>
           </div>
         </div>
       </button>
@@ -127,7 +127,7 @@ function StackItem({
 
       {/* Expanded content */}
       {isExpanded && (
-        <div className="border-t border-zinc-200 bg-zinc-50/50">
+        <div className="border-t border-divider bg-surface/50">
           <div className="space-y-4 p-4">
             {stack.votings.map((voting) => (
               <VotingCard
@@ -195,10 +195,10 @@ export function VotingsPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-12 bg-zinc-100 animate-pulse rounded-lg" />
+        <div className="h-12 bg-surface animate-pulse rounded-lg" />
         <div className="grid gap-3 md:grid-cols-2">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-40 bg-zinc-100 animate-pulse rounded-lg" />
+            <div key={i} className="h-40 bg-surface animate-pulse rounded-lg" />
           ))}
         </div>
       </div>
@@ -208,15 +208,15 @@ export function VotingsPage() {
   return (
     <div className="space-y-4">
       {/* Filters bar */}
-      <div className="sticky top-0 z-10 backdrop-blur-sm rounded-lg p-4 border border-zinc-200 bg-white/80">
+      <div className="sticky top-0 z-10 backdrop-blur-sm rounded-lg p-4 border border-divider bg-background/80">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <div className="flex gap-2">
             <button
               onClick={() => setFilter('all')}
               className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                 filter === 'all'
-                  ? 'bg-zinc-900 text-white'
-                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-surface text-content hover:bg-muted'
               }`}
             >
               {t('votingsPage.all')}
@@ -226,7 +226,7 @@ export function VotingsPage() {
               className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                 filter === 'passed'
                   ? 'bg-green-600 text-white'
-                  : 'bg-green-100 text-green-700 hover:bg-green-200'
+                  : 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/60'
               }`}
             >
               {t('votingsPage.passed')}
@@ -236,13 +236,13 @@ export function VotingsPage() {
               className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                 filter === 'rejected'
                   ? 'bg-red-600 text-white'
-                  : 'bg-red-100 text-red-700 hover:bg-red-200'
+                  : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/60'
               }`}
             >
               {t('votingsPage.rejected')}
             </button>
           </div>
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-content-subtle">
             {t('votingsPage.found', { count: filteredVotings.length })}
           </p>
         </div>
@@ -250,7 +250,7 @@ export function VotingsPage() {
 
       {/* Votings list - Two-column Pinterest grid */}
       {filteredVotings.length === 0 ? (
-        <p className="text-center text-zinc-500 py-8">
+        <p className="text-center text-content-subtle py-8">
           {t('votingsPage.noResults')}
         </p>
       ) : (
@@ -288,7 +288,7 @@ export function VotingsPage() {
           <button
             onClick={loadMore}
             disabled={loadingMore}
-            className="px-6 py-2 rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-50 transition-colors disabled:opacity-50"
+            className="px-6 py-2 rounded-lg border border-divider text-content hover:bg-surface transition-colors disabled:opacity-50"
           >
             {loadingMore
               ? t('votingsPage.loading')

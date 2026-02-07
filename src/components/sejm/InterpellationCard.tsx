@@ -23,30 +23,30 @@ export function InterpellationCard({ interpellation, mpsMap, onClick }: Interpel
   return (
     <button
       onClick={onClick}
-      className="block w-full text-left rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all p-4"
+      className="block w-full text-left rounded-lg border border-divider hover:border-divider hover:shadow-sm transition-all p-4"
     >
       <div className="flex items-start justify-between gap-3 mb-2">
-        <span className="shrink-0 bg-zinc-100 text-zinc-600 text-xs font-mono px-2 py-0.5 rounded">
+        <span className="shrink-0 bg-surface text-content text-xs font-mono px-2 py-0.5 rounded">
           #{interpellation.num}
         </span>
         <span
           className={`shrink-0 text-[10px] font-medium px-2 py-0.5 rounded ${
             hasReply
-              ? 'bg-green-100 text-green-700'
-              : 'bg-amber-100 text-amber-700'
+              ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
+              : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
           }`}
         >
           {hasReply ? 'Odpowiedziano' : 'Oczekuje'}
         </span>
       </div>
 
-      <h3 className="text-sm font-medium text-zinc-900 leading-tight line-clamp-2 mb-2">
+      <h3 className="text-sm font-medium text-content-heading leading-tight line-clamp-2 mb-2">
         {interpellation.title}
       </h3>
 
-      <div className="text-[11px] text-zinc-500 space-y-1">
+      <div className="text-[11px] text-content-subtle space-y-1">
         <div className="flex flex-wrap gap-x-1">
-          <span className="text-zinc-400">Od:</span>
+          <span className="text-content-faint">Od:</span>
           {interpellation.from.map((idStr, i) => {
             const id = parseInt(idStr, 10);
             const mp = mpsMap && !isNaN(id) ? mpsMap.get(id) : null;
@@ -55,7 +55,7 @@ export function InterpellationCard({ interpellation, mpsMap, onClick }: Interpel
                 {mp ? (
                   <LocalizedLink
                     to={`/sejm/poslowie/${id}`}
-                    className="text-blue-600 hover:underline"
+                    className="text-blue-600 dark:text-blue-400 hover:underline"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {mp.firstLastName}
@@ -69,13 +69,13 @@ export function InterpellationCard({ interpellation, mpsMap, onClick }: Interpel
           })}
         </div>
         <div>
-          <span className="text-zinc-400">Do:</span>{' '}
+          <span className="text-content-faint">Do:</span>{' '}
           {interpellation.to.join(', ')}
         </div>
         <div className="flex items-center justify-between pt-1">
           <span>{formatDate(interpellation.sentDate)}</span>
           {hasReply && (
-            <span className="text-green-600">
+            <span className="text-green-600 dark:text-green-400">
               {interpellation.replies!.length} odpowiedzi
             </span>
           )}

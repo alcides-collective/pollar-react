@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { CityWeather } from '@/hooks/useWeather';
 import { getWmoInfo, getTemperatureColor, formatTemperature, CITY_COORDINATES } from '@/lib/weather';
+import { useIsDarkMode } from '@/stores/themeStore';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFrdWJkdWRlayIsImEiOiJjbWRyMWx1Z3EwOTR6MmtzYjJvYzJncmZhIn0.5Fn6PxkRaqVkEwJLhP-8_Q';
 
@@ -16,6 +17,7 @@ interface WeatherMapProps {
 
 export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 	function WeatherMap({ cities }, ref) {
+		const isDark = useIsDarkMode();
 		const mapContainer = useRef<HTMLDivElement>(null);
 		const map = useRef<mapboxgl.Map | null>(null);
 		const markersRef = useRef<mapboxgl.Marker[]>([]);
@@ -35,7 +37,7 @@ export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 					<div style="font-family: inherit; padding: 4px 0;">
 						<div style="font-weight: 600; font-size: 14px; margin-bottom: 6px;">${cityName}</div>
 						<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-							<span style="font-size: 24px;">${wmo.icon}</span>
+							<i class="${wmo.icon}" style="font-size: 24px;"></i>
 							<span style="font-size: 22px; font-weight: 700; color: ${tempColor};">
 								${formatTemperature(weather.temperature)}
 							</span>
@@ -72,7 +74,7 @@ export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 
 			map.current = new mapboxgl.Map({
 				container: mapContainer.current,
-				style: 'mapbox://styles/mapbox/light-v11',
+				style: isDark ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11',
 				center: [19.4, 52.0],
 				zoom: 5.5,
 				minZoom: 4,
@@ -94,6 +96,13 @@ export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 				map.current = null;
 			};
 		}, []);
+
+		// Update map style when dark mode changes
+		useEffect(() => {
+			if (!map.current) return;
+			const style = isDark ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
+			map.current.setStyle(style);
+		}, [isDark]);
 
 		// Render markers when cities data changes
 		useEffect(() => {
@@ -130,7 +139,7 @@ export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 					white-space: nowrap;
 					transition: transform 0.15s ease;
 				`;
-				inner.innerHTML = `<span style="font-size: 14px;">${wmo.icon}</span><span>${temp}</span>`;
+				inner.innerHTML = `<i class="${wmo.icon}" style="font-size: 14px;"></i><span>${temp}</span>`;
 				inner.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.1)'; });
 				inner.addEventListener('mouseleave', () => { inner.style.transform = 'scale(1)'; });
 				el.appendChild(inner);

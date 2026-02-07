@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { AirQualityData } from '@/types/dane';
+import { useIsDarkMode } from '@/stores/themeStore';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFrdWJkdWRlayIsImEiOiJjbWRyMWx1Z3EwOTR6MmtzYjJvYzJncmZhIn0.5Fn6PxkRaqVkEwJLhP-8_Q';
 
@@ -23,6 +24,7 @@ export function AirQualityMap({
   onStationClick,
   className,
 }: AirQualityMapProps) {
+  const isDark = useIsDarkMode();
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<mapboxgl.Marker[]>([]);
@@ -35,7 +37,7 @@ export function AirQualityMap({
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
+      style: isDark ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11',
       center: [19.0, 52.0], // Center of Poland
       zoom: 5.5,
       attributionControl: false,
@@ -58,6 +60,17 @@ export function AirQualityMap({
     };
   }, []);
 
+  // Update map style when dark mode changes
+  useEffect(() => {
+    if (!map.current) return;
+    const style = isDark ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
+    map.current.setStyle(style);
+    setMapLoaded(false);
+    map.current.once('style.load', () => {
+      setMapLoaded(true);
+    });
+  }, [isDark]);
+
   // Add/update markers when stations change
   useEffect(() => {
     if (!map.current || !mapLoaded) return;
@@ -78,9 +91,10 @@ export function AirQualityMap({
 
       if (isNaN(lat) || isNaN(lon)) return;
 
-      // Create marker element
+      // Create marker element — outer wrapper for Mapbox positioning, inner for hover effect
       const el = document.createElement('div');
-      el.style.cssText = `
+      const inner = document.createElement('div');
+      inner.style.cssText = `
         width: 16px;
         height: 16px;
         background: ${station.indexInfo.color};
@@ -90,12 +104,13 @@ export function AirQualityMap({
         cursor: pointer;
         transition: transform 0.2s;
       `;
+      el.appendChild(inner);
 
-      el.addEventListener('mouseenter', () => {
-        el.style.transform = 'scale(1.3)';
+      inner.addEventListener('mouseenter', () => {
+        inner.style.transform = 'scale(1.3)';
       });
-      el.addEventListener('mouseleave', () => {
-        el.style.transform = 'scale(1)';
+      inner.addEventListener('mouseleave', () => {
+        inner.style.transform = 'scale(1)';
       });
 
       const marker = new mapboxgl.Marker({ element: el })

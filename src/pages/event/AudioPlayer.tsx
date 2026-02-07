@@ -196,7 +196,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
   if (error) {
     return (
       <div
-        className={`inline-flex items-center rounded border border-red-300 bg-red-50 text-red-600 ${
+        className={`inline-flex items-center rounded border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 ${
           small ? 'gap-1.5 px-2 py-1 text-xs' : 'gap-2 px-3 py-1.5 text-sm'
         } ${fullWidth ? 'w-full' : ''}`}
       >
@@ -212,7 +212,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
         ref={seekRef}
         onMouseDown={handleSeekMouseDown}
         onDoubleClick={togglePlay}
-        className={`inline-flex items-center rounded border border-zinc-300 hover:border-zinc-400 transition-colors select-none ${
+        className={`inline-flex items-center rounded border border-divider hover:border-divider transition-colors select-none ${
           small ? 'gap-1.5 px-2 py-1 text-xs' : 'gap-2 px-3 py-1.5 text-sm'
         } ${fullWidth ? 'flex-1' : ''} ${isDraggingSeek ? 'cursor-grabbing' : 'cursor-pointer'}`}
         style={{
@@ -221,13 +221,13 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
       >
         <audio ref={audioRef} src={audioUrl} preload="metadata" />
         <i
-          className={`${small ? 'text-sm' : ''} ${isPlaying ? 'ri-pause-fill text-blue-600' : 'ri-play-fill text-zinc-600'} cursor-pointer`}
+          className={`${small ? 'text-sm' : ''} ${isPlaying ? 'ri-pause-fill text-blue-600' : 'ri-play-fill text-content'} cursor-pointer`}
           onClick={(e) => {
             e.stopPropagation();
             togglePlay();
           }}
         />
-        <span className={`font-mono text-zinc-600 ${small ? 'text-[10px]' : 'text-xs'}`}>
+        <span className={`font-mono text-content ${small ? 'text-[10px]' : 'text-xs'}`}>
           {formatTime(currentTime)} / {formatTime(duration)}
         </span>
       </button>
@@ -238,7 +238,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
         onMouseLeave={handleVolumeMouseLeave}
       >
         <button
-          className={`inline-flex items-center justify-center rounded border border-zinc-300 hover:border-zinc-400 transition-colors text-zinc-600 ${
+          className={`inline-flex items-center justify-center rounded border border-divider hover:border-divider transition-colors text-content ${
             small ? 'size-[26px] text-xs' : 'size-[34px] text-sm'
           }`}
           onClick={() => setShowVolumeSlider(!showVolumeSlider)}
@@ -248,7 +248,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
 
         {showVolumeSlider && (
           <div
-            className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-1 rounded border border-zinc-300 bg-white shadow-sm flex items-center justify-center ${
+            className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-1 rounded border border-divider bg-background shadow-sm flex items-center justify-center ${
               small ? 'w-[26px] h-20 py-2' : 'w-[34px] h-24 py-3'
             }`}
             onMouseEnter={handleVolumeMouseEnter}
@@ -256,7 +256,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
           >
             <div
               ref={volumeTrackRef}
-              className={`relative rounded-full bg-zinc-200 select-none ${
+              className={`relative rounded-full bg-divider select-none ${
                 small ? 'w-1 h-full' : 'w-1.5 h-full'
               } ${isDraggingVolume ? 'cursor-grabbing' : 'cursor-pointer'}`}
               onMouseDown={handleVolumeMouseDown}

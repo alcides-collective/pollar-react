@@ -97,7 +97,7 @@ export function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogP
               autoComplete="current-password"
             />
             <div>
-              <label className="block text-sm text-zinc-600 mb-1.5">
+              <label className="block text-sm text-content mb-1.5">
                 {t('deleteAccount.typeToConfirm').split('<1>')[0]}
                 <span className="font-mono font-medium">{confirmTextRequired}</span>
                 {t('deleteAccount.typeToConfirm').split('</1>')[1]}

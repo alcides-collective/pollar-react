@@ -12,6 +12,7 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Bar } from 'react-chartjs-2';
 import { CHART_COLORS } from '../../utils/chartUtils';
+import { useIsDarkMode } from '@/stores/themeStore';
 
 ChartJS.register(
   CategoryScale,
@@ -36,6 +37,7 @@ interface SummaryBarChartProps {
 
 export function SummaryBarChart({ data }: SummaryBarChartProps) {
   const chartRef = useRef<ChartJS<'bar'>>(null);
+  const isDark = useIsDarkMode();
 
   useEffect(() => {
     return () => {
@@ -49,10 +51,10 @@ export function SummaryBarChart({ data }: SummaryBarChartProps) {
     const labels = data.items.map((d) => d.label);
     const values = data.items.map((d) => d.value);
 
-    // Colors (light mode)
-    const barColors = CHART_COLORS.bar.light;
-    const gridColor = CHART_COLORS.grid.light;
-    const tickColor = CHART_COLORS.tick.light;
+    // Colors (theme-aware)
+    const barColors = isDark ? CHART_COLORS.bar.dark : CHART_COLORS.bar.light;
+    const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
+    const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
 
     // Calculate smart min/max - don't always start from 0
     const minValue = Math.min(...values);
@@ -152,7 +154,7 @@ export function SummaryBarChart({ data }: SummaryBarChartProps) {
     const chartHeight = Math.max(150, labels.length <= 3 ? labels.length * 50 + 40 : labels.length * 40 + 40);
 
     return { chartData, options, chartHeight };
-  }, [data]);
+  }, [data, isDark]);
 
   return (
     <div className="chart-box">

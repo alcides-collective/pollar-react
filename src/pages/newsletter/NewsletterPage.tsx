@@ -42,27 +42,27 @@ export function NewsletterPage() {
               {/* Header skeleton */}
               <div className="mb-14">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="h-4 w-32 bg-zinc-200 rounded" />
-                  <div className="flex-1 h-px bg-zinc-200" />
-                  <div className="h-4 w-40 bg-zinc-200 rounded" />
+                  <div className="h-4 w-32 bg-divider rounded" />
+                  <div className="flex-1 h-px bg-divider" />
+                  <div className="h-4 w-40 bg-divider rounded" />
                 </div>
-                <div className="h-12 w-3/4 bg-zinc-200 rounded mb-3" />
-                <div className="h-12 w-1/2 bg-zinc-200 rounded mb-5" />
-                <div className="h-6 w-full bg-zinc-200 rounded mb-2" />
-                <div className="h-6 w-4/5 bg-zinc-200 rounded" />
+                <div className="h-12 w-3/4 bg-divider rounded mb-3" />
+                <div className="h-12 w-1/2 bg-divider rounded mb-5" />
+                <div className="h-6 w-full bg-divider rounded mb-2" />
+                <div className="h-6 w-4/5 bg-divider rounded" />
               </div>
 
               {/* Top events skeleton */}
               <div className="mb-10">
-                <div className="h-4 w-32 bg-zinc-200 rounded mb-5" />
+                <div className="h-4 w-32 bg-divider rounded mb-5" />
                 <div className="space-y-4">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <div key={i} className="flex gap-4">
-                      <div className="w-8 h-8 rounded-full bg-zinc-200 flex-shrink-0" />
+                      <div className="w-8 h-8 rounded-full bg-divider flex-shrink-0" />
                       <div className="flex-1">
-                        <div className="h-5 w-3/4 bg-zinc-200 rounded mb-2" />
-                        <div className="h-4 w-full bg-zinc-200 rounded mb-2" />
-                        <div className="h-3 w-24 bg-zinc-200 rounded" />
+                        <div className="h-5 w-3/4 bg-divider rounded mb-2" />
+                        <div className="h-4 w-full bg-divider rounded mb-2" />
+                        <div className="h-3 w-24 bg-divider rounded" />
                       </div>
                     </div>
                   ))}
@@ -73,14 +73,14 @@ export function NewsletterPage() {
               <div className="space-y-6">
                 {[1, 2, 3].map((i) => (
                   <div key={i}>
-                    <div className="h-6 w-40 bg-zinc-200 rounded mb-3" />
-                    <div className="h-4 w-full bg-zinc-200 rounded mb-4" />
+                    <div className="h-6 w-40 bg-divider rounded mb-3" />
+                    <div className="h-4 w-full bg-divider rounded mb-4" />
                     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                       {[1, 2, 3].map((j) => (
-                        <div key={j} className="p-4 rounded-lg border border-zinc-200">
-                          <div className="h-4 w-3/4 bg-zinc-200 rounded mb-2" />
-                          <div className="h-3 w-full bg-zinc-200 rounded mb-2" />
-                          <div className="h-3 w-1/2 bg-zinc-200 rounded" />
+                        <div key={j} className="p-4 rounded-lg border border-divider">
+                          <div className="h-4 w-3/4 bg-divider rounded mb-2" />
+                          <div className="h-3 w-full bg-divider rounded mb-2" />
+                          <div className="h-3 w-1/2 bg-divider rounded" />
                         </div>
                       ))}
                     </div>
@@ -92,8 +92,8 @@ export function NewsletterPage() {
             {/* Right column skeleton (desktop only) */}
             <div className="hidden lg:block">
               <div className="space-y-4">
-                <div className="h-64 bg-zinc-200 rounded-xl" />
-                <div className="h-32 bg-zinc-200 rounded-xl" />
+                <div className="h-64 bg-divider rounded-xl" />
+                <div className="h-32 bg-divider rounded-xl" />
               </div>
             </div>
           </div>
@@ -106,18 +106,18 @@ export function NewsletterPage() {
     return (
       <div className="max-w-[1200px] mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-100 flex items-center justify-center">
-            <i className="ri-error-warning-line text-2xl text-zinc-400" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+            <i className="ri-error-warning-line text-2xl text-content-faint" />
           </div>
-          <h1 className="text-xl font-medium text-zinc-900 mb-2">
+          <h1 className="text-xl font-medium text-content-heading mb-2">
             {t('error.title')}
           </h1>
-          <p className="text-zinc-600 mb-6">
+          <p className="text-content mb-6">
             {error.message}
           </p>
           <LocalizedLink
             to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('error.back')}
@@ -131,18 +131,18 @@ export function NewsletterPage() {
     return (
       <div className="max-w-[1200px] mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-100 flex items-center justify-center">
-            <i className="ri-mail-line text-2xl text-zinc-400" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+            <i className="ri-mail-line text-2xl text-content-faint" />
           </div>
-          <h1 className="text-xl font-medium text-zinc-900 mb-2">
+          <h1 className="text-xl font-medium text-content-heading mb-2">
             {t('empty.title')}
           </h1>
-          <p className="text-zinc-600 mb-6">
+          <p className="text-content mb-6">
             {t('empty.description')}
           </p>
           <LocalizedLink
             to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <i className="ri-arrow-left-line" />
             {t('error.back')}

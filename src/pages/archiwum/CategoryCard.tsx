@@ -15,13 +15,13 @@ export function CategoryCard({ category, events, maxEvents = 5 }: CategoryCardPr
   const categoryUrl = `/archiwum/${encodeURIComponent(category.toLowerCase())}`;
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-xl p-5 h-full flex flex-col">
+    <div className="bg-background border border-divider rounded-xl p-5 h-full flex flex-col">
       <LocalizedLink
         to={categoryUrl}
-        className="block text-sm font-semibold text-zinc-900 mb-4 pb-2 border-b border-zinc-100 hover:text-red-600 transition-colors"
+        className="block text-sm font-semibold text-content-heading mb-4 pb-2 border-b border-divider-subtle hover:text-red-600 transition-colors"
       >
         {category}
-        <span className="ml-2 text-xs font-normal text-zinc-400">
+        <span className="ml-2 text-xs font-normal text-content-faint">
           ({events.length})
         </span>
       </LocalizedLink>
@@ -37,13 +37,13 @@ export function CategoryCard({ category, events, maxEvents = 5 }: CategoryCardPr
             <LocalizedLink to={`/event/${event.id}`} className="block group">
               <div className="flex items-center gap-2 text-xs mb-1">
                 <LiveTimeAgo date={event.updatedAt} className="text-red-500" />
-                <span className="text-zinc-300">•</span>
-                <span className="text-zinc-400 truncate">
+                <span className="text-content-faint">•</span>
+                <span className="text-content-faint truncate">
                   {event.sourceCount || event.sources?.length || 0}{' '}
                   {(event.sourceCount || event.sources?.length || 0) === 1 ? 'źródło' : 'źródeł'}
                 </span>
               </div>
-              <h4 className="text-sm leading-tight text-zinc-600 group-hover:text-zinc-900 transition-colors line-clamp-2">
+              <h4 className="text-sm leading-tight text-content group-hover:text-content-heading transition-colors line-clamp-2">
                 {event.title}
               </h4>
             </LocalizedLink>
@@ -52,10 +52,10 @@ export function CategoryCard({ category, events, maxEvents = 5 }: CategoryCardPr
       </motion.div>
 
       {events.length > maxEvents && (
-        <div className="mt-4 pt-3 border-t border-zinc-100">
+        <div className="mt-4 pt-3 border-t border-divider-subtle">
           <LocalizedLink
             to={categoryUrl}
-            className="text-xs text-zinc-400 hover:text-red-600 transition-colors"
+            className="text-xs text-content-faint hover:text-red-600 transition-colors"
           >
             +{events.length - maxEvents} więcej
           </LocalizedLink>

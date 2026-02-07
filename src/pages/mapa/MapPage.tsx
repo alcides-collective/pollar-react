@@ -40,7 +40,7 @@ export function MapPage() {
     <div className="fixed inset-0 z-0">
       {/* Optional: Title overlay */}
       <div className="absolute top-4 right-4 z-10 hidden md:block">
-        <span className="text-sm text-zinc-500 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm">
+        <span className="text-sm text-content-subtle bg-background/80 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm">
           {title}
         </span>
       </div>

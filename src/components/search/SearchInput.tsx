@@ -23,8 +23,8 @@ export function SearchInput({
     <div className="relative">
       <Search
         className={cn(
-          'absolute left-4 top-1/2 -translate-y-1/2 size-5 text-zinc-500',
-          isLoading && 'animate-pulse text-zinc-400'
+          'absolute left-4 top-1/2 -translate-y-1/2 size-5 text-content-subtle',
+          isLoading && 'animate-pulse text-content-faint'
         )}
       />
 
@@ -38,8 +38,8 @@ export function SearchInput({
           'w-full pl-12 pr-12 py-4 text-lg',
           // Glass input style
           'bg-white/5 border-b border-white/10',
-          'text-zinc-100',
-          'placeholder:text-zinc-500',
+          'text-content-heading',
+          'placeholder:text-content-subtle',
           'focus:outline-none focus:bg-white/[0.07] focus:border-white/20',
           'transition-all duration-200'
         )}
@@ -49,7 +49,7 @@ export function SearchInput({
         <button
           type="button"
           onClick={onClear}
-          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-content-subtle hover:text-white hover:bg-white/10 transition-colors"
         >
           <X className="size-5" />
         </button>

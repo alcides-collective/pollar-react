@@ -19,7 +19,7 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
 
   return (
     <section className="mb-12">
-      <h2 className="text-sm text-zinc-500 mb-3 pb-2 border-b border-zinc-200 font-medium">
+      <h2 className="text-sm text-content-subtle mb-3 pb-2 border-b border-divider font-medium">
         {t('insights.title')}
       </h2>
 
@@ -29,40 +29,40 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
           <InsightCard
             label={t('insights.trends')}
             items={insights.trends}
-            colorClass="border-blue-200 bg-blue-50/50"
+            colorClass="border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/30"
           />
         )}
         {insights.correlations.length > 0 && (
           <InsightCard
             label={t('insights.correlations')}
             items={insights.correlations}
-            colorClass="border-purple-200 bg-purple-50/50"
+            colorClass="border-purple-200 dark:border-purple-800 bg-purple-50/50 dark:bg-purple-950/30"
           />
         )}
         {insights.anomalies.length > 0 && (
           <InsightCard
             label={t('insights.anomalies')}
             items={insights.anomalies}
-            colorClass="border-amber-200 bg-amber-50/50"
+            colorClass="border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/30"
           />
         )}
         {insights.implications.length > 0 && (
           <InsightCard
             label={t('insights.implications')}
             items={insights.implications}
-            colorClass="border-green-200 bg-green-50/50"
+            colorClass="border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/30"
           />
         )}
       </div>
 
       {/* Meta Commentary */}
       {insights.metaCommentary && (
-        <div className="mt-4 p-4 rounded-lg border border-zinc-200 bg-zinc-50/50">
-          <p className="text-xs uppercase tracking-wider text-zinc-500 mb-2 font-semibold">
+        <div className="mt-4 p-4 rounded-lg border border-divider bg-surface/50">
+          <p className="text-xs uppercase tracking-wider text-content-subtle mb-2 font-semibold">
             {t('insights.metaCommentary')}
           </p>
           <p
-            className="text-sm text-zinc-700"
+            className="text-sm text-content"
             dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(insights.metaCommentary) }}
           />
         </div>
@@ -80,14 +80,14 @@ interface InsightCardProps {
 function InsightCard({ label, items, colorClass }: InsightCardProps) {
   return (
     <article className={`p-4 rounded-lg border ${colorClass}`}>
-      <p className="text-xs uppercase tracking-wider text-zinc-600 font-semibold mb-3">
+      <p className="text-xs uppercase tracking-wider text-content font-semibold mb-3">
         {label}
       </p>
       <ul className="space-y-2">
         {items.map((item, i) => (
           <li
             key={i}
-            className="text-sm text-zinc-700 p-2 rounded border border-zinc-200/50 bg-white/50"
+            className="text-sm text-content p-2 rounded border border-divider/50 bg-background/50"
             dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(item) }}
           />
         ))}

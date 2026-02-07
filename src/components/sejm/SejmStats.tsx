@@ -14,8 +14,8 @@ export function SejmStats({ stats }: SejmStatsProps) {
     .sort(([, a], [, b]) => b - a);
 
   return (
-    <div className="rounded-lg border border-zinc-200 p-4">
-      <h3 className="text-sm font-medium text-zinc-900 mb-3">Rozkład mandatów</h3>
+    <div className="rounded-lg border border-divider p-4">
+      <h3 className="text-sm font-medium text-content-heading mb-3">Rozkład mandatów</h3>
 
       {/* Stacked bar */}
       <div className="h-6 flex rounded overflow-hidden mb-3">
@@ -46,7 +46,7 @@ export function SejmStats({ stats }: SejmStatsProps) {
                 className="w-2.5 h-2.5 rounded-sm"
                 style={{ backgroundColor: color.bg }}
               />
-              <span className="text-zinc-600">
+              <span className="text-content">
                 {getPartyShort(club)}: {count}
               </span>
             </div>
@@ -55,18 +55,18 @@ export function SejmStats({ stats }: SejmStatsProps) {
       </div>
 
       {/* Summary stats */}
-      <div className="mt-4 pt-3 border-t border-zinc-100 grid grid-cols-3 gap-4 text-center">
+      <div className="mt-4 pt-3 border-t border-divider-subtle grid grid-cols-3 gap-4 text-center">
         <div>
-          <div className="text-lg font-semibold text-zinc-900">{mps.active}</div>
-          <div className="text-[10px] text-zinc-500 uppercase tracking-wide">Aktywnych</div>
+          <div className="text-lg font-semibold text-content-heading">{mps.active}</div>
+          <div className="text-[10px] text-content-subtle uppercase tracking-wide">Aktywnych</div>
         </div>
         <div>
-          <div className="text-lg font-semibold text-zinc-900">{stats.votings.recent}</div>
-          <div className="text-[10px] text-zinc-500 uppercase tracking-wide">Głosowań</div>
+          <div className="text-lg font-semibold text-content-heading">{stats.votings.recent}</div>
+          <div className="text-[10px] text-content-subtle uppercase tracking-wide">Głosowań</div>
         </div>
         <div>
-          <div className="text-lg font-semibold text-zinc-900">{stats.prints.recent}</div>
-          <div className="text-[10px] text-zinc-500 uppercase tracking-wide">Druków</div>
+          <div className="text-lg font-semibold text-content-heading">{stats.prints.recent}</div>
+          <div className="text-[10px] text-content-subtle uppercase tracking-wide">Druków</div>
         </div>
       </div>
     </div>

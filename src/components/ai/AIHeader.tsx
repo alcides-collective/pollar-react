@@ -26,7 +26,7 @@ export function AIHeader({ showSidebarToggle = true, showBackButton = true }: AI
   };
 
   return (
-    <header className="flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shrink-0">
+    <header className="flex items-center h-14 px-4 border-b border-divider dark:border-zinc-800 bg-background dark:bg-zinc-950 shrink-0">
       {/* Left side - back button and sidebar toggle */}
       <div className="flex items-center gap-1 w-32">
         {showBackButton && (
@@ -34,8 +34,8 @@ export function AIHeader({ showSidebarToggle = true, showBackButton = true }: AI
             onClick={handleBack}
             aria-label="Wróć"
             className="p-2 rounded-lg
-                       text-zinc-500 dark:text-zinc-400
-                       hover:bg-zinc-100 dark:hover:bg-zinc-800
+                       text-content-subtle dark:text-zinc-400
+                       hover:bg-surface dark:hover:bg-zinc-800
                        transition-colors duration-150"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -46,8 +46,8 @@ export function AIHeader({ showSidebarToggle = true, showBackButton = true }: AI
             onClick={toggleSidebar}
             aria-label="Otwórz panel"
             className="p-2 rounded-lg
-                       text-zinc-500 dark:text-zinc-400
-                       hover:bg-zinc-100 dark:hover:bg-zinc-800
+                       text-content-subtle dark:text-zinc-400
+                       hover:bg-surface dark:hover:bg-zinc-800
                        transition-colors duration-150"
           >
             <PanelLeft className="w-5 h-5" />
@@ -58,7 +58,7 @@ export function AIHeader({ showSidebarToggle = true, showBackButton = true }: AI
       {/* Center - Title */}
       <div className="flex-1 flex items-center justify-center gap-2">
         <svg
-          className="w-4 h-4 text-zinc-400 dark:text-zinc-500"
+          className="w-4 h-4 text-content-faint dark:text-zinc-500"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -68,7 +68,7 @@ export function AIHeader({ showSidebarToggle = true, showBackButton = true }: AI
         >
           <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z" />
         </svg>
-        <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+        <span className="text-sm font-medium text-content dark:text-zinc-400">
           Pollar
         </span>
       </div>
@@ -81,8 +81,8 @@ export function AIHeader({ showSidebarToggle = true, showBackButton = true }: AI
             title="Nowa rozmowa"
             aria-label="Nowa rozmowa"
             className="p-2 rounded-lg
-                       text-zinc-500 dark:text-zinc-400
-                       hover:bg-zinc-100 dark:hover:bg-zinc-800
+                       text-content-subtle dark:text-zinc-400
+                       hover:bg-surface dark:hover:bg-zinc-800
                        transition-colors duration-150"
           >
             <Plus className="w-5 h-5" />

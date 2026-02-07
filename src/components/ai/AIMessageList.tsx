@@ -119,16 +119,16 @@ export function AIMessageList({
         {showTypingIndicator && <AITypingIndicator />}
 
         {showFollowUps && (
-          <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/50 animate-fade-in">
+          <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-divider-subtle dark:border-zinc-800/50 animate-fade-in">
             {followUps.map((followUp) => (
               <button
                 key={followUp}
                 onClick={() => onSuggestionSelect(followUp)}
-                className="text-sm text-left text-zinc-600 dark:text-zinc-400
-                           border border-zinc-200 dark:border-zinc-700 rounded-lg
+                className="text-sm text-left text-content dark:text-zinc-400
+                           border border-divider dark:border-zinc-700 rounded-lg
                            px-4 py-3 leading-relaxed
-                           hover:bg-zinc-50 dark:hover:bg-zinc-800/50
-                           hover:border-zinc-300 dark:hover:border-zinc-600
+                           hover:bg-surface dark:hover:bg-zinc-800/50
+                           hover:border-divider dark:hover:border-zinc-600
                            transition-colors duration-150"
               >
                 {followUp}
@@ -148,11 +148,11 @@ export function AIMessageList({
           aria-label="Przewin w dol"
           className="absolute bottom-3 right-3 flex items-center justify-center
                      w-9 h-9 rounded-full
-                     border border-zinc-200 dark:border-zinc-700
-                     bg-white/95 dark:bg-zinc-900/95
-                     text-zinc-500 dark:text-zinc-400
+                     border border-divider dark:border-zinc-700
+                     bg-background/95 dark:bg-zinc-900/95
+                     text-content-subtle dark:text-zinc-400
                      shadow-lg backdrop-blur-sm
-                     hover:border-zinc-300 dark:hover:border-zinc-600
+                     hover:border-divider dark:hover:border-zinc-600
                      active:scale-95
                      transition-all duration-150 z-10
                      animate-fade-in"

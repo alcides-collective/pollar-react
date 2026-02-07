@@ -10,6 +10,8 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import type { EnergyMixTimeSeries } from '@/types/dane';
+import { useIsDarkMode } from '@/stores/themeStore';
+import { CHART_COLORS } from '@/utils/chartUtils';
 
 ChartJS.register(
   CategoryScale,
@@ -26,6 +28,9 @@ interface EnergyMixChartProps {
 
 export function EnergyMixChart({ data }: EnergyMixChartProps) {
   const { t } = useTranslation('dane');
+  const isDark = useIsDarkMode();
+  const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
+  const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
 
   const chartData = {
     labels: data.map((d) => d.year.toString()),
@@ -57,19 +62,25 @@ export function EnergyMixChart({ data }: EnergyMixChartProps) {
     plugins: {
       legend: {
         position: 'top' as const,
+        labels: { color: tickColor },
       },
       title: {
         display: true,
         text: t('charts.energy.mixTitle'),
+        color: tickColor,
       },
     },
     scales: {
       x: {
         stacked: true,
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
       },
       y: {
         stacked: true,
         max: 100,
+        grid: { color: gridColor },
+        ticks: { color: tickColor },
       },
     },
   };

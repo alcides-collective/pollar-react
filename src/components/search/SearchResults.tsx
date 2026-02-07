@@ -15,8 +15,8 @@ export function SearchResults({ results, isLoading, onSelect }: SearchResultsPro
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="size-5 animate-spin text-zinc-500" />
-        <span className="ml-2 text-zinc-400">{t('searching')}</span>
+        <Loader2 className="size-5 animate-spin text-content-subtle" />
+        <span className="ml-2 text-content-faint">{t('searching')}</span>
       </div>
     );
   }
