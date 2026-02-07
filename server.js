@@ -653,6 +653,54 @@ function generateFAQSchema(faqItems) {
   };
 }
 
+// LiveBlogPosting schema for BREAKING/HOT events — Google shows live badge
+function generateLiveBlogPostingSchema(opts) {
+  const { headline, description, datePublished, dateModified, targetUrl, ogImage, lang = 'pl', articles = [], coverageStartTime = null, coverageEndTime = null } = opts;
+  const inLanguageMap = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
+
+  // Build liveBlogUpdate entries from articles (newest first, max 20)
+  const sortedArticles = [...articles]
+    .sort((a, b) => new Date(b.publishDate || b.createdAt || 0) - new Date(a.publishDate || a.createdAt || 0))
+    .slice(0, 20);
+
+  const blogUpdates = sortedArticles.map((article, i) => ({
+    '@type': 'BlogPosting',
+    headline: stripHtml(article.title || ''),
+    datePublished: article.publishDate || article.createdAt || datePublished,
+    ...(article.url ? { url: article.url } : {}),
+    author: {
+      '@type': 'Organization',
+      name: article.source || 'Pollar News'
+    }
+  }));
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LiveBlogPosting',
+    headline,
+    description,
+    inLanguage: inLanguageMap[lang] || 'pl-PL',
+    url: targetUrl,
+    image: ogImage,
+    datePublished: datePublished || new Date().toISOString(),
+    dateModified: dateModified || datePublished || new Date().toISOString(),
+    coverageStartTime: coverageStartTime || datePublished || new Date().toISOString(),
+    ...(coverageEndTime ? { coverageEndTime } : {}),
+    author: {
+      '@type': 'Organization',
+      name: 'Pollar News',
+      url: 'https://pollar.news'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Pollar News',
+      url: 'https://pollar.news',
+      logo: { '@type': 'ImageObject', url: 'https://pollar.news/logo.png' }
+    },
+    ...(blogUpdates.length > 0 ? { liveBlogUpdate: blogUpdates } : {})
+  };
+}
+
 // Speakable schema — tells voice assistants which content to read aloud
 function addSpeakable(schema, speakableSelectors = ['.article-body', '.summary', '.key-points']) {
   if (!schema) return schema;
@@ -806,6 +854,18 @@ async function fetchBriefData(lang = 'pl') {
     return result.data;
   } catch {
     return null;
+  }
+}
+
+// Fetch similar events from API (for internal linking in SSR)
+async function fetchSimilarEvents(eventId, lang = 'pl') {
+  try {
+    const response = await fetch(`${API_BASE}/api/events/${eventId}/similar?lang=${lang}`);
+    if (!response.ok) return [];
+    const data = await response.json();
+    return Array.isArray(data) ? data : (data.data || data.events || []);
+  } catch {
+    return [];
   }
 }
 
@@ -1646,7 +1706,41 @@ app.use(async (req, res, next) => {
         capsuleParts.push(`<section class="sources"><h3>${heading}</h3><ul>${sourceItems}</ul></section>`);
       }
 
+      // Related events (internal linking for SEO)
+      const similarEvents = await fetchSimilarEvents(eventMatch[1], lang);
+      if (similarEvents.length > 0) {
+        const langPrefix = lang === 'pl' ? '' : `/${lang}`;
+        const relatedItems = similarEvents.slice(0, 5).map(e => {
+          const title = escapeHtml(stripHtml(e.title || ''));
+          const link = `https://pollar.news${langPrefix}/event/${e.id}`;
+          return `<li><a href="${link}">${title}</a></li>`;
+        }).join('');
+        const relatedHeading = { pl: 'Powiązane wydarzenia', en: 'Related Events', de: 'Verwandte Ereignisse' }[lang] || 'Powiązane wydarzenia';
+        capsuleParts.push(`<nav class="related"><h3>${relatedHeading}</h3><ul>${relatedItems}</ul></nav>`);
+      }
+
       const answerCapsule = capsuleParts.join('');
+
+      // Use LiveBlogPosting schema for BREAKING/HOT events (Google live badge)
+      const freshnessLevel = event.freshnessLevel || event.metadata?.freshnessLevel;
+      const isLive = freshnessLevel === 'BREAKING' || freshnessLevel === 'HOT';
+      let schemas;
+      if (isLive && (event.articles || []).length > 0) {
+        const liveBlogSchema = addSpeakable(generateLiveBlogPostingSchema({
+          headline: fullTitle,
+          description,
+          datePublished: event.createdAt || event.date,
+          dateModified: event.updatedAt || event.createdAt || event.date,
+          targetUrl,
+          ogImage,
+          lang,
+          articles: event.articles || [],
+          coverageStartTime: event.createdAt || event.date,
+        }));
+        schemas = [schema, liveBlogSchema];
+      } else {
+        schemas = schema;
+      }
 
       return res.send(generateSeoHtml({
         pageTitle: `${shortTitle} | Pollar`,
@@ -1655,7 +1749,7 @@ app.use(async (req, res, next) => {
         description,
         ogImage,
         targetUrl,
-        schema,
+        schema: schemas,
         articlePublished: event.createdAt || event.date,
         articleModified: event.updatedAt || event.createdAt || event.date,
         articleSection: event.metadata?.category,
