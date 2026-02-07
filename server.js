@@ -36,6 +36,56 @@ try {
   console.warn('Could not load logo:', err.message);
 }
 
+// FAQ data for static pages (used for FAQPage schema — AEO)
+const PAGE_FAQS = {
+  '/kontakt': {
+    pl: [
+      { question: 'Jak zgłosić błąd?', answer: 'Najszybciej przez formularz kontaktowy — wybierz temat "Błąd / Bug report" i opisz problem. Możesz też napisać bezpośrednio na jakub@pollar.pl.' },
+      { question: 'Jak usunąć konto?', answer: 'Napisz do nas z adresu email powiązanego z kontem na jakub@pollar.pl z prośbą o usunięcie konta. Usuniemy je w ciągu 7 dni roboczych.' },
+      { question: 'Czy Pollar jest darmowy?', answer: 'Tak, Pollar jest w pełni darmowy. Planujemy w przyszłości wprowadzić plan premium z dodatkowymi funkcjami, ale podstawowy dostęp zawsze pozostanie bezpłatny.' },
+      { question: 'Jak działa AI w Pollar?', answer: 'AI automatycznie grupuje powiązane artykuły w wydarzenia, generuje streszczenia i tworzy Daily Brief. Korzystamy z modeli AI od różnych dostawców (m.in. Google Gemini, OpenAI, OpenRouter) do analizy i podsumowywania treści.' },
+      { question: 'Jak zostać źródłem w Pollar?', answer: 'Pollar agreguje wiadomości z publicznych źródeł za pośrednictwem Event Registry. Jeśli reprezentujesz medium i chcesz, aby Twoje artykuły były uwzględniane, skontaktuj się z nami przez formularz.' },
+    ],
+    en: [
+      { question: 'How do I report a bug?', answer: 'The quickest way is through the contact form — select "Bug report" as the subject and describe the issue. You can also email jakub@pollar.pl directly.' },
+      { question: 'How do I delete my account?', answer: 'Email us from the address associated with your account at jakub@pollar.pl requesting account deletion. We\'ll delete it within 7 business days.' },
+      { question: 'Is Pollar free?', answer: 'Yes, Pollar is completely free. We plan to introduce a premium plan with additional features in the future, but basic access will always remain free.' },
+      { question: 'How does AI work in Pollar?', answer: 'AI automatically groups related articles into events, generates summaries, and creates the Daily Brief. We use AI models from various providers (including Google Gemini, OpenAI, OpenRouter) for content analysis and summarization.' },
+      { question: 'How do I become a source on Pollar?', answer: 'Pollar aggregates news from public sources via Event Registry. If you represent a media outlet and want your articles included, contact us through the form.' },
+    ],
+    de: [
+      { question: 'Wie melde ich einen Fehler?', answer: 'Am schnellsten über das Kontaktformular — wählen Sie "Fehler / Bug report" als Betreff und beschreiben Sie das Problem. Sie können auch direkt an jakub@pollar.pl schreiben.' },
+      { question: 'Wie lösche ich mein Konto?', answer: 'Schreiben Sie uns von der mit Ihrem Konto verknüpften E-Mail-Adresse an jakub@pollar.pl mit der Bitte um Kontolöschung. Wir löschen es innerhalb von 7 Werktagen.' },
+      { question: 'Ist Pollar kostenlos?', answer: 'Ja, Pollar ist völlig kostenlos. Wir planen, in Zukunft einen Premium-Plan mit zusätzlichen Funktionen einzuführen, aber der grundlegende Zugang bleibt immer kostenlos.' },
+      { question: 'Wie funktioniert KI bei Pollar?', answer: 'KI gruppiert automatisch verwandte Artikel zu Ereignissen, erstellt Zusammenfassungen und den Daily Brief. Wir verwenden KI-Modelle verschiedener Anbieter (u.a. Google Gemini, OpenAI, OpenRouter) zur Inhaltsanalyse und Zusammenfassung.' },
+      { question: 'Wie wird man Quelle bei Pollar?', answer: 'Pollar aggregiert Nachrichten aus öffentlichen Quellen über Event Registry. Wenn Sie ein Medium vertreten und möchten, dass Ihre Artikel berücksichtigt werden, kontaktieren Sie uns über das Formular.' },
+    ],
+  },
+  '/info': {
+    pl: [
+      { question: 'Czym jest Pollar News?', answer: 'Pollar News to platforma informacyjna zasilana sztuczną inteligencją, która agreguje, streszcza i kontekstualizuje codzienne wydarzenia z polskiej i międzynarodowej prasy — bez clickbaitów, tylko sprawdzone fakty.' },
+      { question: 'Jak Pollar organizuje wiadomości?', answer: 'AI automatycznie grupuje powiązane artykuły z różnych źródeł w jedno wydarzenie, generuje streszczenia z kluczowymi punktami i prezentuje różne perspektywy.' },
+      { question: 'Czy Pollar jest darmowy?', answer: 'Tak, Pollar jest w pełni darmowy. Podstawowy dostęp zawsze pozostanie bezpłatny.' },
+      { question: 'Kto stoi za Pollar?', answer: 'Pollar P.S.A. to firma zarejestrowana w Krakowie. Zespół tworzą Jakub Dudek (Developer) i Bartosz Kasprzycki (Product & Marketing).' },
+      { question: 'Jakie dane udostępnia Pollar?', answer: 'Pollar oferuje dashboardy z danymi publicznymi: Sejm RP (głosowania, posłowie, komisje), giełda GPW, jakość powietrza, ceny mieszkań, energetyka, przestępczość i więcej ze źródeł GIOŚ, GUS i Eurostat.' },
+    ],
+    en: [
+      { question: 'What is Pollar News?', answer: 'Pollar News is an AI-powered news platform that aggregates, summarizes, and contextualizes daily events from Polish and international press — no clickbait, only verified facts.' },
+      { question: 'How does Pollar organize news?', answer: 'AI automatically groups related articles from various sources into a single event, generates summaries with key points, and presents different perspectives.' },
+      { question: 'Is Pollar free?', answer: 'Yes, Pollar is completely free. Basic access will always remain free.' },
+      { question: 'Who is behind Pollar?', answer: 'Pollar P.S.A. is a company registered in Kraków, Poland. The team consists of Jakub Dudek (Developer) and Bartosz Kasprzycki (Product & Marketing).' },
+      { question: 'What data does Pollar provide?', answer: 'Pollar offers public data dashboards: Polish Parliament (votes, MPs, committees), GPW stock market, air quality, real estate prices, energy mix, crime statistics and more from GIOŚ, GUS and Eurostat sources.' },
+    ],
+    de: [
+      { question: 'Was ist Pollar News?', answer: 'Pollar News ist eine KI-gestützte Nachrichtenplattform, die tägliche Ereignisse aus der polnischen und internationalen Presse aggregiert, zusammenfasst und kontextualisiert — ohne Clickbait, nur verifizierte Fakten.' },
+      { question: 'Wie organisiert Pollar Nachrichten?', answer: 'KI gruppiert automatisch verwandte Artikel aus verschiedenen Quellen zu einem Ereignis, erstellt Zusammenfassungen mit Kernpunkten und präsentiert verschiedene Perspektiven.' },
+      { question: 'Ist Pollar kostenlos?', answer: 'Ja, Pollar ist völlig kostenlos. Der grundlegende Zugang bleibt immer kostenlos.' },
+      { question: 'Wer steht hinter Pollar?', answer: 'Pollar P.S.A. ist ein in Kraków, Polen, registriertes Unternehmen. Das Team besteht aus Jakub Dudek (Entwickler) und Bartosz Kasprzycki (Produkt & Marketing).' },
+      { question: 'Welche Daten bietet Pollar?', answer: 'Pollar bietet öffentliche Daten-Dashboards: Polnisches Parlament (Abstimmungen, Abgeordnete, Ausschüsse), GPW-Börse, Luftqualität, Immobilienpreise, Energiemix, Kriminalitätsstatistiken und mehr aus GIOŚ, GUS und Eurostat-Quellen.' },
+    ],
+  },
+};
+
 // Static page titles mapping
 const PAGE_TITLES = {
   '/': { title: 'Pollar News', description: 'Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.' },
@@ -72,6 +122,8 @@ const PAGE_TITLES = {
   '/dane/bezpieczenstwo/przestepczosc': { title: 'Przestępczość', description: 'Statystyki Policji: liczba przestępstw, wykrywalność i ranking bezpieczeństwa województw.' },
   // Sources
   '/sources': { title: 'Źródła wiadomości', description: 'Wszystkie źródła wiadomości śledzone przez Pollar z klasyfikacją kapitałową i orientacją polityczną.' },
+  '/kontakt': { title: 'Kontakt', description: 'Skontaktuj się z zespołem Pollar News. Formularz kontaktowy, FAQ i dane firmy.' },
+  '/regulamin': { title: 'Regulamin', description: 'Regulamin serwisu Pollar News z warunkami korzystania i licencją CC BY-NC-SA 4.0.' },
 };
 
 // Crawler detection
@@ -313,6 +365,35 @@ function generateOrganizationSchema() {
   };
 }
 
+// FAQPage schema generator for AEO
+function generateFAQSchema(faqItems) {
+  if (!faqItems || faqItems.length === 0) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map(item => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer
+      }
+    }))
+  };
+}
+
+// Speakable schema — tells voice assistants which content to read aloud
+function addSpeakable(schema, speakableSelectors = ['.article-body', '.summary', '.key-points']) {
+  if (!schema) return schema;
+  return {
+    ...schema,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: speakableSelectors
+    }
+  };
+}
+
 // Breadcrumb segment name mapping
 const BREADCRUMB_NAMES = {
   sejm: 'Sejm',
@@ -356,7 +437,7 @@ function generateBreadcrumbSchema(path, pageTitles) {
 }
 
 function generateSeoHtml(opts) {
-  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null, articlePublished = null, articleModified = null, articleSection = null, newsKeywords = null, pathWithoutLang = null, lang = 'pl' } = opts;
+  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null, articlePublished = null, articleModified = null, articleSection = null, newsKeywords = null, pathWithoutLang = null, lang = 'pl', answerCapsule = null } = opts;
 
   // Generate JSON-LD script(s) if schema is provided (can be single object or array)
   const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
@@ -417,6 +498,11 @@ function generateSeoHtml(opts) {
     ${schemaScript}
   </head>
   <body>
+    <article>
+      <h1>${escapeHtml(ogTitle)}</h1>
+      <p class="summary">${escapeHtml(description)}</p>
+      ${answerCapsule ? `<div class="article-body">${answerCapsule}</div>` : ''}
+    </article>
     <p>Przekierowywanie do <a href="${targetUrl}">${escapeHtml(ogTitle)}</a>...</p>
     <script>window.location.replace(${JSON.stringify(targetUrl)});</script>
   </body>
@@ -1026,15 +1112,15 @@ app.use(async (req, res, next) => {
       const ogImageDescription = truncate(stripHtml(event.lead || kp?.description || event.summary || ''), 300);
       const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
 
-      // Generate NewsArticle schema for AEO
-      const schema = generateNewsArticleSchema({
+      // Generate NewsArticle schema with speakable for AEO
+      const schema = addSpeakable(generateNewsArticleSchema({
         headline: fullTitle,
         description,
         datePublished: event.createdAt || event.date,
         dateModified: event.updatedAt || event.createdAt || event.date,
         targetUrl,
         ogImage
-      });
+      }));
 
       // Build news_keywords from event metadata
       const keywordParts = [
@@ -1044,6 +1130,13 @@ app.use(async (req, res, next) => {
         event.metadata?.location?.city
       ].filter(Boolean);
       const newsKeywords = keywordParts.length > 0 ? keywordParts.join(', ') : null;
+
+      // Build answer capsule with key points for AI crawlers
+      const keyPoints = (event.metadata?.keyPoints || [])
+        .map(kp => `<section class="key-points"><h3>${escapeHtml(stripHtml(kp.title || ''))}</h3><p>${escapeHtml(stripHtml(kp.description || ''))}</p></section>`)
+        .join('');
+      const summaryHtml = event.summary ? `<section class="summary"><p>${escapeHtml(truncate(stripHtml(event.summary), 500))}</p></section>` : '';
+      const answerCapsule = keyPoints + summaryHtml;
 
       return res.send(generateSeoHtml({
         pageTitle: `${shortTitle} | Pollar`,
@@ -1057,7 +1150,8 @@ app.use(async (req, res, next) => {
         articleSection: event.metadata?.category,
         newsKeywords,
         pathWithoutLang,
-        lang
+        lang,
+        answerCapsule
       }));
     }
   }
@@ -1083,14 +1177,27 @@ app.use(async (req, res, next) => {
     const ogTitle = `Pollar News: ${briefTitle}`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(imageTitle)}&type=brief&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
 
-    // Generate NewsArticle schema for AEO
-    const schema = generateNewsArticleSchema({
+    // Generate NewsArticle schema with speakable for AEO
+    const schema = addSpeakable(generateNewsArticleSchema({
       headline: imageTitle,
       description,
       datePublished: brief?.date,
       targetUrl,
       ogImage
-    });
+    }));
+
+    // Build answer capsule with executive summary and sections for AI crawlers
+    let briefCapsule = '';
+    if (brief) {
+      if (brief.executiveSummary) {
+        briefCapsule += `<section class="summary"><h2>Executive Summary</h2><p>${escapeHtml(stripHtml(brief.executiveSummary))}</p></section>`;
+      }
+      if (brief.sections?.length) {
+        briefCapsule += brief.sections.map(s =>
+          `<section class="key-points"><h3>${escapeHtml(stripHtml(s.title || ''))}</h3><p>${escapeHtml(truncate(stripHtml(s.content || s.summary || ''), 300))}</p></section>`
+        ).join('');
+      }
+    }
 
     return res.send(generateSeoHtml({
       pageTitle: `${briefTitle} | Pollar`,
@@ -1102,7 +1209,8 @@ app.use(async (req, res, next) => {
       articlePublished: brief?.date || brief?.generatedAt,
       articleSection: 'Daily Brief',
       pathWithoutLang,
-      lang
+      lang,
+      answerCapsule: briefCapsule
     }));
   }
 
@@ -1123,14 +1231,19 @@ app.use(async (req, res, next) => {
     const ogTitle = `Pollar News: ${felietonTitle}`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(felietonTitle)}&type=felieton&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
 
-    // Generate NewsArticle schema for AEO
-    const schema = generateNewsArticleSchema({
+    // Generate NewsArticle schema with speakable for AEO
+    const schema = addSpeakable(generateNewsArticleSchema({
       headline: felietonTitle,
       description,
       datePublished: felieton?.createdAt || felieton?.date,
       targetUrl,
       ogImage
-    });
+    }));
+
+    // Build answer capsule with lead for AI crawlers
+    const felietonCapsule = felieton?.lead
+      ? `<section class="summary"><p>${escapeHtml(stripHtml(felieton.lead))}</p></section>`
+      : '';
 
     return res.send(generateSeoHtml({
       pageTitle: `${felietonTitle} | Pollar`,
@@ -1142,7 +1255,8 @@ app.use(async (req, res, next) => {
       articlePublished: felieton?.createdAt || felieton?.date,
       articleSection: felieton?.category || 'Felieton',
       pathWithoutLang,
-      lang
+      lang,
+      answerCapsule: felietonCapsule
     }));
   }
 
@@ -1154,14 +1268,17 @@ app.use(async (req, res, next) => {
     const pageTitle = isHomepage ? 'Pollar — Wiesz więcej' : `${pageInfo.title} | Pollar`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}&description=${encodeURIComponent(pageInfo.description)}&lang=${lang}`;
 
-    // Use Organization schema for homepage, WebPage + BreadcrumbList for other static pages
+    // Use Organization schema for homepage, WebPage + BreadcrumbList + FAQPage for other static pages
     let schema;
     if (isHomepage) {
       schema = generateOrganizationSchema();
     } else {
       const webPageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', name: pageInfo.title, description: pageInfo.description, url: targetUrl };
       const breadcrumbSchema = generateBreadcrumbSchema(pathWithoutLang, PAGE_TITLES);
-      schema = breadcrumbSchema ? [webPageSchema, breadcrumbSchema] : webPageSchema;
+      const faqData = PAGE_FAQS[pathWithoutLang]?.[lang] || PAGE_FAQS[pathWithoutLang]?.pl;
+      const faqSchema = generateFAQSchema(faqData);
+      const schemas = [webPageSchema, breadcrumbSchema, faqSchema].filter(Boolean);
+      schema = schemas.length === 1 ? schemas[0] : schemas;
     }
 
     return res.send(generateSeoHtml({
