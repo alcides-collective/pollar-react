@@ -19,6 +19,7 @@ const SECTIONS: Record<string, Section[]> = {
     { id: 'warunki', title: 'Warunki korzystania' },
     { id: 'rejestracja', title: 'Rejestracja i Konto' },
     { id: 'wlasnosc', title: 'Treści i własność intelektualna' },
+    { id: 'licencja', title: 'Licencja CC BY-NC-SA 4.0' },
     { id: 'odpowiedzialnosc', title: 'Odpowiedzialność' },
     { id: 'reklamacje', title: 'Reklamacje' },
     { id: 'dane', title: 'Ochrona danych osobowych' },
@@ -31,6 +32,7 @@ const SECTIONS: Record<string, Section[]> = {
     { id: 'requirements', title: 'Requirements' },
     { id: 'registration', title: 'Registration and Account' },
     { id: 'ip', title: 'Content and IP' },
+    { id: 'license', title: 'CC BY-NC-SA 4.0 License' },
     { id: 'liability', title: 'Liability' },
     { id: 'complaints', title: 'Complaints' },
     { id: 'data', title: 'Personal Data' },
@@ -43,6 +45,7 @@ const SECTIONS: Record<string, Section[]> = {
     { id: 'voraussetzungen', title: 'Voraussetzungen' },
     { id: 'registrierung', title: 'Registrierung und Konto' },
     { id: 'eigentum', title: 'Inhalte und geistiges Eigentum' },
+    { id: 'lizenz', title: 'CC BY-NC-SA 4.0 Lizenz' },
     { id: 'haftung', title: 'Haftung' },
     { id: 'beschwerden', title: 'Beschwerden' },
     { id: 'daten', title: 'Personenbezogene Daten' },
@@ -152,7 +155,7 @@ function TermsContentPL() {
     <>
       <section id="postanowienia" className="mb-14 scroll-mt-24">
         <h2 className="text-xl font-semibold mb-4 text-zinc-900">1. Postanowienia ogólne</h2>
-        <p className="text-zinc-600 mb-3">Niniejszy Regulamin określa zasady korzystania z serwisu internetowego dostępnego pod adresem <a href="https://pollar.pl" className="text-red-600 hover:underline">https://pollar.pl</a> (&bdquo;<strong>Serwis</strong>&rdquo;) oraz powiązanych aplikacji mobilnych i telewizyjnych (&bdquo;<strong>Aplikacje</strong>&rdquo;), prowadzonych przez <strong>{COMPANY_INFO}</strong> (&bdquo;<strong>Pollar</strong>&rdquo;, &bdquo;<strong>Usługodawca</strong>&rdquo;).</p>
+        <p className="text-zinc-600 mb-3">Niniejszy Regulamin określa zasady korzystania z serwisu internetowego dostępnego pod adresem <a href="https://pollar.news" className="text-red-600 hover:underline">https://pollar.news</a> (&bdquo;<strong>Serwis</strong>&rdquo;) oraz powiązanych aplikacji mobilnych i telewizyjnych (&bdquo;<strong>Aplikacje</strong>&rdquo;), prowadzonych przez <strong>{COMPANY_INFO}</strong> (&bdquo;<strong>Pollar</strong>&rdquo;, &bdquo;<strong>Usługodawca</strong>&rdquo;).</p>
         <p className="text-zinc-600 mb-3">Korzystanie z Serwisu i Aplikacji oznacza akceptację niniejszego Regulaminu.</p>
         <p className="text-zinc-600">Regulamin jest udostępniany nieodpłatnie za pośrednictwem Serwisu w formie umożliwiającej jego pobranie, utrwalenie i wydrukowanie.</p>
       </section>
@@ -212,8 +215,26 @@ function TermsContentPL() {
         <p className="text-zinc-600">Elementy graficzne Serwisu, układ treści, logotypy oraz oprogramowanie stanowią własność Usługodawcy lub są wykorzystywane na podstawie odpowiednich licencji i podlegają ochronie prawnej.</p>
       </section>
 
+      <section id="licencja" className="mb-14 scroll-mt-24">
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">7. Licencja Creative Commons</h2>
+        <p className="text-zinc-600 mb-3">Oryginalne treści publikowane w Serwisie — w tym podsumowania, analizy, artykuły briefów dziennych oraz felietony generowane przez Usługodawcę — udostępniane są na warunkach licencji <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pl" target="_blank" rel="license noopener noreferrer" className="text-red-600 hover:underline">Creative Commons Uznanie autorstwa – Użycie niekomercyjne – Na tych samych warunkach 4.0 Międzynarodowe (CC BY-NC-SA 4.0)</a>.</p>
+        <p className="text-zinc-600 mb-3">Licencjodawca udziela ogólnoświatowej, nieodpłatnej, niewyłącznej i nieodwołalnej licencji na korzystanie z Treści wyłącznie w celach niekomercyjnych, obejmującej prawo do:</p>
+        <ul className="list-disc pl-6 text-zinc-600 mb-3 space-y-1.5">
+          <li>kopiowania i rozpowszechniania Treści w dowolnym medium lub formacie,</li>
+          <li>remiksowania, przekształcania i tworzenia na podstawie Treści utworów zależnych.</li>
+        </ul>
+        <p className="text-zinc-600 mb-3">Warunki korzystania:</p>
+        <ul className="list-disc pl-6 text-zinc-600 mb-3 space-y-1.5">
+          <li><strong>Uznanie autorstwa</strong> — należy podać autora jako &bdquo;Pollar News (pollar.news)&rdquo;, dołączyć link do licencji oraz wskazać, czy dokonano zmian w materiale.</li>
+          <li><strong>Użycie niekomercyjne</strong> — Treści nie mogą być wykorzystywane w celach komercyjnych, tj. działaniach ukierunkowanych przede wszystkim na osiągnięcie korzyści majątkowej lub wynagrodzenia pieniężnego.</li>
+          <li><strong>Na tych samych warunkach</strong> — w przypadku remiksowania, przekształcania lub tworzenia na podstawie Treści, utwory zależne muszą być udostępniane na tej samej licencji CC BY-NC-SA 4.0 lub licencji z nią kompatybilnej.</li>
+        </ul>
+        <p className="text-zinc-600 mb-3">Licencja nie obejmuje elementów graficznych Serwisu, logotypów, oprogramowania ani treści pochodzących z zewnętrznych źródeł prasowych. Wszelkie ograniczenia wyrażone za pośrednictwem niniejszej licencji stanowią wyraźne zastrzeżenie praw w rozumieniu art. 4 Dyrektywy Parlamentu Europejskiego i Rady (UE) 2019/790 w sprawie prawa autorskiego i praw pokrewnych na jednolitym rynku cyfrowym.</p>
+        <p className="text-zinc-600">Pełny tekst prawny licencji dostępny jest pod adresem: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.pl" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">creativecommons.org/licenses/by-nc-sa/4.0/legalcode</a>.</p>
+      </section>
+
       <section id="odpowiedzialnosc" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">7. Odpowiedzialność</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">8. Odpowiedzialność</h2>
         <p className="text-zinc-600 mb-3">Usługodawca dokłada wszelkich starań, aby Serwis działał prawidłowo i nieprzerwanie, jednak nie gwarantuje braku przerw technicznych ani błędów.</p>
         <p className="text-zinc-600 mb-3">Usługodawca nie ponosi odpowiedzialności za:</p>
         <ul className="list-disc pl-6 text-zinc-600 space-y-1.5">
@@ -225,18 +246,18 @@ function TermsContentPL() {
       </section>
 
       <section id="reklamacje" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">8. Reklamacje</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">9. Reklamacje</h2>
         <p className="text-zinc-600 mb-3">Reklamacje dotyczące funkcjonowania Serwisu można składać na adres e-mail: <strong>jakub@pollar.pl</strong>.</p>
         <p className="text-zinc-600">Reklamacja powinna zawierać opis problemu oraz dane kontaktowe Użytkownika. Usługodawca rozpatruje reklamacje w terminie 14 dni od dnia ich otrzymania.</p>
       </section>
 
       <section id="dane" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">9. Ochrona danych osobowych</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">10. Ochrona danych osobowych</h2>
         <p className="text-zinc-600">Zasady przetwarzania danych osobowych Użytkowników opisane są w <LocalizedLink to="/polityka-prywatnosci" className="text-red-600 hover:underline">Polityce prywatności</LocalizedLink>.</p>
       </section>
 
       <section id="zmiany" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">10. Zmiany Regulaminu</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">11. Zmiany Regulaminu</h2>
         <p className="text-zinc-600 mb-3">Usługodawca zastrzega sobie prawo do zmiany niniejszego Regulaminu. O zmianach Użytkownicy posiadający Konto zostaną poinformowani drogą e-mailową z odpowiednim wyprzedzeniem.</p>
         <p className="text-zinc-600 mb-3">Korzystanie z Serwisu po wejściu w życie zmian oznacza ich akceptację.</p>
         <p className="text-zinc-600 font-semibold">Ta wersja Regulaminu obowiązuje od: 6 lutego 2026</p>
@@ -263,7 +284,7 @@ function TermsContentEN() {
     <>
       <section id="general" className="mb-14 scroll-mt-24">
         <h2 className="text-xl font-semibold mb-4 text-zinc-900">1. General Provisions</h2>
-        <p className="text-zinc-600 mb-3">These Terms of Service govern the use of the website available at <a href="https://pollar.pl" className="text-red-600 hover:underline">https://pollar.pl</a> (the &ldquo;<strong>Website</strong>&rdquo;) and related mobile and TV applications (the &ldquo;<strong>Applications</strong>&rdquo;), operated by <strong>Pollar P.S.A.</strong>, seated in Kraków at ul. Piastowska 46/12, 30-067 Kraków, Poland, entered in the National Court Register maintained by the District Court for Kraków-Śródmieście, 11th Commercial Division, under KRS number 0001194489, NIP: 6772540681 (&ldquo;<strong>Pollar</strong>&rdquo;, the &ldquo;<strong>Provider</strong>&rdquo;).</p>
+        <p className="text-zinc-600 mb-3">These Terms of Service govern the use of the website available at <a href="https://pollar.news" className="text-red-600 hover:underline">https://pollar.news</a> (the &ldquo;<strong>Website</strong>&rdquo;) and related mobile and TV applications (the &ldquo;<strong>Applications</strong>&rdquo;), operated by <strong>Pollar P.S.A.</strong>, seated in Kraków at ul. Piastowska 46/12, 30-067 Kraków, Poland, entered in the National Court Register maintained by the District Court for Kraków-Śródmieście, 11th Commercial Division, under KRS number 0001194489, NIP: 6772540681 (&ldquo;<strong>Pollar</strong>&rdquo;, the &ldquo;<strong>Provider</strong>&rdquo;).</p>
         <p className="text-zinc-600 mb-3">By using the Website and Applications you accept these Terms of Service.</p>
         <p className="text-zinc-600">These Terms are made available free of charge via the Website in a form that allows downloading, saving and printing.</p>
       </section>
@@ -323,8 +344,26 @@ function TermsContentEN() {
         <p className="text-zinc-600">Graphics, layout, logos and software are the property of the Provider or are used under appropriate licences and are protected by law.</p>
       </section>
 
+      <section id="license" className="mb-14 scroll-mt-24">
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">7. Creative Commons License</h2>
+        <p className="text-zinc-600 mb-3">Original content published on the Website — including summaries, analyses, daily brief articles and opinion pieces generated by the Provider — is made available under the terms of the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en" target="_blank" rel="license noopener noreferrer" className="text-red-600 hover:underline">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0)</a>.</p>
+        <p className="text-zinc-600 mb-3">The Licensor hereby grants a worldwide, royalty-free, non-sublicensable, non-exclusive, irrevocable license to exercise rights in the Content for noncommercial purposes only, including the right to:</p>
+        <ul className="list-disc pl-6 text-zinc-600 mb-3 space-y-1.5">
+          <li>copy and redistribute the Content in any medium or format,</li>
+          <li>remix, transform and build upon the Content to produce derivative works.</li>
+        </ul>
+        <p className="text-zinc-600 mb-3">Terms of use:</p>
+        <ul className="list-disc pl-6 text-zinc-600 mb-3 space-y-1.5">
+          <li><strong>Attribution</strong> — you must credit the author as &ldquo;Pollar News (pollar.news)&rdquo;, provide a link to the license, and indicate if changes were made to the material.</li>
+          <li><strong>NonCommercial</strong> — the Content may not be used for commercial purposes, i.e. activities primarily intended for or directed towards commercial advantage or monetary compensation.</li>
+          <li><strong>ShareAlike</strong> — if you remix, transform or build upon the Content, you must distribute your contributions under the same CC BY-NC-SA 4.0 license or a compatible license.</li>
+        </ul>
+        <p className="text-zinc-600 mb-3">This license does not cover the Website's graphics, logos, software or content originating from third-party press sources. Any restrictions expressed via this license constitute express reservations of rights under Article 4 of Directive (EU) 2019/790 of the European Parliament and of the Council on copyright and related rights in the Digital Single Market.</p>
+        <p className="text-zinc-600">The full legal code of the license is available at: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">creativecommons.org/licenses/by-nc-sa/4.0/legalcode</a>.</p>
+      </section>
+
       <section id="liability" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">7. Liability</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">8. Liability</h2>
         <p className="text-zinc-600 mb-3">The Provider makes every effort to ensure the Website operates correctly and continuously, but does not guarantee the absence of technical interruptions or errors.</p>
         <p className="text-zinc-600 mb-3">The Provider is not liable for:</p>
         <ul className="list-disc pl-6 text-zinc-600 space-y-1.5">
@@ -336,18 +375,18 @@ function TermsContentEN() {
       </section>
 
       <section id="complaints" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">8. Complaints</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">9. Complaints</h2>
         <p className="text-zinc-600 mb-3">Complaints regarding the Website may be submitted by email to: <strong>jakub@pollar.pl</strong>.</p>
         <p className="text-zinc-600">A complaint should include a description of the issue and the User's contact details. The Provider processes complaints within 14 days of receipt.</p>
       </section>
 
       <section id="data" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">9. Personal Data</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">10. Personal Data</h2>
         <p className="text-zinc-600">The rules for processing Users' personal data are described in the <LocalizedLink to="/polityka-prywatnosci" className="text-red-600 hover:underline">Privacy Policy</LocalizedLink>.</p>
       </section>
 
       <section id="changes" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">10. Changes to the Terms</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">11. Changes to the Terms</h2>
         <p className="text-zinc-600 mb-3">The Provider reserves the right to amend these Terms. Account holders will be notified of changes by email in advance.</p>
         <p className="text-zinc-600 mb-3">Continued use of the Website after the changes take effect constitutes acceptance.</p>
         <p className="text-zinc-600 font-semibold">This version of the Terms is effective from: 6 February 2026</p>
@@ -374,7 +413,7 @@ function TermsContentDE() {
     <>
       <section id="allgemein" className="mb-14 scroll-mt-24">
         <h2 className="text-xl font-semibold mb-4 text-zinc-900">1. Allgemeine Bestimmungen</h2>
-        <p className="text-zinc-600 mb-3">Diese Nutzungsbedingungen regeln die Nutzung der unter <a href="https://pollar.pl" className="text-red-600 hover:underline">https://pollar.pl</a> verfügbaren Website (die &bdquo;<strong>Website</strong>&ldquo;) sowie der zugehörigen mobilen und TV-Anwendungen (die &bdquo;<strong>Anwendungen</strong>&ldquo;), betrieben von <strong>Pollar P.S.A.</strong> mit Sitz in Kraków, ul. Piastowska 46/12, 30-067 Kraków, Polen, eingetragen im Handelsregister des Amtsgerichts Kraków-Śródmieście, 11. Wirtschaftsabteilung, unter der KRS-Nummer 0001194489, NIP: 6772540681 (&bdquo;<strong>Pollar</strong>&ldquo;, der &bdquo;<strong>Anbieter</strong>&ldquo;).</p>
+        <p className="text-zinc-600 mb-3">Diese Nutzungsbedingungen regeln die Nutzung der unter <a href="https://pollar.news" className="text-red-600 hover:underline">https://pollar.news</a> verfügbaren Website (die &bdquo;<strong>Website</strong>&ldquo;) sowie der zugehörigen mobilen und TV-Anwendungen (die &bdquo;<strong>Anwendungen</strong>&ldquo;), betrieben von <strong>Pollar P.S.A.</strong> mit Sitz in Kraków, ul. Piastowska 46/12, 30-067 Kraków, Polen, eingetragen im Handelsregister des Amtsgerichts Kraków-Śródmieście, 11. Wirtschaftsabteilung, unter der KRS-Nummer 0001194489, NIP: 6772540681 (&bdquo;<strong>Pollar</strong>&ldquo;, der &bdquo;<strong>Anbieter</strong>&ldquo;).</p>
         <p className="text-zinc-600 mb-3">Durch die Nutzung der Website und der Anwendungen akzeptieren Sie diese Nutzungsbedingungen.</p>
         <p className="text-zinc-600">Diese Bedingungen werden kostenlos über die Website in einer Form bereitgestellt, die das Herunterladen, Speichern und Drucken ermöglicht.</p>
       </section>
@@ -434,8 +473,26 @@ function TermsContentDE() {
         <p className="text-zinc-600">Grafiken, Layout, Logos und Software sind Eigentum des Anbieters oder werden unter entsprechenden Lizenzen verwendet und sind gesetzlich geschützt.</p>
       </section>
 
+      <section id="lizenz" className="mb-14 scroll-mt-24">
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">7. Creative-Commons-Lizenz</h2>
+        <p className="text-zinc-600 mb-3">Originale Inhalte, die auf der Website veröffentlicht werden — einschließlich Zusammenfassungen, Analysen, täglicher Briefings und Kolumnen, die vom Anbieter erstellt werden — werden unter den Bedingungen der <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de" target="_blank" rel="license noopener noreferrer" className="text-red-600 hover:underline">Creative Commons Namensnennung – Nicht kommerziell – Weitergabe unter gleichen Bedingungen 4.0 International Lizenz (CC BY-NC-SA 4.0)</a> bereitgestellt.</p>
+        <p className="text-zinc-600 mb-3">Der Lizenzgeber gewährt eine weltweite, gebührenfreie, nicht unterlizenzierbare, nicht-exklusive und unwiderrufliche Lizenz zur Nutzung der Inhalte ausschließlich zu nicht-kommerziellen Zwecken, einschließlich des Rechts:</p>
+        <ul className="list-disc pl-6 text-zinc-600 mb-3 space-y-1.5">
+          <li>die Inhalte in jedem Medium oder Format zu kopieren und weiterzuverbreiten,</li>
+          <li>die Inhalte zu remixen, zu verändern und darauf aufzubauen, um abgeleitete Werke zu erstellen.</li>
+        </ul>
+        <p className="text-zinc-600 mb-3">Nutzungsbedingungen:</p>
+        <ul className="list-disc pl-6 text-zinc-600 mb-3 space-y-1.5">
+          <li><strong>Namensnennung</strong> — Sie müssen den Urheber als &bdquo;Pollar News (pollar.news)&ldquo; angeben, einen Link zur Lizenz beifügen und angeben, ob Änderungen am Material vorgenommen wurden.</li>
+          <li><strong>Nicht kommerziell</strong> — die Inhalte dürfen nicht für kommerzielle Zwecke verwendet werden, d.&thinsp;h. für Tätigkeiten, die in erster Linie auf einen kommerziellen Vorteil oder eine geldwerte Vergütung abzielen.</li>
+          <li><strong>Weitergabe unter gleichen Bedingungen</strong> — wenn Sie die Inhalte remixen, verändern oder darauf aufbauen, müssen Sie Ihre Beiträge unter derselben CC BY-NC-SA 4.0 Lizenz oder einer kompatiblen Lizenz verbreiten.</li>
+        </ul>
+        <p className="text-zinc-600 mb-3">Diese Lizenz erstreckt sich nicht auf Grafiken, Logos, Software oder Inhalte aus externen Pressequellen der Website. Sämtliche über diese Lizenz ausgedrückten Einschränkungen stellen ausdrückliche Rechtevorbehalte im Sinne von Art. 4 der Richtlinie (EU) 2019/790 des Europäischen Parlaments und des Rates über das Urheberrecht und die verwandten Schutzrechte im digitalen Binnenmarkt dar.</p>
+        <p className="text-zinc-600">Der vollständige Lizenztext ist verfügbar unter: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">creativecommons.org/licenses/by-nc-sa/4.0/legalcode</a>.</p>
+      </section>
+
       <section id="haftung" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">7. Haftung</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">8. Haftung</h2>
         <p className="text-zinc-600 mb-3">Der Anbieter bemüht sich nach besten Kräften, den ordnungsgemäßen und kontinuierlichen Betrieb der Website sicherzustellen, garantiert jedoch nicht das Ausbleiben technischer Unterbrechungen oder Fehler.</p>
         <p className="text-zinc-600 mb-3">Der Anbieter haftet nicht für:</p>
         <ul className="list-disc pl-6 text-zinc-600 space-y-1.5">
@@ -447,18 +504,18 @@ function TermsContentDE() {
       </section>
 
       <section id="beschwerden" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">8. Beschwerden</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">9. Beschwerden</h2>
         <p className="text-zinc-600 mb-3">Beschwerden bezüglich der Website können per E-Mail an <strong>jakub@pollar.pl</strong> gerichtet werden.</p>
         <p className="text-zinc-600">Eine Beschwerde sollte eine Beschreibung des Problems und die Kontaktdaten des Nutzers enthalten. Der Anbieter bearbeitet Beschwerden innerhalb von 14 Tagen nach Eingang.</p>
       </section>
 
       <section id="daten" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">9. Personenbezogene Daten</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">10. Personenbezogene Daten</h2>
         <p className="text-zinc-600">Die Regeln zur Verarbeitung personenbezogener Daten der Nutzer sind in der <LocalizedLink to="/polityka-prywatnosci" className="text-red-600 hover:underline">Datenschutzrichtlinie</LocalizedLink> beschrieben.</p>
       </section>
 
       <section id="aenderungen" className="mb-14 scroll-mt-24">
-        <h2 className="text-xl font-semibold mb-4 text-zinc-900">10. Änderungen der Bedingungen</h2>
+        <h2 className="text-xl font-semibold mb-4 text-zinc-900">11. Änderungen der Bedingungen</h2>
         <p className="text-zinc-600 mb-3">Der Anbieter behält sich das Recht vor, diese Bedingungen zu ändern. Kontoinhaber werden vorab per E-Mail über Änderungen informiert.</p>
         <p className="text-zinc-600 mb-3">Die weitere Nutzung der Website nach Inkrafttreten der Änderungen gilt als Zustimmung.</p>
         <p className="text-zinc-600 font-semibold">Diese Fassung der Bedingungen gilt ab: 6. Februar 2026</p>
