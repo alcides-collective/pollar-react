@@ -29,7 +29,7 @@ export function OlympicsSection({ events }: OlympicsSectionProps) {
       <div className="relative overflow-hidden p-6">
         <div className="absolute inset-0 dark:hidden" style={{ background: 'linear-gradient(135deg, rgba(0,133,199,0.1) 0%, rgba(244,195,0,0.1) 25%, rgba(0,159,61,0.08) 50%, rgba(223,0,36,0.08) 75%, rgba(0,133,199,0.1) 100%)' }} />
         <div className="absolute inset-0 hidden dark:block" style={{ background: 'linear-gradient(135deg, rgba(0,133,199,0.18) 0%, rgba(244,195,0,0.12) 25%, rgba(0,159,61,0.14) 50%, rgba(223,0,36,0.14) 75%, rgba(0,133,199,0.18) 100%)' }} />
-        <div className="flex items-center gap-3 mb-5">
+        <div className="relative flex items-center gap-3 mb-5">
           <img src={olympicsRings} alt="Olympic Rings" className="w-20 h-auto drop-shadow-[0_0_4px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_0_4px_rgba(255,255,255,0.15)]" />
           <div>
             <h2 className="text-xl font-bold text-content-heading">{t('olympics.title')}</h2>
@@ -38,7 +38,7 @@ export function OlympicsSection({ events }: OlympicsSectionProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {events.map(event => (
             <LocalizedLink
               key={event.id}
