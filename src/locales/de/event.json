@@ -8,6 +8,8 @@
     "generatedBy": "Generiert von",
     "emitting": "emittiert"
   },
+  "summary": "Zusammenfassung",
+  "location": "Standort",
   "keyPoints": "Kernpunkte",
   "sidebar": {
     "mentionedPeople": "Erwähnte Personen",

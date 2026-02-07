@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { EventLocation } from '../../types/events';
@@ -10,6 +11,7 @@ interface EventMapProps {
 }
 
 export function EventMap({ location }: EventMapProps) {
+  const { t } = useTranslation('event');
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markerRef = useRef<mapboxgl.Marker | null>(null);
@@ -70,7 +72,7 @@ export function EventMap({ location }: EventMapProps) {
   return (
     <div>
       <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-3">
-        Lokalizacja
+        {t('location')}
       </h3>
       <div ref={mapContainer} className="h-48 overflow-hidden border border-zinc-200" />
       <p className="text-xs text-zinc-500 mt-2">

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { sanitizeAndProcessHtml, removeExtractedElements } from '../../utils/text';
 import { SummaryLineChart, type LineChartData } from '../../components/charts/SummaryLineChart';
 import { SummaryBarChart, type BarChartData } from '../../components/charts/SummaryBarChart';
@@ -143,10 +144,12 @@ export function EventSummary({ summary, wikipediaImages = {} }: EventSummaryProp
     });
   }, [segments, wikipediaImages]);
 
+  const { t } = useTranslation('event');
+
   return (
     <section className="event-summary px-6 py-6 border-t border-zinc-200">
       <h2 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-4">
-        Podsumowanie
+        {t('summary')}
       </h2>
       <div className="prose prose-zinc max-w-none summary-content">
         {processedSegments.map((segment, index) => {
