@@ -1603,6 +1603,31 @@ app.use(async (req, res, next) => {
       schema = schemas.length === 1 ? schemas[0] : schemas;
     }
 
+    // Fetch trending events for homepage capsule
+    let homepageCapsule = null;
+    if (isHomepage) {
+      try {
+        const eventsRes = await fetch(`${API_BASE}/api/events?lang=${lang}&limit=10`);
+        if (eventsRes.ok) {
+          const eventsData = await eventsRes.json();
+          const events = Array.isArray(eventsData) ? eventsData : (eventsData.data || eventsData.events || []);
+          if (events.length > 0) {
+            const eventItems = events.map(e => {
+              const title = escapeHtml(stripHtml(e.title || ''));
+              const lead = escapeHtml(truncate(stripHtml(e.lead || e.summary || ''), 200));
+              const date = e.createdAt ? new Date(e.createdAt).toLocaleDateString(lang === 'de' ? 'de-DE' : lang === 'en' ? 'en-US' : 'pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+              const category = escapeHtml(e.category || e.metadata?.category || '');
+              const link = `${baseUrl}/${lang === 'pl' ? '' : lang + '/'}event/${e.id}`;
+              const sources = e.metadata?.articleCount ? ` · ${e.metadata.articleCount} articles` : '';
+              return `<li><a href="${link}"><strong>${title}</strong></a>${category ? ` <span class="category">[${category}]</span>` : ''}${date ? ` <time>${date}</time>` : ''}${sources}<br>${lead}</li>`;
+            }).join('');
+            const heading = { pl: 'Najważniejsze wydarzenia', en: 'Top Stories', de: 'Top-Nachrichten' }[lang] || 'Najważniejsze wydarzenia';
+            homepageCapsule = `<section class="trending"><h2>${heading}</h2><ol>${eventItems}</ol></section>`;
+          }
+        }
+      } catch { /* skip if unavailable */ }
+    }
+
     return res.send(generateSeoHtml({
       pageTitle,
       ogTitle,
@@ -1613,7 +1638,8 @@ app.use(async (req, res, next) => {
       ogType: 'website',
       schema,
       pathWithoutLang,
-      lang
+      lang,
+      answerCapsule: homepageCapsule
     }));
   }
 
