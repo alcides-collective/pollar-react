@@ -120,6 +120,8 @@ const PAGE_TITLES = {
   '/dane/transport/kolej': { title: 'Kolej', description: 'Statystyki przewozów pasażerskich i towarowych PKP z danymi o punktualności i obłożeniu tras.' },
   '/dane/transport/porty': { title: 'Porty', description: 'Przeładunki w portach Gdańsk, Gdynia, Szczecin i Świnoujście — tony, TEU i dynamika rok do roku.' },
   '/dane/bezpieczenstwo/przestepczosc': { title: 'Przestępczość', description: 'Statystyki Policji: liczba przestępstw, wykrywalność i ranking bezpieczeństwa województw.' },
+  // Pogoda
+  '/pogoda': { title: 'Pogoda', description: 'Aktualne warunki pogodowe w 16 miastach wojewódzkich Polski. Interaktywna mapa z temperaturami i automatyczną aktualizacją co 15 minut.' },
   // Sources
   '/sources': { title: 'Źródła wiadomości', description: 'Wszystkie źródła wiadomości śledzone przez Pollar z klasyfikacją kapitałową i orientacją polityczną.' },
   '/kontakt': { title: 'Kontakt', description: 'Skontaktuj się z zespołem Pollar News. Formularz kontaktowy, FAQ i dane firmy.' },
@@ -766,6 +768,7 @@ Pollar News is operated by Pollar P.S.A., a company registered in Kraków, Polan
 - [Connections Game](https://pollar.news/powiazania): Daily word puzzle (NYT Connections-style)
 - [Event Graph](https://pollar.news/graf): Network graph showing relationships between events
 - [Stock Market](https://pollar.news/gielda): Live WIG20, mWIG40 quotes from GPW
+- [Weather](https://pollar.news/pogoda): Current weather conditions across 16 Polish voivodeship cities with interactive map
 - [News Sources](https://pollar.news/sources): All tracked sources with political orientation and ownership classification
 
 ## Parliament (Sejm)
@@ -792,6 +795,7 @@ Pollar News is operated by Pollar P.S.A., a company registered in Kraków, Polan
 - [Railways](https://pollar.news/dane/transport/kolej): Passenger and freight transport statistics
 - [Ports](https://pollar.news/dane/transport/porty): Cargo throughput at Polish seaports
 - [Crime](https://pollar.news/dane/bezpieczenstwo/przestepczosc): Police crime and detection statistics
+- [Weather](https://pollar.news/pogoda): Live weather conditions in 16 voivodeship cities (Open-Meteo)
 
 ## Legal & Licensing
 
@@ -897,6 +901,7 @@ Pollar News is an AI-powered news platform that aggregates, summarizes, and cont
 - **Parliament Tracker**: Full coverage of the Polish Sejm — MPs, votes, committees, legislative processes, live sessions
 - **Open Data Dashboards**: Visualizations of air quality (GIOŚ), energy mix, real estate prices, Eurostat indicators, crime statistics, railway/port data
 - **Stock Market**: Live WIG20/mWIG40 quotes from GPW (Warsaw Stock Exchange)
+- **Weather**: Current weather conditions across 16 Polish voivodeship cities with interactive map, temperature colors, and auto-refresh
 - **Event Map**: Interactive map of current events across Poland
 - **Event Graph**: Network graph showing relationships between events
 - **Connections Game**: Daily word puzzle inspired by NYT Connections
