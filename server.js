@@ -288,6 +288,12 @@ function generateNewsArticleSchema(opts) {
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': targetUrl
+    },
+    license: 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+    copyrightHolder: {
+      '@type': 'Organization',
+      name: 'Pollar News',
+      url: 'https://pollar.news'
     }
   };
 }
@@ -405,6 +411,7 @@ function generateSeoHtml(opts) {
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${ogImage}" />
     <link rel="canonical" href="${targetUrl}" />
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
     ${hreflangTags}
     <link rel="alternate" type="application/rss+xml" title="Pollar News RSS" href="https://pollar.news/feed.xml" />
     ${schemaScript}
@@ -580,9 +587,31 @@ app.use((req, res, next) => {
 // Enable gzip compression for all responses
 app.use(compression());
 
+// CC license HTTP Link header (CC REL discovery for crawlers and CC Search/Openverse)
+app.use((req, res, next) => {
+  res.set('Link', '<https://creativecommons.org/licenses/by-nc-sa/4.0/>; rel="license"');
+  next();
+});
+
 // robots.txt endpoint
 app.get('/robots.txt', (req, res) => {
-  const robots = `User-agent: *
+  const robots = `# Pollar News (pollar.news)
+# All original articles and summaries are licensed under
+# Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+# https://creativecommons.org/licenses/by-nc-sa/4.0/
+#
+# You are free to:
+#   Share - copy and redistribute the material in any medium or format
+#   Adapt - remix, transform, and build upon the material
+#
+# Under the following terms:
+#   Attribution - You must give appropriate credit to Pollar News (pollar.news)
+#   NonCommercial - You may not use the material for commercial purposes
+#   ShareAlike - If you remix or transform, you must distribute under the same license
+#
+# (c) Pollar News (pollar.news)
+
+User-agent: *
 Allow: /
 
 Sitemap: https://pollar.news/sitemap.xml
@@ -712,16 +741,19 @@ app.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
       <link>${link}</link>
       <guid isPermaLink="true">${guid}</guid>
       <pubDate>${pubDate}</pubDate>
+      <creativeCommons:license>https://creativecommons.org/licenses/by-nc-sa/4.0/</creativeCommons:license>
     </item>`;
   }).join('\n');
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:creativeCommons="http://backend.userland.com/creativeCommonsRssModule">
   <channel>
     <title>Pollar News</title>
     <description>${RSS_DESCRIPTIONS[lang]}</description>
     <link>${baseUrl}${langPrefix}</link>
     <language>${lang}</language>
+    <copyright>CC BY-NC-SA 4.0 - Pollar News (pollar.news)</copyright>
+    <creativeCommons:license>https://creativecommons.org/licenses/by-nc-sa/4.0/</creativeCommons:license>
     <lastBuildDate>${now}</lastBuildDate>
     <atom:link href="${baseUrl}${langPrefix}/feed.xml" rel="self" type="application/rss+xml"/>
 ${items}

@@ -19,6 +19,7 @@ import { EventKeyPoints } from './EventKeyPoints';
 import { EventSummary } from './EventSummary';
 import { EventSidebar } from './EventSidebar';
 import { EventNavigation } from './EventNavigation';
+import { CcAttribution } from '../../components/common/CcAttribution';
 
 export function EventPage() {
   const { t } = useTranslation('event');
@@ -213,6 +214,9 @@ export function EventPage() {
           </motion.div>
           <motion.div variants={staggerItem}>
             <EventNavigation previousEvent={previousEvent} nextEvent={nextEvent} />
+          </motion.div>
+          <motion.div variants={staggerItem} className="px-6">
+            <CcAttribution />
           </motion.div>
         </motion.div>
 

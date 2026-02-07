@@ -13,6 +13,20 @@
     "title": "Cookie settings",
     "description": "Manage your cookie preferences. For more information, see our",
     "privacyPolicy": "Privacy Policy",
-    "alwaysEnabled": "Always enabled"
+    "alwaysEnabled": "Always enabled",
+    "necessary": {
+      "title": "Essential cookies and localStorage",
+      "description": "Required for the website and applications to function properly. These include remembering consent preferences (cookie-consent), language (pollar-language), anonymous visitor ID for counting page views (pollar_uid), AI assistant session ID (pollar-visitor-id), stock watchlist (stock-watchlist), and the Connections game state (pollar.powiazania)."
+    },
+    "analytics": {
+      "title": "Analytics cookies",
+      "description": "Google Analytics (_ga, _ga_*). Help us understand how users interact with the website, allowing us to improve it. We also use Umami Analytics — a tool that does not use cookies and collects only anonymized statistical data."
+    },
+    "marketing": {
+      "title": "Marketing cookies",
+      "description": "X (Twitter) Ads — cookies used for conversion tracking and measuring the effectiveness of advertising campaigns (guest_id, guest_id_marketing, guest_id_ads, personalization_id, muc_ads)."
+    },
+    "notice": "Changes to cookie settings are saved automatically and take effect immediately. To completely remove all cookies, clear your browser data.",
+    "noticeLabel": "Note:"
   }
 }

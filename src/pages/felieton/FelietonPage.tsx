@@ -8,6 +8,7 @@ import { GrainImage } from '../../components/common/GrainImage';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.webp';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.webp';
+import { CcAttribution } from '../../components/common/CcAttribution';
 import type { FelietonCategory, SourceEvent } from '../../types/felieton';
 
 const FELIETON_IMAGES: Record<FelietonCategory, string> = {
@@ -224,6 +225,8 @@ export function FelietonPage() {
               dangerouslySetInnerHTML={{ __html: sanitizeAndProcessHtml(felieton.content) }}
             />
           </article>
+
+          <CcAttribution />
 
           {/* Mobile: Source Events */}
           {felieton.sourceEvents && felieton.sourceEvents.length > 0 && (

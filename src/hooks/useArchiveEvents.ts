@@ -128,7 +128,9 @@ export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
     return CATEGORY_ORDER
       .map((category) => ({
         category,
-        events: grouped.get(category) || [],
+        events: (grouped.get(category) || []).sort(
+          (a, b) => (b.sources?.length || 0) - (a.sources?.length || 0)
+        ),
       }))
       .filter((group) => group.events.length > 0);
   }, [events]);

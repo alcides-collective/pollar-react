@@ -13,6 +13,20 @@
     "title": "Cookie-Einstellungen",
     "description": "Verwalte deine Cookie-Präferenzen. Weitere Informationen findest du in unserer",
     "privacyPolicy": "Datenschutzerklärung",
-    "alwaysEnabled": "Immer aktiviert"
+    "alwaysEnabled": "Immer aktiviert",
+    "necessary": {
+      "title": "Notwendige Cookies und localStorage",
+      "description": "Erforderlich für das ordnungsgemäße Funktionieren der Website und Anwendungen. Dazu gehören das Speichern von Einwilligungspräferenzen (cookie-consent), Sprache (pollar-language), anonyme Besucher-ID zur Zählung von Seitenaufrufen (pollar_uid), KI-Assistenten-Sitzungs-ID (pollar-visitor-id), Aktien-Watchlist (stock-watchlist) und der Spielstand von Powiązania (pollar.powiazania)."
+    },
+    "analytics": {
+      "title": "Analytische Cookies",
+      "description": "Google Analytics (_ga, _ga_*). Helfen uns zu verstehen, wie Nutzer die Website verwenden, damit wir sie verbessern können. Zusätzlich verwenden wir Umami Analytics – ein Tool, das keine Cookies verwendet und ausschließlich anonymisierte statistische Daten erhebt."
+    },
+    "marketing": {
+      "title": "Marketing-Cookies",
+      "description": "X (Twitter) Ads – Cookies zur Conversion-Verfolgung und Messung der Wirksamkeit von Werbekampagnen (guest_id, guest_id_marketing, guest_id_ads, personalization_id, muc_ads)."
+    },
+    "notice": "Änderungen an den Cookie-Einstellungen werden automatisch gespeichert und treten sofort in Kraft. Um alle Cookies vollständig zu entfernen, lösche deine Browserdaten.",
+    "noticeLabel": "Hinweis:"
   }
 }

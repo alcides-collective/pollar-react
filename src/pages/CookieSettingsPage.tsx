@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useCookieConsentStore } from '@/stores/cookieConsentStore';
 
@@ -41,18 +42,18 @@ interface CookieSettingRowProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
-  alwaysOn?: boolean;
+  alwaysOnLabel?: string;
 }
 
-function CookieSettingRow({ title, description, checked, onChange, disabled = false, alwaysOn = false }: CookieSettingRowProps) {
+function CookieSettingRow({ title, description, checked, onChange, disabled = false, alwaysOnLabel }: CookieSettingRowProps) {
   return (
     <div className="flex items-start justify-between gap-4 py-5 border-b border-zinc-200 last:border-b-0">
       <div className="flex-1">
         <div className="flex items-center gap-2">
           <h3 className="text-base font-semibold text-zinc-900">{title}</h3>
-          {alwaysOn && (
+          {alwaysOnLabel && (
             <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-zinc-100 text-zinc-600">
-              Zawsze włączone
+              {alwaysOnLabel}
             </span>
           )}
         </div>
@@ -66,6 +67,7 @@ function CookieSettingRow({ title, description, checked, onChange, disabled = fa
 }
 
 export function CookieSettingsPage() {
+  const { t } = useTranslation('cookies');
   const { consent, setConsent, loadFromStorage } = useCookieConsentStore();
 
   useEffect(() => {
@@ -92,11 +94,11 @@ export function CookieSettingsPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <article>
-        <h1 className="text-3xl font-bold mb-2 text-zinc-900">Ustawienia cookies</h1>
+        <h1 className="text-3xl font-bold mb-2 text-zinc-900">{t('settings.title')}</h1>
         <p className="text-zinc-600 mb-8">
-          Zarządzaj swoimi preferencjami dotyczącymi plików cookie. Więcej informacji znajdziesz w naszej{' '}
+          {t('settings.description')}{' '}
           <LocalizedLink to="/polityka-prywatnosci" className="text-red-600 hover:underline">
-            Polityce Prywatności
+            {t('settings.privacyPolicy')}
           </LocalizedLink>
           .
         </p>
@@ -104,19 +106,19 @@ export function CookieSettingsPage() {
         <div className="bg-white border border-zinc-200 rounded-lg divide-y divide-zinc-200">
           <div className="px-6">
             <CookieSettingRow
-              title="Niezbędne cookies"
-              description="Wymagane do prawidłowego działania strony. Umożliwiają podstawowe funkcje, takie jak nawigacja i dostęp do zabezpieczonych obszarów."
+              title={t('settings.necessary.title')}
+              description={t('settings.necessary.description')}
               checked={true}
               onChange={() => {}}
               disabled={true}
-              alwaysOn={true}
+              alwaysOnLabel={t('settings.alwaysEnabled')}
             />
           </div>
 
           <div className="px-6">
             <CookieSettingRow
-              title="Analityczne cookies"
-              description="Google Analytics, Google Tag Manager. Pomagają nam zrozumieć, w jaki sposób użytkownicy korzystają z serwisu, co pozwala nam go ulepszać."
+              title={t('settings.analytics.title')}
+              description={t('settings.analytics.description')}
               checked={currentConsent.analytics}
               onChange={handleAnalyticsChange}
             />
@@ -124,8 +126,8 @@ export function CookieSettingsPage() {
 
           <div className="px-6">
             <CookieSettingRow
-              title="Marketingowe cookies"
-              description="Wykorzystywane do wyświetlania spersonalizowanych reklam i mierzenia skuteczności kampanii reklamowych."
+              title={t('settings.marketing.title')}
+              description={t('settings.marketing.description')}
               checked={currentConsent.marketing}
               onChange={handleMarketingChange}
             />
@@ -134,8 +136,7 @@ export function CookieSettingsPage() {
 
         <div className="mt-6 p-4 bg-zinc-50 rounded-lg">
           <p className="text-sm text-zinc-600">
-            <span className="font-medium text-zinc-900">Informacja:</span> Zmiany w ustawieniach cookies są zapisywane automatycznie i obowiązują od razu.
-            Aby całkowicie usunąć wszystkie cookies, wyczyść dane przeglądarki.
+            <span className="font-medium text-zinc-900">{t('settings.noticeLabel')}</span> {t('settings.notice')}
           </p>
         </div>
       </article>

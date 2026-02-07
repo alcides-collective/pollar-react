@@ -5,6 +5,7 @@ import { useActiveSection } from '../../hooks/useActiveSection';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { prepareOgDescription } from '../../utils/text';
 import { useLanguage } from '../../stores/languageStore';
+import { CcAttribution } from '../../components/common/CcAttribution';
 import {
   BriefHero,
   BriefExecutiveSummary,
@@ -163,6 +164,8 @@ export function BriefPage() {
             people={brief.mentionedPeople}
             organizations={brief.mentionedOrganizations}
           />
+
+          <CcAttribution />
 
           {/* Mobile: Word of the Day */}
           {brief.wordOfTheDay && (

@@ -1,0 +1,280 @@
+{
+  "title": "Polityka prywatności POLLAR P.S.A.",
+  "imageAlt": "Polityka prywatności",
+  "intro": {
+    "p1": "W Pollar szanujemy Twoją prywatność. Chcemy, abyś wiedział, w jaki sposób gromadzimy Twoje dane, dlaczego są nam potrzebne i jakie prawa Ci przysługują. Ta Polityka wyjaśnia, jak korzystamy z Twoich danych i jak możesz sprawować nad nimi kontrolę.",
+    "p2": "Ta Polityka opisuje zasady przetwarzania danych na naszej stronie internetowej <pollarLink>https://pollar.news</pollarLink> („<bold>Strona Internetowa</bold>”) oraz aplikacji web, mobilnych i TV („<bold>Aplikacje</bold>”).",
+    "p3": "Dokument został przygotowany w języku polskim z myślą o użytkownikach w Polsce."
+  },
+  "s1": {
+    "title": "1. Kim jesteśmy?",
+    "p1": "Administratorem Twoich danych osobowych jest <bold>Pollar P.S.A.</bold> z siedzibą w Krakowie przy ul. Piastowskiej 46/12, 30-067 Kraków, zarejestrowaną w rejestrze przedsiębiorców Krajowego Rejestru Sądowego prowadzonym przez Sąd Rejonowy dla Krakowa - Śródmieścia w Krakowie, XI Wydział Gospodarczy KRS, pod numerem KRS 00011944689, o numerze NIP: 6772540681 („<bold>Pollar</bold>”, „<bold>my</bold>”, „<bold>nas</bold>”).",
+    "p2": "Jesteśmy twórcami Pollar – agregatora wiadomości, który wykorzystuje sztuczną inteligencję do grupowania i podsumowywania artykułów prasowych. W związku z tym przetwarzamy dane osób, które:",
+    "item1": "odwiedzają naszą Stronę Internetową,",
+    "item2": "korzystają z naszych Aplikacji,",
+    "item3": "zapisały się do naszego newslettera lub są na liście oczekujących (waitlist),",
+    "item4": "odwiedzają nasze profile w mediach społecznościowych (np. Instagram).",
+    "contact": "W sprawach dotyczących przetwarzania danych osobowych możesz się z nami skontaktować pod adresem e-mail: <bold>jakub@pollar.pl</bold>, z dopiskiem „<bold>RODO</bold>”."
+  },
+  "s2": {
+    "title": "2. Skąd otrzymujemy Twoje dane?",
+    "p1": "Co do zasady dane, które przetwarzamy, przekazujesz nam <bold>bezpośrednio</bold>. Dzieje się to wtedy, gdy:",
+    "directItem1": "<bold>odwiedzasz naszą Stronę Internetową</bold> – wówczas zapisują się pliki cookies lub logi serwera,",
+    "directItem2": "<bold>korzystasz z naszych Aplikacji</bold> – przekazujesz nam swoje dane podczas zakładania konta, aby móc korzystać z pełni funkcjonalności serwisu na konkretnym urządzeniu mobilnym lub telewizorze,",
+    "directItem3": "<bold>zapisujesz się do naszego newslettera lub na listę oczekujących</bold> – podajesz nam adres e-mail, abyśmy mogli wysyłać Ci informacje marketingowe, także w zakresie informacji o starcie naszych usług oraz ich aktualizacjach,",
+    "directItem4": "<bold>odwiedzasz nasze profile w mediach społecznościowych</bold> – zostawiasz ślad w postaci komentarza, polubienia lub wiadomości, które są widoczne dla nas i dla operatora danej platformy.",
+    "p2": "Dane, które otrzymujemy <bold>pośrednio</bold>, to dane, które otrzymujemy w sytuacji, gdy:",
+    "indirectItem1": "<bold>jesteś twórcą artykułów, które analizujemy w ramach naszych usług</bold> – dane takie jak Twoje imię i nazwisko oraz treść artykułu pozyskujemy w sposób zautomatyzowany z publicznie dostępnych stron internetowych serwisów informacyjnych, które agregujemy."
+  },
+  "s3": {
+    "title": "3. Cele i podstawy przetwarzania Twoich danych osobowych",
+    "p1": "W zależności od tego, w jaki sposób korzystasz z naszej Strony Internetowej i Aplikacji, możemy przetwarzać Twoje dane w różnych celach. Poniżej znajdziesz najważniejsze z nich:",
+    "website": {
+      "title": "Odwiedzasz naszą Stronę Internetową:",
+      "item1": "żeby świadczyć Ci usługę, polegającą na dostępie do zagregowanych wiadomości,",
+      "item2": "żeby zapewnić jej poprawne działanie i bezpieczeństwo (art. 6 ust. 1 lit. f RODO),",
+      "item3": "żeby analizować statystyki odwiedzin i ulepszać treści (art. 6 ust. 1 lit. f RODO).",
+      "note": "Dzięki tym danym strona działa płynnie i możemy ją rozwijać zgodnie z Twoimi potrzebami."
+    },
+    "apps": {
+      "title": "Korzystasz z naszych Aplikacji:",
+      "item1": "żeby świadczyć Ci usługę, czyli umożliwić założenie konta i korzystanie z funkcjonalności aplikacji (art. 6 ust. 1 lit. b RODO),",
+      "item2": "żeby zapewniać bezpieczeństwo usługi i chronić ją przed nadużyciami (art. 6 ust. 1 lit. f RODO),",
+      "item3": "żeby analizować, jak korzystasz z aplikacji, w celu jej ulepszania i rozwoju (art. 6 ust. 1 lit. f RODO),",
+      "item4": "w razie ewentualnego sporu, w celu obrony lub dochodzenia roszczeń (art. 6 ust. 1 lit. f RODO).",
+      "note": "Bez tych danych nie moglibyśmy zapewnić Ci dostępu do konta ani zagwarantować bezpieczeństwa naszej usługi."
+    },
+    "newsletter": {
+      "title": "Zapisujesz się do naszego newslettera lub na listę oczekujących:",
+      "item1": "żeby wysyłać Ci informacje marketingowe i ofertowe, a także informować Cię o starcie naszych usług i ich ważnych aktualizacjach (art. 6 ust. 1 lit. a RODO w zw. z przepisami ustawy – Prawo komunikacji elektronicznej i ustawy o świadczeniu usług drogą elektroniczną).",
+      "note": "Dzięki temu będziesz na bieżąco z nowościami w Pollar."
+    },
+    "social": {
+      "title": "Odwiedzasz nasze profile w mediach społecznościowych:",
+      "item1": "żeby prowadzić rozmowy, odpowiadać na komentarze i wiadomości (art. 6 ust. 1 lit. f RODO),",
+      "item2": "żeby prezentować naszą ofertę i budować markę (art. 6 ust. 1 lit. f RODO).",
+      "note": "Dane te wykorzystujemy, by móc odpowiedzieć Ci na komentarze lub wiadomości."
+    },
+    "author": {
+      "title": "Jesteś twórcą artykułów, które analizujemy w ramach naszych usług:",
+      "item1": "żeby przetwarzać i agregować publicznie dostępne treści informacyjne, co jest podstawą działania naszej usługi (art. 6 ust. 1 lit. f RODO),",
+      "item2": "żeby wskazać Cię jako autora przytaczanego fragmentu artykułu, realizując cele informacyjne i szanując prawo autorskie (art. 6 ust. 1 lit. f RODO)."
+    }
+  },
+  "s4": {
+    "title": "4. Jakie dane przetwarzamy?",
+    "p1": "Zakres danych, które od Ciebie zbieramy, zależy od tego, w jaki sposób korzystasz z naszej Strony Internetowej i usług:",
+    "website": {
+      "title": "Jeśli odwiedzasz naszą Stronę Internetową:",
+      "item1": "dane techniczne, takie jak zanonimizowany adres IP, informacje o urządzeniu i przeglądarce oraz logi serwera."
+    },
+    "apps": {
+      "title": "Jeśli korzystasz z naszych Aplikacji:",
+      "item1": "<bold>w przypadku posiadania konta:</bold> adres e-mail oraz zahaszowane hasło (zabezpieczone algorytmem);",
+      "item2": "<bold>w każdym przypadku:</bold> dane techniczne i eksploatacyjne w postaci tokenów sesji służących do uwierzytelniania, a także zanonimizowane i zagregowane metryki użytkowania."
+    },
+    "newsletter": {
+      "title": "Jeśli zapisujesz się do naszego newslettera lub na listę oczekujących:",
+      "item1": "adres e-mail."
+    },
+    "social": {
+      "title": "Jeśli odwiedzasz nasze profile w mediach społecznościowych:",
+      "item1": "dane widoczne publicznie w ramach Twojej aktywności (np. imię i nazwisko lub nick, komentarze, polubienia, treści wiadomości, zdjęcie profilowe)."
+    },
+    "author": {
+      "title": "Jeśli jesteś twórcą artykułów, które analizujemy w ramach naszych usług:",
+      "item1": "Twoje imię i nazwisko, jeśli zostały podane w publicznie dostępnym artykule, a także jego treść."
+    }
+  },
+  "s5": {
+    "title": "5. Jak długo przechowujemy Twoje dane?",
+    "p1": "Przechowujemy Twoje dane tylko tak długo, jak to naprawdę potrzebne – zgodnie z celem ich przetwarzania i przepisami prawa. W przypadku, gdy:",
+    "website": {
+      "title": "Odwiedzasz naszą Stronę Internetową:",
+      "item1": "Twój adres IP przechowujemy maksymalnie 7 dni w logach serwera,",
+      "item2": "pliki cookies – zgodnie z informacją podaną w banerze cookies i ustawieniami Twojej przeglądarki."
+    },
+    "apps": {
+      "title": "Korzystasz z naszych Aplikacji:",
+      "item1": "dane Twojego konta przechowujemy przez cały okres jego posiadania. Zostaną usunięte, gdy zdecydujesz się zamknąć konto,",
+      "item2": "logi aplikacji, służące do diagnostyki i zapewnienia bezpieczeństwa, przechowujemy do 7 dni,",
+      "item3": "zagregowane dane analityczne (metryki), które pomagają nam polepszać nasze usługi, przechowujemy do 90 dni."
+    },
+    "newsletter": {
+      "title": "Zapisujesz się do naszego newslettera lub na listę oczekujących:",
+      "item1": "dane przechowujemy do momentu, w którym wypiszesz się z listy mailingowej (wycofując zgodę)."
+    },
+    "social": {
+      "title": "Odwiedzasz nasze profile w mediach społecznościowych:",
+      "item1": "dane przechowujemy tak długo, jak obserwujesz nasze profile lub wchodzisz w interakcje (komentarze, wiadomości),",
+      "item2": "Twoje reakcje (np. polubienia) mogą być widoczne dłużej – chyba że je usuniesz. Dane te wykorzystujemy, by móc odpowiedzieć Ci na komentarze lub wiadomości."
+    },
+    "author": {
+      "title": "Jesteś twórcą artykułów, które analizujemy w ramach naszych usług:",
+      "item1": "dane pozyskane z treści artykułów (w tym Twoje imię i nazwisko) przechowujemy w naszej bazie przez 72 godziny od momentu ich pobrania, po czym są one automatycznie usuwane."
+    }
+  },
+  "s6": {
+    "title": "6. Komu możemy ujawnić dane osobowe?",
+    "p1": "Twoje dane możemy przekazywać zaufanym partnerom i dostawcom, którzy pomagają nam świadczyć nasze usługi. W zależności od tego, jak korzystasz z usług Pollar, Twoje dane mogą trafić do następujących kategorii odbiorców:",
+    "website": {
+      "title": "Odwiedzasz naszą Stronę Internetową lub korzystasz z Aplikacji:",
+      "item1": "dostawcy usług hostingowych i infrastruktury chmurowej, którzy zapewniają działanie naszych serwerów i baz danych (np. Railway Corp, Google Firebase)."
+    },
+    "newsletter": {
+      "title": "Zapisujesz się do naszego newslettera lub na listę oczekujących:",
+      "item1": "dostawcy systemów do obsługi masowej korespondencji e-mail, którzy pomagają nam wysyłać wiadomości."
+    },
+    "social": {
+      "title": "Odwiedzasz nasze profile w mediach społecznościowych:",
+      "item1": "Twoje dane są widoczne dla operatorów tych platform i przetwarzane zgodnie z ich regulaminami i politykami prywatności."
+    },
+    "author": {
+      "title": "Jesteś twórcą artykułów, które analizujemy:",
+      "item1": "dane zawarte w publicznie dostępnych artykułach (w tym Twoje imię i nazwisko) przekazujemy do naszych partnerów technologicznych – dostawców modeli sztucznej inteligencji (takich jak OpenAI, OpenRouter, Google Gemini), którzy wykonują dla nas operacje podsumowywania i kategoryzacji treści."
+    },
+    "noDataSharing": "<bold>Nigdy nie przekazujemy danych osobowych naszych zarejestrowanych użytkowników (takich jak adres e-mail) do dostawców modeli AI.</bold>",
+    "transfers": "Twoje dane mogą być przekazywane poza Europejski Obszar Gospodarczy (EOG), ponieważ niektórzy z naszych dostawców (np. Google, OpenAI, Railway Corp) mają siedzibę w Stanach Zjednoczonych. W takich sytuacjach zawsze stosujemy zabezpieczenia wymagane przez RODO, w szczególności standardowe klauzule umowne zatwierdzone przez Komisję Europejską (art. 46 ust. 2 lit. c RODO), aby zapewnić Twoim danym odpowiedni poziom ochrony."
+  },
+  "s7": {
+    "title": "7. Jakie przysługują Ci prawa w związku z przetwarzaniem danych?",
+    "p1": "Masz pełną kontrolę nad swoimi danymi. Zgodnie z RODO możesz:",
+    "item1": "<bold>dostęp do danych</bold> – poprosić nas o informację, czy przetwarzamy Twoje dane i otrzymać ich kopię,",
+    "item2": "<bold>sprostowanie danych</bold> – poprawić dane, jeśli są nieaktualne lub nieprawidłowe,",
+    "item3": "<bold>usunięcie danych</bold> („prawo do bycia zapomnianym”) – zażądać usunięcia swoich danych, jeśli nie musimy ich już przetwarzać,",
+    "item4": "<bold>ograniczenie przetwarzania</bold> – wstrzymać czasowo korzystanie z Twoich danych, np. gdy sprawdzamy ich poprawność,",
+    "item5": "<bold>przenoszenie danych</bold> – otrzymać dane w ustrukturyzowanym formacie i przekazać je innemu administratorowi (w przypadku, gdy Twoje dane są przetwarzane na podstawie Twojej zgody),",
+    "item6": "<bold>sprzeciw</bold> – sprzeciwić się przetwarzaniu Twoich danych w przypadku danych przetwarzanych w oparciu o nasz uzasadniony interes,",
+    "item7": "<bold>cofnięcie zgody</bold> – w dowolnym momencie wycofać zgodę, jeśli na niej opieramy przetwarzanie (np. newsletter, konkursy). Wycofanie zgody nie wpływa na zgodność wcześniejszego przetwarzania,",
+    "item8": "<bold>skarga do organu nadzorczego</bold> – jeżeli uważasz, że naruszamy zasady ochrony danych, możesz złożyć skargę do Prezesa Urzędu Ochrony Danych Osobowych w Warszawie.",
+    "contact": "Aby skorzystać ze swoich praw, możesz skontaktować się z nami pod adresem <bold>jakub@pollar.pl</bold>, z dopiskiem „<bold>RODO</bold>”."
+  },
+  "s8": {
+    "title": "8. Narzędzia analityczne i marketingowe",
+    "p1": "Na naszej Stronie Internetowej oraz w ramach naszych profili w mediach społecznościowych możemy korzystać z narzędzi analitycznych i reklamowych, które pomagają nam lepiej rozumieć potrzeby użytkowników i skuteczniej prowadzić działania marketingowe. Poniżej znajdziesz podstawowe informacje o tych rozwiązaniach. Szczegóły zawsze są dostępne w politykach prywatności dostawców poszczególnych narzędzi.",
+    "fbStats": {
+      "title": "Statystyki stron Facebook i Instagram",
+      "p1": "Meta udostępnia nam zagregowane dane statystyczne dotyczące odwiedzin naszych profili. Dzięki temu możemy zobaczyć, jak użytkownicy wchodzą w interakcje z naszymi treściami. W tym zakresie działamy jako współadministrator danych razem z Meta Ireland Limited.",
+      "fbLink": "Zasady dotyczące danych (Facebook)",
+      "igLink": "Zasady dotyczące danych (Instagram)"
+    },
+    "ga": {
+      "title": "Google Analytics",
+      "p1": "Korzystamy z Google Analytics, aby badać, w jaki sposób użytkownicy korzystają ze Strony Internetowej. Narzędzie to zbiera informacje przy pomocy plików cookies i pozwala nam analizować ruch oraz ulepszać treści. Dane przetwarzane przez Google nie służą do identyfikacji konkretnych osób. <gaLink>Więcej informacji</gaLink>."
+    },
+    "gads": {
+      "title": "Google Ads",
+      "p1": "Google Ads pozwala nam mierzyć skuteczność naszych kampanii reklamowych oraz wyświetlać treści promocyjne osobom, które odwiedziły wcześniej Stronę Internetową. Narzędzie wykorzystuje cookies i inne technologie śledzące w celu dopasowania reklam. <gadsLink>Szczegółowe informacje</gadsLink>."
+    },
+    "fbPixel": {
+      "title": "Facebook Pixel",
+      "p1": "Na naszej Stronie Internetowej możemy korzystać z Facebook Pixel. To narzędzie, które pozwala nam sprawdzać, jak użytkownicy reagują na nasze treści i reklamy w mediach społecznościowych, a także lepiej dopasowywać przyszłe kampanie. <fbPixelLink>Szczegóły</fbPixelLink>."
+    },
+    "fbAds": {
+      "title": "Facebook Ads",
+      "p1": "Facebook Ads to rozwiązanie oferowane przez Meta, które umożliwia tworzenie i prowadzenie kampanii reklamowych na Facebooku, Instagramie i innych usługach Meta. Umożliwia nam kierowanie reklam do wybranych grup odbiorców na podstawie danych demograficznych, zainteresowań i zachowań. <fbAdsLink>Więcej informacji</fbAdsLink>."
+    }
+  },
+  "s9": {
+    "title": "9. Social Media",
+    "p1": "Przetwarzamy dane osobowe użytkowników, którzy śledzą nasze profile w mediach społecznościowych takich jak Facebook, Instagram, YouTube i TikTok oraz wchodzą z nimi w interakcje. Szczegółowe informacje na temat przetwarzania danych przez poszczególne portale znajdziesz pod poniższymi linkami:",
+    "fbLink": "Zasady dotyczące danych dla Facebooka i Instagrama",
+    "ytPrivacy": "Polityka Prywatności YouTube",
+    "ytTerms": "Warunki przetwarzania danych osobowych przez YouTube",
+    "tiktokLink": "Polityka Prywatności TikTok"
+  },
+  "s10": {
+    "title": "10. Pliki cookies",
+    "p1": "Na naszej Stronie Internetowej oraz w Aplikacjach korzystamy z plików cookies oraz podobnych technologii przechowywania danych w przeglądarce (w tym localStorage). Dzięki nim strona i aplikacje działają prawidłowo, możemy zapewnić bezpieczeństwo, analizować statystyki odwiedzin oraz prowadzić działania marketingowe.",
+    "p2": "Pliki cookies mogą być zapisywane na Twoim urządzeniu przez nas (tzw. cookies własne) albo przez naszych partnerów (tzw. cookies podmiotów trzecich, np. Google, X/Twitter). Dane w localStorage są przechowywane wyłącznie lokalnie w Twojej przeglądarce i nie są przekazywane podmiotom trzecim.",
+    "p3": "Niektóre cookies i dane w localStorage są niezbędne do działania strony i nie można ich wyłączyć, inne wymagają Twojej zgody – możesz nimi zarządzać w ustawieniach przeglądarki lub w banerze cookies widocznym przy pierwszej wizycie.",
+    "p4": "Dodatkowo korzystamy z <bold>Umami Analytics</bold> – narzędzia analitycznego, które nie wykorzystuje plików cookies ani localStorage. Umami zbiera wyłącznie zanonimizowane dane statystyczne o ruchu na stronie, bez możliwości identyfikacji poszczególnych użytkowników.",
+    "p5": "Poniżej znajdziesz listę plików cookies oraz danych localStorage, z których korzystamy, wraz z informacją o ich przeznaczeniu, czasie przechowywania i rodzaju:",
+    "tableHeaders": {
+      "name": "Nazwa",
+      "domain": "Domena",
+      "description": "Opis",
+      "retention": "Okres przechowywania",
+      "technology": "Technologia",
+      "type": "Rodzaj"
+    },
+    "cookies": {
+      "ga": {
+        "description": "Plik cookie _ga, instalowany przez Google Analytics, oblicza dane o odwiedzających, sesjach i kampaniach, a także śledzi wykorzystanie witryny na potrzeby raportu analitycznego. Plik cookie przechowuje informacje anonimowo i przypisuje losowo wygenerowany numer w celu rozpoznawania unikalnych użytkowników.",
+        "retention": "1 rok, 1 miesiąc, 4 dni",
+        "type": "Analityczne"
+      },
+      "gaStar": {
+        "description": "Google Analytics ustawia ten plik cookie do przechowywania i zliczania odsłon.",
+        "retention": "1 rok, 1 miesiąc, 4 dni",
+        "type": "Analityczne"
+      },
+      "guestIdMarketing": {
+        "description": "X (Twitter) ustawia ten plik cookie w celu identyfikacji i śledzenia osoby odwiedzającej witrynę.",
+        "retention": "1 rok, 1 miesiąc, 4 dni",
+        "type": "Reklamowe"
+      },
+      "guestIdAds": {
+        "description": "X (Twitter) ustawia ten plik cookie w celu identyfikacji i śledzenia osoby odwiedzającej witrynę.",
+        "retention": "1 rok, 1 miesiąc, 4 dni",
+        "type": "Reklamowe"
+      },
+      "personalizationId": {
+        "description": "X (Twitter) ustawia ten plik cookie w celu integracji i udostępniania funkcji mediów społecznościowych, a także przechowywania informacji o tym, jak użytkownik korzysta ze strony internetowej, do celów śledzenia i targetowania.",
+        "retention": "1 rok, 1 miesiąc, 4 dni",
+        "type": "Reklamowe"
+      },
+      "guestId": {
+        "description": "X (Twitter) ustawia ten plik cookie do identyfikacji i śledzenia osoby odwiedzającej witrynę. Rejestruje, czy użytkownik jest zalogowany na platformie X i zbiera informacje o preferencjach reklamowych.",
+        "retention": "1 rok, 1 miesiąc, 4 dni",
+        "type": "Reklamowe"
+      },
+      "mucAds": {
+        "description": "X (Twitter) ustawia ten plik cookie w celu zbierania danych o zachowaniu i interakcjach użytkownika w celu optymalizacji strony internetowej.",
+        "retention": "1 rok, 1 miesiąc, 4 dni",
+        "type": "Reklamowe"
+      },
+      "cookieConsent": {
+        "description": "Przechowuje Twoje preferencje dotyczące zgód na pliki cookies (niezbędne, analityczne, marketingowe).",
+        "retention": "Bezterminowo",
+        "type": "Niezbędne"
+      },
+      "pollarUid": {
+        "description": "Anonimowy identyfikator odwiedzającego, używany do zliczania wyświetleń artykułów i zapobiegania ich wielokrotnemu liczeniu.",
+        "retention": "Bezterminowo",
+        "type": "Niezbędne"
+      },
+      "pollarVisitorId": {
+        "description": "Identyfikator sesji asystenta AI, używany do ograniczania liczby zapytań (rate limiting).",
+        "retention": "Bezterminowo",
+        "type": "Niezbędne"
+      },
+      "pollarLanguage": {
+        "description": "Wykorzystywane do zapamiętywania wybranego języka interfejsu.",
+        "retention": "Bezterminowo",
+        "type": "Funkcjonalne"
+      },
+      "stockWatchlist": {
+        "description": "Przechowuje listę obserwowanych instrumentów giełdowych.",
+        "retention": "Bezterminowo",
+        "type": "Funkcjonalne"
+      },
+      "pollarPowiazania": {
+        "description": "Zapisuje stan gry dziennej „Powiązania” (postęp, odpowiedzi, błędy).",
+        "retention": "Do resetu gry",
+        "type": "Funkcjonalne"
+      }
+    }
+  },
+  "s11": {
+    "title": "11. Zmiany w Polityce prywatności",
+    "p1": "Chcemy, aby nasze zasady dotyczące ochrony danych były przejrzyste i dopasowane do tego, jak faktycznie korzystasz ze Strony Internetowej. Dlatego ta Polityka może być co jakiś czas aktualizowana.",
+    "p2": "Zawsze najnowsza wersja dokumentu będzie dostępna na tej stronie, razem z datą, od której obowiązuje.",
+    "effectiveDate": "Ta wersja Polityki obowiązuje od: 6 lutego 2026"
+  },
+  "cookieSettingsFooter": {
+    "title": "Zarządzaj ustawieniami cookies",
+    "description": "Zmień swoje preferencje dotyczące plików cookie w każdej chwili.",
+    "button": "Ustawienia cookies"
+  }
+}
