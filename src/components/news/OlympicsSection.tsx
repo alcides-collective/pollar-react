@@ -11,7 +11,7 @@ const OLYMPIC_PATTERNS = [/igrzysk/i, /olympi/i, /olimp/i, /milancortina/i, /mai
 export function isOlympicEvent(event: Event): boolean {
   const keywords = event.metadata?.seo?.keywords ?? [];
   const hashtags = event.metadata?.seo?.hashtags ?? [];
-  const allTags = [...keywords, ...hashtags];
+  const allTags = [...keywords, ...hashtags, event.title];
   return allTags.some(tag => OLYMPIC_PATTERNS.some(p => p.test(tag)));
 }
 
