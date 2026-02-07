@@ -1641,6 +1641,56 @@ app.use(async (req, res, next) => {
           }
         }
       } catch { /* skip if unavailable */ }
+
+      // About section at the bottom
+      const about = {
+        pl: `<section class="about">
+<h2>Czym jest Pollar News?</h2>
+<p>Pollar News to polska platforma informacyjna zasilana sztuczną inteligencją. AI automatycznie agreguje artykuły z dziesiątek redakcji, grupuje je w wydarzenia, generuje streszczenia z kluczowymi punktami i prezentuje różne perspektywy — bez clickbaitów, tylko sprawdzone fakty.</p>
+<h3>Co oferuje Pollar?</h3>
+<ul>
+<li><strong>Wydarzenia</strong> — zagregowane wiadomości z wielu źródeł w jednym miejscu</li>
+<li><strong>Daily Brief</strong> — codzienny przegląd najważniejszych wydarzeń generowany przez AI</li>
+<li><strong>Sejm RP</strong> — głosowania, posłowie, komisje, procesy legislacyjne</li>
+<li><strong>Dane publiczne</strong> — giełda GPW, jakość powietrza, ceny mieszkań, energetyka, Eurostat</li>
+<li><strong>Mapa wydarzeń</strong> — interaktywna mapa bieżących wydarzeń w Polsce</li>
+</ul>
+<p>Serwis jest dostępny w języku polskim, angielskim i niemieckim. Treści oryginalne są licencjonowane na zasadach <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+<p>Pollar P.S.A. — firma zarejestrowana w Krakowie (KRS 0001194489). Zespół: Jakub Dudek (Developer), Bartosz Kasprzycki (Product &amp; Marketing).</p>
+<p><a href="https://pollar.news/kontakt">Kontakt</a> · <a href="https://pollar.news/info">O Pollar</a> · <a href="https://pollar.news/regulamin">Regulamin</a> · <a href="https://pollar.news/feed.xml">RSS</a> · <a href="https://pollar.news/llms.txt">llms.txt</a></p>
+</section>`,
+        en: `<section class="about">
+<h2>What is Pollar News?</h2>
+<p>Pollar News is a Polish AI-powered news platform. AI automatically aggregates articles from dozens of newsrooms, groups them into events, generates summaries with key points, and presents different perspectives — no clickbait, only verified facts.</p>
+<h3>What does Pollar offer?</h3>
+<ul>
+<li><strong>Events</strong> — aggregated news from multiple sources in one place</li>
+<li><strong>Daily Brief</strong> — AI-generated daily summary of the most important events</li>
+<li><strong>Polish Parliament (Sejm)</strong> — votes, MPs, committees, legislative processes</li>
+<li><strong>Public data</strong> — GPW stock market, air quality, real estate prices, energy mix, Eurostat</li>
+<li><strong>Event map</strong> — interactive map of current events in Poland</li>
+</ul>
+<p>Available in Polish, English, and German. Original content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+<p>Pollar P.S.A. — company registered in Kraków, Poland (KRS 0001194489). Team: Jakub Dudek (Developer), Bartosz Kasprzycki (Product &amp; Marketing).</p>
+<p><a href="https://pollar.news/kontakt">Contact</a> · <a href="https://pollar.news/info">About</a> · <a href="https://pollar.news/regulamin">Terms</a> · <a href="https://pollar.news/en/feed.xml">RSS</a> · <a href="https://pollar.news/llms.txt">llms.txt</a></p>
+</section>`,
+        de: `<section class="about">
+<h2>Was ist Pollar News?</h2>
+<p>Pollar News ist eine polnische KI-gestützte Nachrichtenplattform. KI aggregiert automatisch Artikel aus Dutzenden von Redaktionen, gruppiert sie zu Ereignissen, erstellt Zusammenfassungen mit Kernpunkten und präsentiert verschiedene Perspektiven — ohne Clickbait, nur verifizierte Fakten.</p>
+<h3>Was bietet Pollar?</h3>
+<ul>
+<li><strong>Ereignisse</strong> — aggregierte Nachrichten aus mehreren Quellen an einem Ort</li>
+<li><strong>Daily Brief</strong> — KI-generierte tägliche Zusammenfassung der wichtigsten Ereignisse</li>
+<li><strong>Polnisches Parlament (Sejm)</strong> — Abstimmungen, Abgeordnete, Ausschüsse, Gesetzgebung</li>
+<li><strong>Öffentliche Daten</strong> — GPW-Börse, Luftqualität, Immobilienpreise, Energiemix, Eurostat</li>
+<li><strong>Ereigniskarte</strong> — interaktive Karte aktueller Ereignisse in Polen</li>
+</ul>
+<p>Verfügbar auf Polnisch, Englisch und Deutsch. Originalinhalte sind lizenziert unter <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+<p>Pollar P.S.A. — Unternehmen mit Sitz in Kraków, Polen (KRS 0001194489). Team: Jakub Dudek (Entwickler), Bartosz Kasprzycki (Produkt &amp; Marketing).</p>
+<p><a href="https://pollar.news/kontakt">Kontakt</a> · <a href="https://pollar.news/info">Über uns</a> · <a href="https://pollar.news/regulamin">AGB</a> · <a href="https://pollar.news/de/feed.xml">RSS</a> · <a href="https://pollar.news/llms.txt">llms.txt</a></p>
+</section>`
+      };
+      homepageCapsule = (homepageCapsule || '') + (about[lang] || about.pl);
     }
 
     return res.send(generateSeoHtml({
