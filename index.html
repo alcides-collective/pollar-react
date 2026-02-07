@@ -8,6 +8,16 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Preconnect to critical origins -->
+    <link rel="preconnect" href="https://pollar.up.railway.app" crossorigin />
+    <link rel="dns-prefetch" href="https://cloud.umami.is" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+    <!-- Preload critical above-the-fold fonts -->
+    <link rel="preload" href="/src/assets/fonts/HKGrotesk-Medium.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/assets/fonts/HKGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin />
+
     <title>Pollar News</title>
 
     <!-- Open Graph -->
