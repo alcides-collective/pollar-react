@@ -105,9 +105,11 @@ export function extractKeyNumber(summary: string | undefined): ExtractedKeyNumbe
 export function extractTimeline(summary: string | undefined): ExtractedTimeline | null {
   if (!summary) return null;
 
+  const s = normalizeEnglishTags(summary);
+
   // Try double quotes first, then single quotes
-  const match = summary.match(/<timeline\s+tytu[łl]u?\s*=\s*"([^"]+)">([\s\S]*?)<\/timeline>/i)
-    || summary.match(/<timeline\s+tytu[łl]u?\s*=\s*'([^']+)'>([\s\S]*?)<\/timeline>/i);
+  const match = s.match(/<timeline\s+tytu[łl]u?\s*=\s*"([^"]+)">([\s\S]*?)<\/timeline>/i)
+    || s.match(/<timeline\s+tytu[łl]u?\s*=\s*'([^']+)'>([\s\S]*?)<\/timeline>/i);
   if (!match) return null;
 
   try {
@@ -196,7 +198,7 @@ function parseChartData(dataStr: string): { label: string; value: number }[] {
 export function removeExtractedElements(summary: string | undefined): string {
   if (!summary) return '';
 
-  return summary
+  return normalizeEnglishTags(summary)
     // Remove kluczowa-liczba tags (double quotes)
     .replace(/<kluczowa-liczba\s+wartość\s*=\s*"[^"]+">[\s\S]*?<\/kluczowa-liczba>/gi, '')
     // Remove kluczowa-liczba tags (single quotes)
@@ -246,7 +248,7 @@ export function preventWidowsInHtml(html: string): string {
 export function stripHtmlForPlainText(text: string): string {
   if (!text || typeof text !== 'string') return text ?? '';
 
-  return text
+  return normalizeEnglishTags(text)
     .replace(/&amp;lt;/g, '<')
     .replace(/&amp;gt;/g, '>')
     .replace(/&lt;/g, '<')
@@ -321,7 +323,22 @@ export function sanitizeAndProcessHtml(text: string): string {
     .replace(/&lt;(\/?)layout-por[oó]wnanie/gi, '<$1layout-porownanie')
     .replace(/&lt;(\/?)weryfikacja/gi, '<$1weryfikacja')
     .replace(/&lt;(\/?)sekcja/gi, '<$1sekcja')
-    .replace(/&gt;/g, '>')
+    // English tag entity decoders
+    .replace(/&lt;(\/?)note/gi, '<$1note')
+    .replace(/&lt;(\/?)context/gi, '<$1context')
+    .replace(/&lt;(\/?)quote/gi, '<$1quote')
+    .replace(/&lt;(\/?)key-number/gi, '<$1key-number')
+    .replace(/&lt;(\/?)comparison/gi, '<$1comparison')
+    .replace(/&lt;(\/?)poll/gi, '<$1poll')
+    .replace(/&lt;(\/?)manipulation/gi, '<$1manipulation')
+    .replace(/&lt;(\/?)verification/gi, '<$1verification')
+    .replace(/&lt;(\/?)fact-check/gi, '<$1fact-check')
+    .replace(/&gt;/g, '>');
+
+  // Normalize English tag names and attributes to Polish equivalents
+  processedText = normalizeEnglishTags(processedText);
+
+  processedText = processedText
     // Convert markdown bold **text** to <b>text</b>
     .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
     // Convert <sekcja tytuł="..."> to section header (double quotes)
@@ -973,7 +990,13 @@ export function sanitizeAndProcessInlineHtml(text: string): string {
   processedText = processedText
     .replace(/<br\s*\/?>/gi, ' ')
     .replace(/&lt;(\/?)przypis/gi, '<$1przypis')
-    .replace(/&gt;/g, '>')
+    .replace(/&lt;(\/?)note/gi, '<$1note')
+    .replace(/&gt;/g, '>');
+
+  // Normalize English tag names and attributes to Polish equivalents
+  processedText = normalizeEnglishTags(processedText);
+
+  processedText = processedText
     // Convert przypis to tooltip
     .replace(/<przypis\s+title\s*=\s*["']([^"']+)["']\s+opis\s*=\s*["']([^"']+)["']\s*\/?>([\s\S]*?)<\/przypis>/gi,
       '<span class="footnote" tabindex="0"><span class="footnote-term">$3</span><span class="footnote-tooltip"><span class="footnote-title">$1</span><span class="footnote-desc">$2</span></span></span>')
