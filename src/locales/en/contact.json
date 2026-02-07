@@ -1,0 +1,79 @@
+{
+  "title": "Contact",
+  "description": "Have a question, suggestion, or want to report a bug? Write to us — we reply to every message.",
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Select a subject",
+    "message": "Message",
+    "messagePlaceholder": "Describe how we can help...",
+    "submit": "Send message",
+    "sending": "Sending...",
+    "success": "Message sent. We'll reply as soon as possible.",
+    "error": "Failed to send message. Please try again or email us directly.",
+    "subjects": {
+      "bug": "Bug report",
+      "feature": "Feature request",
+      "question": "General question",
+      "partnership": "Partnership",
+      "gdpr": "GDPR / Personal data",
+      "other": "Other"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "messageRequired": "Message is required"
+    }
+  },
+  "team": {
+    "title": "Team",
+    "jakub": {
+      "name": "Jakub Dudek",
+      "role": "Developer",
+      "email": "jakub@pollar.pl"
+    },
+    "bartosz": {
+      "name": "Bartosz Kasprzycki",
+      "role": "Product & Marketing",
+      "email": "bartosz@pollar.pl"
+    }
+  },
+  "social": {
+    "title": "Social media",
+    "followUs": "Follow us"
+  },
+  "company": {
+    "title": "Company details",
+    "name": "Pollar P.S.A.",
+    "address": "ul. Piastowska 46/12, 30-067 Kraków, Poland",
+    "krs": "KRS: 00011944689",
+    "nip": "NIP: 6772540681"
+  },
+  "faq": {
+    "title": "FAQ",
+    "items": [
+      {
+        "question": "How do I report a bug?",
+        "answer": "The quickest way is through the form above — select \"Bug report\" as the subject and describe the issue. You can also email jakub@pollar.pl directly."
+      },
+      {
+        "question": "How do I delete my account?",
+        "answer": "Email us from the address associated with your account at jakub@pollar.pl requesting account deletion. We'll delete it within 7 business days."
+      },
+      {
+        "question": "Is Pollar free?",
+        "answer": "Yes, Pollar is completely free. We plan to introduce a premium plan with additional features in the future, but basic access will always remain free."
+      },
+      {
+        "question": "How does AI work in Pollar?",
+        "answer": "AI automatically groups related articles into events, generates summaries, and creates the Daily Brief. We use AI models from various providers (including Google Gemini, OpenAI, OpenRouter) for content analysis and summarization."
+      },
+      {
+        "question": "How do I become a source on Pollar?",
+        "answer": "Pollar aggregates news from public sources via Event Registry. If you represent a media outlet and want your articles included, contact us through the form."
+      }
+    ]
+  }
+}

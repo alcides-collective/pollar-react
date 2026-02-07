@@ -67,6 +67,7 @@ export function Footer() {
     { label: t('footer.terms'), to: '/regulamin' },
     { label: t('footer.privacyPolicy'), to: '/polityka-prywatnosci' },
     { label: t('footer.cookies'), to: '/cookies' },
+    { label: t('footer.contact'), to: '/kontakt' },
   ];
 
   return (

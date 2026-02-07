@@ -1,0 +1,79 @@
+{
+  "title": "Kontakt",
+  "description": "Haben Sie eine Frage, einen Vorschlag oder möchten Sie einen Fehler melden? Schreiben Sie uns — wir antworten auf jede Nachricht.",
+  "form": {
+    "name": "Name",
+    "email": "E-Mail",
+    "subject": "Betreff",
+    "subjectPlaceholder": "Betreff auswählen",
+    "message": "Nachricht",
+    "messagePlaceholder": "Beschreiben Sie, wie wir helfen können...",
+    "submit": "Nachricht senden",
+    "sending": "Wird gesendet...",
+    "success": "Nachricht gesendet. Wir antworten so schnell wie möglich.",
+    "error": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt per E-Mail.",
+    "subjects": {
+      "bug": "Fehlerbericht",
+      "feature": "Funktionsvorschlag",
+      "question": "Allgemeine Frage",
+      "partnership": "Partnerschaft",
+      "gdpr": "DSGVO / Personenbezogene Daten",
+      "other": "Sonstiges"
+    },
+    "validation": {
+      "nameRequired": "Name ist erforderlich",
+      "emailRequired": "E-Mail ist erforderlich",
+      "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "messageRequired": "Nachricht ist erforderlich"
+    }
+  },
+  "team": {
+    "title": "Team",
+    "jakub": {
+      "name": "Jakub Dudek",
+      "role": "Entwickler",
+      "email": "jakub@pollar.pl"
+    },
+    "bartosz": {
+      "name": "Bartosz Kasprzycki",
+      "role": "Produkt & Marketing",
+      "email": "bartosz@pollar.pl"
+    }
+  },
+  "social": {
+    "title": "Social Media",
+    "followUs": "Folgen Sie uns"
+  },
+  "company": {
+    "title": "Firmendaten",
+    "name": "Pollar P.S.A.",
+    "address": "ul. Piastowska 46/12, 30-067 Kraków, Polen",
+    "krs": "KRS: 00011944689",
+    "nip": "NIP: 6772540681"
+  },
+  "faq": {
+    "title": "FAQ",
+    "items": [
+      {
+        "question": "Wie melde ich einen Fehler?",
+        "answer": "Am schnellsten über das Formular oben — wählen Sie \"Fehlerbericht\" als Betreff und beschreiben Sie das Problem. Sie können auch direkt an jakub@pollar.pl schreiben."
+      },
+      {
+        "question": "Wie lösche ich mein Konto?",
+        "answer": "Schreiben Sie uns von der mit Ihrem Konto verknüpften E-Mail-Adresse an jakub@pollar.pl mit der Bitte um Kontolöschung. Wir löschen es innerhalb von 7 Werktagen."
+      },
+      {
+        "question": "Ist Pollar kostenlos?",
+        "answer": "Ja, Pollar ist völlig kostenlos. Wir planen, in Zukunft einen Premium-Plan mit zusätzlichen Funktionen einzuführen, aber der grundlegende Zugang wird immer kostenlos bleiben."
+      },
+      {
+        "question": "Wie funktioniert KI bei Pollar?",
+        "answer": "KI gruppiert automatisch verwandte Artikel zu Ereignissen, erstellt Zusammenfassungen und generiert den Daily Brief. Wir verwenden KI-Modelle verschiedener Anbieter (u.a. Google Gemini, OpenAI, OpenRouter) für Inhaltsanalyse und Zusammenfassung."
+      },
+      {
+        "question": "Wie werde ich eine Quelle bei Pollar?",
+        "answer": "Pollar aggregiert Nachrichten aus öffentlichen Quellen über Event Registry. Wenn Sie ein Medium vertreten und möchten, dass Ihre Artikel berücksichtigt werden, kontaktieren Sie uns über das Formular."
+      }
+    ]
+  }
+}

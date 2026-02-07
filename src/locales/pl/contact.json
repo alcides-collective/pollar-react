@@ -1,0 +1,79 @@
+{
+  "title": "Kontakt",
+  "description": "Masz pytanie, sugestię lub chcesz zgłosić błąd? Napisz do nas — odpowiadamy na każdą wiadomość.",
+  "form": {
+    "name": "Imię",
+    "email": "Email",
+    "subject": "Temat",
+    "subjectPlaceholder": "Wybierz temat",
+    "message": "Wiadomość",
+    "messagePlaceholder": "Opisz, w czym możemy pomóc...",
+    "submit": "Wyślij wiadomość",
+    "sending": "Wysyłanie...",
+    "success": "Wiadomość została wysłana. Odpowiemy najszybciej, jak to możliwe.",
+    "error": "Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz bezpośrednio na maila.",
+    "subjects": {
+      "bug": "Błąd / Bug report",
+      "feature": "Sugestia / Feature request",
+      "question": "Pytanie ogólne",
+      "partnership": "Współpraca / Partnerstwo",
+      "gdpr": "RODO / Dane osobowe",
+      "other": "Inne"
+    },
+    "validation": {
+      "nameRequired": "Imię jest wymagane",
+      "emailRequired": "Email jest wymagany",
+      "emailInvalid": "Podaj poprawny adres email",
+      "messageRequired": "Wiadomość jest wymagana"
+    }
+  },
+  "team": {
+    "title": "Zespół",
+    "jakub": {
+      "name": "Jakub Dudek",
+      "role": "Developer",
+      "email": "jakub@pollar.pl"
+    },
+    "bartosz": {
+      "name": "Bartosz Kasprzycki",
+      "role": "Product & Marketing",
+      "email": "bartosz@pollar.pl"
+    }
+  },
+  "social": {
+    "title": "Social media",
+    "followUs": "Śledź nas"
+  },
+  "company": {
+    "title": "Dane firmy",
+    "name": "Pollar P.S.A.",
+    "address": "ul. Piastowska 46/12, 30-067 Kraków",
+    "krs": "KRS: 00011944689",
+    "nip": "NIP: 6772540681"
+  },
+  "faq": {
+    "title": "FAQ",
+    "items": [
+      {
+        "question": "Jak zgłosić błąd?",
+        "answer": "Najszybciej przez formularz powyżej — wybierz temat \"Błąd / Bug report\" i opisz problem. Możesz też napisać bezpośrednio na jakub@pollar.pl."
+      },
+      {
+        "question": "Jak usunąć konto?",
+        "answer": "Napisz do nas z adresu email powiązanego z kontem na jakub@pollar.pl z prośbą o usunięcie konta. Usuniemy je w ciągu 7 dni roboczych."
+      },
+      {
+        "question": "Czy Pollar jest darmowy?",
+        "answer": "Tak, Pollar jest w pełni darmowy. Planujemy w przyszłości wprowadzić plan premium z dodatkowymi funkcjami, ale podstawowy dostęp zawsze pozostanie bezpłatny."
+      },
+      {
+        "question": "Jak działa AI w Pollar?",
+        "answer": "AI automatycznie grupuje powiązane artykuły w wydarzenia, generuje streszczenia i tworzy Daily Brief. Korzystamy z modeli AI od różnych dostawców (m.in. Google Gemini, OpenAI, OpenRouter) do analizy i podsumowywania treści."
+      },
+      {
+        "question": "Jak zostać źródłem w Pollar?",
+        "answer": "Pollar agreguje wiadomości z publicznych źródeł za pośrednictwem Event Registry. Jeśli reprezentujesz medium i chcesz, aby Twoje artykuły były uwzględniane, skontaktuj się z nami przez formularz."
+      }
+    ]
+  }
+}

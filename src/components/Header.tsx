@@ -487,6 +487,13 @@ export function Header() {
                     {pathWithoutLang.startsWith('/info') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/kontakt" className="w-full flex items-center gap-2">
+                    <i className="ri-mail-line" />
+                    {t('nav.contact')}
+                    {pathWithoutLang.startsWith('/kontakt') && <i className="ri-check-line ml-auto" />}
+                  </LocalizedLink>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
             </DropdownMenu>

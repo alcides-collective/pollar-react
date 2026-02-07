@@ -38,6 +38,7 @@ const NotificationsPage = lazy(() => import('./pages/notifications').then(m => (
 const ArchivePage = lazy(() => import('./pages/archiwum').then(m => ({ default: m.ArchivePage })))
 const CategoryArchivePage = lazy(() => import('./pages/archiwum').then(m => ({ default: m.CategoryArchivePage })))
 const NewsletterPage = lazy(() => import('./pages/newsletter').then(m => ({ default: m.NewsletterPage })))
+const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })))
 
 // Sejm section (heavy - lots of data visualization)
 const SejmLayout = lazy(() => import('./pages/sejm').then(m => ({ default: m.SejmLayout })))
@@ -145,6 +146,7 @@ function getAppRoutes(prefix = '') {
     <Route key={`${prefix}-newsletter`} path={`${prefix}/newsletter`} element={<NewsletterPage />} />,
     <Route key={`${prefix}-archiwum`} path={`${prefix}/archiwum`} element={<ArchivePage />} />,
     <Route key={`${prefix}-archiwum-cat`} path={`${prefix}/archiwum/:category`} element={<CategoryArchivePage />} />,
+    <Route key={`${prefix}-kontakt`} path={`${prefix}/kontakt`} element={<ContactPage />} />,
     <Route key={`${prefix}-sources`} path={`${prefix}/sources`} element={<SourcesPage />} />,
     /* Sejm routes */
     <Route key={`${prefix}-sejm`} path={`${prefix}/sejm`} element={<SejmLayout />}>

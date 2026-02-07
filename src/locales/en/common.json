@@ -16,6 +16,7 @@
     "archive": "Archive",
     "about": "About Pollar",
     "sources": "Sources",
+    "contact": "Contact",
     "sections": {
       "essentials": "Essentials",
       "data": "Data & Analysis"
@@ -106,7 +107,8 @@
     "legal": "Legal",
     "terms": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "contact": "Contact"
   },
   "eventStream": {
     "update": "Update",
