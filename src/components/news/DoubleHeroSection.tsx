@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Event } from '../../types/events';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
@@ -11,6 +12,7 @@ interface DoubleHeroSectionProps {
 }
 
 export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectionProps) {
+  const { t } = useTranslation('common');
   if (events.length < 2) return null;
 
   const gridCols = reversed ? 'md:grid-cols-[2fr_1fr]' : 'md:grid-cols-[1fr_2fr]';
@@ -40,7 +42,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
               </span>
             )}
           </div>
-          <span className="text-zinc-400 text-xs">{leftEvent.category}</span>
+          <span className="text-zinc-400 text-xs">{t(`categories.${leftEvent.category}`, { defaultValue: leftEvent.category })}</span>
           <h3 className={`text-zinc-900 font-semibold leading-tight ${leftIsLarger ? 'text-2xl' : 'text-xl'}`}>
             <AnimatedUnderline>{leftEvent.title}</AnimatedUnderline>
           </h3>
@@ -66,7 +68,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
               </span>
             )}
           </div>
-          <span className="text-zinc-400 text-xs">{rightEvent.category}</span>
+          <span className="text-zinc-400 text-xs">{t(`categories.${rightEvent.category}`, { defaultValue: rightEvent.category })}</span>
           <h3 className={`text-zinc-900 font-semibold leading-tight ${rightIsLarger ? 'text-2xl' : 'text-xl'}`}>
             <AnimatedUnderline>{rightEvent.title}</AnimatedUnderline>
           </h3>

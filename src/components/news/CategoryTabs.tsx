@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Event } from '../../types/events';
@@ -13,6 +14,7 @@ interface CategoryTabsProps {
 }
 
 export function CategoryTabs({ groups }: CategoryTabsProps) {
+  const { t } = useTranslation('common');
   const [selectedTab, setSelectedTab] = useState(0);
   const selectedGroup = groups[selectedTab];
 
@@ -31,7 +33,7 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                 : 'text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50'
             }`}
           >
-            {events[0]?.metadata?.ultraShortHeadline || events[0]?.category}
+            {events[0]?.metadata?.ultraShortHeadline || t(`categories.${events[0]?.category}`, { defaultValue: events[0]?.category })}
             {selectedTab === index && (
               <motion.div
                 layoutId="tabIndicator"
@@ -76,7 +78,7 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                       </div>
                     </div>
                     <div>
-                      <span className="text-zinc-400 text-xs">{selectedGroup[1][0].category}</span>
+                      <span className="text-zinc-400 text-xs">{t(`categories.${selectedGroup[1][0].category}`, { defaultValue: selectedGroup[1][0].category })}</span>
                       <h4 className="text-zinc-900 font-semibold text-xl leading-tight">
                         <AnimatedUnderline>{selectedGroup[1][0].title}</AnimatedUnderline>
                       </h4>

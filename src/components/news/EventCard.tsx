@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Event } from '../../types/events';
 import { EventImage } from '../common/EventImage';
 import { LocalizedLink } from '../LocalizedLink';
@@ -28,6 +29,7 @@ export function EventCard({
   showLead = false,
   className = '',
 }: EventCardProps) {
+  const { t } = useTranslation('common');
   const styles = sizeStyles[size];
 
   return (
@@ -43,7 +45,7 @@ export function EventCard({
           </div>
         )}
         {showCategory && (
-          <span className="text-zinc-400 text-xs">{event.category}</span>
+          <span className="text-zinc-400 text-xs">{t(`categories.${event.category}`, { defaultValue: event.category })}</span>
         )}
         <h3 className={`text-zinc-900 font-semibold leading-tight group-hover:underline ${styles.title}`}>
           {event.title}

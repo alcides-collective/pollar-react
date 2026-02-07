@@ -25,6 +25,7 @@ export function NewsletterTopEvents({ events }: NewsletterTopEventsProps) {
 
 function TopEventCard({ event, rank }: { event: NewsletterEvent; rank: number }) {
   const { t } = useTranslation('newsletter');
+  const { t: tCommon } = useTranslation('common');
 
   return (
     <div className="flex gap-4 items-start group">
@@ -50,7 +51,7 @@ function TopEventCard({ event, rank }: { event: NewsletterEvent; rank: number })
         {/* Meta row: category badge + source count */}
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-700">
-            {event.category}
+            {tCommon(`categories.${event.category}`, { defaultValue: event.category })}
           </span>
           <span className="text-xs text-zinc-400">
             {event.sourceCount} {t('sources')}

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import type { GraphNode } from '@/types/graph';
 
 interface EventDetailsPanelProps {
@@ -8,6 +9,7 @@ interface EventDetailsPanelProps {
 }
 
 export function EventDetailsPanel({ node, onClose, onNavigate }: EventDetailsPanelProps) {
+  const { t } = useTranslation('common');
   const { event } = node;
 
   return (
@@ -20,7 +22,7 @@ export function EventDetailsPanel({ node, onClose, onNavigate }: EventDetailsPan
     >
       <div className="graf-details-header">
         <span className="graf-details-category" style={{ color: node.color }}>
-          {event.category}
+          {t(`categories.${event.category}`, { defaultValue: event.category })}
         </span>
         <button onClick={onClose} className="graf-details-close" aria-label="Zamknij">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">

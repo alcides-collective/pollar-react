@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import type { Event } from '../../types/events';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { getImageSource } from '@/lib/imageSource';
@@ -12,6 +13,7 @@ interface FeaturedSectionProps {
 }
 
 export function FeaturedSection({ events }: FeaturedSectionProps) {
+  const { t } = useTranslation('common');
   if (events.length === 0) return null;
 
   const mainEvent = events[0];
@@ -66,7 +68,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
       </div>
 
       <div className="px-6 pt-2 pb-6 md:p-6">
-        <span className="text-zinc-500 text-sm">{mainEvent.category}</span>
+        <span className="text-zinc-500 text-sm">{t(`categories.${mainEvent.category}`, { defaultValue: mainEvent.category })}</span>
         <AnimatedHeadline
           to={`/event/${mainEvent.id}`}
           as="h2"
@@ -122,7 +124,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
                     </div>
                   </div>
                   <div className="flex flex-col justify-center group/underline">
-                    <span className="text-zinc-400 text-xs">{event.category}</span>
+                    <span className="text-zinc-400 text-xs">{t(`categories.${event.category}`, { defaultValue: event.category })}</span>
                     <h3 className="text-zinc-900 font-semibold text-base leading-snug">
                       <AnimatedUnderline>
                         {event.title}
