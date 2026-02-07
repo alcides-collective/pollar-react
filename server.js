@@ -576,13 +576,15 @@ app.get('/api/og/event/:id', async (req, res) => {
 
 // Schema.org JSON-LD generators for AEO (Answer Engine Optimization)
 function generateNewsArticleSchema(opts) {
-  const { headline, description, datePublished, dateModified, targetUrl, ogImage, lang = 'pl' } = opts;
+  const { headline, description, datePublished, dateModified, targetUrl, ogImage, lang = 'pl', articleBody = null, keywords = null } = opts;
   const inLanguageMap = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   return {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline,
     description,
+    ...(articleBody ? { articleBody } : {}),
+    ...(keywords?.length ? { keywords } : {}),
     inLanguage: inLanguageMap[lang] || 'pl-PL',
     isAccessibleForFree: true,
     datePublished: datePublished || new Date().toISOString(),
@@ -706,7 +708,7 @@ function generateBreadcrumbSchema(path, pageTitles) {
 }
 
 function generateSeoHtml(opts) {
-  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null, articlePublished = null, articleModified = null, articleSection = null, newsKeywords = null, keywords = null, pathWithoutLang = null, lang = 'pl', answerCapsule = null, headline = null, ogImageAlt = null } = opts;
+  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null, articlePublished = null, articleModified = null, articleSection = null, newsKeywords = null, keywords = null, keywordsList = null, pathWithoutLang = null, lang = 'pl', answerCapsule = null, headline = null, ogImageAlt = null } = opts;
 
   // Generate JSON-LD script(s) if schema is provided (can be single object or array)
   const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
@@ -716,10 +718,12 @@ function generateSeoHtml(opts) {
     .join('\n    ');
 
   // Article meta tags (only for articles)
+  const articleTagMetas = (keywordsList || []).map(tag => `<meta property="article:tag" content="${escapeHtml(tag)}" />`);
   const articleTags = ogType === 'article' ? [
     articlePublished ? `<meta property="article:published_time" content="${articlePublished}" />` : '',
     articleModified ? `<meta property="article:modified_time" content="${articleModified}" />` : '',
     articleSection ? `<meta property="article:section" content="${escapeHtml(articleSection)}" />` : '',
+    ...articleTagMetas,
     newsKeywords ? `<meta name="news_keywords" content="${escapeHtml(newsKeywords)}" />` : '',
     keywords ? `<meta name="keywords" content="${escapeHtml(keywords)}" />` : '',
   ].filter(Boolean).join('\n    ') : '';
@@ -747,6 +751,7 @@ function generateSeoHtml(opts) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${pageTitle}</title>
     <meta name="description" content="${escapeHtml(description)}" />
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta property="og:type" content="${ogType}" />
     <meta property="og:site_name" content="Pollar" />
     <meta property="og:locale" content="${ogLocale}" />
@@ -1002,6 +1007,7 @@ User-agent: *
 Allow: /
 
 Sitemap: https://pollar.news/sitemap.xml
+Sitemap: https://pollar.news/news-sitemap.xml
 LLMsTxt: https://pollar.news/llms.txt
 AI-txt: https://pollar.news/ai.txt
 `;
@@ -1306,11 +1312,12 @@ app.get('/sitemap.xml', async (req, res) => {
       <xhtml:link rel="alternate" hreflang="x-default" href="${plUrl}"/>`;
   };
 
-  // Helper to generate a complete URL entry with hreflang
-  const generateUrlEntry = (path) => {
+  // Helper to generate a complete URL entry with hreflang and optional lastmod
+  const generateUrlEntry = (path, lastmod = null) => {
     const loc = `${baseUrl}${path}`;
+    const lastmodTag = lastmod ? `\n    <lastmod>${new Date(lastmod).toISOString()}</lastmod>` : '';
     return `  <url>
-    <loc>${loc}</loc>${generateHreflangLinks(path)}
+    <loc>${loc}</loc>${lastmodTag}${generateHreflangLinks(path)}
   </url>`;
   };
 
@@ -1349,8 +1356,8 @@ app.get('/sitemap.xml', async (req, res) => {
   // Generate XML with multilingual support
   const urls = [
     ...staticPages.map(path => generateUrlEntry(path)),
-    ...events.map(e => generateUrlEntry(`/event/${e.id}`)),
-    ...felietony.map(f => generateUrlEntry(`/felieton/${f.id}`))
+    ...events.map(e => generateUrlEntry(`/event/${e.id}`, e.updatedAt || e.createdAt)),
+    ...felietony.map(f => generateUrlEntry(`/felieton/${f.id}`, f.updatedAt || f.createdAt))
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -1361,6 +1368,64 @@ ${urls.join('\n')}
 
   res.set('Content-Type', 'application/xml');
   res.set('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+  res.send(xml);
+});
+
+// Google News Sitemap — only events from last 2 days (Google News requirement)
+app.get('/news-sitemap.xml', async (req, res) => {
+  const baseUrl = 'https://pollar.news';
+
+  let events = [];
+  try {
+    const response = await fetch(`${API_BASE}/api/events?lang=pl&limit=200`);
+    if (response.ok) {
+      const data = await response.json();
+      events = Array.isArray(data) ? data : (data.data || data.events || []);
+    }
+  } catch (err) {
+    console.warn('Could not fetch events for news sitemap:', err.message);
+  }
+
+  // Filter to last 2 days only (Google News requirement)
+  const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
+  events = events.filter(e => {
+    const date = new Date(e.createdAt || e.date);
+    return date >= twoDaysAgo;
+  });
+
+  const urls = events.map(e => {
+    const loc = `${baseUrl}/event/${e.id}`;
+    const pubDate = e.createdAt || e.date || new Date().toISOString();
+    const title = escapeXml(stripHtml(e.title || ''));
+    const keywordParts = [
+      e.category || e.metadata?.category,
+      ...(e.metadata?.seo?.keywords || []),
+      ...(e.metadata?.mentionedPeople?.map(p => p.name) || []).slice(0, 3),
+      ...(e.metadata?.mentionedCountries || []).slice(0, 3),
+    ].filter(Boolean);
+    const keywords = keywordParts.length > 0 ? `\n      <news:keywords>${escapeXml(keywordParts.join(', '))}</news:keywords>` : '';
+
+    return `  <url>
+    <loc>${loc}</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Pollar News</news:name>
+        <news:language>pl</news:language>
+      </news:publication>
+      <news:publication_date>${pubDate}</news:publication_date>
+      <news:title>${title}</news:title>${keywords}
+    </news:news>
+  </url>`;
+  }).join('\n');
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+${urls}
+</urlset>`;
+
+  res.set('Content-Type', 'application/xml');
+  res.set('Cache-Control', 'public, max-age=900'); // 15 minutes — fresh news
   res.send(xml);
 });
 
@@ -1462,21 +1527,12 @@ app.use(async (req, res, next) => {
       const eventCategory = event.metadata?.category || '';
       const ogImage = `${baseUrl}/api/og/event/${eventMatch[1]}?lang=${lang}`;
 
-      // Generate NewsArticle schema with speakable for AEO
-      const schema = addSpeakable(generateNewsArticleSchema({
-        headline: fullTitle,
-        description,
-        datePublished: event.createdAt || event.date,
-        dateModified: event.updatedAt || event.createdAt || event.date,
-        targetUrl,
-        ogImage,
-        lang
-      }));
-
       // Build news_keywords and keywords from seo data or event metadata
       let newsKeywords = null;
       let seoKeywords = null;
+      let keywordsList = [];
       if (seo?.keywords?.length > 0) {
+        keywordsList = seo.keywords;
         newsKeywords = seo.keywords.join(', ');
         seoKeywords = newsKeywords;
       } else {
@@ -1486,8 +1542,30 @@ app.use(async (req, res, next) => {
           ...(event.metadata?.mentionedCountries || []),
           event.metadata?.location?.city
         ].filter(Boolean);
+        keywordsList = keywordParts;
         newsKeywords = keywordParts.length > 0 ? keywordParts.join(', ') : null;
       }
+
+      // Build articleBody for JSON-LD (plain text, truncated to 5000 chars)
+      const articleBodyParts = [
+        stripHtml(event.lead || ''),
+        ...(event.metadata?.keyPoints || []).map(kp => stripHtml(kp.description || '')),
+        event.summary ? stripCustomTags(event.summary) : ''
+      ].filter(Boolean);
+      const articleBody = truncate(articleBodyParts.join(' '), 5000);
+
+      // Generate NewsArticle schema with speakable for AEO
+      const schema = addSpeakable(generateNewsArticleSchema({
+        headline: fullTitle,
+        description,
+        datePublished: event.createdAt || event.date,
+        dateModified: event.updatedAt || event.createdAt || event.date,
+        targetUrl,
+        ogImage,
+        lang,
+        articleBody,
+        keywords: keywordsList.length > 0 ? keywordsList : null
+      }));
 
       // Build enriched answer capsule for AI crawlers
       const capsuleParts = [];
@@ -1555,6 +1633,7 @@ app.use(async (req, res, next) => {
         articleSection: event.metadata?.category,
         newsKeywords,
         keywords: seoKeywords,
+        keywordsList,
         pathWithoutLang,
         lang,
         answerCapsule
