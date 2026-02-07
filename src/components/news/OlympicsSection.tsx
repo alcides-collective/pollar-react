@@ -50,14 +50,14 @@ export function OlympicsSection({ events }: OlympicsSectionProps) {
                 height={225}
               />
               <div className="p-3">
-                <h3 className="text-content-heading font-semibold text-sm leading-snug">
-                  <AnimatedUnderline>{event.title}</AnimatedUnderline>
-                </h3>
                 {event.metadata?.ultraShortHeadline && (
-                  <p className="text-xs text-content-subtle mt-1 line-clamp-2">
-                    {event.metadata.ultraShortHeadline}
-                  </p>
+                  <h3 className="text-content-heading font-semibold text-sm leading-snug">
+                    <AnimatedUnderline>{event.metadata.ultraShortHeadline}</AnimatedUnderline>
+                  </h3>
                 )}
+                <p className="text-xs text-content-subtle mt-1 line-clamp-4">
+                  {event.title}
+                </p>
               </div>
             </LocalizedLink>
           ))}
