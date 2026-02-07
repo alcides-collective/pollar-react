@@ -111,9 +111,10 @@ export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 				const color = getTemperatureColor(weather.temperature);
 				const temp = formatTemperature(weather.temperature);
 
-				// Custom marker DOM
+				// Custom marker DOM — outer wrapper for Mapbox positioning, inner for hover effect
 				const el = document.createElement('div');
-				el.style.cssText = `
+				const inner = document.createElement('div');
+				inner.style.cssText = `
 					display: flex;
 					align-items: center;
 					gap: 3px;
@@ -129,9 +130,10 @@ export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 					white-space: nowrap;
 					transition: transform 0.15s ease;
 				`;
-				el.innerHTML = `<span style="font-size: 14px;">${wmo.icon}</span><span>${temp}</span>`;
-				el.addEventListener('mouseenter', () => { el.style.transform = 'scale(1.1)'; });
-				el.addEventListener('mouseleave', () => { el.style.transform = 'scale(1)'; });
+				inner.innerHTML = `<span style="font-size: 14px;">${wmo.icon}</span><span>${temp}</span>`;
+				inner.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.1)'; });
+				inner.addEventListener('mouseleave', () => { inner.style.transform = 'scale(1)'; });
+				el.appendChild(inner);
 
 				el.addEventListener('click', (e) => {
 					e.stopPropagation();
