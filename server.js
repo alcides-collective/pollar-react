@@ -191,10 +191,8 @@ const CATEGORY_TRANSLATIONS = {
   'Inne':                   { pl: 'Inne',                   en: 'Other',                    de: 'Sonstiges' },
 };
 
-// OG Image generation endpoint
-app.get('/api/og', async (req, res) => {
-  const { title = 'Pollar News', type = 'default', description = '', lang = 'pl', category = '' } = req.query;
-
+// OG Image rendering helper (shared between /api/og and /api/og/event/:id)
+async function renderOgImage(res, { title = 'Pollar News', type = 'default', description = '', lang = 'pl', category = '' }) {
   const typeLabels = {
     event: { pl: 'WYDARZENIE', en: 'EVENT', de: 'EREIGNIS' },
     brief: { pl: 'DAILY BRIEF', en: 'DAILY BRIEF', de: 'DAILY BRIEF' },
@@ -338,20 +336,47 @@ app.get('/api/og', async (req, res) => {
     console.error('OG image generation failed:', err);
     res.status(500).json({ error: 'Failed to generate image' });
   }
+}
+
+// OG Image generation endpoint (query params)
+app.get('/api/og', async (req, res) => {
+  await renderOgImage(res, req.query);
+});
+
+// OG Image for event (short URL, fetches data server-side)
+app.get('/api/og/event/:id', async (req, res) => {
+  const { id } = req.params;
+  const lang = req.query.lang || 'pl';
+  const event = await fetchEventData(id, lang);
+  if (!event) {
+    return res.status(404).json({ error: 'Event not found' });
+  }
+  const title = event.title || 'Pollar News';
+  const description = truncate(stripHtml(event.metadata?.seo?.ogDescription || event.lead || event.metadata?.keyPoints?.[0]?.description || event.summary || ''), 300);
+  const category = event.metadata?.category || '';
+  await renderOgImage(res, { title, type: 'event', description, lang, category });
 });
 
 // Schema.org JSON-LD generators for AEO (Answer Engine Optimization)
 function generateNewsArticleSchema(opts) {
-  const { headline, description, datePublished, dateModified, targetUrl, ogImage } = opts;
+  const { headline, description, datePublished, dateModified, targetUrl, ogImage, lang = 'pl' } = opts;
+  const inLanguageMap = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   return {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline,
     description,
+    inLanguage: inLanguageMap[lang] || 'pl-PL',
+    isAccessibleForFree: true,
     datePublished: datePublished || new Date().toISOString(),
     dateModified: dateModified || datePublished || new Date().toISOString(),
     url: targetUrl,
     image: ogImage,
+    author: {
+      '@type': 'Organization',
+      name: 'Pollar News',
+      url: 'https://pollar.news'
+    },
     publisher: {
       '@type': 'Organization',
       name: 'Pollar News',
@@ -462,7 +487,7 @@ function generateBreadcrumbSchema(path, pageTitles) {
 }
 
 function generateSeoHtml(opts) {
-  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null, articlePublished = null, articleModified = null, articleSection = null, newsKeywords = null, keywords = null, pathWithoutLang = null, lang = 'pl', answerCapsule = null } = opts;
+  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null, articlePublished = null, articleModified = null, articleSection = null, newsKeywords = null, keywords = null, pathWithoutLang = null, lang = 'pl', answerCapsule = null, headline = null, ogImageAlt = null } = opts;
 
   // Generate JSON-LD script(s) if schema is provided (can be single object or array)
   const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
@@ -493,6 +518,7 @@ function generateSeoHtml(opts) {
   // og:locale for social sharing
   const ogLocaleMap = { pl: 'pl_PL', en: 'en_US', de: 'de_DE' };
   const ogLocale = ogLocaleMap[lang] || 'pl_PL';
+  const redirectText = { pl: 'Przekierowywanie do', en: 'Redirecting to', de: 'Weiterleitung zu' }[lang] || 'Przekierowywanie do';
 
   // All meta tags use self-closing /> for iMessage compatibility
   return `<!DOCTYPE html>
@@ -511,6 +537,7 @@ function generateSeoHtml(opts) {
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="${escapeHtml(ogImageAlt || headline || ogTitle)}" />
     <meta property="og:url" content="${targetUrl}" />
     ${articleTags}
     <meta name="twitter:card" content="summary_large_image" />
@@ -525,11 +552,11 @@ function generateSeoHtml(opts) {
   </head>
   <body>
     <article>
-      <h1>${escapeHtml(ogTitle)}</h1>
+      <h1>${escapeHtml(headline || ogTitle)}</h1>
       <p class="summary">${escapeHtml(description)}</p>
       ${answerCapsule ? `<div class="article-body">${answerCapsule}</div>` : ''}
     </article>
-    <p>Przekierowywanie do <a href="${targetUrl}">${escapeHtml(ogTitle)}</a>...</p>
+    <p>${redirectText} <a href="${targetUrl}">${escapeHtml(headline || ogTitle)}</a>...</p>
     <script>window.location.replace(${JSON.stringify(targetUrl)});</script>
   </body>
 </html>`;
@@ -1143,7 +1170,7 @@ app.use(async (req, res, next) => {
       // For OG image, use longer description (up to 300 chars for multi-line display)
       const ogImageDescription = truncate(stripHtml(seo?.ogDescription || event.lead || kp?.description || event.summary || ''), 300);
       const eventCategory = event.metadata?.category || '';
-      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}&category=${encodeURIComponent(eventCategory)}`;
+      const ogImage = `${baseUrl}/api/og/event/${eventMatch[1]}?lang=${lang}`;
 
       // Generate NewsArticle schema with speakable for AEO
       const schema = addSpeakable(generateNewsArticleSchema({
@@ -1152,7 +1179,8 @@ app.use(async (req, res, next) => {
         datePublished: event.createdAt || event.date,
         dateModified: event.updatedAt || event.createdAt || event.date,
         targetUrl,
-        ogImage
+        ogImage,
+        lang
       }));
 
       // Build news_keywords and keywords from seo data or event metadata
@@ -1181,6 +1209,7 @@ app.use(async (req, res, next) => {
       return res.send(generateSeoHtml({
         pageTitle: `${shortTitle} | Pollar`,
         ogTitle,
+        headline: fullTitle,
         description,
         ogImage,
         targetUrl,
@@ -1224,7 +1253,8 @@ app.use(async (req, res, next) => {
       description,
       datePublished: brief?.date,
       targetUrl,
-      ogImage
+      ogImage,
+      lang
     }));
 
     // Build answer capsule with executive summary and sections for AI crawlers
@@ -1243,6 +1273,7 @@ app.use(async (req, res, next) => {
     return res.send(generateSeoHtml({
       pageTitle: `${briefTitle} | Pollar`,
       ogTitle,
+      headline: imageTitle,
       description,
       ogImage,
       targetUrl,
@@ -1278,7 +1309,8 @@ app.use(async (req, res, next) => {
       description,
       datePublished: felieton?.createdAt || felieton?.date,
       targetUrl,
-      ogImage
+      ogImage,
+      lang
     }));
 
     // Build answer capsule with lead for AI crawlers
@@ -1289,6 +1321,7 @@ app.use(async (req, res, next) => {
     return res.send(generateSeoHtml({
       pageTitle: `${felietonTitle} | Pollar`,
       ogTitle,
+      headline: felietonTitle,
       description,
       ogImage,
       targetUrl,
@@ -1325,6 +1358,7 @@ app.use(async (req, res, next) => {
     return res.send(generateSeoHtml({
       pageTitle,
       ogTitle,
+      headline: pageInfo.title,
       description: pageInfo.description,
       ogImage,
       targetUrl: isHomepage ? baseUrl : targetUrl,
