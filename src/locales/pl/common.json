@@ -369,6 +369,10 @@
     "dataProvider": "Dane dostarczane przez",
     "dataProviderDescription": "Event Registry to platforma analityki newsowej, która monitoruje ponad 150 000 źródeł w 60+ językach. Artykuły są zbierane w czasie rzeczywistym i wzbogacane przez AI o rozpoznawanie podmiotów, kategoryzację i analizę sentymentu. Pollar korzysta z ich API jako dostawcy surowych danych — wszelkie dalsze analizy, grupowanie wydarzeń i klasyfikacja polityczna są realizowane przez nas niezależnie."
   },
+  "olympics": {
+    "title": "Igrzyska Olimpijskie 2026",
+    "subtitle": "Mediolan-Cortina"
+  },
   "theme": {
     "light": "Jasny",
     "dark": "Ciemny",

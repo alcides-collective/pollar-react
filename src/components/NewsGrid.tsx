@@ -1,7 +1,10 @@
+import { useMemo } from 'react';
 import { useBrief } from '../hooks/useBrief';
 import { useFelietony } from '../hooks/useFelietony';
 import { useEventGroupsWithArchive } from '../hooks/useEventSelectors';
 import { useSelectedCategory } from '../stores/uiStore';
+import { useEvents } from '../stores/eventsStore';
+import { useLanguage } from '../stores/languageStore';
 import { MarketTicker } from './MarketTicker';
 import { FeaturedSection } from './news/FeaturedSection';
 import { CategoryTabs } from './news/CategoryTabs';
@@ -9,6 +12,7 @@ import { DoubleHeroSection } from './news/DoubleHeroSection';
 import { DailyBriefSection } from './news/DailyBriefSection';
 import { FelietonySection } from './news/FelietonySection';
 import { DiscoverSection } from './news/DiscoverSection';
+import { OlympicsSection, isOlympicEvent } from './news/OlympicsSection';
 import { CategoryCarousel } from './news/CategoryCarousel';
 import { LatestEvents, /* NewsletterSection, */ MapSection, AboutSection, ContactSection, VersionSection, StatsSection } from './news/sidebar';
 import { AISidebarWidget } from './ai';
@@ -19,6 +23,7 @@ export function NewsGrid() {
   const selectedCategory = useSelectedCategory();
   const { brief } = useBrief();
   const { felietony } = useFelietony();
+  const language = useLanguage();
   const isFiltered = !!selectedCategory;
   const {
     featured,
@@ -29,6 +34,15 @@ export function NewsGrid() {
     loading,
     error,
   } = useEventGroupsWithArchive();
+
+  const { events: allEvents } = useEvents({ limit: 100, lang: language });
+  const olympicEvents = useMemo(
+    () => allEvents
+      .filter(e => e.category === 'Sport' && isOlympicEvent(e))
+      .sort((a, b) => b.trendingScore - a.trendingScore)
+      .slice(0, 4),
+    [allEvents]
+  );
 
   if (loading && featured.length === 0) {
     return (
@@ -58,6 +72,12 @@ export function NewsGrid() {
         {/* Main Content */}
         <div className="min-w-0 overflow-hidden lg:border-r border-divider divide-y divide-divider [&>*:last-child]:border-b [&>*:last-child]:border-divider">
           {!isFiltered && brief && <DailyBriefSection brief={brief} />}
+
+          {isFiltered && selectedCategory === 'Sport' && olympicEvents.length > 0 && (
+            <LazySection height="300px">
+              <OlympicsSection events={olympicEvents} />
+            </LazySection>
+          )}
 
           <FeaturedSection events={featured} />
 

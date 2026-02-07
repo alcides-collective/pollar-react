@@ -369,6 +369,10 @@
     "dataProvider": "Daten bereitgestellt von",
     "dataProviderDescription": "Event Registry ist eine Nachrichtenanalyseplattform, die über 150.000 Quellen in 60+ Sprachen überwacht. Artikel werden in Echtzeit gesammelt und durch KI mit Entitätserkennung, Kategorisierung und Sentimentanalyse angereichert. Pollar nutzt deren API als Rohdatenlieferant — alle weiteren Analysen, Ereignis-Clustering und politische Klassifizierung werden von uns unabhängig durchgeführt."
   },
+  "olympics": {
+    "title": "Olympische Spiele 2026",
+    "subtitle": "Mailand-Cortina"
+  },
   "theme": {
     "light": "Hell",
     "dark": "Dunkel",
