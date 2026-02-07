@@ -956,6 +956,16 @@ app.use((req, res, next) => {
   next();
 });
 
+// IndexNow key verification endpoint (serves API key as plain text for ownership proof)
+const INDEXNOW_API_KEY = process.env.INDEXNOW_API_KEY || '';
+if (INDEXNOW_API_KEY) {
+  app.get(`/${INDEXNOW_API_KEY}.txt`, (req, res) => {
+    res.set('Content-Type', 'text/plain');
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.send(INDEXNOW_API_KEY);
+  });
+}
+
 // robots.txt endpoint
 app.get('/robots.txt', (req, res) => {
   const robots = `# Pollar News (pollar.news)
