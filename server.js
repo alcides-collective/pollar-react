@@ -1316,8 +1316,11 @@ app.use('/assets', express.static(join(__dirname, 'dist/assets'), {
   immutable: true
 }));
 
-// Serve other static files with short cache
-app.use(express.static(join(__dirname, 'dist'), {
+// Serve other static files with short cache (skip files handled by dynamic endpoints)
+app.use((req, res, next) => {
+  if (req.path === '/robots.txt' || req.path === '/llms.txt' || req.path === '/llms-full.txt') return next('route');
+  next();
+}, express.static(join(__dirname, 'dist'), {
   maxAge: '1h',
   setHeaders: (res, filePath) => {
     // No cache for HTML files
