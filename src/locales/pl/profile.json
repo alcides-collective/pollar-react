@@ -10,7 +10,7 @@
   },
   "favoriteCategories": {
     "title": "Ulubione kategorie",
-    "description": "Wydarzenia z ulubionych kategorii będą wyświetlane jako pierwsze na stronie głównej."
+    "description": "Wpływa na kolejność wydarzeń na stronie głównej oraz personalizację cotygodniowego newslettera."
   },
   "hiddenCategories": {
     "title": "Ukryte kategorie",

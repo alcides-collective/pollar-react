@@ -10,7 +10,7 @@
   },
   "favoriteCategories": {
     "title": "Favorite categories",
-    "description": "Events from favorite categories will be displayed first on the home page."
+    "description": "Affects the order of events on the home page and personalizes your weekly newsletter."
   },
   "hiddenCategories": {
     "title": "Hidden categories",

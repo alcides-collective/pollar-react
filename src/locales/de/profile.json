@@ -10,7 +10,7 @@
   },
   "favoriteCategories": {
     "title": "Lieblingskategorien",
-    "description": "Ereignisse aus Lieblingskategorien werden auf der Startseite zuerst angezeigt."
+    "description": "Beeinflusst die Reihenfolge der Ereignisse auf der Startseite und personalisiert deinen wöchentlichen Newsletter."
   },
   "hiddenCategories": {
     "title": "Ausgeblendete Kategorien",
