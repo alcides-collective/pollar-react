@@ -28,10 +28,11 @@ export function OlympicsSection({ events }: OlympicsSectionProps) {
     <SectionWrapper sectionId="olympics-section" priority="low">
       <div className="bg-blue-50 dark:bg-blue-950/40 p-6">
         <div className="flex items-center gap-3 mb-5">
-          <img src={olympicsRings} alt="Olympic Rings" className="w-20 h-auto drop-shadow-[0_0_6px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_0_6px_rgba(255,255,255,0.4)]" />
+          <img src={olympicsRings} alt="Olympic Rings" className="w-20 h-auto drop-shadow-[0_0_4px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_0_4px_rgba(255,255,255,0.15)]" />
           <div>
             <h2 className="text-xl font-bold text-content-heading">{t('olympics.title')}</h2>
             <p className="text-sm text-content-subtle">{t('olympics.subtitle')}</p>
+            <p className="text-xs text-content-faint">{t('olympics.details')}</p>
           </div>
         </div>
 
