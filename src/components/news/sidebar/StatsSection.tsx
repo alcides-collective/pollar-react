@@ -8,6 +8,10 @@ export function StatsSection() {
   const { t } = useTranslation('common');
   const language = useLanguage();
 
+  // Stats data (city names, people) comes from backend in Polish only,
+  // so hide entire section for non-Polish languages to avoid mixed-language display
+  if (language !== 'pl') return null;
+
   // Fetch events (same approach as HeroSection)
   const { events: currentEvents, loading: currentLoading } = useEvents({
     limit: 100,

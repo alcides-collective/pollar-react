@@ -245,6 +245,16 @@ export function EventPage() {
           <p>category: <span className="text-zinc-900">{event.category}</span></p>
           <p className="mt-2">summary (raw):</p>
           <pre className="text-zinc-900 whitespace-pre-wrap text-[10px] mt-1 max-h-40 overflow-auto">{event.summary}</pre>
+          <p className="font-semibold mt-3 mb-1">SEO: {event.metadata?.seo ? '' : <span className="text-orange-500 font-normal">brak (event sprzed deploy)</span>}</p>
+          {event.metadata?.seo && (
+            <>
+              <p>metaTitle: <span className="text-zinc-900">{event.metadata.seo.metaTitle}</span></p>
+              <p>metaDescription: <span className="text-zinc-900">{event.metadata.seo.metaDescription}</span></p>
+              <p>ogDescription: <span className="text-zinc-900">{event.metadata.seo.ogDescription}</span></p>
+              <p>keywords: <span className="text-zinc-900">{event.metadata.seo.keywords?.join(', ')}</span></p>
+              <p>hashtags: <span className="text-zinc-900">{event.metadata.seo.hashtags?.map(h => `#${h}`).join(' ')}</span></p>
+            </>
+          )}
         </div>
       )}
     </motion.div>

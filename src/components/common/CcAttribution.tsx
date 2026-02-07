@@ -1,6 +1,6 @@
 export function CcAttribution() {
   return (
-    <section className="mt-8 pt-6 border-t border-zinc-200 text-center">
+    <section className="mt-8 mb-4 pt-6 border-t border-zinc-200 text-center">
       <a
         href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
         target="_blank"
