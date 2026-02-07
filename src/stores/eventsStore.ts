@@ -132,6 +132,7 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
       // IMPORTANT: Only UPDATE existing events, don't ADD new ones!
       // SSE uses different ordering (updatedAt) than API (trendingScore),
       // so adding new events would create "ghost" entries that disappear on refresh
+      const currentLang = useLanguageStore.getState().language;
       Object.keys(newCache).forEach((key) => {
         const entry = newCache[key];
         if (!entry?.data) return;
@@ -139,11 +140,17 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
         const existingIndex = entry.data.findIndex((e) => e.id === partialEvent.id);
 
         if (existingIndex >= 0) {
-          // Update existing event
+          // SSE stream sends data in a single language — only overwrite text fields
+          // (title, lead) for cache entries matching the current language to avoid
+          // replacing translated content with the stream's default language.
+          const langMatch = key.includes(`lang=${currentLang}`);
+          const { title, lead, ...nonTextFields } = partialEvent;
+          const safeUpdate = langMatch ? partialEvent : nonTextFields;
+
           const updatedEvents = [...entry.data];
           updatedEvents[existingIndex] = {
             ...updatedEvents[existingIndex],
-            ...partialEvent,
+            ...safeUpdate,
             // Ensure updatedAt is a string
             updatedAt: partialEvent.updatedAt || new Date().toISOString(),
           };
