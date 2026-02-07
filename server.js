@@ -176,9 +176,24 @@ function escapeXml(str) {
     .replace(/'/g, '&apos;');
 }
 
+// Category translations for OG images (Polish category name → localized name)
+const CATEGORY_TRANSLATIONS = {
+  'Świat':                  { pl: 'Świat',                  en: 'World',                    de: 'Welt' },
+  'Gospodarka':             { pl: 'Gospodarka',             en: 'Economy',                  de: 'Wirtschaft' },
+  'Polityka':               { pl: 'Polityka',               en: 'Politics',                 de: 'Politik' },
+  'Społeczeństwo':          { pl: 'Społeczeństwo',          en: 'Society',                  de: 'Gesellschaft' },
+  'Sport':                  { pl: 'Sport',                  en: 'Sports',                   de: 'Sport' },
+  'Kultura':                { pl: 'Kultura',                en: 'Culture',                  de: 'Kultur' },
+  'Przestępczość':          { pl: 'Przestępczość',          en: 'Crime',                    de: 'Kriminalität' },
+  'Styl Życia':             { pl: 'Styl Życia',             en: 'Lifestyle',                de: 'Lebensstil' },
+  'Pogoda i Środowisko':    { pl: 'Pogoda i Środowisko',    en: 'Weather & Environment',    de: 'Wetter & Umwelt' },
+  'Nauka i Technologia':    { pl: 'Nauka i Technologia',    en: 'Science & Technology',     de: 'Wissenschaft & Technologie' },
+  'Inne':                   { pl: 'Inne',                   en: 'Other',                    de: 'Sonstiges' },
+};
+
 // OG Image generation endpoint
 app.get('/api/og', async (req, res) => {
-  const { title = 'Pollar News', type = 'default', description = '', lang = 'pl' } = req.query;
+  const { title = 'Pollar News', type = 'default', description = '', lang = 'pl', category = '' } = req.query;
 
   const typeLabels = {
     event: { pl: 'WYDARZENIE', en: 'EVENT', de: 'EREIGNIS' },
@@ -186,7 +201,14 @@ app.get('/api/og', async (req, res) => {
     felieton: { pl: 'FELIETON', en: 'OPINION', de: 'KOLUMNE' },
     default: { pl: '', en: '', de: '' },
   };
-  const typeLabel = typeLabels[type]?.[lang] || typeLabels[type]?.pl || '';
+
+  // Use translated category name if available, otherwise fall back to type label
+  let typeLabel;
+  if (category && CATEGORY_TRANSLATIONS[category]) {
+    typeLabel = (CATEGORY_TRANSLATIONS[category][lang] || CATEGORY_TRANSLATIONS[category].pl || category).toUpperCase();
+  } else {
+    typeLabel = typeLabels[type]?.[lang] || typeLabels[type]?.pl || '';
+  }
 
   // Calculate font size based on title length
   const fontSize = title.length > 100 ? 40 : title.length > 80 ? 48 : title.length > 50 ? 56 : 64;
@@ -1120,7 +1142,8 @@ app.use(async (req, res, next) => {
       const description = truncate(stripHtml(seo?.metaDescription || kp?.description || event.lead || event.summary || ''), 160);
       // For OG image, use longer description (up to 300 chars for multi-line display)
       const ogImageDescription = truncate(stripHtml(seo?.ogDescription || event.lead || kp?.description || event.summary || ''), 300);
-      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
+      const eventCategory = event.metadata?.category || '';
+      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}&category=${encodeURIComponent(eventCategory)}`;
 
       // Generate NewsArticle schema with speakable for AEO
       const schema = addSpeakable(generateNewsArticleSchema({
