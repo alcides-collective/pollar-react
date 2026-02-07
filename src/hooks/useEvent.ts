@@ -4,6 +4,49 @@ import { API_BASE } from '../config/api';
 import { sanitizeEvent } from '../utils/sanitize';
 import { useLanguage, type Language } from '../stores/languageStore';
 
+const ARCHIVE_API_BASE = 'https://pollar-backend-production.up.railway.app/api';
+
+/** Map archive API response to frontend Event shape */
+function mapArchiveEvent(raw: any): Event {
+  return {
+    id: raw.originalEventId ?? raw.id,
+    title: raw.title ?? '',
+    lead: raw.lead ?? '',
+    summary: raw.summary ?? '',
+    createdAt: raw.originalCreatedAt ?? raw.archivedAt,
+    updatedAt: raw.originalUpdatedAt ?? raw.archivedAt,
+    lastContentUpdate: raw.originalUpdatedAt ?? raw.archivedAt,
+    lastSummarizationComplete: raw.archivedAt,
+    imageUrl: raw.metadata?.imageUrl ?? '',
+    category: raw.category ?? raw.metadata?.category ?? 'Inne',
+    sources: raw.sources ?? raw.metadata?.sources ?? [],
+    trendingScore: raw.metadata?.trendingScore ?? 0,
+    articleCount: raw.articleCount ?? raw.metadata?.articleCount ?? 0,
+    sourceCount: raw.sources?.length ?? raw.metadata?.sourceCount ?? 0,
+    viewCount: raw.metadata?.viewCount ?? 0,
+    freshnessLevel: 'OLD',
+    metadata: {
+      category: raw.category ?? raw.metadata?.category ?? 'Inne',
+      trending: false,
+      trendingScore: raw.metadata?.trendingScore ?? 0,
+      location: raw.location ?? raw.metadata?.location,
+      locations: raw.metadata?.locations ?? [],
+      keyPoints: raw.keyPoints ?? raw.metadata?.keyPoints ?? [],
+      mentionedPeople: raw.metadata?.mentionedPeople ?? [],
+      mentionedCountries: raw.metadata?.mentionedCountries ?? [],
+      shortHeadline: raw.metadata?.shortHeadline ?? '',
+      ultraShortHeadline: raw.metadata?.ultraShortHeadline ?? '',
+      sources: raw.sources ?? raw.metadata?.sources ?? [],
+      articleCount: raw.articleCount ?? 0,
+      sourceCount: raw.sources?.length ?? 0,
+      imageAttribution: raw.metadata?.imageAttribution ?? null,
+      isLowQualityContent: raw.metadata?.isLowQualityContent ?? false,
+      viewCount: raw.metadata?.viewCount ?? 0,
+    },
+    articles: raw.articles,
+  };
+}
+
 export function useEvent(eventId: string | undefined, langOverride?: Language) {
   const storeLanguage = useLanguage();
   const lang = langOverride ?? storeLanguage;
@@ -28,19 +71,32 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
       try {
         const response = await fetch(`${API_BASE}/events/${eventId}?lang=${lang}`);
 
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error('Wydarzenie nie zostało znalezione');
+        if (response.ok) {
+          const data = await response.json();
+          if (!cancelled) {
+            setEvent(sanitizeEvent(data));
           }
-          throw new Error(`HTTP error! status: ${response.status}`);
+          return;
         }
 
-        const data = await response.json();
+        // On 404 — try archive API as fallback
+        if (response.status === 404) {
+          const archiveResponse = await fetch(
+            `${ARCHIVE_API_BASE}/archive/${eventId}?lang=${lang}`
+          );
 
-        // Only update state if this request is still current
-        if (!cancelled) {
-          setEvent(sanitizeEvent(data));
+          if (archiveResponse.ok) {
+            const archiveData = await archiveResponse.json();
+            if (!cancelled) {
+              setEvent(sanitizeEvent(mapArchiveEvent(archiveData)));
+            }
+            return;
+          }
+
+          throw new Error('Wydarzenie nie zostało znalezione');
         }
+
+        throw new Error(`HTTP error! status: ${response.status}`);
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err : new Error('Failed to fetch event'));
