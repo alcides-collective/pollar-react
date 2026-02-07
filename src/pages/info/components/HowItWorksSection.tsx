@@ -103,12 +103,12 @@ function StepCard({ stepKey, iconClass, glowColor, index, total, scrollYProgress
 
   return (
     <motion.div
-      className={mode === 'mobile' ? "absolute inset-0 flex flex-col items-center justify-center text-center px-8" : "flex flex-col items-start text-center w-36 xl:w-40"}
+      className={mode === 'mobile' ? "absolute inset-0 flex flex-col items-center justify-center text-center px-8" : "flex flex-col items-start text-center w-44 xl:w-48"}
       style={{ opacity, scale, y }}
     >
       {/* Icon container with glow */}
       <motion.div
-        className="relative w-12 h-12 rounded-xl bg-zinc-800/80 flex items-center justify-center mb-3 border border-zinc-700/50 mx-auto"
+        className="relative w-14 h-14 rounded-xl bg-zinc-800/80 flex items-center justify-center mb-4 border border-zinc-700/50 mx-auto"
         style={{
           boxShadow: useTransform(
             glowIntensity,
@@ -116,18 +116,18 @@ function StepCard({ stepKey, iconClass, glowColor, index, total, scrollYProgress
           ),
         }}
       >
-        <i className={`${iconClass} text-xl text-white`} />
+        <i className={`${iconClass} text-2xl text-white`} />
       </motion.div>
 
       {/* Text container with fixed height */}
       <div className="flex flex-col items-center w-full">
         {/* Title */}
-        <h3 className="text-sm font-semibold text-white mb-1.5">
+        <h3 className="text-base font-semibold text-white mb-1.5">
           {t(`howItWorks.steps.${stepKey}.title`)}
         </h3>
 
         {/* Description */}
-        <p className="text-xs text-content-faint leading-relaxed">
+        <p className="text-sm text-content-faint leading-relaxed">
           {t(`howItWorks.steps.${stepKey}.description`)}
         </p>
       </div>

@@ -2,6 +2,7 @@ import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { staggerContainer, staggerItem } from '@/lib/animations';
+import { CcAttribution } from '@/components/common/CcAttribution';
 
 const featureKeys = [
   { key: 'brief', icon: 'ri-calendar-todo-line', href: '/brief', color: 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400' },
@@ -74,6 +75,8 @@ export function FeaturesSection() {
             </motion.div>
           ))}
         </motion.div>
+
+        <CcAttribution />
       </div>
     </section>
   );
