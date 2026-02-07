@@ -131,10 +131,17 @@ const PAGE_TITLES = {
 // Crawler detection
 // Note: iMessage spoofs facebookexternalhit + Twitterbot, so it's already covered
 const CRAWLER_USER_AGENTS = [
+  // Social media & messengers
   'facebookexternalhit', 'Facebot', 'Twitterbot', 'LinkedInBot', 'WhatsApp',
-  'Slackbot', 'TelegramBot', 'Discordbot', 'Googlebot', 'bingbot', 'Applebot',
-  'PetalBot', 'Sogou', 'YandexBot', 'Embedly', 'Pinterest', 'Skype', 'vkShare',
-  'redditbot', 'Mediapartners-Google'
+  'Slackbot', 'TelegramBot', 'Discordbot', 'Embedly', 'Pinterest', 'Skype', 'vkShare',
+  'redditbot',
+  // Search engines
+  'Googlebot', 'Google-Extended', 'bingbot', 'Applebot', 'PetalBot', 'Sogou',
+  'YandexBot', 'Mediapartners-Google', 'DuckDuckBot', 'Baiduspider',
+  // AI assistants & LLM crawlers (use Mozilla-based UAs)
+  'ClaudeBot', 'Claude-Web', 'Anthropic', 'ChatGPT-User', 'GPTBot', 'OAI-SearchBot',
+  'PerplexityBot', 'cohere-ai', 'YouBot', 'Google-SafetyBot',
+  'CCBot', 'Bytespider', 'Diffbot', 'ImagesiftBot', 'Omgilibot'
 ];
 
 function isCrawler(userAgent) {
