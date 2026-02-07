@@ -1,10 +1,7 @@
-import { useMemo } from 'react';
 import { useBrief } from '../hooks/useBrief';
 import { useFelietony } from '../hooks/useFelietony';
 import { useEventGroupsWithArchive } from '../hooks/useEventSelectors';
 import { useSelectedCategory } from '../stores/uiStore';
-import { useEvents } from '../stores/eventsStore';
-import { useLanguage } from '../stores/languageStore';
 import { MarketTicker } from './MarketTicker';
 import { FeaturedSection } from './news/FeaturedSection';
 import { CategoryTabs } from './news/CategoryTabs';
@@ -12,7 +9,7 @@ import { DoubleHeroSection } from './news/DoubleHeroSection';
 import { DailyBriefSection } from './news/DailyBriefSection';
 import { FelietonySection } from './news/FelietonySection';
 import { DiscoverSection } from './news/DiscoverSection';
-import { OlympicsSection, isOlympicEvent } from './news/OlympicsSection';
+import { OlympicsSection } from './news/OlympicsSection';
 import { CategoryCarousel } from './news/CategoryCarousel';
 import { LatestEvents, /* NewsletterSection, */ MapSection, AboutSection, ContactSection, VersionSection, StatsSection } from './news/sidebar';
 import { AISidebarWidget } from './ai';
@@ -23,7 +20,6 @@ export function NewsGrid() {
   const selectedCategory = useSelectedCategory();
   const { brief } = useBrief();
   const { felietony } = useFelietony();
-  const language = useLanguage();
   const isFiltered = !!selectedCategory;
   const {
     featured,
@@ -31,32 +27,10 @@ export function NewsGrid() {
     doubleHeroSections,
     eventsByCategory,
     latestEvents,
+    olympicEvents,
     loading,
     error,
   } = useEventGroupsWithArchive();
-
-  const { events: allEvents } = useEvents({ limit: 100, lang: language });
-  const showOlympics = isFiltered && selectedCategory === 'Sport'
-    && Date.now() >= new Date('2026-02-06').getTime()
-    && Date.now() <= new Date('2026-02-23').getTime();
-
-  const olympicEvents = useMemo(
-    () => showOlympics
-      ? allEvents
-          .filter(e => e.category === 'Sport' && isOlympicEvent(e))
-          .sort((a, b) => b.trendingScore - a.trendingScore)
-          .slice(0, 4)
-      : [],
-    [allEvents, showOlympics]
-  );
-
-  // Exclude olympic events from other sections to avoid duplicates
-  const olympicIds = useMemo(() => new Set(olympicEvents.map(e => e.id)), [olympicEvents]);
-  const filteredFeatured = useMemo(() => olympicIds.size > 0 ? featured.filter(e => !olympicIds.has(e.id)) : featured, [featured, olympicIds]);
-  const filteredCategoryGroups = useMemo(() => olympicIds.size > 0 ? categoryGroups.map(([label, evts]) => [label, evts.filter(e => !olympicIds.has(e.id))] as [string, typeof evts]).filter(([, evts]) => evts.length > 0) : categoryGroups, [categoryGroups, olympicIds]);
-  const filteredDoubleHero = useMemo(() => olympicIds.size > 0 ? doubleHeroSections.map(evts => evts.filter(e => !olympicIds.has(e.id))).filter(evts => evts.length === 2) : doubleHeroSections, [doubleHeroSections, olympicIds]);
-  const filteredLatest = useMemo(() => olympicIds.size > 0 ? latestEvents.filter(e => !olympicIds.has(e.id)) : latestEvents, [latestEvents, olympicIds]);
-  const filteredByCategory = useMemo(() => olympicIds.size > 0 ? eventsByCategory.map(({ category, events }) => ({ category, events: events.filter(e => !olympicIds.has(e.id)) })).filter(({ events }) => events.length > 0) : eventsByCategory, [eventsByCategory, olympicIds]);
 
   if (loading && featured.length === 0) {
     return (
@@ -87,20 +61,20 @@ export function NewsGrid() {
         <div className="min-w-0 overflow-hidden lg:border-r border-divider divide-y divide-divider [&>*:last-child]:border-b [&>*:last-child]:border-divider">
           {!isFiltered && brief && <DailyBriefSection brief={brief} />}
 
-          {showOlympics && olympicEvents.length > 0 && (
+          {olympicEvents.length > 0 && (
             <LazySection height="300px">
               <OlympicsSection events={olympicEvents} />
             </LazySection>
           )}
 
-          <FeaturedSection events={filteredFeatured} />
+          <FeaturedSection events={featured} />
 
-          <CategoryTabs groups={filteredCategoryGroups} />
+          <CategoryTabs groups={categoryGroups} />
 
           {/* Hero sections interspersed with other content */}
-          {filteredDoubleHero[0] && (
+          {doubleHeroSections[0] && (
             <LazySection height="300px">
-              <DoubleHeroSection events={filteredDoubleHero[0]} />
+              <DoubleHeroSection events={doubleHeroSections[0]} />
             </LazySection>
           )}
 
@@ -110,9 +84,9 @@ export function NewsGrid() {
             </LazySection>
           )}
 
-          {filteredDoubleHero[1] && (
+          {doubleHeroSections[1] && (
             <LazySection height="300px">
-              <DoubleHeroSection events={filteredDoubleHero[1]} reversed />
+              <DoubleHeroSection events={doubleHeroSections[1]} reversed />
             </LazySection>
           )}
 
@@ -123,7 +97,7 @@ export function NewsGrid() {
           )}
 
           {/* Additional hero sections when categoryGroups is empty */}
-          {filteredDoubleHero.slice(2).map((events, idx) => (
+          {doubleHeroSections.slice(2).map((events, idx) => (
             <LazySection key={`hero-${idx + 2}`} height="300px">
               <DoubleHeroSection events={events} reversed={idx % 2 === 1} />
             </LazySection>
@@ -133,7 +107,7 @@ export function NewsGrid() {
         {/* Sidebar - hidden on mobile */}
         <aside className="hidden lg:block divide-y divide-divider [&>*:last-child]:border-b [&>*:last-child]:border-divider">
           <AISidebarWidget />
-          <LatestEvents events={filteredLatest} />
+          <LatestEvents events={latestEvents} />
           {/* <NewsletterSection /> */}
           <LazySection height="300px" rootMargin="100px">
             <MapSection />
@@ -144,7 +118,7 @@ export function NewsGrid() {
           <StatsSection />
           {/* CategoryCarousel in sidebar - at the end */}
           {/* When filtered: list view, when not filtered: sidebar carousel */}
-          {filteredByCategory.map(({ category, events }) => (
+          {eventsByCategory.map(({ category, events }) => (
             <CategoryCarousel
               key={category}
               category={category}
@@ -158,7 +132,7 @@ export function NewsGrid() {
 
       {/* More News - Mobile only (desktop has it in sidebar) */}
       <div className="lg:hidden border border-t-0 border-divider">
-        {filteredByCategory.map(({ category, events }) => (
+        {eventsByCategory.map(({ category, events }) => (
           isFiltered ? (
             <CategoryCarousel
               key={category}

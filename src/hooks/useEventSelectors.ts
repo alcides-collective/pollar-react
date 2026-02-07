@@ -5,6 +5,7 @@ import { useEvents } from '../stores/eventsStore';
 import { useSelectedCategory } from '../stores/uiStore';
 import { useFavoriteCategories } from '../stores/userStore';
 import { useLanguage } from '../stores/languageStore';
+import { isOlympicEvent } from '../components/news/OlympicsSection';
 
 // Fresh events can appear in all sections (featured, hero, tabs, latest)
 // OLD events are only shown in CategoryCarousel at the bottom
@@ -21,11 +22,15 @@ export interface EventGroups {
   moreEvents: Event[];
   eventsByCategory: Array<{ category: string; events: Event[] }>;
   latestEvents: Event[];
+  olympicEvents: Event[];
 }
 
 interface UseEventGroupsOptions {
   includeArchive?: boolean;
 }
+
+const OLYMPICS_START = new Date('2026-02-06').getTime();
+const OLYMPICS_END = new Date('2026-02-23').getTime();
 
 function computeEventGroups(
   events: Event[],
@@ -36,9 +41,25 @@ function computeEventGroups(
     ? events.filter(e => e.category === selectedCategory)
     : events;
 
+  // Extract olympic events when Sport is selected and within Olympic dates
+  const now = Date.now();
+  const showOlympics = selectedCategory === 'Sport' && now >= OLYMPICS_START && now <= OLYMPICS_END;
+  const olympicEvents = showOlympics
+    ? filteredEvents
+        .filter(isOlympicEvent)
+        .sort((a, b) => b.trendingScore - a.trendingScore)
+        .slice(0, 4)
+    : [];
+  const olympicIds = new Set(olympicEvents.map(e => e.id));
+
   // Boost events from favorite categories
   // Create a map with boosted scores for sorting/selection
-  const boostedEvents = filteredEvents
+  // Exclude olympic events from the general pool so they don't appear in other sections
+  const poolEvents = olympicIds.size > 0
+    ? filteredEvents.filter(e => !olympicIds.has(e.id))
+    : filteredEvents;
+
+  const boostedEvents = poolEvents
     .map(e => {
       const isFavorite = favoriteCategories.includes(e.category);
       return {
@@ -202,6 +223,7 @@ function computeEventGroups(
     moreEvents,
     eventsByCategory,
     latestEvents,
+    olympicEvents,
   };
 }
 
