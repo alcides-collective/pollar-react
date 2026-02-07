@@ -1337,18 +1337,26 @@ app.get('/sitemap.xml', async (req, res) => {
   // Add /brief separately
   staticPages.push('/brief');
 
-  // Fetch events from API
-  let events = [];
+  // Fetch events from both API endpoints and deduplicate
+  const eventMap = new Map();
   try {
-    const response = await fetch(`${API_BASE}/api/events?lang=pl&limit=1000`);
-    if (response.ok) {
-      const data = await response.json();
-      // API returns { data: [...] } or { events: [...] } or direct array
-      events = Array.isArray(data) ? data : (data.data || data.events || []);
+    const [eventsRes, archiveRes] = await Promise.all([
+      fetch(`${API_BASE}/api/events?lang=pl&limit=1000`),
+      fetch(`${API_BASE}/api/events/archive?lang=pl&limit=5000`),
+    ]);
+    for (const res of [eventsRes, archiveRes]) {
+      if (res.ok) {
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : (data.data || data.events || []);
+        for (const e of items) {
+          if (e.id && !eventMap.has(e.id)) eventMap.set(e.id, e);
+        }
+      }
     }
   } catch (err) {
     console.warn('Could not fetch events for sitemap:', err.message);
   }
+  const events = [...eventMap.values()];
 
   // Fetch felietony from API
   let felietony = [];
