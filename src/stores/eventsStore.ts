@@ -147,6 +147,10 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
           const { title, lead, ...nonTextFields } = partialEvent;
           const safeUpdate = langMatch ? partialEvent : nonTextFields;
 
+          if (title) {
+            console.log(`[SSE upsert] id=${partialEvent.id} lang=${currentLang} cacheKey=${key.slice(-30)} langMatch=${langMatch} title="${title.slice(0, 50)}" existing="${entry.data[existingIndex].title.slice(0, 50)}"`);
+          }
+
           const updatedEvents = [...entry.data];
           updatedEvents[existingIndex] = {
             ...updatedEvents[existingIndex],

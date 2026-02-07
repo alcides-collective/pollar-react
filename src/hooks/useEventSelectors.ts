@@ -52,6 +52,21 @@ function computeEventGroups(
     : [];
   const olympicIds = new Set(olympicEvents.map(e => e.id));
 
+  if (olympicEvents.length > 0) {
+    console.group('[Olympics] Matched events');
+    olympicEvents.forEach((e, i) => {
+      console.log(`#${i + 1}`, {
+        id: e.id,
+        title: e.title,
+        ultraShortHeadline: e.metadata?.ultraShortHeadline,
+        keywords: e.metadata?.seo?.keywords,
+        hashtags: e.metadata?.seo?.hashtags,
+        trendingScore: e.trendingScore,
+      });
+    });
+    console.groupEnd();
+  }
+
   // Boost events from favorite categories
   // Create a map with boosted scores for sorting/selection
   // Exclude olympic events from the general pool so they don't appear in other sections
