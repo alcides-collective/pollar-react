@@ -39,20 +39,23 @@ export function EventPage() {
   // Wikipedia images for mentioned people
   const wikipediaImages = useWikipediaImages(event?.metadata?.mentionedPeople);
 
-  // SEO meta tags
-  const pageTitle = event?.metadata?.ultraShortHeadline || event?.title || '';
-  const fullTitle = event?.title || ''; // Full title for OG image
-  const ogDescription = prepareOgDescription(
+  // SEO meta tags — prefer backend seo fields, fall back to existing logic
+  const seo = event?.metadata?.seo;
+  const pageTitle = seo?.metaTitle || event?.metadata?.ultraShortHeadline || event?.title || '';
+  const fullTitle = event?.title || '';
+  const ogDescription = seo?.ogDescription || prepareOgDescription(
     event?.metadata?.keyPoints?.[0]?.description || event?.summary
   );
+  const metaDescription = seo?.metaDescription || ogDescription;
   useDocumentHead({
     title: pageTitle,
-    description: ogDescription,
-    ogTitle: pageTitle, // ultraShortHeadline for og:title meta tag
+    description: metaDescription,
+    ogTitle: pageTitle,
     ogDescription,
-    ogImageTitle: fullTitle, // Full title for OG image
+    ogImageTitle: fullTitle,
     ogImageType: 'event',
     ogType: 'article',
+    keywords: seo?.keywords,
   });
 
   // Mark event as read in user's history

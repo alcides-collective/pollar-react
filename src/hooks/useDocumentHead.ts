@@ -13,6 +13,7 @@ export interface DocumentHeadOptions {
   ogImageType?: OgImageType;
   ogType?: 'website' | 'article';
   twitterCard?: 'summary' | 'summary_large_image';
+  keywords?: string[];
 }
 
 /**
@@ -49,6 +50,7 @@ export function useDocumentHead(options: DocumentHeadOptions) {
       ogImageType,
       ogType = 'article',
       twitterCard = 'summary_large_image',
+      keywords,
     } = options;
 
     // Generate dynamic OG image URL if type is provided
@@ -113,6 +115,11 @@ export function useDocumentHead(options: DocumentHeadOptions) {
       setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', resolvedOgImage);
     }
 
+    // Update keywords meta tag
+    if (keywords && keywords.length > 0) {
+      setMetaTag('meta[name="keywords"]', 'name', 'keywords', keywords.join(', '));
+    }
+
     // Cleanup: reset to defaults on unmount
     return () => {
       document.title = originalTitle;
@@ -124,6 +131,8 @@ export function useDocumentHead(options: DocumentHeadOptions) {
       setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', DEFAULT_TITLE);
       setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', defaultDescription);
       setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', DEFAULT_IMAGE);
+      const kwEl = document.querySelector('meta[name="keywords"]');
+      if (kwEl) kwEl.remove();
     };
-  }, [options.title, options.description, options.ogTitle, options.ogDescription, options.ogImage, options.ogImageTitle, options.ogImageType, options.ogType, options.twitterCard, defaultDescription]);
+  }, [options.title, options.description, options.ogTitle, options.ogDescription, options.ogImage, options.ogImageTitle, options.ogImageType, options.ogType, options.twitterCard, options.keywords, defaultDescription]);
 }

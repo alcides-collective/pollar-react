@@ -356,12 +356,13 @@ function generateOrganizationSchema() {
     '@type': 'NewsMediaOrganization',
     name: 'Pollar News',
     url: 'https://pollar.news',
+    alternateName: ['Pollar', 'pollar.news', 'pollar.pl'],
     description: 'AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.',
     logo: {
       '@type': 'ImageObject',
       url: 'https://pollar.news/logo.png'
     },
-    sameAs: []
+    sameAs: ['https://pollar.pl']
   };
 }
 
@@ -437,7 +438,7 @@ function generateBreadcrumbSchema(path, pageTitles) {
 }
 
 function generateSeoHtml(opts) {
-  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null, articlePublished = null, articleModified = null, articleSection = null, newsKeywords = null, pathWithoutLang = null, lang = 'pl', answerCapsule = null } = opts;
+  const { pageTitle, ogTitle, description, ogImage, targetUrl, ogType = 'article', schema = null, articlePublished = null, articleModified = null, articleSection = null, newsKeywords = null, keywords = null, pathWithoutLang = null, lang = 'pl', answerCapsule = null } = opts;
 
   // Generate JSON-LD script(s) if schema is provided (can be single object or array)
   const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
@@ -452,6 +453,7 @@ function generateSeoHtml(opts) {
     articleModified ? `<meta property="article:modified_time" content="${articleModified}" />` : '',
     articleSection ? `<meta property="article:section" content="${escapeHtml(articleSection)}" />` : '',
     newsKeywords ? `<meta name="news_keywords" content="${escapeHtml(newsKeywords)}" />` : '',
+    keywords ? `<meta name="keywords" content="${escapeHtml(keywords)}" />` : '',
   ].filter(Boolean).join('\n    ') : '';
 
   // Generate hreflang tags for all supported languages
@@ -745,6 +747,8 @@ app.get('/llms.txt', (req, res) => {
 
 Pollar News is operated by Pollar P.S.A., a company registered in Kraków, Poland (KRS 0001194489).
 
+**Canonical domain: https://pollar.news** (pollar.pl redirects here and is deprecated).
+
 ## What Pollar Does
 
 - Aggregates and summarizes news articles from Polish and international press using AI
@@ -877,7 +881,7 @@ ${brief.insights?.length ? `### Key Insights\n\n${brief.insights.map(ins => `- $
 > Attribution: Pollar News (pollar.news)
 
 Pollar News is operated by Pollar P.S.A., a company registered in Kraków, Poland (KRS 0001194489, NIP: 6772540681).
-Website: https://pollar.news | Contact: https://pollar.news/kontakt
+Website: https://pollar.news (canonical domain; pollar.pl redirects here and is deprecated) | Contact: https://pollar.news/kontakt
 
 ---
 
@@ -1103,13 +1107,14 @@ app.use(async (req, res, next) => {
   if (eventMatch) {
     const event = await fetchEventData(eventMatch[1], lang);
     if (event) {
-      const shortTitle = event.metadata?.ultraShortHeadline || event.title || 'Pollar';
+      const seo = event.metadata?.seo;
+      const shortTitle = seo?.metaTitle || event.metadata?.ultraShortHeadline || event.title || 'Pollar';
       const ogTitle = `Pollar News: ${shortTitle}`;
       const fullTitle = event.title || 'Pollar';
       const kp = event.metadata?.keyPoints?.[0];
-      const description = truncate(stripHtml(kp?.description || event.lead || event.summary || ''), 160);
+      const description = truncate(stripHtml(seo?.metaDescription || kp?.description || event.lead || event.summary || ''), 160);
       // For OG image, use longer description (up to 300 chars for multi-line display)
-      const ogImageDescription = truncate(stripHtml(event.lead || kp?.description || event.summary || ''), 300);
+      const ogImageDescription = truncate(stripHtml(seo?.ogDescription || event.lead || kp?.description || event.summary || ''), 300);
       const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(fullTitle)}&type=event&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
 
       // Generate NewsArticle schema with speakable for AEO
@@ -1122,14 +1127,21 @@ app.use(async (req, res, next) => {
         ogImage
       }));
 
-      // Build news_keywords from event metadata
-      const keywordParts = [
-        event.metadata?.category,
-        ...(event.metadata?.mentionedPeople?.map(p => p.name) || []),
-        ...(event.metadata?.mentionedCountries || []),
-        event.metadata?.location?.city
-      ].filter(Boolean);
-      const newsKeywords = keywordParts.length > 0 ? keywordParts.join(', ') : null;
+      // Build news_keywords and keywords from seo data or event metadata
+      let newsKeywords = null;
+      let seoKeywords = null;
+      if (seo?.keywords?.length > 0) {
+        newsKeywords = seo.keywords.join(', ');
+        seoKeywords = newsKeywords;
+      } else {
+        const keywordParts = [
+          event.metadata?.category,
+          ...(event.metadata?.mentionedPeople?.map(p => p.name) || []),
+          ...(event.metadata?.mentionedCountries || []),
+          event.metadata?.location?.city
+        ].filter(Boolean);
+        newsKeywords = keywordParts.length > 0 ? keywordParts.join(', ') : null;
+      }
 
       // Build answer capsule with key points for AI crawlers
       const keyPoints = (event.metadata?.keyPoints || [])
@@ -1149,6 +1161,7 @@ app.use(async (req, res, next) => {
         articleModified: event.updatedAt || event.createdAt || event.date,
         articleSection: event.metadata?.category,
         newsKeywords,
+        keywords: seoKeywords,
         pathWithoutLang,
         lang,
         answerCapsule

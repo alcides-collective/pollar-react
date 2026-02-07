@@ -49,6 +49,13 @@ export interface EventMetadata {
   viewCount: number;
   summarizationModel?: string;
   ttsText?: string;
+  seo?: {
+    metaTitle: string;
+    metaDescription: string;
+    ogDescription: string;
+    keywords: string[];
+    hashtags: string[];
+  };
 }
 
 export interface Event {
