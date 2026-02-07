@@ -7,9 +7,9 @@ interface EventKeyPointsProps {
 }
 
 const priorityStyles: Record<KeyPoint['priority'], string> = {
-  high: 'bg-red-50 dark:bg-red-950/30 text-red-900 dark:text-red-300',
-  medium: 'bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-300',
-  low: 'bg-surface text-content',
+  high: 'bg-red-50 dark:bg-red-950/30 text-red-900 dark:text-red-300 ring-1 ring-red-200 dark:ring-red-800/50',
+  medium: 'bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-300 ring-1 ring-amber-200 dark:ring-amber-800/50',
+  low: 'bg-surface text-content ring-1 ring-border dark:ring-divider',
 };
 
 export function EventKeyPoints({ keyPoints }: EventKeyPointsProps) {
