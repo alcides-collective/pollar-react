@@ -140,7 +140,12 @@ const CRAWLER_USER_AGENTS = [
 function isCrawler(userAgent) {
   if (!userAgent) return false;
   const ua = userAgent.toLowerCase();
-  return CRAWLER_USER_AGENTS.some(bot => ua.includes(bot.toLowerCase()));
+  // Known bots get SSR
+  if (CRAWLER_USER_AGENTS.some(bot => ua.includes(bot.toLowerCase()))) return true;
+  // Non-browser clients (curl, wget, httpie, python-requests, etc.) also get SSR
+  // All real browsers include "mozilla" in their UA string
+  if (!ua.includes('mozilla')) return true;
+  return false;
 }
 
 function escapeHtml(str) {
