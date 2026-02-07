@@ -134,8 +134,8 @@ function getAppRoutes(prefix = '') {
   return [
     <Route key={`${prefix}-home`} path={`${prefix}/`} element={<HomePage />} />,
     <Route key={`${prefix}-brief`} path={`${prefix}/brief`} element={<BriefPage />} />,
-    <Route key={`${prefix}-felieton`} path={`${prefix}/felieton/:id`} element={<FelietonPage />} />,
-    <Route key={`${prefix}-event`} path={`${prefix}/event/:id`} element={<EventPage />} />,
+    <Route key={`${prefix}-felieton`} path={`${prefix}/felieton/:id/:slug?`} element={<FelietonPage />} />,
+    <Route key={`${prefix}-event`} path={`${prefix}/event/:id/:slug?`} element={<EventPage />} />,
     <Route key={`${prefix}-privacy`} path={`${prefix}/polityka-prywatnosci`} element={<PrivacyPolicyPage />} />,
     <Route key={`${prefix}-terms`} path={`${prefix}/regulamin`} element={<TermsOfServicePage />} />,
     <Route key={`${prefix}-cookies`} path={`${prefix}/cookies`} element={<CookieSettingsPage />} />,

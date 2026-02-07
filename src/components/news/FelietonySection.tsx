@@ -4,6 +4,7 @@ import { GrainImage } from '../common/GrainImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { LocalizedLink } from '../LocalizedLink';
 import { AnimatedUnderline } from '../common/AnimatedUnderline';
+import { felietonPath } from '../../utils/slug';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.webp';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.webp';
@@ -23,7 +24,7 @@ function FelietonCard({ felieton }: { felieton: Felieton }) {
   const imageSrc = FELIETON_IMAGES[felieton.category];
 
   return (
-    <LocalizedLink to={`/felieton/${felieton.id}`} className="group/underline block p-6 hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors h-full">
+    <LocalizedLink to={felietonPath(felieton)} className="group/underline block p-6 hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors h-full">
       <article>
         <div className="mb-4">
           <GrainImage

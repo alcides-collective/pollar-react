@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import type { Event } from '../../types/events';
 import { EventImage } from '../common/EventImage';
 import { LocalizedLink } from '../LocalizedLink';
+import { eventPath } from '../../utils/slug';
 
 type EventCardSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -33,7 +34,7 @@ export function EventCard({
   const styles = sizeStyles[size];
 
   return (
-    <LocalizedLink to={`/event/${event.id}`} className={`group block ${className}`}>
+    <LocalizedLink to={eventPath(event)} className={`group block ${className}`}>
       <article>
         {showImage && (
           <div className="mb-4">

@@ -199,6 +199,23 @@ function trackCrawlerVisit(req) {
   }
 }
 
+// ── URL slug generation for SEO ──
+function createSlug(text) {
+  if (!text) return '';
+  const chars = {
+    'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ź':'z','ż':'z',
+    'Ą':'A','Ć':'C','Ę':'E','Ł':'L','Ń':'N','Ó':'O','Ś':'S','Ź':'Z','Ż':'Z',
+    'ä':'ae','ö':'oe','ü':'ue','ß':'ss','Ä':'Ae','Ö':'Oe','Ü':'Ue',
+  };
+  return text
+    .replace(/[ąćęłńóśźżĄĆĘŁŃÓŚŹŻäöüßÄÖÜ]/g, ch => chars[ch] || ch)
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 function escapeHtml(str) {
   return str
     .replace(/&/g, '&amp;')
@@ -823,11 +840,16 @@ function generateSeoHtml(opts) {
   // Generate hreflang tags for all supported languages
   const baseUrlForHreflang = 'https://pollar.news';
   const basePath = pathWithoutLang || '/';
+  // Strip slug from event/felieton paths — each language has its own slug
+  // Slug-less URLs work fine since :slug? is optional in routing
+  const hreflangPath = basePath
+    .replace(/^(\/event\/[^/?#/]+)\/[^/?#]+/, '$1')
+    .replace(/^(\/felieton\/[^/?#/]+)\/[^/?#]+/, '$1');
   const hreflangTags = [
-    `<link rel="alternate" hreflang="pl" href="${baseUrlForHreflang}${basePath === '/' ? '' : basePath}" />`,
-    `<link rel="alternate" hreflang="en" href="${baseUrlForHreflang}/en${basePath === '/' ? '' : basePath}" />`,
-    `<link rel="alternate" hreflang="de" href="${baseUrlForHreflang}/de${basePath === '/' ? '' : basePath}" />`,
-    `<link rel="alternate" hreflang="x-default" href="${baseUrlForHreflang}${basePath === '/' ? '' : basePath}" />`
+    `<link rel="alternate" hreflang="pl" href="${baseUrlForHreflang}${hreflangPath === '/' ? '' : hreflangPath}" />`,
+    `<link rel="alternate" hreflang="en" href="${baseUrlForHreflang}/en${hreflangPath === '/' ? '' : hreflangPath}" />`,
+    `<link rel="alternate" hreflang="de" href="${baseUrlForHreflang}/de${hreflangPath === '/' ? '' : hreflangPath}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${baseUrlForHreflang}${hreflangPath === '/' ? '' : hreflangPath}" />`
   ].join('\n    ');
 
   // og:locale for social sharing
@@ -1416,9 +1438,14 @@ app.get('/sitemap.xml', async (req, res) => {
 
   // Helper to generate xhtml:link tags for all language versions
   const generateHreflangLinks = (path) => {
-    const plUrl = `${baseUrl}${path}`;
-    const enUrl = `${baseUrl}/en${path}`;
-    const deUrl = `${baseUrl}/de${path}`;
+    // Strip slug from event/felieton paths — each language has its own slug
+    // Slug-less URLs work fine since :slug? is optional in routing
+    const hreflangPath = path
+      .replace(/^(\/event\/[^/?#/]+)\/[^/?#]+/, '$1')
+      .replace(/^(\/felieton\/[^/?#/]+)\/[^/?#]+/, '$1');
+    const plUrl = `${baseUrl}${hreflangPath}`;
+    const enUrl = `${baseUrl}/en${hreflangPath}`;
+    const deUrl = `${baseUrl}/de${hreflangPath}`;
     return `
       <xhtml:link rel="alternate" hreflang="pl" href="${plUrl}"/>
       <xhtml:link rel="alternate" hreflang="en" href="${enUrl}"/>
@@ -1478,8 +1505,14 @@ app.get('/sitemap.xml', async (req, res) => {
   // Generate XML with multilingual support
   const urls = [
     ...staticPages.map(path => generateUrlEntry(path)),
-    ...events.map(e => generateUrlEntry(`/event/${e.id}`, e.updatedAt || e.createdAt)),
-    ...felietony.map(f => generateUrlEntry(`/felieton/${f.id}`, f.updatedAt || f.createdAt))
+    ...events.map(e => {
+      const slug = createSlug(e.metadata?.ultraShortHeadline || e.title);
+      return generateUrlEntry(slug ? `/event/${e.id}/${slug}` : `/event/${e.id}`, e.updatedAt || e.createdAt);
+    }),
+    ...felietony.map(f => {
+      const slug = createSlug(f.ultraShortHeadline || f.title);
+      return generateUrlEntry(slug ? `/felieton/${f.id}/${slug}` : `/felieton/${f.id}`, f.updatedAt || f.createdAt);
+    })
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -1526,7 +1559,8 @@ app.get('/news-sitemap.xml', async (req, res) => {
   });
 
   const urls = events.map(e => {
-    const loc = `${baseUrl}/event/${e.id}`;
+    const slug = createSlug(e.metadata?.ultraShortHeadline || e.title);
+    const loc = slug ? `${baseUrl}/event/${e.id}/${slug}` : `${baseUrl}/event/${e.id}`;
     const pubDate = e.createdAt || e.date || new Date().toISOString();
     const title = escapeXml(stripHtml(e.title || ''));
     const keywordParts = [
@@ -1596,9 +1630,11 @@ app.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
   const items = events.map(e => {
     const title = escapeXml(stripHtml(e.title || ''));
     const lead = escapeXml(stripHtml(e.lead || e.summary || ''));
-    const link = `${baseUrl}${langPrefix}/event/${e.id}`;
+    const slug = createSlug(e.metadata?.ultraShortHeadline || stripHtml(e.title || ''));
+    const eventPath = slug ? `/event/${e.id}/${slug}` : `/event/${e.id}`;
+    const link = `${baseUrl}${langPrefix}${eventPath}`;
     const pubDate = e.createdAt ? new Date(e.createdAt).toUTCString() : now;
-    const guid = `${baseUrl}/event/${e.id}`; // guid stays canonical (without lang prefix)
+    const guid = `${baseUrl}/event/${e.id}`; // guid stays canonical ID-based (never changes)
 
     return `    <item>
       <title>${title}</title>
@@ -1695,6 +1731,12 @@ app.use(async (req, res, next) => {
       const eventCategory = event.metadata?.category || '';
       const ogImage = `${baseUrl}/api/og/event/${eventMatch[1]}?lang=${lang}`;
 
+      // Canonical URL with SEO slug
+      const eventSlug = createSlug(event.metadata?.ultraShortHeadline || event.title);
+      const langPrefix = lang === 'pl' ? '' : `/${lang}`;
+      const canonicalPath = eventSlug ? `/event/${eventMatch[1]}/${eventSlug}` : `/event/${eventMatch[1]}`;
+      const targetUrl = `${baseUrl}${langPrefix}${canonicalPath}`;
+
       // Build news_keywords and keywords from seo data or event metadata
       let newsKeywords = null;
       let seoKeywords = null;
@@ -1789,10 +1831,11 @@ app.use(async (req, res, next) => {
       // Related events (internal linking for SEO)
       const similarEvents = await fetchSimilarEvents(eventMatch[1], lang);
       if (similarEvents.length > 0) {
-        const langPrefix = lang === 'pl' ? '' : `/${lang}`;
         const relatedItems = similarEvents.slice(0, 5).map(e => {
           const title = escapeHtml(stripHtml(e.title || ''));
-          const link = `https://pollar.news${langPrefix}/event/${e.id}`;
+          const relSlug = createSlug(e.metadata?.ultraShortHeadline || e.title);
+          const relPath = relSlug ? `/event/${e.id}/${relSlug}` : `/event/${e.id}`;
+          const link = `https://pollar.news${langPrefix}${relPath}`;
           return `<li><a href="${link}">${title}</a></li>`;
         }).join('');
         const relatedHeading = { pl: 'Powiązane wydarzenia', en: 'Related Events', de: 'Verwandte Ereignisse' }[lang] || 'Powiązane wydarzenia';
@@ -1917,6 +1960,12 @@ app.use(async (req, res, next) => {
       ogImageDescription = truncate(stripHtml(felieton.lead || ''), 300);
     }
 
+    // Canonical URL with SEO slug
+    const felietonSlug = createSlug(felieton?.title || felietonTitle);
+    const felietonLangPrefix = lang === 'pl' ? '' : `/${lang}`;
+    const felietonCanonical = felietonSlug ? `/felieton/${felietonMatch[1]}/${felietonSlug}` : `/felieton/${felietonMatch[1]}`;
+    const targetUrl = `${baseUrl}${felietonLangPrefix}${felietonCanonical}`;
+
     const ogTitle = `Pollar News: ${felietonTitle}`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(felietonTitle)}&type=felieton&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
 
@@ -1986,7 +2035,9 @@ app.use(async (req, res, next) => {
               const lead = escapeHtml(truncate(stripHtml(e.lead || e.summary || ''), 200));
               const date = e.createdAt ? new Date(e.createdAt).toLocaleDateString(lang === 'de' ? 'de-DE' : lang === 'en' ? 'en-US' : 'pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
               const category = escapeHtml(e.category || e.metadata?.category || '');
-              const link = `${baseUrl}/${lang === 'pl' ? '' : lang + '/'}event/${e.id}`;
+              const eSlug = createSlug(e.metadata?.ultraShortHeadline || e.title);
+              const ePath = eSlug ? `/event/${e.id}/${eSlug}` : `/event/${e.id}`;
+              const link = `${baseUrl}/${lang === 'pl' ? '' : lang + '/'}${ePath.slice(1)}`;
               const sources = e.metadata?.articleCount ? ` · ${e.metadata.articleCount} articles` : '';
               return `<li><a href="${link}"><strong>${title}</strong></a>${category ? ` <span class="category">[${category}]</span>` : ''}${date ? ` <time>${date}</time>` : ''}${sources}<br>${lead}</li>`;
             }).join('');

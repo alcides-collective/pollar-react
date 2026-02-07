@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import type { Event } from '../../types/events';
 import { LiveTimeAgo } from '../../components/common/LiveTimeAgo';
 import { staggerContainer, staggerItem } from '@/lib/animations';
+import { eventPath } from '../../utils/slug';
 
 interface CategoryCardProps {
   category: string;
@@ -34,7 +35,7 @@ export function CategoryCard({ category, events, maxEvents = 5 }: CategoryCardPr
       >
         {displayEvents.map((event) => (
           <motion.div key={event.id} variants={staggerItem}>
-            <LocalizedLink to={`/event/${event.id}`} className="block group">
+            <LocalizedLink to={eventPath(event)} className="block group">
               <div className="flex items-center gap-2 text-xs mb-1">
                 <LiveTimeAgo date={event.updatedAt} className="text-red-500" />
                 <span className="text-content-faint">•</span>

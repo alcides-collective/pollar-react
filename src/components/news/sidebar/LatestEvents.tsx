@@ -5,6 +5,7 @@ import { LiveTimeAgo } from '../../common/LiveTimeAgo';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { useEventsStore } from '../../../stores/eventsStore';
 import { LocalizedLink } from '../../LocalizedLink';
+import { eventPath } from '../../../utils/slug';
 
 interface LatestEventsProps {
   events: Event[];
@@ -37,7 +38,7 @@ export function LatestEvents({ events }: LatestEventsProps) {
           return (
             <motion.div key={event.id} variants={staggerItem}>
               <LocalizedLink
-                to={`/event/${event.id}`}
+                to={eventPath(event)}
                 className="block group"
                 onClick={() => handleEventClick(event.id)}
               >

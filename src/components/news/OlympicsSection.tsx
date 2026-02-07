@@ -4,6 +4,7 @@ import { EventImage } from '../common/EventImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { LocalizedLink } from '../LocalizedLink';
 import { AnimatedUnderline } from '../common/AnimatedUnderline';
+import { eventPath } from '../../utils/slug';
 import olympicsRings from '../../assets/images/olympics/olympics.svg';
 
 const OLYMPIC_PATTERNS = [/igrzysk/i, /olympi/i, /olimp/i, /milancortina/i, /mailandcortina/i, /bormio2026/i, /zio2026/i];
@@ -42,7 +43,7 @@ export function OlympicsSection({ events }: OlympicsSectionProps) {
           {events.map(event => (
             <LocalizedLink
               key={event.id}
-              to={`/event/${event.id}`}
+              to={eventPath(event)}
               className="group/underline block bg-background border border-divider hover:bg-surface transition-colors"
             >
               <EventImage

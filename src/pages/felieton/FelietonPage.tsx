@@ -10,6 +10,7 @@ import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
 import polskaPolitykImg from '../../assets/images/felietony/polska-polityka.webp';
 import { CcAttribution } from '../../components/common/CcAttribution';
 import type { FelietonCategory, SourceEvent } from '../../types/felieton';
+import { eventPath } from '../../utils/slug';
 
 const FELIETON_IMAGES: Record<FelietonCategory, string> = {
   'ekonomia': ekonomiaImg,
@@ -39,7 +40,7 @@ function SourceEventCard({ event }: { event: SourceEvent }) {
 
   return (
     <LocalizedLink
-      to={`/event/${event.id}`}
+      to={eventPath(event)}
       className="block p-4 bg-surface hover:bg-muted rounded-lg transition-colors group"
     >
       <p className="text-sm font-medium text-content-heading group-hover:text-content mb-1">

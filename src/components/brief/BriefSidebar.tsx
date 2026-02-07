@@ -6,6 +6,7 @@ import type { WordOfTheDay, BriefSection } from '../../types/brief';
 import { decodeHtmlEntities } from '../../utils/sanitize';
 import { extractEventIds } from '../../utils/text';
 import { useLanguage } from '../../stores/languageStore';
+import { eventPath } from '../../utils/slug';
 
 function stripIds(text: string): string {
   return text
@@ -55,7 +56,7 @@ function SectionEventCard({ eventId }: { eventId: string }) {
 
   return (
     <LocalizedLink
-      to={`/event/${event.id}`}
+      to={eventPath(event)}
       className="block p-3 bg-surface hover:bg-muted rounded-lg transition-colors group"
     >
       <p className="text-sm font-medium text-content-heading group-hover:text-content mb-1 line-clamp-2">

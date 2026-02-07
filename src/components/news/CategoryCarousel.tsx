@@ -10,6 +10,7 @@ import { EventImage } from '../common/EventImage';
 import { SectionImageContext } from '../../hooks/useSectionImages';
 import { LocalizedLink } from '../LocalizedLink';
 import { AnimatedUnderline } from '../common/AnimatedUnderline';
+import { eventPath } from '../../utils/slug';
 
 interface CategoryCarouselProps {
   category: string;
@@ -23,7 +24,7 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
   const imageSource = getImageSource(event);
   return (
     <LocalizedLink
-      to={`/event/${event.id}`}
+      to={eventPath(event)}
       className={`group/underline p-6 hover:bg-surface transition-colors h-full block ${hideBorder ? '' : 'border-r border-divider'}`}
     >
       <article>

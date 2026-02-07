@@ -5,6 +5,7 @@ import { EventImage } from '../common/EventImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { LocalizedLink } from '../LocalizedLink';
 import { AnimatedUnderline } from '../common/AnimatedUnderline';
+import { eventPath } from '../../utils/slug';
 
 interface DoubleHeroSectionProps {
   events: Event[];
@@ -26,7 +27,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
       priority="auto"
     >
       <div className={`grid grid-cols-1 ${gridCols}`}>
-      <LocalizedLink to={`/event/${leftEvent.id}`} className="group/underline p-6 hover:bg-surface transition-colors border-b md:border-b-0 md:border-r border-divider">
+      <LocalizedLink to={eventPath(leftEvent)} className="group/underline p-6 hover:bg-surface transition-colors border-b md:border-b-0 md:border-r border-divider">
         <article>
           <div className="mb-4 relative">
             <EventImage
@@ -52,7 +53,7 @@ export function DoubleHeroSection({ events, reversed = false }: DoubleHeroSectio
         </article>
       </LocalizedLink>
 
-      <LocalizedLink to={`/event/${rightEvent.id}`} className="group/underline p-6 hover:bg-surface transition-colors">
+      <LocalizedLink to={eventPath(rightEvent)} className="group/underline p-6 hover:bg-surface transition-colors">
         <article>
           <div className="mb-4 relative">
             <EventImage

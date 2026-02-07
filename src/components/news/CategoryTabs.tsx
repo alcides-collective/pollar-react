@@ -8,6 +8,7 @@ import { EventImage } from '../common/EventImage';
 import { AnimateHeight } from '../common/AnimateHeight';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { AnimatedUnderline } from '../common/AnimatedUnderline';
+import { eventPath } from '../../utils/slug';
 
 interface CategoryTabsProps {
   groups: Array<[string, Event[]]>;
@@ -61,7 +62,7 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
               >
                 <div className="flex flex-col md:flex-row">
                   {selectedGroup[1][0] && (
-                <LocalizedLink to={`/event/${selectedGroup[1][0].id}`} className="group/underline flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-divider">
+                <LocalizedLink to={eventPath(selectedGroup[1][0])} className="group/underline flex gap-4 md:flex-[2] p-6 border-b md:border-b-0 md:border-r border-divider">
                   <article className="flex flex-col md:flex-row gap-4">
                     <div className="w-full md:w-80 md:shrink-0">
                       <div className="relative">
@@ -93,7 +94,7 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                 {selectedGroup[1].slice(1).map((event) => (
                   <LocalizedLink
                     key={event.id}
-                    to={`/event/${event.id}`}
+                    to={eventPath(event)}
                     className="group/underline block p-6 hover:bg-surface transition-colors border-b border-divider"
                   >
                     <h4 className="text-content text-sm leading-tight">

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useUser, useAuthStore } from '@/stores/authStore';
+import { eventPath } from '../../utils/slug';
 import {
   useUserProfile,
   useSavedEventIds,
@@ -157,7 +158,7 @@ function ProfileContent() {
                 {forYouEvents.map((event) => (
                   <LocalizedLink
                     key={event.id}
-                    to={`/event/${event.id}`}
+                    to={eventPath(event)}
                     className="block bg-surface-alt border border-divider rounded-lg overflow-hidden hover:border-divider transition-colors"
                   >
                     <EventImage
@@ -193,7 +194,7 @@ function ProfileContent() {
                 {recentlyReadEvents.slice(0, 5).map((event) => (
                   <LocalizedLink
                     key={event.id}
-                    to={`/event/${event.id}`}
+                    to={eventPath(event)}
                     className="flex items-center gap-3 p-3 bg-surface-alt border border-divider rounded-lg hover:border-divider transition-colors"
                   >
                     <EventImage
@@ -232,7 +233,7 @@ function ProfileContent() {
                 {savedEvents.slice(0, 5).map((event) => (
                   <LocalizedLink
                     key={event.id}
-                    to={`/event/${event.id}`}
+                    to={eventPath(event)}
                     className="flex items-center gap-3 p-3 bg-surface-alt border border-divider rounded-lg hover:border-divider transition-colors"
                   >
                     <EventImage

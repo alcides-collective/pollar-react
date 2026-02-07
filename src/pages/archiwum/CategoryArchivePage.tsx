@@ -7,6 +7,7 @@ import { useArchiveEvents } from '../../hooks/useArchiveEvents';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { LiveTimeAgo } from '../../components/common/LiveTimeAgo';
 import { staggerContainer, staggerItem } from '@/lib/animations';
+import { eventPath } from '../../utils/slug';
 
 export function CategoryArchivePage() {
   const { t } = useTranslation('common');
@@ -136,7 +137,7 @@ export function CategoryArchivePage() {
         {categoryEvents.map((event) => (
           <motion.div key={event.id} variants={staggerItem}>
             <LocalizedLink
-              to={`/event/${event.id}`}
+              to={eventPath(event)}
               className="block bg-surface-alt border border-divider rounded-xl p-5 hover:border-divider hover:shadow-sm transition-all group"
             >
               <div className="flex items-center gap-2 text-xs mb-2">

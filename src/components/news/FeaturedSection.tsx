@@ -7,6 +7,7 @@ import { EventImage } from '../common/EventImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { LocalizedLink } from '../LocalizedLink';
 import { AnimatedHeadline, AnimatedUnderline } from '../common/AnimatedUnderline';
+import { eventPath } from '../../utils/slug';
 
 interface FeaturedSectionProps {
   events: Event[];
@@ -27,7 +28,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
     >
       <div className="grid grid-cols-1 md:grid-cols-2">
       <div className="md:border-r border-divider relative overflow-hidden p-6 md:p-0">
-        <LocalizedLink to={`/event/${mainEvent.id}`} className="group block relative">
+        <LocalizedLink to={eventPath(mainEvent)} className="group block relative">
           <EventImage
             event={mainEvent}
             className="w-full aspect-[4/3] object-cover md:[mask-image:radial-gradient(ellipse_150%_100%_at_0%_0%,black_50%,transparent_100%)] md:[-webkit-mask-image:radial-gradient(ellipse_150%_100%_at_0%_0%,black_50%,transparent_100%)]"
@@ -57,7 +58,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
               </span>
             )}
             {mainEvent.lead && (
-              <LocalizedLink to={`/event/${mainEvent.id}`}>
+              <LocalizedLink to={eventPath(mainEvent)}>
                 <p className="text-content leading-relaxed p-4 bg-background border border-divider hover:bg-surface transition-colors">
                   {mainEvent.lead}
                 </p>
@@ -70,7 +71,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
       <div className="px-6 pt-2 pb-6 md:p-6">
         <span className="text-content-subtle text-sm">{t(`categories.${mainEvent.category}`, { defaultValue: mainEvent.category })}</span>
         <AnimatedHeadline
-          to={`/event/${mainEvent.id}`}
+          to={eventPath(mainEvent)}
           as="h2"
           className="text-3xl md:text-4xl font-bold text-content-heading mt-1 mb-3 leading-tight"
         >
@@ -79,7 +80,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
 
         {/* Leadbox - only on mobile (after headline) */}
         {mainEvent.lead && (
-          <LocalizedLink to={`/event/${mainEvent.id}`}>
+          <LocalizedLink to={eventPath(mainEvent)}>
             <motion.div
               className="md:hidden mb-4"
               initial={{ opacity: 0, y: 20 }}
@@ -104,7 +105,7 @@ export function FeaturedSection({ events }: FeaturedSectionProps) {
             {secondaryEvents.map((event) => (
               <motion.div key={event.id} variants={staggerItem}>
                 <LocalizedLink
-                  to={`/event/${event.id}`}
+                  to={eventPath(event)}
                   className="group hover:bg-surface transition-colors flex gap-4 p-2 -mx-2 rounded"
                 >
                   <div className="w-40 shrink-0">

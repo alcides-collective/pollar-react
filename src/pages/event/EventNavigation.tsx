@@ -1,6 +1,7 @@
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import type { Event } from '../../types/events';
+import { eventPath } from '../../utils/slug';
 
 interface EventNavigationProps {
   previousEvent: Event | null;
@@ -18,7 +19,7 @@ export function EventNavigation({ previousEvent, nextEvent }: EventNavigationPro
         <div className="flex-1">
           {previousEvent ? (
             <LocalizedLink
-              to={`/event/${previousEvent.id}`}
+              to={eventPath(previousEvent)}
               className="block p-4 rounded-lg border border-divider hover:border-divider hover:bg-surface transition-colors h-full"
             >
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-content-faint mb-2">
@@ -44,7 +45,7 @@ export function EventNavigation({ previousEvent, nextEvent }: EventNavigationPro
         <div className="flex-1">
           {nextEvent ? (
             <LocalizedLink
-              to={`/event/${nextEvent.id}`}
+              to={eventPath(nextEvent)}
               className="block p-4 rounded-lg border border-divider hover:border-divider hover:bg-surface transition-colors h-full text-right"
             >
               <div className="flex items-center justify-end gap-2 text-xs uppercase tracking-wider text-content-faint mb-2">
