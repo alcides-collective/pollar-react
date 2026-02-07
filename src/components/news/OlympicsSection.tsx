@@ -26,7 +26,9 @@ export function OlympicsSection({ events }: OlympicsSectionProps) {
 
   return (
     <SectionWrapper sectionId="olympics-section" priority="low">
-      <div className="bg-blue-50 dark:bg-blue-950/40 p-6">
+      <div className="relative overflow-hidden p-6">
+        <div className="absolute inset-0 dark:hidden" style={{ background: 'linear-gradient(135deg, rgba(0,133,199,0.1) 0%, rgba(244,195,0,0.1) 25%, rgba(0,159,61,0.08) 50%, rgba(223,0,36,0.08) 75%, rgba(0,133,199,0.1) 100%)' }} />
+        <div className="absolute inset-0 hidden dark:block" style={{ background: 'linear-gradient(135deg, rgba(0,133,199,0.18) 0%, rgba(244,195,0,0.12) 25%, rgba(0,159,61,0.14) 50%, rgba(223,0,36,0.14) 75%, rgba(0,133,199,0.18) 100%)' }} />
         <div className="flex items-center gap-3 mb-5">
           <img src={olympicsRings} alt="Olympic Rings" className="w-20 h-auto drop-shadow-[0_0_4px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_0_4px_rgba(255,255,255,0.15)]" />
           <div>
