@@ -1393,16 +1393,26 @@ ${urls.join('\n')}
 app.get('/news-sitemap.xml', async (req, res) => {
   const baseUrl = 'https://pollar.news';
 
-  let events = [];
+  // Fetch from both endpoints and deduplicate
+  const eventMap = new Map();
   try {
-    const response = await fetch(`${API_BASE}/api/events?lang=pl&limit=200`);
-    if (response.ok) {
-      const data = await response.json();
-      events = Array.isArray(data) ? data : (data.data || data.events || []);
+    const [eventsRes, archiveRes] = await Promise.all([
+      fetch(`${API_BASE}/api/events?lang=pl&limit=200`),
+      fetch(`${API_BASE}/api/events/archive?lang=pl&limit=200`),
+    ]);
+    for (const r of [eventsRes, archiveRes]) {
+      if (r.ok) {
+        const data = await r.json();
+        const items = Array.isArray(data) ? data : (data.data || data.events || []);
+        for (const e of items) {
+          if (e.id && !eventMap.has(e.id)) eventMap.set(e.id, e);
+        }
+      }
     }
   } catch (err) {
     console.warn('Could not fetch events for news sitemap:', err.message);
   }
+  let events = [...eventMap.values()];
 
   // Filter to last 2 days only (Google News requirement)
   const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
