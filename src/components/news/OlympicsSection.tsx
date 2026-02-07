@@ -6,7 +6,7 @@ import { LocalizedLink } from '../LocalizedLink';
 import { AnimatedUnderline } from '../common/AnimatedUnderline';
 import olympicsRings from '../../assets/images/olympics/olympics.svg';
 
-const OLYMPIC_PATTERNS = [/igrzysk/i, /olimp/i, /olympic/i, /milancortina/i, /bormio2026/i, /zio2026/i];
+const OLYMPIC_PATTERNS = [/igrzysk/i, /olympi/i, /olimp/i, /milancortina/i, /mailandcortina/i, /bormio2026/i, /zio2026/i];
 
 export function isOlympicEvent(event: Event): boolean {
   const keywords = event.metadata?.seo?.keywords ?? [];

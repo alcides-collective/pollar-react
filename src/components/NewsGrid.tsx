@@ -73,7 +73,7 @@ export function NewsGrid() {
         <div className="min-w-0 overflow-hidden lg:border-r border-divider divide-y divide-divider [&>*:last-child]:border-b [&>*:last-child]:border-divider">
           {!isFiltered && brief && <DailyBriefSection brief={brief} />}
 
-          {isFiltered && selectedCategory === 'Sport' && olympicEvents.length > 0 && (
+          {isFiltered && selectedCategory === 'Sport' && olympicEvents.length > 0 && Date.now() >= new Date('2026-02-06').getTime() && Date.now() <= new Date('2026-02-23').getTime() && (
             <LazySection height="300px">
               <OlympicsSection events={olympicEvents} />
             </LazySection>
