@@ -465,7 +465,16 @@ body {
 }
 
 .match-teams {
-  @apply flex items-center justify-between gap-2;
+  @apply grid items-center gap-2;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.match-teams .match-team:first-child {
+  @apply text-right;
+}
+
+.match-teams .match-team:last-child {
+  @apply text-left;
 }
 
 /* Ranking Box */

@@ -51,14 +51,46 @@ export interface ExtractedLineChart {
 }
 
 /**
+ * Normalize English tag names and attributes to Polish equivalents.
+ * Allows the parser to handle summaries generated in either language.
+ */
+function normalizeEnglishTags(text: string): string {
+  return text
+    // Tag names: EN → PL
+    .replace(/<(\/?)note(\s|>)/gi, '<$1przypis$2')
+    .replace(/<(\/?)context>/gi, '<$1kontekst>')
+    .replace(/<(\/?)quote(\s|>)/gi, '<$1cytat$2')
+    .replace(/<(\/?)key-number(\s|>)/gi, '<$1kluczowa-liczba$2')
+    .replace(/<(\/?)comparison(\s|>)/gi, '<$1porównanie$2')
+    .replace(/<(\/?)poll(\s|>)/gi, '<$1ankieta$2')
+    .replace(/<(\/?)manipulation(\s|>)/gi, '<$1manipulacja$2')
+    .replace(/<(\/?)verification(\s|>)/gi, '<$1weryfikacja$2')
+    .replace(/<(\/?)fact-check(\s|>)/gi, '<$1weryfikacja$2')
+    // Attribute names within specific tags: EN → PL
+    .replace(/(<przypis\s[^>]*)description=/gi, '$1opis=')
+    .replace(/(<cytat\s[^>]*)author=/gi, '$1autor=')
+    .replace(/(<cytat\s[^>]*)place=/gi, '$1miejsce=')
+    .replace(/(<kluczowa-liczba\s[^>]*)value=/gi, '$1wartość=')
+    .replace(/(<timeline\s[^>]*)title=/gi, '$1tytuł=')
+    .replace(/(<porównanie\s[^>]*)title=/gi, '$1tytuł=')
+    .replace(/(<ankieta\s[^>]*)question=/gi, '$1pytanie=')
+    .replace(/(<manipulacja\s[^>]*)author=/gi, '$1autor=')
+    .replace(/(<manipulacja\s[^>]*)quote=/gi, '$1cytat=')
+    .replace(/(<weryfikacja\s[^>]*)verdict=/gi, '$1werdykt=')
+    .replace(/(<weryfikacja\s[^>]*)source=/gi, '$1źródło=');
+}
+
+/**
  * Extract key number from summary for display in sidebar (desktop only)
  */
 export function extractKeyNumber(summary: string | undefined): ExtractedKeyNumber | null {
   if (!summary) return null;
 
+  const s = normalizeEnglishTags(summary);
+
   // Try double quotes first, then single quotes
-  const match = summary.match(/<kluczowa-liczba\s+wartość\s*=\s*"([^"]+)">([\s\S]*?)<\/kluczowa-liczba>/i)
-    || summary.match(/<kluczowa-liczba\s+wartość\s*=\s*'([^']+)'>([\s\S]*?)<\/kluczowa-liczba>/i);
+  const match = s.match(/<kluczowa-liczba\s+wartość\s*=\s*"([^"]+)">([\s\S]*?)<\/kluczowa-liczba>/i)
+    || s.match(/<kluczowa-liczba\s+wartość\s*=\s*'([^']+)'>([\s\S]*?)<\/kluczowa-liczba>/i);
   if (!match) return null;
 
   return {
