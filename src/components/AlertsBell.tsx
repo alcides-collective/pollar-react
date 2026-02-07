@@ -47,7 +47,7 @@ function VotingAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { ale
     >
       <LocalizedLink to={`/sejm/glosowania/${alert.sitting}/${alert.votingNumber}`}>
         <div className="flex items-start gap-1.5 w-full">
-          <p className="text-xs text-content-faint line-clamp-2 flex-1">
+          <p className="text-xs text-zinc-400 line-clamp-2 flex-1">
             <span className="inline-flex items-baseline gap-1 mr-1 text-xs font-medium">
               <span className="text-white">{alert.mpName}</span>
               <span className={voteInfo.color}>{voteInfo.text}</span>
@@ -94,7 +94,7 @@ function CategoryAlertItem({
     >
       <LocalizedLink to={`/event/${alert.eventId}`}>
         <div className="flex items-start gap-1.5 w-full">
-          <p className="text-xs text-content line-clamp-2 flex-1">
+          <p className="text-xs text-zinc-300 line-clamp-2 flex-1">
             <span className="inline text-[10px] px-1.5 py-0.5 bg-amber-500/20 text-amber-300 rounded font-medium mr-1">
               {categoryLabel}
             </span>
@@ -181,11 +181,11 @@ export function AlertsBell() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
         <DropdownMenuLabel className="flex items-center justify-between">
-          <span className="text-content-faint">{t('title')}</span>
+          <span className="text-zinc-400">{t('title')}</span>
           {totalUnreadCount > 0 && (
             <button
               onClick={handleMarkAllAsRead}
-              className="text-xs text-content-subtle hover:text-content-faint transition-colors"
+              className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
             >
               {t('markAsRead')}
             </button>
@@ -195,7 +195,7 @@ export function AlertsBell() {
 
         {displayAlerts.length === 0 ? (
           <div className="px-2 py-4 text-center">
-            <p className="text-sm text-content-faint mb-2">{t('noNew')}</p>
+            <p className="text-sm text-zinc-400 mb-2">{t('noNew')}</p>
             <LocalizedLink
               to="/powiadomienia"
               className="text-xs text-blue-400 hover:text-blue-300 hover:underline"
@@ -230,7 +230,7 @@ export function AlertsBell() {
             <DropdownMenuItem asChild className="justify-center">
               <LocalizedLink
                 to="/powiadomienia"
-                className="text-sm text-content-faint hover:text-white"
+                className="text-sm text-zinc-400 hover:text-white"
               >
                 {t('viewAll')}
               </LocalizedLink>
