@@ -30,35 +30,7 @@ staticRoutes.get('/robots.txt', (req, res) => {
 #
 # (c) Pollar News (pollar.news)
 
-# AI crawlers — welcome
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Googlebot
-Allow: /
-
-User-agent: bingbot
-Allow: /
-
-# All other crawlers
+# All crawlers welcome (including AI: GPTBot, ClaudeBot, PerplexityBot, etc.)
 User-agent: *
 Allow: /
 Disallow: /api/

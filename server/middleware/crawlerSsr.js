@@ -44,6 +44,11 @@ export async function crawlerSsrMiddleware(req, res, next) {
       const canonicalPath = eventSlug ? `/event/${eventMatch[1]}/${eventSlug}` : `/event/${eventMatch[1]}`;
       const targetUrl = `${baseUrl}${langPrefix}${canonicalPath}`;
 
+      // 301 redirect slug-less URLs to canonical slug version
+      if (eventSlug && !pathWithoutLang.includes(`/${eventSlug}`)) {
+        return res.redirect(301, `${langPrefix}${canonicalPath}`);
+      }
+
       // Build news_keywords and keywords from seo data or event metadata
       let newsKeywords = null;
       let seoKeywords = null;
@@ -273,6 +278,11 @@ export async function crawlerSsrMiddleware(req, res, next) {
     const felietonLangPrefix = lang === 'pl' ? '' : `/${lang}`;
     const felietonCanonical = felietonSlug ? `/felieton/${felietonMatch[1]}/${felietonSlug}` : `/felieton/${felietonMatch[1]}`;
     const targetUrl = `${baseUrl}${felietonLangPrefix}${felietonCanonical}`;
+
+    // 301 redirect slug-less URLs to canonical slug version
+    if (felietonSlug && !pathWithoutLang.includes(`/${felietonSlug}`)) {
+      return res.redirect(301, `${felietonLangPrefix}${felietonCanonical}`);
+    }
 
     const ogTitle = `Pollar News: ${felietonTitle}`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(felietonTitle)}&type=felieton&description=${encodeURIComponent(ogImageDescription)}&lang=${lang}`;
