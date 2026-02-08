@@ -73,7 +73,7 @@ export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
     const searchParams = new URLSearchParams();
     searchParams.set('limit', String(limit));
     searchParams.set('lang', lang);
-    searchParams.set('includeArticles', 'true');
+    searchParams.set('includeArticles', 'false');
     const archiveUrl = `${ARCHIVE_API_BASE}/archive?${searchParams.toString()}`;
     return { archiveUrl, cacheKey: `archive:${archiveUrl}` };
   }, [limit, lang]);
