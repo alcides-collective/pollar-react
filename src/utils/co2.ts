@@ -14,6 +14,7 @@ export function getModelDisplayName(modelId: string | undefined): string {
     'openai/gpt-5.1-codex-mini': 'GPT-5.1 Codex Mini',
     'openai/gpt-5.1-codex-max': 'GPT-5.1 Codex Max',
     'anthropic/claude-opus-4-5': 'Claude Opus 4.5',
+    'anthropic/claude-opus-4-6': 'Claude Opus 4.6',
     'anthropic/claude-sonnet-4': 'Claude Sonnet 4',
   };
 
@@ -35,16 +36,16 @@ export function getModelColorClass(modelId: string | undefined): string {
 }
 
 export function getModelPillClasses(modelId: string | undefined): string {
-  if (!modelId) return 'bg-zinc-100 text-zinc-600';
-  if (modelId.includes('opus')) return 'bg-orange-50 text-orange-700 ring-orange-200/60';
-  if (modelId.includes('sonnet')) return 'bg-violet-50 text-violet-700 ring-violet-200/60';
-  if (modelId.includes('pro')) return 'bg-amber-50 text-amber-700 ring-amber-200/60';
-  if (modelId.includes('flash')) return 'bg-blue-50 text-blue-700 ring-blue-200/60';
-  if (modelId.includes('deepseek')) return 'bg-blue-50 text-blue-700 ring-blue-200/60';
-  if (modelId.includes('glm')) return 'bg-zinc-100 text-zinc-600 ring-zinc-200/60';
-  if (modelId.includes('codex-max')) return 'bg-amber-50 text-amber-700 ring-amber-200/60';
-  if (modelId.includes('codex-mini')) return 'bg-green-50 text-green-700 ring-green-200/60';
-  return 'bg-zinc-100 text-zinc-600 ring-zinc-200/60';
+  if (!modelId) return 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300';
+  if (modelId.includes('opus')) return 'bg-orange-50 text-orange-700 ring-orange-200/60 dark:bg-orange-950 dark:text-orange-300 dark:ring-orange-800/60';
+  if (modelId.includes('sonnet')) return 'bg-violet-50 text-violet-700 ring-violet-200/60 dark:bg-violet-950 dark:text-violet-300 dark:ring-violet-800/60';
+  if (modelId.includes('pro')) return 'bg-amber-50 text-amber-700 ring-amber-200/60 dark:bg-amber-950 dark:text-amber-300 dark:ring-amber-800/60';
+  if (modelId.includes('flash')) return 'bg-blue-50 text-blue-700 ring-blue-200/60 dark:bg-blue-950 dark:text-blue-300 dark:ring-blue-800/60';
+  if (modelId.includes('deepseek')) return 'bg-blue-50 text-blue-700 ring-blue-200/60 dark:bg-blue-950 dark:text-blue-300 dark:ring-blue-800/60';
+  if (modelId.includes('glm')) return 'bg-zinc-100 text-zinc-600 ring-zinc-200/60 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700/60';
+  if (modelId.includes('codex-max')) return 'bg-amber-50 text-amber-700 ring-amber-200/60 dark:bg-amber-950 dark:text-amber-300 dark:ring-amber-800/60';
+  if (modelId.includes('codex-mini')) return 'bg-green-50 text-green-700 ring-green-200/60 dark:bg-green-950 dark:text-green-300 dark:ring-green-800/60';
+  return 'bg-zinc-100 text-zinc-600 ring-zinc-200/60 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700/60';
 }
 
 // Calculate total output characters from AI-generated fields
@@ -269,6 +270,10 @@ export function getModelDescription(modelId: string | undefined): { title: strin
     'anthropic/claude-opus-4-5': {
       title: 'Claude Opus 4.5',
       text: 'Flagowy model Anthropic z lutego 2025. Pierwszy model hybrydowy łączący rozumowanie z intuicją. Osiąga najwyższe wyniki w testach kreatywności i pisania. Okno kontekstowe 200K tokenów.'
+    },
+    'anthropic/claude-opus-4-6': {
+      title: 'Claude Opus 4.6',
+      text: 'Najnowszy flagowy model Anthropic z lutego 2026. Okno kontekstowe 1M tokenów i 128K tokenów na wyjściu. W GDPval-AA (finanse, prawo) zdobywa 1606 Elo — 144 pkt więcej niż GPT-5.2. W BigLaw Bench osiąga 90,2%, a w BrowseComp 84%. Obsługuje agent teams i adaptive thinking.'
     },
     'anthropic/claude-sonnet-4': {
       title: 'Claude Sonnet 4',

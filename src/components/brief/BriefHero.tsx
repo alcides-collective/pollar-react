@@ -5,7 +5,7 @@ import { formatBriefDate } from '../../utils/briefUtils';
 
 import { AudioPlayer } from '../../pages/event/AudioPlayer';
 import { useLanguage } from '../../stores/languageStore';
-import { getModelDisplayName, getModelColorClass, getModelDescription, estimateBriefCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
+import { getModelDisplayName, getModelPillClasses, getModelDescription, estimateBriefCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
 
 interface BriefHeroProps {
   brief: DailyBrief;
@@ -48,7 +48,7 @@ export function BriefHero({ brief }: BriefHeroProps) {
           <span className="font-light">
             {t('header.generatedBy', 'Wygenerowany przez')}{' '}
             <span
-              className={`relative font-medium cursor-help border-b border-dotted border-current ${getModelColorClass(modelId)}`}
+              className={`relative inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ring-1 ring-inset cursor-help ${getModelPillClasses(modelId)}`}
               onMouseEnter={() => setShowModelTooltip(true)}
               onMouseLeave={() => setShowModelTooltip(false)}
             >
