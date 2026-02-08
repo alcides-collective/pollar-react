@@ -839,7 +839,7 @@ function generateOrganizationSchema() {
     ],
     sameAs: [
       'https://pollar.pl',
-      'https://x.com/pollarpl',
+      'https://x.com/pollarnews',
       'https://www.linkedin.com/company/108790026/',
       'https://instagram.com/pollar.news'
     ],

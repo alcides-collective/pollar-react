@@ -237,7 +237,7 @@ export function ContactPage() {
             <h2 className="text-lg font-semibold text-content-heading mb-3">{t('social.title')}</h2>
             <div className="flex flex-col gap-2">
               <a
-                href="https://x.com/pollarpl"
+                href="https://x.com/pollarnews"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border border-divider bg-background px-4 py-2.5 text-sm text-content hover:border-divider hover:text-content-heading transition-colors"

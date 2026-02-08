@@ -5,7 +5,7 @@ import { LocalizedLink } from './LocalizedLink';
 import { useLanguage } from '@/stores/languageStore';
 
 const socialLinks = [
-  { label: 'X', icon: 'ri-twitter-x-line', href: 'https://x.com/pollarpl' },
+  { label: 'X', icon: 'ri-twitter-x-line', href: 'https://x.com/pollarnews' },
   { label: 'LinkedIn', icon: 'ri-linkedin-line', href: 'https://www.linkedin.com/company/108790026' },
 ];
 
