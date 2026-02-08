@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useEvents } from '../../../stores/eventsStore';
-import { useArchiveEvents } from '../../../hooks/useArchiveEvents';
+import { useArchiveStats } from '../../../hooks/useArchiveStats';
 import { useLanguage } from '../../../stores/languageStore';
 
 export function StatsSection() {
@@ -12,39 +12,33 @@ export function StatsSection() {
   // so hide entire section for non-Polish languages to avoid mixed-language display
   if (language !== 'pl') return null;
 
-  // Fetch events (same approach as HeroSection)
+  // Active events (includes /events/archive OLD events which have mentionedPeople)
   const { events: currentEvents, loading: currentLoading } = useEvents({
     limit: 100,
     lang: language,
     skipHiddenFilter: true,
+    includeArchive: true,
   });
-  const { events: archiveEvents, loading: archiveLoading } = useArchiveEvents({
-    limit: 500,
-    lang: language,
-  });
+
+  // Pre-aggregated stats from pollar-backend-production archive DB
+  const { data: archiveStats, loading: archiveLoading } = useArchiveStats();
 
   const loading = currentLoading || archiveLoading;
 
-  // Calculate stats from events
+  // Merge client-side active event stats with backend archive stats
   const { articlesCount, sourcesCount, topMentioned, topCities } = useMemo(() => {
-    // Deduplicate events by ID
-    const eventMap = new Map<string, (typeof currentEvents)[0]>();
-    currentEvents.forEach((event) => eventMap.set(event.id, event));
-    archiveEvents.forEach((event) => {
-      if (!eventMap.has(event.id)) eventMap.set(event.id, event);
-    });
-
-    const allEvents = Array.from(eventMap.values());
-
-    // Count unique sources
-    const allSources = new Set<string>();
-    allEvents.forEach((event) => {
-      event.sources?.forEach((source) => allSources.add(source));
-    });
-
-    // Calculate most mentioned people
+    // --- People: merge archive backend counts + active event counts ---
     const personCounts = new Map<string, number>();
-    for (const event of allEvents) {
+
+    // Add archive stats (bulk from DB)
+    if (archiveStats?.topPeople) {
+      for (const { name, count } of archiveStats.topPeople) {
+        personCounts.set(name, count);
+      }
+    }
+
+    // Add active events (client-side)
+    for (const event of currentEvents) {
       const people = event.metadata?.mentionedPeople ?? [];
       for (const person of people) {
         if (person.name) {
@@ -53,40 +47,52 @@ export function StatsSection() {
       }
     }
 
-    // Sort by count and take top 10
     const topPeople = Array.from(personCounts.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([name, count]) => ({ name, count }));
 
-    // Calculate top cities
+    // --- Cities: merge archive backend counts + active event counts ---
     const cityCounts = new Map<string, number>();
-    for (const event of allEvents) {
+
+    if (archiveStats?.topCities) {
+      for (const { name, count } of archiveStats.topCities) {
+        cityCounts.set(name, count);
+      }
+    }
+
+    for (const event of currentEvents) {
       const locations = event.metadata?.locations ?? [];
       for (const location of locations) {
         if (location.city) {
           cityCounts.set(location.city, (cityCounts.get(location.city) ?? 0) + 1);
         }
       }
-      // Also check single location field
       const singleLocation = event.metadata?.location;
       if (singleLocation?.city) {
         cityCounts.set(singleLocation.city, (cityCounts.get(singleLocation.city) ?? 0) + 1);
       }
     }
 
-    const topCities = Array.from(cityCounts.entries())
+    const topCitiesResult = Array.from(cityCounts.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([name, count]) => ({ name, count }));
 
+    // --- Totals ---
+    const activeSourceSet = new Set<string>();
+    currentEvents.forEach((e) => e.sources?.forEach((s) => activeSourceSet.add(s)));
+
+    const articlesCount = (archiveStats?.totalEvents ?? 0) + currentEvents.length;
+    const sourcesCount = Math.max(archiveStats?.totalSources ?? 0, activeSourceSet.size);
+
     return {
-      articlesCount: allEvents.length,
-      sourcesCount: allSources.size,
+      articlesCount,
+      sourcesCount,
       topMentioned: topPeople,
-      topCities,
+      topCities: topCitiesResult,
     };
-  }, [currentEvents, archiveEvents]);
+  }, [currentEvents, archiveStats]);
 
   const statItems = [
     {
