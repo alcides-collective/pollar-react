@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react'
 import { Component, type ReactNode, type ErrorInfo } from 'react'
+import i18n from '../i18n'
 
 interface Props {
   children: ReactNode
@@ -35,16 +36,18 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="text-center p-8 max-w-md">
             <div className="text-6xl mb-6">:(</div>
             <h1 className="text-2xl font-bold text-content-heading mb-4">
-              Coś poszło nie tak
+              {i18n.t('errorBoundary.title', { ns: 'errors' })}
             </h1>
             <p className="text-content mb-6">
-              Przepraszamy za niedogodności.<br />Błąd został automatycznie zgłoszony.
+              {i18n.t('errorBoundary.description', { ns: 'errors' }).split('\n').map((line, i) => (
+                <span key={i}>{line}{i === 0 && <br />}</span>
+              ))}
             </p>
             <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-zinc-800 transition-colors"
             >
-              Odśwież stronę
+              {i18n.t('errorBoundary.refresh', { ns: 'errors' })}
             </button>
           </div>
         </div>

@@ -44,6 +44,11 @@
     "failedToLoadArchive": "Archiv konnte nicht geladen werden",
     "failedToLoadStock": "Börsendaten konnten nicht geladen werden"
   },
+  "errorBoundary": {
+    "title": "Etwas ist schiefgelaufen",
+    "description": "Wir entschuldigen uns für die Unannehmlichkeiten.\nDer Fehler wurde automatisch gemeldet.",
+    "refresh": "Seite aktualisieren"
+  },
   "notFound": {
     "title": "Seite nicht gefunden",
     "description": "Diese Seite existiert nicht oder wurde verschoben.",

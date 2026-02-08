@@ -44,6 +44,11 @@
     "failedToLoadArchive": "Nie udało się załadować archiwum",
     "failedToLoadStock": "Nie udało się załadować danych giełdowych"
   },
+  "errorBoundary": {
+    "title": "Coś poszło nie tak",
+    "description": "Przepraszamy za niedogodności.\nBłąd został automatycznie zgłoszony.",
+    "refresh": "Odśwież stronę"
+  },
   "notFound": {
     "title": "Strona nie została znaleziona",
     "description": "Wygląda na to, że ta strona nie istnieje lub została przeniesiona.",

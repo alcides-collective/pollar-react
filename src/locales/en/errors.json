@@ -44,6 +44,11 @@
     "failedToLoadArchive": "Failed to load archive",
     "failedToLoadStock": "Failed to load stock data"
   },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "description": "We apologize for the inconvenience.\nThe error has been automatically reported.",
+    "refresh": "Refresh page"
+  },
   "notFound": {
     "title": "Page not found",
     "description": "It looks like this page doesn't exist or has been moved.",
