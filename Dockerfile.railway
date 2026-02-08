@@ -48,8 +48,9 @@ RUN npm ci --omit=dev
 # Copy built assets from build stage
 COPY --from=build /app/dist ./dist
 
-# Copy server file and assets
+# Copy server files and assets
 COPY server.js ./
+COPY server/ ./server/
 COPY server-assets ./server-assets
 
 # Set fontconfig path and rebuild font cache
