@@ -468,6 +468,20 @@ export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
   'Top Agrar': 'center',
   'tygodnik-rolniczy.pl': 'center',
   'Tygodnik Rolniczy': 'center',
+  'www.rynekzdrowia.pl': 'center',
+  'rynekzdrowia.pl': 'center',
+  'Rynek Zdrowia': 'center',
+  'gazetawarszawska.com': 'conservative',
+  'Gazeta Warszawska': 'conservative',
+  'Gazeta Wrocławska': 'center',
+  'gazetawroclawska.pl': 'center',
+  'krasnal24.com': 'center',
+  'Prosto z Opolskiego - Wiadomosci z Opola i Opolszczyzny.': 'center',
+  'prostozopolskiego.pl': 'center',
+  'bilgorajska.pl': 'center',
+  'Antymatrix': 'unknown',
+  'Bljesak.info': 'center',
+  'bljesak.info': 'center',
 
   // === Zagraniczne niszowe ===
   'tooofa.com': 'center',
@@ -493,6 +507,162 @@ export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
   'artnews.com': 'center',
   'VentureBeat': 'center',
   'venturebeat.com': 'center',
+
+  // === Zagraniczne - Francja ===
+  'Le Figaro': 'center_right',
+  'Le Figaro.fr': 'center_right',
+  'lefigaro.fr': 'center_right',
+  '20 Minutes': 'center_left',
+  '20minutes': 'center_left',
+  '20minutes.fr': 'center_left',
+  'Le Parisien': 'center_right',
+  'leparisien.fr': 'center_right',
+
+  // === Zagraniczne - Hiszpania ===
+  'La Vanguardia': 'center_right',
+  'LaVanguardia': 'center_right',
+  'lavanguardia.com': 'center_right',
+  '20 minutos': 'center',
+  '20minutos': 'center',
+  '20minutos.es': 'center',
+  'EL PAÍS': 'center_left',
+  'El País': 'center_left',
+  'elpais.com': 'center_left',
+  'LaSexta': 'progressive',
+  'lasexta.com': 'progressive',
+  'ABC': 'center_right',
+  'ABC ﻿TU DIARIO EN ESPAÑOL': 'center_right',
+  'abc.es': 'center_right',
+
+  // === Zagraniczne - Niemcy (prasa) ===
+  'ZEIT ONLINE': 'center_left',
+  'Die Zeit': 'center_left',
+  'zeit.de': 'center_left',
+  'Süddeutsche Zeitung': 'center_left',
+  'Suddeutsche Zeitung': 'center_left',
+  'sueddeutsche.de': 'center_left',
+
+  // === Zagraniczne - Francja (regionalne) ===
+  'Sud Ouest': 'center_right',
+  'SudOuest.fr': 'center_right',
+  'sudouest.fr': 'center_right',
+
+  // === Zagraniczne - Niemcy (magazyny) ===
+  'stern.de': 'center_left',
+  'Stern': 'center_left',
+
+  // === Zagraniczne - Włochy ===
+  'ANSA.it': 'center',
+  'ANSA': 'center',
+  'ansa.it': 'center',
+
+  // === Zagraniczne - Hiszpania (dodatkowe) ===
+  'europa press': 'center',
+  'Europa Press': 'center',
+  'europapress.es': 'center',
+  'EL MUNDO': 'center_right',
+  'El Mundo': 'center_right',
+  'elmundo.es': 'center_right',
+  'eldiario.es': 'progressive',
+  'elDiario.es': 'progressive',
+  'El Periódico': 'center_left',
+  'El Periodico': 'center_left',
+  'elperiodico.com': 'center_left',
+
+  // === Zagraniczne - Niemcy (dodatkowe) ===
+  'Der Tagesspiegel': 'center',
+  'tagesspiegel.de': 'center',
+  'N-tv': 'center_right',
+  'n-tv': 'center_right',
+  'n-tv.de': 'center_right',
+
+  // === Zagraniczne - Francja (dodatkowe) ===
+  'Franceinfo': 'center_left',
+  'franceinfo': 'center_left',
+  'francetvinfo.fr': 'center_left',
+  'Le Monde': 'center_left',
+  'Le Monde.fr': 'center_left',
+  'lemonde.fr': 'center_left',
+  'BFMTV': 'center_right',
+  'bfmtv.com': 'center_right',
+
+  // === Zagraniczne - Hiszpania (kolejne) ===
+  'RTVE.es': 'center',
+  'RTVE': 'center',
+  'rtve.es': 'center',
+  'El Confidencial': 'center_right',
+  'elconfidencial.com': 'center_right',
+  'La Razón': 'conservative',
+  'La Razon': 'conservative',
+  'larazon.es': 'conservative',
+
+  // === Zagraniczne - Austria ===
+  'der Standard': 'center_left',
+  'Der Standard': 'center_left',
+  'derstandard.at': 'center_left',
+  'newsORF.at': 'center',
+  'ORF': 'center',
+  'orf.at': 'center',
+
+  // === Zagraniczne - Francja (kolejne) ===
+  'RFI': 'center',
+  'rfi.fr': 'center',
+
+  // === Zagraniczne - Niemcy (kolejne) ===
+  'Handelsblatt': 'center_right',
+  'handelsblatt.com': 'center_right',
+
+  // === Zagraniczne - Włochy ===
+  'Adnkronos': 'center',
+  'adnkronos.com': 'center',
+  'Tgcom24': 'center_right',
+  'tgcom24.mediaset.it': 'center_right',
+  'Il Messaggero': 'center_right',
+  'ilmessaggero.it': 'center_right',
+  'il Giornale.it': 'conservative',
+  'il Giornale': 'conservative',
+  'ilgiornale.it': 'conservative',
+  'Corriere della Sera': 'center_right',
+  'corriere.it': 'center_right',
+
+  // === Zagraniczne - Szwajcaria ===
+  'Neue Zürcher Zeitung': 'center_right',
+  'NZZ': 'center_right',
+  'nzz.ch': 'center_right',
+  'Le Temps': 'center_left',
+  'letemps.ch': 'center_left',
+
+  // === Zagraniczne - Niemcy (Axel Springer) ===
+  'DIE WELT': 'center_right',
+  'Die Welt': 'center_right',
+  'welt.de': 'center_right',
+  'Frankfurter Allgemeine': 'center_right',
+  'Frankfurter Allgemeine Zeitung': 'center_right',
+  'FAZ': 'center_right',
+  'faz.net': 'center_right',
+  'Spiegel Online': 'center_left',
+  'Der Spiegel': 'center_left',
+  'spiegel.de': 'center_left',
+  'Focus': 'center_right',
+  'focus.de': 'center_right',
+
+  // === Zagraniczne - Francja (kolejne) ===
+  'Courrier international': 'center_left',
+  'courrierinternational.com': 'center_left',
+  'Mediapart': 'center_left',
+  'mediapart.fr': 'center_left',
+  'Ouest France': 'center',
+  'Ouest-France': 'center',
+  'ouest-france.fr': 'center',
+
+  // === Zagraniczne - Włochy (kolejne) ===
+  'Fanpage': 'center_left',
+  'fanpage.it': 'center_left',
+  'La Repubblica': 'center_left',
+  'La Repubblica.it': 'center_left',
+  'repubblica.it': 'center_left',
+  'La Stampa': 'center_left',
+  'lastampa.it': 'center_left',
 };
 
 export function getPoliticalLeaning(source: string): PoliticalLeaning {

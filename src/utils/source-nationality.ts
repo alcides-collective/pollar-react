@@ -1,4 +1,4 @@
-export type SourceNationality = 'polish' | 'american' | 'british' | 'german' | 'swiss_german' | 'swedish' | 'french' | 'qatari' | 'lithuanian' | 'eu' | 'vatican' | 'canadian' | 'japanese' | 'portuguese' | 'romanian' | 'other';
+export type SourceNationality = 'polish' | 'american' | 'british' | 'german' | 'swiss_german' | 'swiss' | 'swedish' | 'french' | 'spanish' | 'italian' | 'austrian' | 'qatari' | 'lithuanian' | 'eu' | 'vatican' | 'canadian' | 'japanese' | 'portuguese' | 'romanian' | 'other';
 
 export const sourceToNationality: Record<string, SourceNationality> = {
   // === POLSKIE (Polish capital) ===
@@ -500,6 +500,20 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'Top Agrar': 'german',
   'tygodnik-rolniczy.pl': 'polish',
   'Tygodnik Rolniczy': 'polish',
+  'www.rynekzdrowia.pl': 'polish',
+  'rynekzdrowia.pl': 'polish',
+  'Rynek Zdrowia': 'polish',
+  'gazetawarszawska.com': 'polish',
+  'Gazeta Warszawska': 'polish',
+  'Gazeta Wrocławska': 'polish',
+  'gazetawroclawska.pl': 'polish',
+  'krasnal24.com': 'polish',
+  'Prosto z Opolskiego - Wiadomosci z Opola i Opolszczyzny.': 'polish',
+  'prostozopolskiego.pl': 'polish',
+  'bilgorajska.pl': 'polish',
+  'Antymatrix': 'other',
+  'Bljesak.info': 'other',
+  'bljesak.info': 'other',
 
   // === Zagraniczne niszowe ===
   'tooofa.com': 'other',
@@ -525,6 +539,162 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'artnews.com': 'american',
   'VentureBeat': 'american',
   'venturebeat.com': 'american',
+
+  // === FRANCUSKIE (French capital) - prasa ===
+  'Le Figaro': 'french',
+  'Le Figaro.fr': 'french',
+  'lefigaro.fr': 'french',
+  '20 Minutes': 'french',
+  '20minutes': 'french',
+  '20minutes.fr': 'french',
+  'Le Parisien': 'french',
+  'leparisien.fr': 'french',
+
+  // === HISZPAŃSKIE (Spanish capital) ===
+  'La Vanguardia': 'spanish',
+  'LaVanguardia': 'spanish',
+  'lavanguardia.com': 'spanish',
+  '20 minutos': 'spanish',
+  '20minutos': 'spanish',
+  '20minutos.es': 'spanish',
+  'EL PAÍS': 'spanish',
+  'El País': 'spanish',
+  'elpais.com': 'spanish',
+  'LaSexta': 'spanish',
+  'lasexta.com': 'spanish',
+  'ABC': 'spanish',
+  'ABC ﻿TU DIARIO EN ESPAÑOL': 'spanish',
+  'abc.es': 'spanish',
+
+  // === NIEMIECKIE (German capital) - prasa ===
+  'ZEIT ONLINE': 'german',
+  'Die Zeit': 'german',
+  'zeit.de': 'german',
+  'Süddeutsche Zeitung': 'german',
+  'Suddeutsche Zeitung': 'german',
+  'sueddeutsche.de': 'german',
+
+  // === FRANCUSKIE (French capital) - regionalne ===
+  'Sud Ouest': 'french',
+  'SudOuest.fr': 'french',
+  'sudouest.fr': 'french',
+
+  // === NIEMIECKIE (German capital) - magazyny ===
+  'stern.de': 'german',
+  'Stern': 'german',
+
+  // === WŁOSKIE (Italian capital) ===
+  'EL MUNDO': 'italian',
+  'El Mundo': 'italian',
+  'elmundo.es': 'italian',
+  'ANSA.it': 'italian',
+  'ANSA': 'italian',
+  'ansa.it': 'italian',
+
+  // === HISZPAŃSKIE (Spanish capital) - dodatkowe ===
+  'europa press': 'spanish',
+  'Europa Press': 'spanish',
+  'europapress.es': 'spanish',
+  'eldiario.es': 'spanish',
+  'elDiario.es': 'spanish',
+  'El Periódico': 'spanish',
+  'El Periodico': 'spanish',
+  'elperiodico.com': 'spanish',
+
+  // === NIEMIECKIE (German capital) - dodatkowe ===
+  'Der Tagesspiegel': 'german',
+  'tagesspiegel.de': 'german',
+  'N-tv': 'german',
+  'n-tv': 'german',
+  'n-tv.de': 'german',
+
+  // === FRANCUSKIE (French capital) - dodatkowe ===
+  'Franceinfo': 'french',
+  'franceinfo': 'french',
+  'francetvinfo.fr': 'french',
+  'Le Monde': 'french',
+  'Le Monde.fr': 'french',
+  'lemonde.fr': 'french',
+  'BFMTV': 'french',
+  'bfmtv.com': 'french',
+
+  // === HISZPAŃSKIE (Spanish capital) - kolejne ===
+  'RTVE.es': 'spanish',
+  'RTVE': 'spanish',
+  'rtve.es': 'spanish',
+  'El Confidencial': 'spanish',
+  'elconfidencial.com': 'spanish',
+  'La Razón': 'spanish',
+  'La Razon': 'spanish',
+  'larazon.es': 'spanish',
+
+  // === AUSTRIACKIE (Austrian capital) ===
+  'der Standard': 'austrian',
+  'Der Standard': 'austrian',
+  'derstandard.at': 'austrian',
+  'newsORF.at': 'austrian',
+  'ORF': 'austrian',
+  'orf.at': 'austrian',
+
+  // === FRANCUSKIE (French capital) - kolejne ===
+  'RFI': 'french',
+  'rfi.fr': 'french',
+
+  // === NIEMIECKIE (German capital) - kolejne ===
+  'Handelsblatt': 'german',
+  'handelsblatt.com': 'german',
+
+  // === WŁOSKIE (Italian capital) - dodatkowe ===
+  'Adnkronos': 'italian',
+  'adnkronos.com': 'italian',
+  'Tgcom24': 'italian',
+  'tgcom24.mediaset.it': 'italian',
+  'Il Messaggero': 'italian',
+  'ilmessaggero.it': 'italian',
+  'il Giornale.it': 'italian',
+  'il Giornale': 'italian',
+  'ilgiornale.it': 'italian',
+  'Corriere della Sera': 'italian',
+  'corriere.it': 'italian',
+
+  // === SZWAJCARSKIE (Swiss capital) ===
+  'Neue Zürcher Zeitung': 'swiss',
+  'NZZ': 'swiss',
+  'nzz.ch': 'swiss',
+  'Le Temps': 'swiss',
+  'letemps.ch': 'swiss',
+
+  // === NIEMIECKIE (German capital) - Axel Springer ===
+  'DIE WELT': 'german',
+  'Die Welt': 'german',
+  'welt.de': 'german',
+  'Frankfurter Allgemeine': 'german',
+  'Frankfurter Allgemeine Zeitung': 'german',
+  'FAZ': 'german',
+  'faz.net': 'german',
+  'Spiegel Online': 'german',
+  'Der Spiegel': 'german',
+  'spiegel.de': 'german',
+  'Focus': 'german',
+  'focus.de': 'german',
+
+  // === FRANCUSKIE (French capital) - kolejne ===
+  'Courrier international': 'french',
+  'courrierinternational.com': 'french',
+  'Mediapart': 'french',
+  'mediapart.fr': 'french',
+  'Ouest France': 'french',
+  'Ouest-France': 'french',
+  'ouest-france.fr': 'french',
+
+  // === WŁOSKIE (Italian capital) - kolejne ===
+  'Fanpage': 'italian',
+  'fanpage.it': 'italian',
+  'La Repubblica': 'italian',
+  'La Repubblica.it': 'italian',
+  'repubblica.it': 'italian',
+  'La Stampa': 'italian',
+  'lastampa.it': 'italian',
 };
 
 export function getSourceNationality(source: string): SourceNationality {
@@ -556,8 +726,12 @@ export const nationalityCodes: Record<SourceNationality, string | null> = {
   british: 'gb',
   german: 'de',
   swiss_german: 'ch',
+  swiss: 'ch',
   swedish: 'se',
   french: 'fr',
+  spanish: 'es',
+  italian: 'it',
+  austrian: 'at',
   qatari: 'qa',
   lithuanian: 'lt',
   eu: 'eu',
@@ -575,8 +749,12 @@ export const nationalityLabels: Record<SourceNationality, { en: string; pl: stri
   british: { en: 'British', pl: 'Brytyjskie', de: 'Britisch' },
   german: { en: 'German', pl: 'Niemieckie', de: 'Deutsch' },
   swiss_german: { en: 'Swiss-German', pl: 'Szwajcar.-niem.', de: 'Schweiz.-dt.' },
+  swiss: { en: 'Swiss', pl: 'Szwajcarskie', de: 'Schweizerisch' },
   swedish: { en: 'Swedish', pl: 'Szwedzkie', de: 'Schwedisch' },
   french: { en: 'French', pl: 'Francuskie', de: 'Französisch' },
+  spanish: { en: 'Spanish', pl: 'Hiszpańskie', de: 'Spanisch' },
+  italian: { en: 'Italian', pl: 'Włoskie', de: 'Italienisch' },
+  austrian: { en: 'Austrian', pl: 'Austriackie', de: 'Österreichisch' },
   qatari: { en: 'Qatari', pl: 'Katarskie', de: 'Katarisch' },
   lithuanian: { en: 'Lithuanian', pl: 'Litewskie', de: 'Litauisch' },
   eu: { en: 'EU', pl: 'UE', de: 'EU' },
