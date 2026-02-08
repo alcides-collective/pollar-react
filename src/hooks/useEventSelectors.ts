@@ -47,7 +47,7 @@ function computeEventGroups(
   const olympicEvents = showOlympics
     ? filteredEvents
         .filter(isOlympicEvent)
-        .sort((a, b) => b.trendingScore - a.trendingScore)
+        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
         .slice(0, 4)
     : [];
   const olympicIds = new Set(olympicEvents.map(e => e.id));
