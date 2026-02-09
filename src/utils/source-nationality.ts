@@ -525,6 +525,7 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'BRIEF.PL': 'polish',
   'brief.pl': 'polish',
   'Komenda Stołeczna Policji': 'polish',
+  'Centralne Biuro Zwalczania Cyberprzestępczości': 'polish',
   'Log24.pl': 'polish',
   'log24.pl': 'polish',
   'eska.pl': 'polish',

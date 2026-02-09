@@ -493,6 +493,7 @@ export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
   'BRIEF.PL': 'center',
   'brief.pl': 'center',
   'Komenda Stołeczna Policji': 'center',
+  'Centralne Biuro Zwalczania Cyberprzestępczości': 'center',
   'Log24.pl': 'center',
   'log24.pl': 'center',
   'eska.pl': 'center',
