@@ -273,13 +273,33 @@ export function useEventGroups(
   const language = useRouteLanguage();
   const includeArchive = options.includeArchive ?? (!!selectedCategory || selectedCountries.length > 0);
 
-  const { events, loading, error } = useEvents({
+  const { events: rawEvents, loading, error } = useEvents({
     limit: 100,
     lang: language,
     includeArchive,
     category: selectedCategory ?? undefined,
     articleFields: 'minimal',
   });
+
+  // For non-PL: also fetch Polish events to compare leads and filter untranslated
+  const { events: polishEvents } = useEvents({
+    limit: 100,
+    lang: 'pl',
+    includeArchive,
+    category: selectedCategory ?? undefined,
+    articleFields: 'minimal',
+  });
+
+  const events = useMemo(() => {
+    if (language === 'pl') return rawEvents;
+    if (polishEvents.length === 0) return rawEvents;
+    const polishLeadById = new Map(polishEvents.map(e => [e.id, e.lead]));
+    return rawEvents.filter(e => {
+      const plLead = polishLeadById.get(e.id);
+      // If Polish lead matches translated lead, event wasn't actually translated
+      return !plLead || plLead !== e.lead;
+    });
+  }, [rawEvents, polishEvents, language]);
 
   const groups = useMemo(
     () => computeEventGroups(events, selectedCategory, selectedCountries, favoriteCategories, favoriteCountries),

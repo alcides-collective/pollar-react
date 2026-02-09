@@ -70,13 +70,26 @@ export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
   const fetchEvents = useEventsStore((s) => s.fetchEvents);
   const fetchingKeys = useEventsStore((s) => s.fetchingKeys);
 
-  const { archiveUrl, cacheKey } = useMemo(() => {
+  const { archiveUrl, cacheKey, plArchiveUrl, plCacheKey } = useMemo(() => {
     const searchParams = new URLSearchParams();
     searchParams.set('limit', String(limit));
     searchParams.set('lang', lang);
     searchParams.set('includeArticles', 'false');
     const archiveUrl = `${ARCHIVE_API_BASE}/archive?${searchParams.toString()}`;
-    return { archiveUrl, cacheKey: `archive:${archiveUrl}` };
+
+    // Polish version for lead comparison (non-PL only)
+    const plParams = new URLSearchParams();
+    plParams.set('limit', String(limit));
+    plParams.set('lang', 'pl');
+    plParams.set('includeArticles', 'false');
+    const plArchiveUrl = `${ARCHIVE_API_BASE}/archive?${plParams.toString()}`;
+
+    return {
+      archiveUrl,
+      cacheKey: `archive:${archiveUrl}`,
+      plArchiveUrl,
+      plCacheKey: `archive:${plArchiveUrl}`,
+    };
   }, [limit, lang]);
 
   const fetchArchiveFn = useCallback(async (): Promise<Event[]> => {
@@ -89,15 +102,31 @@ export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
     return items.map(item => sanitizeEvent(mapArchiveEvent(item)));
   }, [archiveUrl]);
 
+  const fetchPlArchiveFn = useCallback(async (): Promise<Event[]> => {
+    const response = await fetch(plArchiveUrl);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const json = await response.json();
+    const items: any[] = json.data ?? [];
+    return items.map(item => sanitizeEvent(mapArchiveEvent(item)));
+  }, [plArchiveUrl]);
+
   const cached = cache[cacheKey];
   const CACHE_TTL = 5 * 60 * 1000;
   const isFresh = cached ? (Date.now() - cached.timestamp) < CACHE_TTL : false;
-  const events = cached?.data ?? [];
+  const rawEvents = cached?.data ?? [];
   const loadingState = loading[cacheKey] ?? false;
   const error = errors[cacheKey] ?? null;
   const isFetching = fetchingKeys.has(cacheKey);
 
+  // Polish archive for lead comparison
+  const plCached = cache[plCacheKey];
+  const plIsFresh = plCached ? (Date.now() - plCached.timestamp) < CACHE_TTL : false;
+  const plEvents = plCached?.data ?? [];
+  const plLoading = loading[plCacheKey] ?? false;
+  const plIsFetching = fetchingKeys.has(plCacheKey);
+
   const fetchInitiatedRef = useRef<string | null>(null);
+  const plFetchInitiatedRef = useRef<string | null>(null);
 
   useEffect(() => {
     const shouldFetch = !isFresh && !loadingState && !isFetching;
@@ -106,6 +135,26 @@ export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
       fetchEvents(cacheKey, fetchArchiveFn);
     }
   }, [cacheKey, isFresh, loadingState, isFetching, fetchEvents, fetchArchiveFn]);
+
+  // Fetch Polish archive for comparison (non-PL only)
+  useEffect(() => {
+    if (lang === 'pl') return;
+    const shouldFetch = !plIsFresh && !plLoading && !plIsFetching;
+    if (shouldFetch && plFetchInitiatedRef.current !== plCacheKey) {
+      plFetchInitiatedRef.current = plCacheKey;
+      fetchEvents(plCacheKey, fetchPlArchiveFn);
+    }
+  }, [lang, plCacheKey, plIsFresh, plLoading, plIsFetching, fetchEvents, fetchPlArchiveFn]);
+
+  // Filter untranslated events by comparing leads with Polish version
+  const events = useMemo(() => {
+    if (lang === 'pl' || plEvents.length === 0) return rawEvents;
+    const plLeadById = new Map(plEvents.map(e => [e.id, e.lead]));
+    return rawEvents.filter(e => {
+      const plLead = plLeadById.get(e.id);
+      return !plLead || plLead !== e.lead;
+    });
+  }, [rawEvents, plEvents, lang]);
 
   // Grupowanie eventow po kategoriach
   const groupedByCategory = useMemo((): CategoryGroup[] => {

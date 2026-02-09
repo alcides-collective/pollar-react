@@ -54,6 +54,7 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [isTranslated, setIsTranslated] = useState(true);
 
   useEffect(() => {
 
@@ -68,6 +69,7 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
     const fetchEvent = async () => {
       setLoading(true);
       setError(null);
+      setIsTranslated(true);
 
       try {
         const response = await fetch(`${API_BASE}/events/${eventId}?lang=${lang}`);
@@ -75,7 +77,21 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
         if (response.ok) {
           const data = await response.json();
           if (!cancelled) {
-            setEvent(sanitizeEvent(data));
+            const parsed = sanitizeEvent(data);
+            setEvent(parsed);
+
+            // For non-PL: compare lead with Polish version to detect untranslated
+            if (lang !== 'pl') {
+              try {
+                const plRes = await fetch(`${API_BASE}/events/${eventId}?lang=pl`);
+                if (plRes.ok) {
+                  const plData = await plRes.json();
+                  if (!cancelled && parsed.lead && plData.lead === parsed.lead) {
+                    setIsTranslated(false);
+                  }
+                }
+              } catch { /* ignore comparison failure */ }
+            }
           }
           return;
         }
@@ -89,7 +105,20 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
           if (archiveResponse.ok) {
             const archiveData = await archiveResponse.json();
             if (!cancelled) {
-              setEvent(sanitizeEvent(mapArchiveEvent(archiveData)));
+              const parsed = sanitizeEvent(mapArchiveEvent(archiveData));
+              setEvent(parsed);
+
+              if (lang !== 'pl') {
+                try {
+                  const plRes = await fetch(`${ARCHIVE_API_BASE}/archive/${eventId}?lang=pl`);
+                  if (plRes.ok) {
+                    const plData = await plRes.json();
+                    if (!cancelled && parsed.lead && plData.lead === parsed.lead) {
+                      setIsTranslated(false);
+                    }
+                  }
+                } catch { /* ignore */ }
+              }
             }
             return;
           }
@@ -117,5 +146,5 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
     };
   }, [eventId, lang]);
 
-  return { event, loading, error };
+  return { event, loading, error, isTranslated };
 }

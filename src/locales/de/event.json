@@ -20,5 +20,11 @@
     "previous": "Vorherige",
     "next": "Nächste",
     "none": "Keine"
+  },
+  "untranslated": {
+    "title": "Dieser Artikel ist noch nicht auf Deutsch verfügbar",
+    "description": "Sie sehen die polnische Originalversion. Die Übersetzung wird in Kürze verfügbar sein.",
+    "backHome": "Zurück zur Startseite",
+    "readInPolish": "Auf Polnisch lesen"
   }
 }

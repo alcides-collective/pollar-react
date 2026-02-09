@@ -28,7 +28,7 @@ export function EventPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { id, slug } = useParams<{ id: string; slug?: string }>();
-  const { event, loading, error } = useEvent(id);
+  const { event, loading, error, isTranslated } = useEvent(id);
   const { events: allEvents } = useEvents({ limit: 100, lang: language });
   const user = useUser();
 
@@ -214,6 +214,42 @@ export function EventPage() {
       animate="animate"
       variants={staggerContainer}
     >
+      {/* Untranslated event banner */}
+      {!isTranslated && language !== 'pl' && (
+        <motion.div
+          variants={staggerItem}
+          className="mx-6 mt-6 rounded-lg border border-amber-500/30 bg-amber-500/5 p-4"
+        >
+          <div className="flex items-start gap-3">
+            <i className="ri-translate-2 text-xl text-amber-500 mt-0.5 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-content-heading text-sm">
+                {t('untranslated.title')}
+              </p>
+              <p className="text-content text-sm mt-1">
+                {t('untranslated.description')}
+              </p>
+              <div className="flex flex-wrap gap-3 mt-3">
+                <LocalizedLink
+                  to="/"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-surface hover:bg-surface-hover transition-colors text-content"
+                >
+                  <i className="ri-arrow-left-line text-xs" />
+                  {t('untranslated.backHome')}
+                </LocalizedLink>
+                <button
+                  onClick={() => navigate(location.pathname.replace(/^\/(en|de)/, ''), { replace: true })}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                >
+                  <i className="ri-book-read-line text-xs" />
+                  {t('untranslated.readInPolish')}
+                </button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       {/* Two-column layout */}
       <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-8">
         {/* Left column - main content */}

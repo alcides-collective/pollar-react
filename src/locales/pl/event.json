@@ -22,5 +22,11 @@
     "previous": "Poprzednie",
     "next": "Następne",
     "none": "Brak"
+  },
+  "untranslated": {
+    "title": "Ten artykuł nie jest jeszcze przetłumaczony",
+    "description": "Widzisz oryginalną polską wersję. Tłumaczenie będzie dostępne wkrótce.",
+    "backHome": "Wróć do strony głównej",
+    "readInPolish": "Czytaj po polsku"
   }
 }
