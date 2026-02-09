@@ -8,6 +8,16 @@ import { useRouteLanguage } from './useRouteLanguage';
 import { isOlympicEvent } from '../components/news/OlympicsSection';
 import { normalizeCountry } from '../utils/countrySlug';
 
+// Polish diacritics that never appear in English/German ultraShortHeadlines.
+// ultraShortHeadline is a short AI-generated headline (max 50 chars) — if it
+// contains these characters on a non-PL page, the event wasn't translated.
+const POLISH_DIACRITICS = /[ąćęłńśźżĄĆĘŁŃŚŹŻ]/;
+
+function isUntranslated(event: Event): boolean {
+  const headline = event.metadata?.ultraShortHeadline || event.title;
+  return POLISH_DIACRITICS.test(headline);
+}
+
 // Fresh events can appear in all sections (featured, hero, tabs, latest)
 // OLD events are only shown in CategoryCarousel at the bottom
 const FRESH_LEVELS: FreshnessLevel[] = ['BREAKING', 'HOT', 'RECENT', 'AGING'];
@@ -273,13 +283,19 @@ export function useEventGroups(
   const language = useRouteLanguage();
   const includeArchive = options.includeArchive ?? (!!selectedCategory || selectedCountries.length > 0);
 
-  const { events, loading, error } = useEvents({
+  const { events: rawEvents, loading, error } = useEvents({
     limit: 100,
     lang: language,
     includeArchive,
     category: selectedCategory ?? undefined,
     articleFields: 'minimal',
   });
+
+  // Filter out untranslated events for non-Polish languages
+  const events = useMemo(
+    () => language === 'pl' ? rawEvents : rawEvents.filter(e => !isUntranslated(e)),
+    [rawEvents, language]
+  );
 
   const groups = useMemo(
     () => computeEventGroups(events, selectedCategory, selectedCountries, favoriteCategories, favoriteCountries),
