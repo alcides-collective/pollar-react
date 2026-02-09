@@ -290,6 +290,8 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'hollywoodreporter.com': 'american',
   'Sky News': 'british',
   'news.sky.com': 'british',
+  'The Independent': 'british',
+  'independent.co.uk': 'british',
   // Euronews - Alpac Capital (Portuguese) since 2022
   'Euronews': 'portuguese',
   'euronews.com': 'portuguese',
@@ -523,6 +525,10 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'BRIEF.PL': 'polish',
   'brief.pl': 'polish',
   'Komenda Stołeczna Policji': 'polish',
+  'Log24.pl': 'polish',
+  'log24.pl': 'polish',
+  'eska.pl': 'polish',
+  'Eska': 'polish',
 
   // === SZWAJCARSKIE (Swiss capital) - dodatkowe ===
   '20 Minuten': 'swiss',
@@ -536,6 +542,9 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   // === IRLANDZKIE (Irish capital) ===
   'The Irish Times': 'irish',
   'irishtimes.com': 'irish',
+  'RTE.ie': 'irish',
+  'RTE': 'irish',
+  'rte.ie': 'irish',
   'Antymatrix': 'other',
   'Bljesak.info': 'other',
   'bljesak.info': 'other',
@@ -690,6 +699,8 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'nzz.ch': 'swiss',
   'Le Temps': 'swiss',
   'letemps.ch': 'swiss',
+  'watson.ch/': 'swiss',
+  'watson.ch': 'swiss',
 
   // === NIEMIECKIE (German capital) - Axel Springer ===
   'DIE WELT': 'german',
