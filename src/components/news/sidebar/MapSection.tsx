@@ -72,7 +72,7 @@ export function MapSection() {
   return (
     <LocalizedLink to="/mapa" className="block p-6 group hover:bg-surface transition-colors">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-content-heading font-semibold">{t('eventMap')}</h3>
+        <h3 className="text-content-heading font-semibold">{t('nav.eventMap')}</h3>
         <i className="ri-arrow-right-line text-content-faint group-hover:text-content-heading group-hover:translate-x-1 transition-all" />
       </div>
       <div ref={mapContainer} className="h-48 overflow-hidden rounded-lg" />
