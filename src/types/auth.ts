@@ -75,6 +75,8 @@ export interface UserPreferences {
   theme: ThemePreference;
   /** Chart axis mode: true = smart/zoomed, false = start from 0 */
   smartScale?: boolean;
+  /** Currently selected countries for news filtering (Polish keys) */
+  selectedCountries?: string[];
 }
 
 /**

@@ -22,6 +22,7 @@ import { useLanguage, useSetLanguage, type Language } from './stores/languageSto
 import { useResolvedTheme, useThemeStore } from './stores/themeStore'
 import { useChartScaleStore } from './stores/chartScaleStore'
 import { useContentsquare } from './hooks/useContentsquare'
+import { useCountryRedirect } from './hooks/useCountryRedirect'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
 import { parseCountrySlugsParam, ALL_COUNTRY_SEGMENTS } from './utils/countrySlug'
 import { useUIStore } from './stores/uiStore'
@@ -101,11 +102,9 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ defa
 
 function HomePage() {
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
-  const clearSelectedCountries = useUIStore((s) => s.clearSelectedCountries)
   useEffect(() => {
     setSelectedCategory(null)
-    clearSelectedCountries()
-  }, [setSelectedCategory, clearSelectedCountries])
+  }, [setSelectedCategory])
   return <NewsGrid />
 }
 
@@ -384,6 +383,9 @@ function AppContent() {
         if (profile?.preferences?.smartScale !== undefined) {
           useChartScaleStore.getState().syncFromProfile(profile.preferences.smartScale)
         }
+        if (profile?.preferences?.selectedCountries) {
+          useUIStore.getState().syncCountriesFromProfile(profile.preferences.selectedCountries)
+        }
       })
     } else {
       // Clear all user-related stores on logout
@@ -392,8 +394,12 @@ function AppContent() {
       clearReadHistoryStore()
       resetTheme()
       resetChartScale()
+      useUIStore.getState().resetCountries()
     }
   }, [user, fetchProfile, clearProfile, clearAlertsStore, clearReadHistoryStore, resetTheme, resetChartScale])
+
+  // Redirect to persisted country URL when landing on '/'
+  useCountryRedirect()
 
   // Connect to SSE for real-time event notifications
   useEventStream({ enabled: true })

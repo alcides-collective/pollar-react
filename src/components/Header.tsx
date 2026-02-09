@@ -28,7 +28,7 @@ import { SearchModal } from '@/components/search';
 import { AlertsBell } from '@/components/AlertsBell';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useThemePreference, useSetThemePreference } from '@/stores/themeStore';
-import { updateUserThemePreference } from '@/services/userService';
+import { updateUserThemePreference, updateUserSelectedCountries } from '@/services/userService';
 import type { ThemePreference } from '@/types/auth';
 import { getCategorySlug } from '../utils/categorySlug';
 import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, COUNTRY_SEGMENT, buildCountrySlugsParam } from '../utils/countrySlug';
@@ -95,6 +95,7 @@ function CountryFilter() {
   const selectedCategory = useUIStore((state) => state.selectedCategory);
   const toggleCountry = useUIStore((state) => state.toggleSelectedCountry);
   const clearCountries = useUIStore((state) => state.clearSelectedCountries);
+  const user = useUser();
 
   const handleToggle = (country: string) => {
     // Compute next state
@@ -103,6 +104,11 @@ function CountryFilter() {
       : [...selectedCountries, country];
 
     toggleCountry(country);
+
+    // Persist to Firestore for logged-in users
+    if (user) {
+      updateUserSelectedCountries(user.uid, next).catch(console.error);
+    }
 
     // Build URL
     const prefix = language !== 'pl' ? `/${language}` : '';
@@ -126,6 +132,10 @@ function CountryFilter() {
 
   const handleClear = () => {
     clearCountries();
+    // Persist to Firestore for logged-in users
+    if (user) {
+      updateUserSelectedCountries(user.uid, []).catch(console.error);
+    }
     const prefix = language !== 'pl' ? `/${language}` : '';
     if (selectedCategory) {
       navigate(prefix + '/' + getCategorySlug(selectedCategory, language));
@@ -428,6 +438,9 @@ export function Header() {
 
   const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';
 
+  const clearCountries = useUIStore((state) => state.clearSelectedCountries);
+  const user = useUser();
+
   // Handle category selection - navigate to category URL
   const handleCategoryClick = (category: string | null) => {
     const prefix = language !== 'pl' ? `/${language}` : '';
@@ -435,6 +448,8 @@ export function Header() {
       const slug = getCategorySlug(category, language);
       navigate(prefix + '/' + slug);
     } else {
+      clearCountries(); // Clear persisted countries when going to "All"
+      if (user) updateUserSelectedCountries(user.uid, []).catch(console.error);
       navigate(prefix + '/');
     }
     // Scroll to top when changing category

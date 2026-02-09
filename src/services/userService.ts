@@ -260,6 +260,20 @@ export async function updateUserSmartScalePreference(
   });
 }
 
+/**
+ * Updates user's selected countries for news filtering in Firestore
+ */
+export async function updateUserSelectedCountries(
+  uid: string,
+  countries: string[]
+): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    'preferences.selectedCountries': countries,
+  });
+}
+
 // ============ Saved Events (Bookmarks) ============
 
 /**
