@@ -9,6 +9,7 @@ import { useLanguage } from '../../stores/languageStore';
 import { useUser } from '../../stores/authStore';
 import { trackBriefViewed } from '../../lib/analytics';
 import { markBriefViewed } from '../../hooks/useSessionTracking';
+import { useScrollTracking } from '../../hooks/useScrollTracking';
 import { CcAttribution } from '../../components/common/CcAttribution';
 import {
   BriefHero,
@@ -91,6 +92,12 @@ export function BriefPage() {
       window.removeEventListener('beforeunload', fireBriefViewed);
     };
   }, [brief, user]);
+
+  // Scroll milestone tracking for registered users
+  useScrollTracking({
+    pageName: 'brief',
+    enabled: !!user && !!brief && !loading,
+  });
 
   const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
 

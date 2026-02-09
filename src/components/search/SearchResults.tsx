@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 interface SearchResultsProps {
   results: SearchResult[];
   isLoading: boolean;
-  onSelect: (result: SearchResult) => void;
+  onSelect: (result: SearchResult, index?: number) => void;
 }
 
 export function SearchResults({ results, isLoading, onSelect }: SearchResultsProps) {
@@ -27,11 +27,11 @@ export function SearchResults({ results, isLoading, onSelect }: SearchResultsPro
 
   return (
     <div className="space-y-1">
-      {results.map((result) => (
+      {results.map((result, index) => (
         <SearchResultItem
           key={`${result.type}-${result.id}`}
           result={result}
-          onClick={() => onSelect(result)}
+          onClick={() => onSelect(result, index)}
         />
       ))}
     </div>

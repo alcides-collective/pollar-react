@@ -7,6 +7,8 @@ import { EventCard } from './EventCard';
 import { ClusterPanel } from './ClusterPanel';
 import type { Event } from '../../types/events';
 import { useIsDarkMode } from '@/stores/themeStore';
+import { useAuthStore } from '@/stores/authStore';
+import { trackMapUsed } from '@/lib/analytics';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFrdWJkdWRlayIsImEiOiJjbWRyMWx1Z3EwOTR6MmtzYjJvYzJncmZhIn0.5Fn6PxkRaqVkEwJLhP-8_Q';
 
@@ -216,6 +218,9 @@ export function EventsMap() {
       if (events.length > 0) {
         setClusterEvents(events);
         setSelectedEvent(null);
+        if (useAuthStore.getState().user) {
+          trackMapUsed({ action: 'cluster_click', cluster_size: events.length });
+        }
       }
     });
   }, []);
@@ -235,6 +240,9 @@ export function EventsMap() {
       if (event.id) {
         setSelectedEvent(event);
         setClusterEvents([]);
+        if (useAuthStore.getState().user) {
+          trackMapUsed({ action: 'point_click', event_id: event.id });
+        }
 
         // Center on the point
         const coordinates = (features[0].geometry as GeoJSON.Point).coordinates;

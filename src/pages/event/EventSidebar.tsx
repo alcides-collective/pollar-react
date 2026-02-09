@@ -4,6 +4,9 @@ import { EventMap } from './EventMap';
 import { AudioPlayer } from './AudioPlayer';
 import { extractKeyNumber, extractTimeline } from '../../utils/text';
 import { useLanguage } from '../../stores/languageStore';
+import { useUser } from '../../stores/authStore';
+import { trackSourceClicked } from '../../lib/analytics';
+import { incrementSourcesClicked } from '../../hooks/useSessionTracking';
 
 interface EventSidebarProps {
   event: Event;
@@ -41,6 +44,7 @@ function formatSourceDate(dateValue: string | { _seconds: number; _nanoseconds: 
 export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
   const { t } = useTranslation('event');
   const language = useLanguage();
+  const user = useUser();
   const articles = event.articles || [];
   const location = event.metadata?.location;
 
@@ -172,12 +176,22 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
             {t('sidebar.sources', { count: articles.length })}
           </h3>
           <ul className="space-y-2">
-            {articles.slice(0, 10).map((article) => (
+            {articles.slice(0, 10).map((article, index) => (
               <li key={article.id}>
                 <a
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => {
+                    if (user) {
+                      trackSourceClicked({
+                        event_id: event.id,
+                        source_name: article.source,
+                        position: index,
+                      });
+                      incrementSourcesClicked();
+                    }
+                  }}
                   className="block p-3 rounded-lg border border-divider hover:border-divider hover:bg-surface transition-colors"
                 >
                   <div className="flex items-start gap-3">

@@ -1,6 +1,8 @@
 import { useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSearchStore } from '../stores/searchStore';
+import { trackSearchResultClicked } from '../lib/analytics';
+import { useUser } from '../stores/authStore';
 import type { SearchResult } from '../types/search';
 
 const DEBOUNCE_MS = 300;
@@ -8,6 +10,7 @@ const DEBOUNCE_MS = 300;
 export function useSearch() {
   const navigate = useNavigate();
   const store = useSearchStore();
+  const user = useUser();
   const debounceTimerRef = useRef<number | null>(null);
 
   // Cleanup debounce timer on unmount
@@ -45,12 +48,21 @@ export function useSearch() {
 
   // Handle result selection - close modal and navigate
   const handleSelect = useCallback(
-    (result: SearchResult) => {
+    (result: SearchResult, index?: number) => {
+      if (user) {
+        trackSearchResultClicked({
+          query: store.query,
+          result_id: result.id || '',
+          position: index ?? 0,
+        });
+      }
       store.closeSearch();
       store.clearSearch();
-      navigate(result.url);
+      // Append ?ref=search so EventPage knows the navigation source
+      const separator = result.url.includes('?') ? '&' : '?';
+      navigate(`${result.url}${separator}ref=search`);
     },
-    [store, navigate]
+    [store, navigate, user]
   );
 
   // Handle popular search selection

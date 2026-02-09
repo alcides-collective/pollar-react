@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { SearchResult, PopularSearch, SearchResponse } from '../types/search';
 import { API_BASE } from '../config/api';
+import { trackSearchPerformed } from '../lib/analytics';
 
 interface SearchState {
   isOpen: boolean;
@@ -72,6 +73,9 @@ export const useSearchStore = create<SearchStore>((set, get) => ({
         suggestions: data.suggestions || [],
         isLoading: false,
       });
+
+      // Track search performed for analytics
+      trackSearchPerformed({ query, results_count: data.results.length });
     } catch (error) {
       set({
         error: 'Wyszukiwanie nie powiodło się',

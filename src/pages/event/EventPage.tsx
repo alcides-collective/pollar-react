@@ -15,6 +15,7 @@ import { prepareOgDescription } from '../../utils/text';
 import { createSlug } from '../../utils/slug';
 import { trackEventOpened, inferEventSource } from '../../lib/analytics';
 import { incrementEventsViewed } from '../../hooks/useSessionTracking';
+import { useScrollTracking } from '../../hooks/useScrollTracking';
 import { staggerContainer, staggerItem, fadeInUp } from '../../lib/animations';
 import { Skeleton } from '../../components/ui/skeleton';
 import { EventHeader } from './EventHeader';
@@ -82,6 +83,13 @@ export function EventPage() {
     });
     incrementEventsViewed();
   }, [user, event, loading]);
+
+  // Scroll milestone tracking for registered users
+  useScrollTracking({
+    pageName: 'event_page',
+    contentId: event?.id,
+    enabled: !!user && !!event && !loading,
+  });
 
   // Correct slug to match current language (like Wikipedia canonical redirect)
   useEffect(() => {
