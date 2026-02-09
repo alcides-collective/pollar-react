@@ -55,6 +55,8 @@ interface UIActions {
   setSelectedCountries: (countries: string[]) => void;
   toggleSelectedCountry: (country: string) => void;
   clearSelectedCountries: () => void;
+  /** Clear countries from display only (URL has no countries) — storage untouched */
+  clearCountriesDisplay: () => void;
   /** Sync from Firestore profile after login */
   syncCountriesFromProfile: (countries: string[] | undefined) => void;
   /** Reset on logout — clears storage + store */
@@ -90,6 +92,9 @@ export const useUIStore = create<UIStore>((set, get) => ({
   clearSelectedCountries: () => {
     set({ selectedCountries: [] });
     persistCountries([]);
+  },
+  clearCountriesDisplay: () => {
+    set({ selectedCountries: [] });
   },
   syncCountriesFromProfile: (countries: string[] | undefined) => {
     const valid = (countries || []).filter(c => COUNTRY_KEYS.includes(c));

@@ -441,12 +441,19 @@ export function Header() {
   const clearCountries = useUIStore((state) => state.clearSelectedCountries);
   const user = useUser();
 
-  // Handle category selection - navigate to category URL
+  // Handle category selection - navigate to category URL (preserving country filter)
   const handleCategoryClick = (category: string | null) => {
     const prefix = language !== 'pl' ? `/${language}` : '';
     if (category) {
       const slug = getCategorySlug(category, language);
-      navigate(prefix + '/' + slug);
+      const countries = useUIStore.getState().selectedCountries;
+      if (countries.length > 0) {
+        const seg = COUNTRY_SEGMENT[language];
+        const countrySlugs = buildCountrySlugsParam(countries, language);
+        navigate(prefix + '/' + slug + '/' + seg + '/' + countrySlugs);
+      } else {
+        navigate(prefix + '/' + slug);
+      }
     } else {
       clearCountries(); // Clear persisted countries when going to "All"
       if (user) updateUserSelectedCountries(user.uid, []).catch(console.error);

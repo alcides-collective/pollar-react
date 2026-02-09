@@ -102,9 +102,11 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ defa
 
 function HomePage() {
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
+  const clearCountriesDisplay = useUIStore((s) => s.clearCountriesDisplay)
   useEffect(() => {
     setSelectedCategory(null)
-  }, [setSelectedCategory])
+    clearCountriesDisplay()
+  }, [setSelectedCategory, clearCountriesDisplay])
   return <NewsGrid />
 }
 
@@ -112,6 +114,7 @@ function CategoryPage() {
   const { categorySlug } = useParams<{ categorySlug: string }>()
   const language = useLanguage()
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
+  const clearCountriesDisplay = useUIStore((s) => s.clearCountriesDisplay)
 
   const polishCategory = categorySlug ? getCategoryFromSlug(categorySlug, language) : null
 
@@ -119,7 +122,8 @@ function CategoryPage() {
     if (polishCategory) {
       setSelectedCategory(polishCategory)
     }
-  }, [polishCategory, setSelectedCategory])
+    clearCountriesDisplay() // URL has no countries — don't filter by them
+  }, [polishCategory, setSelectedCategory, clearCountriesDisplay])
 
   if (!polishCategory) {
     return <Navigate to="/" replace />
