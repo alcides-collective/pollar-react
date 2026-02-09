@@ -33,7 +33,7 @@ export function SearchModal() {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && closeSearch()}>
-      <DialogContent className="sm:max-w-2xl max-h-[80vh] p-0 gap-0 overflow-hidden" hideCloseButton>
+      <DialogContent className="dark sm:max-w-2xl max-h-[80vh] p-0 gap-0 overflow-hidden" hideCloseButton>
         <DialogTitle className="sr-only">{t('nav.search')}</DialogTitle>
 
         <SearchInput
