@@ -29,7 +29,7 @@ function parseContentWithCharts(summary: string): ContentSegment[] {
 
   // Combined pattern for all chart types
   // wykres-liniowy and wykres-słupkowy (handles typos: stópkowy, tytu, jednost, etc.)
-  const chartPattern = /<wykres-(liniowy|s[łt][uó]pkowy)\s+(?:tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+jednostk?a?\s*=\s*["']([^"']+)["']|jednostk?a?\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["'])>([\s\S]*?)<\/wykres-(?:liniowy|s[łt][uó]pkowy)>/gi;
+  const chartPattern = /<wykres-(liniowy|s[łt][uó]pkowy)\s+(?:tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+jednostk[ai]?\s*=\s*["']([^"']+)["']|jednostk[ai]?\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["'])>([\s\S]*?)<\/wykres-(?:liniowy|s[łt][uó]pkowy)>/gi;
 
   let lastIndex = 0;
   let match;

@@ -141,13 +141,13 @@ export function extractLineCharts(summary: string | undefined): ExtractedLineCha
   // Match both attribute orders and quote types: tytuł + jednostka and jednostka + tytuł
   const regexes = [
     // tytuł + jednostka (double quotes)
-    { regex: /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*"([^"]+)"\s+jednostk?a?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-liniowy>/gi, order: 'title-unit' },
+    { regex: /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*"([^"]+)"\s+jednostk[ai]?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-liniowy>/gi, order: 'title-unit' },
     // tytuł + jednostka (single quotes)
-    { regex: /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*'([^']+)'\s+jednostk?a?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-liniowy>/gi, order: 'title-unit' },
+    { regex: /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*'([^']+)'\s+jednostk[ai]?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-liniowy>/gi, order: 'title-unit' },
     // jednostka + tytuł (double quotes)
-    { regex: /<wykres-liniowy\s+jednostk?a?\s*=\s*"([^"]+)"\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-liniowy>/gi, order: 'unit-title' },
+    { regex: /<wykres-liniowy\s+jednostk[ai]?\s*=\s*"([^"]+)"\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-liniowy>/gi, order: 'unit-title' },
     // jednostka + tytuł (single quotes)
-    { regex: /<wykres-liniowy\s+jednostk?a?\s*=\s*'([^']+)'\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-liniowy>/gi, order: 'unit-title' },
+    { regex: /<wykres-liniowy\s+jednostk[ai]?\s*=\s*'([^']+)'\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-liniowy>/gi, order: 'unit-title' },
   ];
 
   let chartIndex = 0;
@@ -840,13 +840,13 @@ export function sanitizeAndProcessHtml(text: string): string {
         }
       })
     // Remove <wykres-słupkowy> tags - they are handled separately as React components in EventSummary
-    .replace(/<wykres-s[łt][uó]pkowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk?a?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
-    .replace(/<wykres-s[łt][uó]pkowy\s+jednostk?a?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
+    .replace(/<wykres-s[łt][uó]pkowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk[ai]?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
+    .replace(/<wykres-s[łt][uó]pkowy\s+jednostk[ai]?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
     // Remove <wykres-liniowy> tags - they are handled separately as React components in EventSummary
-    .replace(/<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk?a?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
-    .replace(/<wykres-liniowy\s+jednostk?a?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
+    .replace(/<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk[ai]?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
+    .replace(/<wykres-liniowy\s+jednostk[ai]?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
     // Convert <wykres-kołowy> to stacked bar representation (double quotes)
-    .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*"([^"]+)"(?:\s+jednostk?a?\s*=\s*"[^"]*")?>([\s\S]*?)<\/wykres-kołowy>/gi,
+    .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*"([^"]+)"(?:\s+jednostk[ai]?\s*=\s*"[^"]*")?>([\s\S]*?)<\/wykres-kołowy>/gi,
       (_, title, dataStr) => {
         const COLORS = ['#e23c0f', '#3c3c3c', '#969696', '#c8c8c8', '#1e1e1e', '#787878'];
         const items: {label: string, value: number}[] = [];
@@ -870,7 +870,7 @@ export function sanitizeAndProcessHtml(text: string): string {
         return `\n\n<div class="stacked-box"><span class="stacked-label">STRUKTURA</span><div class="stacked-title">${title}</div><div class="stacked-bar">${segmentsHtml}</div><div class="stacked-legend">${legendHtml}</div></div>\n\n`;
       })
     // Convert <wykres-kołowy> to stacked bar representation (single quotes)
-    .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*'([^']+)'(?:\s+jednostk?a?\s*=\s*'[^']*')?>([\s\S]*?)<\/wykres-kołowy>/gi,
+    .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*'([^']+)'(?:\s+jednostk[ai]?\s*=\s*'[^']*')?>([\s\S]*?)<\/wykres-kołowy>/gi,
       (_, title, dataStr) => {
         const COLORS = ['#e23c0f', '#3c3c3c', '#969696', '#c8c8c8', '#1e1e1e', '#787878'];
         const items: {label: string, value: number}[] = [];
