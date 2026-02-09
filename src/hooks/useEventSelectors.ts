@@ -316,7 +316,7 @@ export function useEventGroups(
   );
 
   // Debug: log visible events (debounced — only after data stabilizes)
-  const debugTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const debugTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => {
     clearTimeout(debugTimerRef.current);
     debugTimerRef.current = setTimeout(() => {
