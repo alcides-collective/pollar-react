@@ -11,10 +11,10 @@ export async function renderOgImage(res, { title = 'Pollar News', type = 'defaul
     default: { pl: '', en: '', de: '' },
   };
 
-  // Use translated category name if available, otherwise fall back to type label
+  // Category pages use "POLLAR NEWS" label; other types use their specific label
   let typeLabel;
   if (category && CATEGORY_TRANSLATIONS[category]) {
-    typeLabel = (CATEGORY_TRANSLATIONS[category][lang] || CATEGORY_TRANSLATIONS[category].pl || category).toUpperCase();
+    typeLabel = 'POLLAR NEWS';
   } else {
     typeLabel = typeLabels[type]?.[lang] || typeLabels[type]?.pl || '';
   }
