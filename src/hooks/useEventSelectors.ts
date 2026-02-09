@@ -255,6 +255,7 @@ export function useEventGroups(
     limit: 100,
     lang: language,
     includeArchive,
+    category: selectedCategory ?? undefined,
     articleFields: 'minimal',
   });
 

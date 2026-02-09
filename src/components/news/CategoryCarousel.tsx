@@ -16,6 +16,8 @@ interface CategoryCarouselProps {
   category: string;
   events: Event[];
   variant?: 'carousel' | 'list' | 'sidebar';
+  /** Max events to show (sidebar only). Shows "see more" link when truncated. */
+  maxItems?: number;
 }
 
 // Memoized event card component with hover animation
@@ -50,7 +52,9 @@ const EventCarouselItem = memo(function EventCarouselItem({ event, hideBorder }:
   );
 });
 
-export function CategoryCarousel({ category, events, variant = 'carousel' }: CategoryCarouselProps) {
+export function CategoryCarousel({ category, events: allEvents, variant = 'carousel', maxItems }: CategoryCarouselProps) {
+  const isTruncated = maxItems != null && allEvents.length > maxItems;
+  const events = maxItems != null ? allEvents.slice(0, maxItems) : allEvents;
   const { t } = useTranslation('common');
   const scrollRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
@@ -155,6 +159,15 @@ export function CategoryCarousel({ category, events, variant = 'carousel' }: Cat
         {events.map(event => (
           <EventCarouselItem key={event.id} event={event} hideBorder />
         ))}
+        {isTruncated && (
+          <LocalizedLink
+            to={`/archiwum/${encodeURIComponent(category)}`}
+            className="flex items-center justify-center gap-1.5 px-6 py-3 text-sm font-medium text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors"
+          >
+            {t('actions.seeMore', { defaultValue: 'Zobacz więcej' })}
+            <i className="ri-arrow-right-s-line text-base" />
+          </LocalizedLink>
+        )}
       </div>
     );
   }
@@ -265,6 +278,15 @@ export function CategoryCarousel({ category, events, variant = 'carousel' }: Cat
             })}
           </div>
         </div>
+        {isTruncated && (
+          <LocalizedLink
+            to={`/archiwum/${encodeURIComponent(category)}`}
+            className="flex items-center justify-center gap-1.5 px-6 py-3 text-sm text-accent hover:text-accent/80 transition-colors border-t border-divider"
+          >
+            {t('actions.seeMore', { defaultValue: 'Zobacz więcej' })}
+            <i className="ri-arrow-right-s-line text-base" />
+          </LocalizedLink>
+        )}
       </div>
     </SectionImageContext.Provider>
   );

@@ -87,7 +87,11 @@ feedRoutes.get('/sitemap.xml', async (req, res) => {
     ...felietony.map(f => {
       const slug = createSlug(f.ultraShortHeadline || f.title);
       return generateUrlEntry(slug ? `/felieton/${f.id}/${slug}` : `/felieton/${f.id}`, f.updatedAt || f.createdAt);
-    })
+    }),
+    // External: status page (no hreflang — language-independent)
+    `  <url>
+    <loc>https://status.pollar.news/</loc>
+  </url>`,
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

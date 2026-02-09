@@ -124,6 +124,7 @@ export function NewsGrid() {
               category={category}
               events={events}
               variant={isFiltered ? 'list' : 'sidebar'}
+              maxItems={isFiltered ? 10 : undefined}
             />
           ))}
         </aside>

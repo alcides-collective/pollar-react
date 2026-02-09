@@ -8,6 +8,50 @@ import { useLanguageStore, useLanguage, type Language } from './languageStore';
 
 const CACHE_TTL = apiConfig.cacheTTL;
 
+// Production archive backend (supports category filtering)
+const PRODUCTION_ARCHIVE_BASE = 'https://pollar-backend-production.up.railway.app/api';
+
+/** Map pollar-backend /api/archive response item to frontend Event shape */
+function mapArchiveEvent(raw: any): Event {
+  return {
+    id: raw.id,
+    title: raw.title ?? '',
+    lead: raw.lead ?? '',
+    summary: raw.summary ?? '',
+    createdAt: raw.originalCreatedAt ?? raw.archivedAt,
+    updatedAt: raw.originalUpdatedAt ?? raw.archivedAt,
+    lastContentUpdate: raw.originalUpdatedAt ?? raw.archivedAt,
+    lastSummarizationComplete: raw.archivedAt,
+    imageUrl: raw.metadata?.imageUrl ?? '',
+    category: raw.category ?? raw.metadata?.category ?? 'Inne',
+    sources: raw.sources ?? raw.metadata?.sources ?? [],
+    trendingScore: raw.metadata?.trendingScore ?? 0,
+    articleCount: raw.articleCount ?? raw.metadata?.articleCount ?? 0,
+    sourceCount: raw.sources?.length ?? raw.metadata?.sourceCount ?? 0,
+    viewCount: raw.metadata?.viewCount ?? 0,
+    freshnessLevel: 'OLD',
+    metadata: {
+      category: raw.category ?? raw.metadata?.category ?? 'Inne',
+      trending: false,
+      trendingScore: raw.metadata?.trendingScore ?? 0,
+      location: raw.location ?? raw.metadata?.location,
+      locations: raw.metadata?.locations ?? [],
+      keyPoints: raw.keyPoints ?? raw.metadata?.keyPoints ?? [],
+      mentionedPeople: raw.metadata?.mentionedPeople ?? [],
+      mentionedCountries: raw.metadata?.mentionedCountries ?? [],
+      shortHeadline: raw.metadata?.shortHeadline ?? '',
+      ultraShortHeadline: raw.metadata?.ultraShortHeadline ?? '',
+      sources: raw.sources ?? raw.metadata?.sources ?? [],
+      articleCount: raw.articleCount ?? 0,
+      sourceCount: raw.sources?.length ?? 0,
+      imageAttribution: raw.metadata?.imageAttribution ?? null,
+      isLowQualityContent: raw.metadata?.isLowQualityContent ?? false,
+      viewCount: raw.metadata?.viewCount ?? 0,
+    },
+    articles: raw.articles,
+  };
+}
+
 // Types
 interface CacheEntry {
   data: Event[];
@@ -233,11 +277,12 @@ export function useEvents(params: UseEventsOptions = {}) {
   const lang = params.lang ?? storeLanguage;
 
   // Memoize URL and cache keys to prevent unnecessary recalculations
-  const { url, cacheKey, archiveCacheKey } = useMemo(() => {
+  const { url, cacheKey, archiveCacheKey, prodArchiveUrl, prodArchiveCacheKey } = useMemo(() => {
     const searchParams = new URLSearchParams();
     if (params.limit) searchParams.set('limit', String(params.limit));
     searchParams.set('lang', lang);
-    if (params.category) searchParams.set('category', params.category);
+    // Don't add category to main API — filtering is client-side in computeEventGroups.
+    // Category is only used for the production archive fetch below.
 
     const url = `${API_BASE}/events?${searchParams.toString()}`;
     const cacheKey = url;
@@ -248,7 +293,20 @@ export function useEvents(params: UseEventsOptions = {}) {
     const archiveUrl = `${API_BASE}/events/archive?${archiveSearchParams.toString()}`;
     const archiveCacheKey = `archive:${archiveUrl}`;
 
-    return { url, cacheKey, archiveCacheKey };
+    // Production archive URL (supports category filtering via pollar-backend)
+    let prodArchiveUrl = '';
+    let prodArchiveCacheKey = '';
+    if (params.category) {
+      const prodParams = new URLSearchParams();
+      prodParams.set('limit', String(params.limit || 100));
+      prodParams.set('lang', lang);
+      prodParams.set('category', params.category);
+      prodParams.set('includeArticles', 'false');
+      prodArchiveUrl = `${PRODUCTION_ARCHIVE_BASE}/archive?${prodParams.toString()}`;
+      prodArchiveCacheKey = `prod-archive:${prodArchiveUrl}`;
+    }
+
+    return { url, cacheKey, archiveCacheKey, prodArchiveUrl, prodArchiveCacheKey };
   }, [params.limit, lang, params.category]);
 
   // Memoize fetch function with useCallback
@@ -275,6 +333,14 @@ export function useEvents(params: UseEventsOptions = {}) {
   const archiveLoading = loading[archiveCacheKey] ?? false;
   const archiveError = errors[archiveCacheKey] ?? null;
 
+  // Production archive cache (category-filtered from pollar-backend)
+  const prodArchiveCached = prodArchiveCacheKey ? cache[prodArchiveCacheKey] : undefined;
+  const prodArchiveEvents = prodArchiveCached?.data ?? [];
+  const prodArchiveLoading = prodArchiveCacheKey ? (loading[prodArchiveCacheKey] ?? false) : false;
+  const prodArchiveError = prodArchiveCacheKey ? (errors[prodArchiveCacheKey] ?? null) : null;
+  const prodArchiveIsFresh = prodArchiveCached ? (now - prodArchiveCached.timestamp) < CACHE_TTL : false;
+  const prodArchiveIsFetching = prodArchiveCacheKey ? fetchingKeys.has(prodArchiveCacheKey) : false;
+
   // Check if currently fetching this key (stable boolean instead of Set comparison)
   const isFetching = fetchingKeys.has(cacheKey);
 
@@ -299,18 +365,78 @@ export function useEvents(params: UseEventsOptions = {}) {
     }
   }, [isFresh, params.includeArchive, params.limit, lang, prefetchArchive]);
 
+  // Fetch production archive with category filter (pollar-backend supports ?category=)
+  const prodFetchInitiatedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!prodArchiveCacheKey) return;
+    const shouldFetch = !prodArchiveIsFresh && !prodArchiveLoading && !prodArchiveIsFetching;
+    console.log(`[prodArchive effect] key=${prodArchiveCacheKey.slice(-40)}`, {
+      shouldFetch,
+      prodArchiveIsFresh,
+      prodArchiveLoading,
+      prodArchiveIsFetching,
+      alreadyInitiated: prodFetchInitiatedRef.current === prodArchiveCacheKey,
+    });
+    if (shouldFetch && prodFetchInitiatedRef.current !== prodArchiveCacheKey) {
+      prodFetchInitiatedRef.current = prodArchiveCacheKey;
+      console.log(`[prodArchive] fetching: ${prodArchiveUrl}`);
+      fetchEvents(prodArchiveCacheKey, async () => {
+        const response = await fetch(prodArchiveUrl);
+        console.log(`[prodArchive] response status: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        const items = Array.isArray(data) ? data : data.data ?? [];
+        console.log(`[prodArchive] got ${items.length} items`);
+        return items.map(mapArchiveEvent);
+      });
+    }
+  }, [prodArchiveCacheKey, prodArchiveUrl, prodArchiveIsFresh, prodArchiveLoading, prodArchiveIsFetching, fetchEvents]);
+
   // Combine with archive if requested (memoized)
   const finalEvents = useMemo(() => {
+    let combined = events;
+
     if (params.includeArchive && archiveEvents.length > 0) {
-      const eventIds = new Set(events.map(e => e.id));
+      const eventIds = new Set(combined.map(e => e.id));
       const uniqueArchive = archiveEvents.filter(e => !eventIds.has(e.id));
-      return [...events, ...uniqueArchive];
+      combined = [...combined, ...uniqueArchive];
     }
-    return events;
-  }, [events, archiveEvents, params.includeArchive]);
+
+    // Merge production archive events (category-filtered)
+    if (prodArchiveEvents.length > 0) {
+      const eventIds = new Set(combined.map(e => e.id));
+      const uniqueProdArchive = prodArchiveEvents.filter(e => !eventIds.has(e.id));
+      combined = [...combined, ...uniqueProdArchive];
+    }
+
+    return combined;
+  }, [events, archiveEvents, params.includeArchive, prodArchiveEvents]);
 
   const isLoading = loadingState || (!isFresh && events.length === 0);
   const isArchiveLoading = params.includeArchive && archiveLoading && archiveEvents.length === 0;
+  const isProdArchiveLoading = prodArchiveLoading && prodArchiveEvents.length === 0;
+
+  // Debug: log loading state breakdown for category pages
+  if (params.category) {
+    console.log(`[useEvents debug] category=${params.category}`, {
+      isLoading,
+      isArchiveLoading,
+      isProdArchiveLoading,
+      loadingState,
+      isFresh,
+      eventsCount: events.length,
+      archiveLoading,
+      archiveEventsCount: archiveEvents.length,
+      prodArchiveLoading,
+      prodArchiveEventsCount: prodArchiveEvents.length,
+      prodArchiveIsFresh,
+      prodArchiveIsFetching,
+      prodArchiveCacheKey: prodArchiveCacheKey || '(none)',
+      prodArchiveUrl: prodArchiveUrl || '(none)',
+      cacheKey,
+      finalLoading: isLoading || isArchiveLoading || isProdArchiveLoading,
+    });
+  }
 
   // Filter out hidden categories (only if user is logged in and has hidden categories)
   const hiddenCategories = useUserStore((s) => s.hiddenCategories);
@@ -323,7 +449,7 @@ export function useEvents(params: UseEventsOptions = {}) {
 
   return {
     events: filteredEvents,
-    loading: isLoading || isArchiveLoading,
-    error: error || archiveError
+    loading: isLoading || isArchiveLoading || isProdArchiveLoading,
+    error: error || archiveError || prodArchiveError
   };
 }

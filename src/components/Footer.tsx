@@ -141,6 +141,16 @@ export function Footer() {
                   </LocalizedLink>
                 </li>
               ))}
+              <li>
+                <a
+                  href="https://status.pollar.news/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-zinc-400 hover:text-white transition-colors"
+                >
+                  Status
+                </a>
+              </li>
             </ul>
           </motion.div>
         </motion.div>
