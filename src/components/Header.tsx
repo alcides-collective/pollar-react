@@ -55,7 +55,6 @@ function LanguageSelector() {
     const translatedPath = translatePath(currentPath, language, newLang);
     const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
     const newPath = newPrefix + translatedPath + location.search;
-    console.log(`[DBG LanguageSelector] from=${language} to=${newLang} currentPath=${currentPath} translatedPath=${translatedPath} newPath=${newPath}`);
     navigate(newPath);
   };
 
@@ -103,7 +102,6 @@ function CountryFilter() {
       ? selectedCountries.filter(c => c !== country)
       : [...selectedCountries, country];
 
-    console.log(`[DBG CountryFilter.handleToggle] country=${country} next=[${next}] selectedCategory=${selectedCategory} language=${language}`);
     toggleCountry(country);
 
     // Persist to Firestore for logged-in users
@@ -449,20 +447,14 @@ export function Header() {
     if (category) {
       const slug = getCategorySlug(category, language);
       const countries = useUIStore.getState().selectedCountries;
-      console.log(`[DBG handleCategoryClick] category=${category} slug=${slug} countries=[${countries}] language=${language} prefix=${prefix}`);
       if (countries.length > 0) {
         const seg = COUNTRY_SEGMENT[language];
         const countrySlugs = buildCountrySlugsParam(countries, language);
-        const url = prefix + '/' + slug + '/' + seg + '/' + countrySlugs;
-        console.log(`[DBG handleCategoryClick] navigating to: ${url}`);
-        navigate(url);
+        navigate(prefix + '/' + slug + '/' + seg + '/' + countrySlugs);
       } else {
-        const url = prefix + '/' + slug;
-        console.log(`[DBG handleCategoryClick] navigating to: ${url}`);
-        navigate(url);
+        navigate(prefix + '/' + slug);
       }
     } else {
-      console.log(`[DBG handleCategoryClick] category=null → clearing countries, navigating to: ${prefix}/`);
       clearCountries(); // Clear persisted countries when going to "All"
       if (user) updateUserSelectedCountries(user.uid, []).catch(console.error);
       navigate(prefix + '/');

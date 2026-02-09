@@ -3,7 +3,7 @@ import type { Event } from '../../types/events';
 import { EventMap } from './EventMap';
 import { AudioPlayer } from './AudioPlayer';
 import { extractKeyNumber, extractTimeline } from '../../utils/text';
-import { useLanguage } from '../../stores/languageStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { useUser } from '../../stores/authStore';
 import { trackSourceClicked } from '../../lib/analytics';
 import { incrementSourcesClicked } from '../../hooks/useSessionTracking';
@@ -43,7 +43,7 @@ function formatSourceDate(dateValue: string | { _seconds: number; _nanoseconds: 
 
 export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
   const { t } = useTranslation('event');
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const user = useUser();
   const articles = event.articles || [];
   const location = event.metadata?.location;

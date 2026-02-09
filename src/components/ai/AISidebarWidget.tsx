@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAISuggestions, useAIStore } from '../../stores/aiStore';
-import { useLanguage } from '../../stores/languageStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { API_BASE } from '../../config/api';
 
 const PAUSE_BETWEEN = 4000; // ms to show each placeholder
@@ -10,7 +10,7 @@ const PAUSE_BETWEEN = 4000; // ms to show each placeholder
 export function AISidebarWidget() {
   const { t } = useTranslation('ai');
   const navigate = useNavigate();
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const suggestions = useAISuggestions();
   const setSuggestions = useAIStore((s) => s.setSuggestions);
 

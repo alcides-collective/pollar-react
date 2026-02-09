@@ -25,6 +25,7 @@ import { useContentsquare } from './hooks/useContentsquare'
 import { useCountryRedirect } from './hooks/useCountryRedirect'
 import { useSessionTracking } from './hooks/useSessionTracking'
 import { initUserAnalytics, clearUserAnalytics } from './lib/analytics'
+import { captureUtmParams } from './lib/utm'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
 import { parseCountrySlugsParam, ALL_COUNTRY_SEGMENTS } from './utils/countrySlug'
 import { useUIStore } from './stores/uiStore'
@@ -105,9 +106,7 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ defa
 function HomePage() {
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
   const clearCountriesDisplay = useUIStore((s) => s.clearCountriesDisplay)
-  console.log('[DBG HomePage] rendered')
   useEffect(() => {
-    console.log('[DBG HomePage] effect → clearCategory + clearCountriesDisplay')
     setSelectedCategory(null)
     clearCountriesDisplay()
   }, [setSelectedCategory, clearCountriesDisplay])
@@ -122,10 +121,8 @@ function CategoryPage() {
   const clearCountriesDisplay = useUIStore((s) => s.clearCountriesDisplay)
 
   const polishCategory = categorySlug ? getCategoryFromSlug(categorySlug, language) : null
-  console.log(`[DBG CategoryPage] slug=${categorySlug} language=${language} polishCategory=${polishCategory}`)
 
   useEffect(() => {
-    console.log(`[DBG CategoryPage] effect → setCategory=${polishCategory} + clearCountriesDisplay`)
     if (polishCategory) {
       setSelectedCategory(polishCategory)
     }
@@ -147,10 +144,8 @@ function CountryPage() {
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
 
   const countries = countrySlugs ? parseCountrySlugsParam(countrySlugs, language) : []
-  console.log(`[DBG CountryPage] slugs=${countrySlugs} language=${language} parsed=[${countries}]`)
 
   useEffect(() => {
-    console.log(`[DBG CountryPage] effect → clearCategory + setCountries=[${parseCountrySlugsParam(countrySlugs || '', language)}]`)
     setSelectedCategory(null)
     if (countrySlugs) {
       setSelectedCountries(parseCountrySlugsParam(countrySlugs, language))
@@ -173,10 +168,8 @@ function CategoryCountryPage() {
 
   const polishCategory = categorySlug ? getCategoryFromSlug(categorySlug, language) : null
   const countries = countrySlugs ? parseCountrySlugsParam(countrySlugs, language) : []
-  console.log(`[DBG CategoryCountryPage] catSlug=${categorySlug} countrySlugs=${countrySlugs} language=${language} polishCategory=${polishCategory} countries=[${countries}]`)
 
   useEffect(() => {
-    console.log(`[DBG CategoryCountryPage] effect → setCategory=${polishCategory} setCountries=[${parseCountrySlugsParam(countrySlugs || '', language)}]`)
     if (polishCategory) {
       setSelectedCategory(polishCategory)
     }
@@ -341,6 +334,9 @@ function useIsFullscreenRoute() {
 }
 
 function AppContent() {
+  // Capture UTM params from URL before anything else
+  captureUtmParams()
+
   const [showFooter, setShowFooter] = useState(false)
   const isFullscreen = useIsFullscreenRoute()
   const location = useLocation()

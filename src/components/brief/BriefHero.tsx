@@ -4,7 +4,7 @@ import type { DailyBrief } from '../../types/brief';
 import { formatBriefDate } from '../../utils/briefUtils';
 
 import { AudioPlayer } from '../../pages/event/AudioPlayer';
-import { useLanguage } from '../../stores/languageStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { getModelDisplayName, getModelPillClasses, getModelDescription, estimateBriefCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
 
 interface BriefHeroProps {
@@ -13,7 +13,7 @@ interface BriefHeroProps {
 
 export function BriefHero({ brief }: BriefHeroProps) {
   const { t } = useTranslation('brief');
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const [showCO2Tooltip, setShowCO2Tooltip] = useState(false);
   const [showModelTooltip, setShowModelTooltip] = useState(false);
 

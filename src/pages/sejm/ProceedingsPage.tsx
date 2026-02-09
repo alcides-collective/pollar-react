@@ -2,11 +2,11 @@ import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useProceedings, useCurrentProceeding } from '../../hooks/useProceedings';
 import { SejmApiError } from '../../components/sejm';
-import { useLanguage } from '../../stores/languageStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 
 export function ProceedingsPage() {
   const { t } = useTranslation('sejm');
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const { proceedings, loading, error } = useProceedings();
   const { proceeding: currentProceeding } = useCurrentProceeding();
 

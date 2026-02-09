@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import type { DailyBrief } from '../../types/brief';
 import { GrainImage } from '../common/GrainImage';
 import { SectionWrapper } from '../common/SectionWrapper';
-import { useLanguage } from '../../stores/languageStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { LocalizedLink } from '../LocalizedLink';
 import { AnimatedUnderline } from '../common/AnimatedUnderline';
 import dailyBriefImg from '../../assets/images/daily/day.webp';
@@ -24,7 +24,7 @@ interface DailyBriefSectionProps {
 
 export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
   const { t } = useTranslation('common');
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
 
   const getTimeBasedGreeting = () => {

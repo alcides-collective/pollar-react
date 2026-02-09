@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useRef } from 'react';
 import type { Event, FreshnessLevel } from '../types/events';
 import { CATEGORY_ORDER } from '../constants/categories';
 import { useEvents } from '../stores/eventsStore';
@@ -291,27 +291,54 @@ export function useEventGroups(
     articleFields: 'minimal',
   });
 
-  const events = useMemo(() => {
-    if (language === 'pl') return rawEvents;
-    if (polishEvents.length === 0) return rawEvents;
+  const { events, removedCount } = useMemo(() => {
+    if (language === 'pl') return { events: rawEvents, removedCount: 0 };
+    if (polishEvents.length === 0) return { events: rawEvents, removedCount: 0 };
     const polishLeadById = new Map(polishEvents.map(e => [e.id, e.lead]));
-    return rawEvents.filter(e => {
+    const filtered: Event[] = [];
+    let removed = 0;
+    for (const e of rawEvents) {
       const plLead = polishLeadById.get(e.id);
       if (!plLead) {
-        // Event not in PL list (different top-100 due to trendingScore ordering)
-        // Can't compare — check if lead/title look translated (non-Polish)
-        // If title contains Polish diacritics exclusively, it's likely untranslated
-        return true;
+        filtered.push(e);
+      } else if (plLead !== e.lead) {
+        filtered.push(e);
+      } else {
+        removed++;
       }
-      // If Polish lead matches translated lead, event wasn't actually translated
-      return plLead !== e.lead;
-    });
+    }
+    return { events: filtered, removedCount: removed };
   }, [rawEvents, polishEvents, language]);
 
   const groups = useMemo(
     () => computeEventGroups(events, selectedCategory, selectedCountries, favoriteCategories, favoriteCountries),
     [events, selectedCategory, selectedCountries, favoriteCategories, favoriteCountries]
   );
+
+  // Debug: log visible events (debounced — only after data stabilizes)
+  const debugTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  useEffect(() => {
+    clearTimeout(debugTimerRef.current);
+    debugTimerRef.current = setTimeout(() => {
+      const all = new Map<string, Event>();
+      groups.featured.forEach(e => all.set(e.id, e));
+      groups.doubleHeroSections.flat().forEach(e => all.set(e.id, e));
+      groups.categoryGroups.forEach(([, evts]) => evts.forEach(e => all.set(e.id, e)));
+      groups.moreEvents.forEach(e => all.set(e.id, e));
+      groups.olympicEvents.forEach(e => all.set(e.id, e));
+      if (all.size === 0) return;
+      const visible = Array.from(all.values());
+      const header = removedCount > 0
+        ? `[Page] ${visible.length} visible events, ${removedCount} untranslated filtered (lang=${language})`
+        : `[Page] ${visible.length} visible events (lang=${language})`;
+      console.group(header);
+      visible.forEach(e =>
+        console.log(`${e.id.slice(0, 8)} | ${e.metadata?.ultraShortHeadline || '—'} | ${e.title?.slice(0, 50)}`)
+      );
+      console.groupEnd();
+    }, 1000);
+    return () => clearTimeout(debugTimerRef.current);
+  }, [groups, language, removedCount]);
 
   return {
     ...groups,

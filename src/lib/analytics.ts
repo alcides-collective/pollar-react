@@ -1,6 +1,13 @@
 import { logEvent, setUserId, setUserProperties } from 'firebase/analytics';
-import { analytics } from '@/config/firebase';
+import { analytics, auth } from '@/config/firebase';
 import type { AuthUser, UserProfile } from '@/types/auth';
+import {
+  recordEventOpened as _recordEventOpened,
+  recordSourceClicked as _recordSourceClicked,
+  recordBriefViewed as _recordBriefViewed,
+  recordMapUsed as _recordMapUsed,
+  recordSessionEnd as _recordSessionEnd,
+} from '@/services/userAnalyticsService';
 
 type AuthMethod = 'email' | 'google' | 'apple';
 
@@ -165,6 +172,8 @@ export function trackEventOpened(params: {
 }): void {
   if (!analytics) return;
   logEvent(analytics, 'event_opened', params);
+  const uid = auth?.currentUser?.uid;
+  if (uid) _recordEventOpened(uid);
 }
 
 /**
@@ -177,6 +186,8 @@ export function trackBriefViewed(params: {
 }): void {
   if (!analytics) return;
   logEvent(analytics, 'brief_viewed', params);
+  const uid = auth?.currentUser?.uid;
+  if (uid) _recordBriefViewed(uid);
 }
 
 /**
@@ -195,6 +206,8 @@ export function trackSessionSummary(params: {
     brief_viewed: String(params.brief_viewed),
     session_duration_seconds: params.session_duration_seconds,
   });
+  const uid = auth?.currentUser?.uid;
+  if (uid) _recordSessionEnd(uid, params.session_duration_seconds);
 }
 
 /**
@@ -207,6 +220,8 @@ export function trackSourceClicked(params: {
 }): void {
   if (!analytics) return;
   logEvent(analytics, 'source_clicked', params);
+  const uid = auth?.currentUser?.uid;
+  if (uid) _recordSourceClicked(uid);
 }
 
 /**
@@ -258,4 +273,6 @@ export function trackMapUsed(params: {
 }): void {
   if (!analytics) return;
   logEvent(analytics, 'map_used', params);
+  const uid = auth?.currentUser?.uid;
+  if (uid) _recordMapUsed(uid);
 }

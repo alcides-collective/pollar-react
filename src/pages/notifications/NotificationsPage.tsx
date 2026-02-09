@@ -14,7 +14,7 @@ import {
   getHistoricalVotingAlerts,
   type HistoricalVotingAlert,
 } from '@/services/alertsService';
-import { useLanguage } from '@/stores/languageStore';
+import { useRouteLanguage } from '@/hooks/useRouteLanguage';
 import { useTranslatedEventTitles } from '@/hooks/useTranslatedEventTitles';
 
 type FilterType = 'all' | 'voting' | 'category';
@@ -83,7 +83,7 @@ export function NotificationsPage() {
 
 function NotificationsContent() {
   const { t } = useTranslation('notifications');
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const combinedAlerts = useCombinedAlerts();
   const totalUnreadCount = useTotalUnreadCount();
 

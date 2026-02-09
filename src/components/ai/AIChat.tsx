@@ -6,7 +6,7 @@ import { AIDebugPanel } from './AIDebugPanel';
 import { useAICompanion } from '../../hooks/useAICompanion';
 import { useWordAnimation } from '../../hooks/useWordAnimation';
 import { useAIError, useAIStore } from '../../stores/aiStore';
-import { useLanguage } from '../../stores/languageStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 
 interface AIChatProps {
   variant?: 'page' | 'modal';
@@ -18,7 +18,7 @@ export function AIChat({ variant = 'page', showHeader = true }: AIChatProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const error = useAIError();
   const setError = useAIStore((s) => s.setError);
-  const language = useLanguage();
+  const language = useRouteLanguage();
 
   // Scroll helper
   const scrollToBottom = useCallback(() => {

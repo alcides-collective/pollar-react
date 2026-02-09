@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { API_BASE } from '../config/api';
 import { useEventsStore } from '../stores/eventsStore';
 import { decodeHtmlEntities } from '../utils/sanitize';
+import { useRouteLanguage } from './useRouteLanguage';
 
 interface StreamEvent {
   id: string;
@@ -35,6 +36,21 @@ const CATEGORY_TRANSLATION_KEYS: Record<string, string> = {
   inne: 'Inne',
 };
 
+/** Fetch translated title/lead for an event (like useTranslatedEventTitles) */
+async function fetchTranslatedTitle(eventId: string, lang: string): Promise<{ title: string; lead?: string } | null> {
+  try {
+    const res = await fetch(`${API_BASE}/events/${eventId}?lang=${lang}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return {
+      title: data.title || data.metadata?.ultraShortHeadline || '',
+      lead: data.lead,
+    };
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Hook that connects to the SSE stream and shows toast notifications for new events
  * Buffers notifications when tab is hidden and shows them when user returns
@@ -42,11 +58,22 @@ const CATEGORY_TRANSLATION_KEYS: Record<string, string> = {
 export function useEventStream(options: UseEventStreamOptions = {}) {
   const { enabled = true, onNewEvent } = options;
   const { t } = useTranslation('common');
+  const language = useRouteLanguage();
+  const languageRef = useRef(language);
+  languageRef.current = language;
+
   const eventSourceRef = useRef<EventSource | null>(null);
   const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reconnectAttempts = useRef(0);
   const bufferedEventsRef = useRef<StreamEvent[]>([]);
   const [isTabVisible, setIsTabVisible] = useState(!document.hidden);
+
+  // Language-aware URL prefix for navigation
+  const getEventUrl = useCallback((eventId: string) => {
+    const lang = languageRef.current;
+    const prefix = lang !== 'pl' ? `/${lang}` : '';
+    return `${prefix}/event/${eventId}`;
+  }, []);
 
   // Show a single toast for an event
   const showEventToast = useCallback((event: StreamEvent) => {
@@ -59,12 +86,30 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
       action: {
         label: t('eventStream.view'),
         onClick: () => {
-          window.location.href = `/event/${event.id}`;
+          window.location.href = getEventUrl(event.id);
         },
       },
       duration: 8000,
     });
-  }, [t]);
+  }, [t, getEventUrl]);
+
+  // Fetch translated title then show toast (for non-PL languages)
+  const showTranslatedToast = useCallback(async (event: StreamEvent) => {
+    const lang = languageRef.current;
+    if (lang === 'pl') {
+      showEventToast(event);
+      return;
+    }
+
+    // Fetch translated title (same approach as useTranslatedEventTitles in AlertsBell)
+    const translated = await fetchTranslatedTitle(event.id, lang);
+    if (translated?.title) {
+      showEventToast({ ...event, title: translated.title });
+    } else {
+      // Fallback to Polish title if translation fetch fails
+      showEventToast(event);
+    }
+  }, [showEventToast]);
 
   // Show buffered events when tab becomes visible
   const showBufferedEvents = useCallback(() => {
@@ -73,12 +118,14 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
 
     // If more than 5 events buffered, show summary toast
     if (events.length > 5) {
+      const lang = languageRef.current;
+      const prefix = lang !== 'pl' ? `/${lang}` : '';
       toast(t('eventStream.newEvents', { count: events.length }), {
         description: t('eventStream.clickToSeeLatest'),
         action: {
           label: t('eventStream.view'),
           onClick: () => {
-            window.location.href = '/';
+            window.location.href = `${prefix}/`;
           },
         },
         duration: 10000,
@@ -87,13 +134,13 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
       // Show individual toasts with slight delay between them
       events.forEach((event, index) => {
         setTimeout(() => {
-          showEventToast(event);
+          showTranslatedToast(event);
         }, index * 500);
       });
     }
 
     bufferedEventsRef.current = [];
-  }, [showEventToast, t]);
+  }, [showTranslatedToast, t]);
 
   // Handle visibility change
   useEffect(() => {
@@ -174,8 +221,8 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
               // Tab is hidden - buffer the event
               bufferedEventsRef.current.push(sanitizedEvent);
             } else {
-              // Tab is visible - show toast immediately
-              showEventToast(sanitizedEvent);
+              // Tab is visible - fetch translated title then show toast
+              showTranslatedToast(sanitizedEvent);
             }
           }
         }
@@ -196,7 +243,7 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
         connect();
       }, delay);
     };
-  }, [enabled, onNewEvent, showEventToast]);
+  }, [enabled, onNewEvent, showTranslatedToast]);
 
   useEffect(() => {
     connect();

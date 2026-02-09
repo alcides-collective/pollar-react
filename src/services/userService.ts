@@ -20,6 +20,8 @@ import {
 import { db, auth, isFirebaseConfigured } from '@/config/firebase';
 import type { UserProfile, AuthProviderName, ConsentData, ThemePreference } from '@/types/auth';
 import { CURRENT_TERMS_VERSION } from '@/types/auth';
+import { initUserAnalyticsDoc } from './userAnalyticsService';
+import { getStoredUtm } from '@/lib/utm';
 
 const USERS_COLLECTION = 'users';
 
@@ -75,6 +77,10 @@ export async function createOrUpdateUserProfile(
   };
 
   await setDoc(userRef, newProfile);
+
+  // Initialize analytics doc for the new user (fire-and-forget)
+  const utm = getStoredUtm();
+  initUserAnalyticsDoc(user.uid, utm, authProvider).catch(() => {});
 
   // Return the profile (with placeholder timestamps since serverTimestamp is server-side)
   const now = { seconds: Date.now() / 1000, nanoseconds: 0 } as Timestamp;

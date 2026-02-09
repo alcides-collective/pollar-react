@@ -5,7 +5,7 @@ import { useEvent } from '../../hooks/useEvent';
 import type { WordOfTheDay, BriefSection } from '../../types/brief';
 import { decodeHtmlEntities } from '../../utils/sanitize';
 import { extractEventIds } from '../../utils/text';
-import { useLanguage } from '../../stores/languageStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { eventPath } from '../../utils/slug';
 
 function stripIds(text: string): string {
@@ -22,7 +22,7 @@ interface BriefSidebarProps {
 }
 
 function SectionEventCard({ eventId }: { eventId: string }) {
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const { event, loading } = useEvent(eventId);
 
   const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };

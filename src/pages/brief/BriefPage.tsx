@@ -5,7 +5,7 @@ import { useBrief } from '../../hooks/useBrief';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { prepareOgDescription } from '../../utils/text';
-import { useLanguage } from '../../stores/languageStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { useUser } from '../../stores/authStore';
 import { trackBriefViewed } from '../../lib/analytics';
 import { markBriefViewed } from '../../hooks/useSessionTracking';
@@ -22,7 +22,7 @@ import {
 
 export function BriefPage() {
   const { t } = useTranslation('brief');
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const { brief, loading, error } = useBrief({ lang: language });
   const { activeItem: activeSection, setSectionRef } = useActiveSection(
     brief?.sections ?? []

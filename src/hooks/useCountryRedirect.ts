@@ -19,20 +19,14 @@ export function useCountryRedirect() {
 
   useEffect(() => {
     const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';
-    if (pathWithoutLang !== '/') {
-      console.log(`[DBG useCountryRedirect] path=${pathWithoutLang} — not root, skip`);
-      return;
-    }
+    if (pathWithoutLang !== '/') return;
 
     const persisted = getPersistedCountries();
-    console.log(`[DBG useCountryRedirect] on root, persisted=[${persisted}] language=${language}`);
     if (persisted.length === 0) return;
 
     const prefix = language !== 'pl' ? `/${language}` : '';
     const seg = COUNTRY_SEGMENT[language];
     const countrySlugs = buildCountrySlugsParam(persisted, language);
-    const target = `${prefix}/${seg}/${countrySlugs}`;
-    console.log(`[DBG useCountryRedirect] redirecting to: ${target}`);
-    navigate(target, { replace: true });
+    navigate(`${prefix}/${seg}/${countrySlugs}`, { replace: true });
   }, [location.pathname, language, navigate]);
 }
