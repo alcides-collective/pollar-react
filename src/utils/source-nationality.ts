@@ -1,4 +1,4 @@
-export type SourceNationality = 'polish' | 'american' | 'british' | 'german' | 'swiss_german' | 'swiss' | 'swedish' | 'french' | 'spanish' | 'italian' | 'austrian' | 'qatari' | 'lithuanian' | 'eu' | 'vatican' | 'canadian' | 'japanese' | 'portuguese' | 'romanian' | 'other';
+export type SourceNationality = 'polish' | 'american' | 'british' | 'irish' | 'german' | 'swiss_german' | 'swiss' | 'swedish' | 'french' | 'spanish' | 'italian' | 'austrian' | 'qatari' | 'lithuanian' | 'eu' | 'vatican' | 'canadian' | 'japanese' | 'portuguese' | 'romanian' | 'other';
 
 export const sourceToNationality: Record<string, SourceNationality> = {
   // === POLSKIE (Polish capital) ===
@@ -511,6 +511,31 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'Prosto z Opolskiego - Wiadomosci z Opola i Opolszczyzny.': 'polish',
   'prostozopolskiego.pl': 'polish',
   'bilgorajska.pl': 'polish',
+  'Jastrząb Post': 'polish',
+  'jastrzabpost.pl': 'polish',
+  'krakow.tvp.pl': 'polish',
+  'bialystok.tvp.pl': 'polish',
+  'wiadomoscihandlowe.pl': 'polish',
+  'Wiadomości Handlowe': 'polish',
+  'Bayerischer Rundfunk': 'german',
+  'br.de': 'german',
+  'BRIEF.PL - Pierwsze źródło inspiracji w biznesie': 'polish',
+  'BRIEF.PL': 'polish',
+  'brief.pl': 'polish',
+  'Komenda Stołeczna Policji': 'polish',
+
+  // === SZWAJCARSKIE (Swiss capital) - dodatkowe ===
+  '20 Minuten': 'swiss',
+  '20min.ch': 'swiss',
+
+  // === FRANCUSKIE (French capital) - dodatkowe ===
+  "LExpress.fr": 'french',
+  "L'Express": 'french',
+  'lexpress.fr': 'french',
+
+  // === IRLANDZKIE (Irish capital) ===
+  'The Irish Times': 'irish',
+  'irishtimes.com': 'irish',
   'Antymatrix': 'other',
   'Bljesak.info': 'other',
   'bljesak.info': 'other',
@@ -617,6 +642,8 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'lemonde.fr': 'french',
   'BFMTV': 'french',
   'bfmtv.com': 'french',
+  "L'Opinion": 'french',
+  'lopinion.fr': 'french',
 
   // === HISZPAŃSKIE (Spanish capital) - kolejne ===
   'RTVE.es': 'spanish',
@@ -677,6 +704,16 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'spiegel.de': 'german',
   'Focus': 'german',
   'focus.de': 'german',
+  'Wirtschafts Woche': 'german',
+  'WirtschaftsWoche': 'german',
+  'wiwo.de': 'german',
+  'tagesschau.de': 'german',
+  'Tagesschau': 'german',
+  'Berliner Zeitung': 'german',
+  'berliner-zeitung.de': 'german',
+  'RP Online': 'german',
+  'Rheinische Post': 'german',
+  'rp-online.de': 'german',
 
   // === FRANCUSKIE (French capital) - kolejne ===
   'Courrier international': 'french',
@@ -695,6 +732,18 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'repubblica.it': 'italian',
   'La Stampa': 'italian',
   'lastampa.it': 'italian',
+  'Rai news': 'italian',
+  'Rai News': 'italian',
+  'rainews.it': 'italian',
+  'Open': 'italian',
+  'open.online': 'italian',
+  'AGI': 'italian',
+  'agi.it': 'italian',
+  'Il Fatto Quotidiano': 'italian',
+  'ilfattoquotidiano.it': 'italian',
+  'Il Sole 24 ORE': 'italian',
+  'Il Sole 24 Ore': 'italian',
+  'ilsole24ore.com': 'italian',
 };
 
 export function getSourceNationality(source: string): SourceNationality {
@@ -724,6 +773,7 @@ export const nationalityCodes: Record<SourceNationality, string | null> = {
   polish: 'pl',
   american: 'us',
   british: 'gb',
+  irish: 'ie',
   german: 'de',
   swiss_german: 'ch',
   swiss: 'ch',
@@ -747,6 +797,7 @@ export const nationalityLabels: Record<SourceNationality, { en: string; pl: stri
   polish: { en: 'Polish', pl: 'Polskie', de: 'Polnisch' },
   american: { en: 'American', pl: 'Ameryka\u0144skie', de: 'Amerikanisch' },
   british: { en: 'British', pl: 'Brytyjskie', de: 'Britisch' },
+  irish: { en: 'Irish', pl: 'Irlandzkie', de: 'Irisch' },
   german: { en: 'German', pl: 'Niemieckie', de: 'Deutsch' },
   swiss_german: { en: 'Swiss-German', pl: 'Szwajcar.-niem.', de: 'Schweiz.-dt.' },
   swiss: { en: 'Swiss', pl: 'Szwajcarskie', de: 'Schweizerisch' },

@@ -99,7 +99,8 @@
     "feature1": "Track MPs and their votes",
     "feature2": "Notifications about new events",
     "feature3": "Save articles",
-    "feature4": "Personalize categories"
+    "feature4": "Personalize categories",
+    "feature5": "Switch between light and dark mode"
   },
   "footer": {
     "description": "AI-powered news aggregator. Track events, analyze Parliament data and explore public statistics.",

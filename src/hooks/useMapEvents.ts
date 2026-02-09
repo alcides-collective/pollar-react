@@ -25,35 +25,38 @@ interface GeoJSONFeatureCollection {
   features: GeoJSONFeature[];
 }
 
-function getEventCoordinates(event: Event): { lat: number; lng: number; city: string } | null {
-  const loc = event.metadata?.location || event.metadata?.locations?.[0];
-  if (!loc?.coordinates?.latitude || !loc?.coordinates?.longitude) {
-    return null;
+function getEventLocations(event: Event): { lat: number; lng: number; city: string }[] {
+  const locations = event.metadata?.locations || [];
+  if (locations.length === 0 && event.metadata?.location) {
+    locations.push(event.metadata.location);
   }
-  return {
-    lat: loc.coordinates.latitude,
-    lng: loc.coordinates.longitude,
-    city: loc.city || loc.country || '',
-  };
+  return locations
+    .filter((loc: { coordinates?: { latitude?: number; longitude?: number } }) =>
+      loc?.coordinates?.latitude && loc?.coordinates?.longitude
+    )
+    .map((loc: { coordinates: { latitude: number; longitude: number }; city?: string; country?: string }) => ({
+      lat: loc.coordinates.latitude,
+      lng: loc.coordinates.longitude,
+      city: loc.city || loc.country || '',
+    }));
 }
 
 export function useMapEvents() {
   const { events, loading, error } = useEvents({ limit: 200, lang: 'pl' });
 
   const eventsWithCoords = useMemo(() => {
-    return events.filter((e) => getEventCoordinates(e) !== null);
+    return events.filter((e) => getEventLocations(e).length > 0);
   }, [events]);
 
   const geoJSON: GeoJSONFeatureCollection = useMemo(() => {
     return {
       type: 'FeatureCollection',
-      features: eventsWithCoords.map((e) => {
-        const coords = getEventCoordinates(e)!;
-        return {
-          type: 'Feature',
+      features: eventsWithCoords.flatMap((e) => {
+        return getEventLocations(e).map((coords) => ({
+          type: 'Feature' as const,
           geometry: {
-            type: 'Point',
-            coordinates: [coords.lng, coords.lat],
+            type: 'Point' as const,
+            coordinates: [coords.lng, coords.lat] as [number, number],
           },
           properties: {
             id: e.id,
@@ -65,7 +68,7 @@ export function useMapEvents() {
             city: coords.city,
             event: JSON.stringify(e),
           },
-        };
+        }));
       }),
     };
   }, [eventsWithCoords]);

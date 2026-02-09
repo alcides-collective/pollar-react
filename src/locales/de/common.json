@@ -99,7 +99,8 @@
     "feature1": "Abgeordnete und ihre Abstimmungen verfolgen",
     "feature2": "Benachrichtigungen über neue Ereignisse",
     "feature3": "Artikel speichern",
-    "feature4": "Kategorien personalisieren"
+    "feature4": "Kategorien personalisieren",
+    "feature5": "Zwischen hellem und dunklem Modus wechseln"
   },
   "footer": {
     "description": "KI-gestützter Nachrichten-Aggregator. Verfolge Ereignisse, analysiere Parlamentsdaten und erkunde öffentliche Statistiken.",

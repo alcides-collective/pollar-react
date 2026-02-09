@@ -234,6 +234,7 @@ function AuthButton() {
             <li>• {t('loginPrompt.feature2')}</li>
             <li>• {t('loginPrompt.feature3')}</li>
             <li>• {t('loginPrompt.feature4')}</li>
+            <li>• {t('loginPrompt.feature5')}</li>
           </ul>
         </TooltipContent>
       </Tooltip>

@@ -99,7 +99,8 @@
     "feature1": "Śledzenia posłów i ich głosowań",
     "feature2": "Powiadomień o nowych wydarzeniach",
     "feature3": "Zapisywania artykułów",
-    "feature4": "Personalizacji kategorii"
+    "feature4": "Personalizacji kategorii",
+    "feature5": "Zmiany motywu jasnego i ciemnego"
   },
   "footer": {
     "description": "Agregator wiadomości napędzany AI. Śledź wydarzenia, analizuj dane Sejmu i eksploruj statystyki publiczne.",
