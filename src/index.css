@@ -574,7 +574,7 @@ body {
 
 /* Chart Box (Bar Charts) */
 .chart-box {
-  @apply my-6 bg-surface rounded-lg border border-divider overflow-visible;
+  @apply my-6 bg-surface rounded-lg border border-divider overflow-hidden;
 }
 
 .chart-label {

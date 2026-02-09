@@ -31,7 +31,8 @@ import { useThemePreference, useSetThemePreference } from '@/stores/themeStore';
 import { updateUserThemePreference, updateUserSelectedCountries } from '@/services/userService';
 import type { ThemePreference } from '@/types/auth';
 import { getCategorySlug } from '../utils/categorySlug';
-import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, COUNTRY_SEGMENT, buildCountrySlugsParam } from '../utils/countrySlug';
+import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, COUNTRY_SEGMENT, buildCountrySlugsParam, translatePath } from '../utils/countrySlug';
+import { useRouteLanguage } from '../hooks/useRouteLanguage';
 import { useSelectedCountries } from '../stores/uiStore';
 import logoImg from '../assets/logo-white.png';
 
@@ -44,18 +45,17 @@ const LANGUAGES: { code: Language; label: string }[] = [
 
 // Language selector component
 function LanguageSelector() {
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
 
   const handleLanguageChange = (newLang: Language) => {
-    // Get current path without language prefix
     const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
-    // Build new path with new language prefix
+    const translatedPath = translatePath(currentPath, language, newLang);
     const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
-    const newPath = newPrefix + currentPath + location.search;
-    // Only navigate - let LanguageRouteHandler sync the store from URL
+    const newPath = newPrefix + translatedPath + location.search;
+    console.log(`[DBG LanguageSelector] from=${language} to=${newLang} currentPath=${currentPath} translatedPath=${translatedPath} newPath=${newPath}`);
     navigate(newPath);
   };
 
@@ -89,7 +89,7 @@ function LanguageSelector() {
 // Country filter component
 function CountryFilter() {
   const { t } = useTranslation('common');
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const navigate = useNavigate();
   const selectedCountries = useSelectedCountries();
   const selectedCategory = useUIStore((state) => state.selectedCategory);
@@ -103,6 +103,7 @@ function CountryFilter() {
       ? selectedCountries.filter(c => c !== country)
       : [...selectedCountries, country];
 
+    console.log(`[DBG CountryFilter.handleToggle] country=${country} next=[${next}] selectedCategory=${selectedCategory} language=${language}`);
     toggleCountry(country);
 
     // Persist to Firestore for logged-in users
@@ -220,8 +221,9 @@ function MobileSettingsMenu() {
 
   const handleLanguageChange = (newLang: Language) => {
     const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
+    const translatedPath = translatePath(currentPath, language, newLang);
     const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
-    const newPath = newPrefix + currentPath + location.search;
+    const newPath = newPrefix + translatedPath + location.search;
     navigate(newPath);
   };
 
@@ -375,7 +377,7 @@ const CATEGORY_ORDER = [
 
 export function Header() {
   const { t } = useTranslation('common');
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const { events } = useEvents({ limit: 100, lang: language });
   const selectedCategory = useUIStore((state) => state.selectedCategory);
   const openSearch = useSearchStore((state) => state.openSearch);
@@ -447,14 +449,20 @@ export function Header() {
     if (category) {
       const slug = getCategorySlug(category, language);
       const countries = useUIStore.getState().selectedCountries;
+      console.log(`[DBG handleCategoryClick] category=${category} slug=${slug} countries=[${countries}] language=${language} prefix=${prefix}`);
       if (countries.length > 0) {
         const seg = COUNTRY_SEGMENT[language];
         const countrySlugs = buildCountrySlugsParam(countries, language);
-        navigate(prefix + '/' + slug + '/' + seg + '/' + countrySlugs);
+        const url = prefix + '/' + slug + '/' + seg + '/' + countrySlugs;
+        console.log(`[DBG handleCategoryClick] navigating to: ${url}`);
+        navigate(url);
       } else {
-        navigate(prefix + '/' + slug);
+        const url = prefix + '/' + slug;
+        console.log(`[DBG handleCategoryClick] navigating to: ${url}`);
+        navigate(url);
       }
     } else {
+      console.log(`[DBG handleCategoryClick] category=null → clearing countries, navigating to: ${prefix}/`);
       clearCountries(); // Clear persisted countries when going to "All"
       if (user) updateUserSelectedCountries(user.uid, []).catch(console.error);
       navigate(prefix + '/');

@@ -2,7 +2,8 @@ import useSWR from 'swr';
 import type { DailyBrief, BriefResponse } from '../types/brief';
 import { API_BASE } from '../config/api';
 import { sanitizeBrief } from '../utils/sanitize';
-import { useLanguage, type Language } from '../stores/languageStore';
+import type { Language } from '../stores/languageStore';
+import { useRouteLanguage } from './useRouteLanguage';
 
 async function fetchBrief(url: string): Promise<DailyBrief | null> {
   const response = await fetch(url);
@@ -23,7 +24,7 @@ interface UseBriefOptions {
 }
 
 export function useBrief(options: UseBriefOptions = {}) {
-  const storeLanguage = useLanguage();
+  const storeLanguage = useRouteLanguage();
   const lang = options.lang ?? storeLanguage;
   const url = `${API_BASE}/brief?lang=${lang}`;
 

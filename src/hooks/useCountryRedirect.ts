@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useLanguage } from '../stores/languageStore';
 import { getPersistedCountries } from '../stores/uiStore';
+import { useRouteLanguage } from './useRouteLanguage';
 import { buildCountrySlugsParam, COUNTRY_SEGMENT } from '../utils/countrySlug';
 
 /**
@@ -15,18 +15,24 @@ import { buildCountrySlugsParam, COUNTRY_SEGMENT } from '../utils/countrySlug';
 export function useCountryRedirect() {
   const location = useLocation();
   const navigate = useNavigate();
-  const language = useLanguage();
+  const language = useRouteLanguage();
 
   useEffect(() => {
     const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';
-    if (pathWithoutLang !== '/') return;
+    if (pathWithoutLang !== '/') {
+      console.log(`[DBG useCountryRedirect] path=${pathWithoutLang} — not root, skip`);
+      return;
+    }
 
     const persisted = getPersistedCountries();
+    console.log(`[DBG useCountryRedirect] on root, persisted=[${persisted}] language=${language}`);
     if (persisted.length === 0) return;
 
     const prefix = language !== 'pl' ? `/${language}` : '';
     const seg = COUNTRY_SEGMENT[language];
     const countrySlugs = buildCountrySlugsParam(persisted, language);
-    navigate(`${prefix}/${seg}/${countrySlugs}`, { replace: true });
+    const target = `${prefix}/${seg}/${countrySlugs}`;
+    console.log(`[DBG useCountryRedirect] redirecting to: ${target}`);
+    navigate(target, { replace: true });
   }, [location.pathname, language, navigate]);
 }

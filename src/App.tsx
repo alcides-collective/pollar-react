@@ -103,7 +103,9 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ defa
 function HomePage() {
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
   const clearCountriesDisplay = useUIStore((s) => s.clearCountriesDisplay)
+  console.log('[DBG HomePage] rendered')
   useEffect(() => {
+    console.log('[DBG HomePage] effect → clearCategory + clearCountriesDisplay')
     setSelectedCategory(null)
     clearCountriesDisplay()
   }, [setSelectedCategory, clearCountriesDisplay])
@@ -112,17 +114,20 @@ function HomePage() {
 
 function CategoryPage() {
   const { categorySlug } = useParams<{ categorySlug: string }>()
-  const language = useLanguage()
+  const location = useLocation()
+  const language: Language = (location.pathname.match(/^\/(en|de)/)?.[1] as Language) || 'pl'
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
   const clearCountriesDisplay = useUIStore((s) => s.clearCountriesDisplay)
 
   const polishCategory = categorySlug ? getCategoryFromSlug(categorySlug, language) : null
+  console.log(`[DBG CategoryPage] slug=${categorySlug} language=${language} polishCategory=${polishCategory}`)
 
   useEffect(() => {
+    console.log(`[DBG CategoryPage] effect → setCategory=${polishCategory} + clearCountriesDisplay`)
     if (polishCategory) {
       setSelectedCategory(polishCategory)
     }
-    clearCountriesDisplay() // URL has no countries — don't filter by them
+    clearCountriesDisplay()
   }, [polishCategory, setSelectedCategory, clearCountriesDisplay])
 
   if (!polishCategory) {
@@ -134,13 +139,16 @@ function CategoryPage() {
 
 function CountryPage() {
   const { countrySlugs } = useParams<{ countrySlugs: string }>()
-  const language = useLanguage()
+  const location = useLocation()
+  const language: Language = (location.pathname.match(/^\/(en|de)/)?.[1] as Language) || 'pl'
   const setSelectedCountries = useUIStore((s) => s.setSelectedCountries)
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
 
   const countries = countrySlugs ? parseCountrySlugsParam(countrySlugs, language) : []
+  console.log(`[DBG CountryPage] slugs=${countrySlugs} language=${language} parsed=[${countries}]`)
 
   useEffect(() => {
+    console.log(`[DBG CountryPage] effect → clearCategory + setCountries=[${parseCountrySlugsParam(countrySlugs || '', language)}]`)
     setSelectedCategory(null)
     if (countrySlugs) {
       setSelectedCountries(parseCountrySlugsParam(countrySlugs, language))
@@ -156,14 +164,17 @@ function CountryPage() {
 
 function CategoryCountryPage() {
   const { categorySlug, countrySlugs } = useParams<{ categorySlug: string; countrySlugs: string }>()
-  const language = useLanguage()
+  const location = useLocation()
+  const language: Language = (location.pathname.match(/^\/(en|de)/)?.[1] as Language) || 'pl'
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
   const setSelectedCountries = useUIStore((s) => s.setSelectedCountries)
 
   const polishCategory = categorySlug ? getCategoryFromSlug(categorySlug, language) : null
   const countries = countrySlugs ? parseCountrySlugsParam(countrySlugs, language) : []
+  console.log(`[DBG CategoryCountryPage] catSlug=${categorySlug} countrySlugs=${countrySlugs} language=${language} polishCategory=${polishCategory} countries=[${countries}]`)
 
   useEffect(() => {
+    console.log(`[DBG CategoryCountryPage] effect → setCategory=${polishCategory} setCountries=[${parseCountrySlugsParam(countrySlugs || '', language)}]`)
     if (polishCategory) {
       setSelectedCategory(polishCategory)
     }
@@ -190,11 +201,9 @@ function LanguageRouteHandler() {
   const storeLanguage = useLanguage()
 
   useEffect(() => {
-    // Extract language from URL
     const match = location.pathname.match(/^\/(en|de)(\/|$)/)
     const urlLang: Language = match ? (match[1] as Language) : 'pl'
 
-    // Sync URL -> Store (only if different)
     if (urlLang !== storeLanguage) {
       setLanguage(urlLang)
     }

@@ -7,7 +7,7 @@ import { useEvent } from '../../hooks/useEvent';
 import { useEvents } from '../../stores/eventsStore';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { useUser } from '../../stores/authStore';
-import { useLanguage } from '../../stores/languageStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { useReadHistoryStore } from '../../stores/readHistoryStore';
 import { useViewTracking } from '../../hooks/useViewTracking';
 import { useWikipediaImages } from '../../hooks/useWikipediaImages';
@@ -23,7 +23,7 @@ import { CcAttribution } from '../../components/common/CcAttribution';
 
 export function EventPage() {
   const { t } = useTranslation('event');
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const { id } = useParams<{ id: string }>();
   const { event, loading, error } = useEvent(id);
   const { events: allEvents } = useEvents({ limit: 100, lang: language });

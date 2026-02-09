@@ -2,7 +2,8 @@ import useSWR from 'swr';
 import type { Felieton, FelietonyResponse } from '../types/felieton';
 import { API_BASE } from '../config/api';
 import { sanitizeFelieton } from '../utils/sanitize';
-import { useLanguage, type Language } from '../stores/languageStore';
+import type { Language } from '../stores/languageStore';
+import { useRouteLanguage } from './useRouteLanguage';
 
 async function fetchFelietony(url: string): Promise<Felieton[]> {
   const response = await fetch(url);
@@ -16,7 +17,7 @@ async function fetchFelietony(url: string): Promise<Felieton[]> {
 }
 
 export function useFelietony(langOverride?: Language) {
-  const storeLanguage = useLanguage();
+  const storeLanguage = useRouteLanguage();
   const lang = langOverride ?? storeLanguage;
   const url = `${API_BASE}/felietony/today?lang=${lang}`;
 

@@ -296,7 +296,7 @@ export function SummaryLineChart({ data }: SummaryLineChartProps) {
         <ChartScaleToggle />
       </div>
       <div className="chart-title">{data.title}</div>
-      <div className="h-[200px] p-3 overflow-hidden rounded-b-lg">
+      <div className="h-[200px] p-3">
         <Line ref={chartRef} data={chartData} options={options} />
       </div>
     </div>

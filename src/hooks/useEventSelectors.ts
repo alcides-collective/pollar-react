@@ -4,7 +4,7 @@ import { CATEGORY_ORDER } from '../constants/categories';
 import { useEvents } from '../stores/eventsStore';
 import { useSelectedCategory, useSelectedCountries } from '../stores/uiStore';
 import { useFavoriteCategories, useFavoriteCountries } from '../stores/userStore';
-import { useLanguage } from '../stores/languageStore';
+import { useRouteLanguage } from './useRouteLanguage';
 import { isOlympicEvent } from '../components/news/OlympicsSection';
 import { normalizeCountry } from '../utils/countrySlug';
 
@@ -270,7 +270,7 @@ export function useEventGroups(
   const selectedCountries = useSelectedCountries();
   const favoriteCategories = useFavoriteCategories();
   const favoriteCountries = useFavoriteCountries();
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const includeArchive = options.includeArchive ?? (!!selectedCategory || selectedCountries.length > 0);
 
   const { events, loading, error } = useEvents({

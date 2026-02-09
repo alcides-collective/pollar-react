@@ -6,6 +6,7 @@
 
 import { createSlug } from './slug';
 import type { Language } from '../stores/languageStore';
+import { getCategoryFromSlug, getCategorySlug } from './categorySlug';
 
 /** URL segment for country filter per language */
 export const COUNTRY_SEGMENT: Record<Language, string> = { pl: 'kraj', en: 'country', de: 'land' };
@@ -143,4 +144,41 @@ export function parseCountrySlugsParam(param: string, language: Language): strin
     .split('+')
     .map(slug => getCountryFromSlug(slug, language))
     .filter((c): c is string => c !== null);
+}
+
+/**
+ * Translate a path (without language prefix) from one language to another.
+ * Handles category, country, and category+country routes; returns path as-is for other pages.
+ */
+export function translatePath(path: string, fromLang: Language, toLang: Language): string {
+  // Category + Country: /:catSlug/(kraj|country|land)/:countrySlugs
+  const catCountryMatch = path.match(/^\/([^/]+)\/(kraj|country|land)\/(.+)$/);
+  if (catCountryMatch) {
+    const polishCat = getCategoryFromSlug(catCountryMatch[1], fromLang);
+    const countries = parseCountrySlugsParam(catCountryMatch[3], fromLang);
+    if (polishCat && countries.length > 0) {
+      return `/${getCategorySlug(polishCat, toLang)}/${COUNTRY_SEGMENT[toLang]}/${buildCountrySlugsParam(countries, toLang)}`;
+    }
+  }
+
+  // Country only: /(kraj|country|land)/:countrySlugs
+  const countryMatch = path.match(/^\/(kraj|country|land)\/(.+)$/);
+  if (countryMatch) {
+    const countries = parseCountrySlugsParam(countryMatch[2], fromLang);
+    if (countries.length > 0) {
+      return `/${COUNTRY_SEGMENT[toLang]}/${buildCountrySlugsParam(countries, toLang)}`;
+    }
+  }
+
+  // Category only: /:catSlug (single segment, no slashes)
+  const catSlug = path.replace(/^\//, '');
+  if (catSlug && !catSlug.includes('/')) {
+    const polishCat = getCategoryFromSlug(catSlug, fromLang);
+    if (polishCat) {
+      return `/${getCategorySlug(polishCat, toLang)}`;
+    }
+  }
+
+  // Other pages — return unchanged
+  return path;
 }
