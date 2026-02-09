@@ -1,5 +1,5 @@
 import { useMemo, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,7 @@ import { useReadHistoryStore } from '../../stores/readHistoryStore';
 import { useViewTracking } from '../../hooks/useViewTracking';
 import { useWikipediaImages } from '../../hooks/useWikipediaImages';
 import { prepareOgDescription } from '../../utils/text';
+import { createSlug } from '../../utils/slug';
 import { staggerContainer, staggerItem, fadeInUp } from '../../lib/animations';
 import { Skeleton } from '../../components/ui/skeleton';
 import { EventHeader } from './EventHeader';
@@ -24,7 +25,9 @@ import { CcAttribution } from '../../components/common/CcAttribution';
 export function EventPage() {
   const { t } = useTranslation('event');
   const language = useRouteLanguage();
-  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { id, slug } = useParams<{ id: string; slug?: string }>();
   const { event, loading, error } = useEvent(id);
   const { events: allEvents } = useEvents({ limit: 100, lang: language });
   const user = useUser();
@@ -64,6 +67,15 @@ export function EventPage() {
       useReadHistoryStore.getState().markAsRead(user.uid, id);
     }
   }, [user?.uid, id, event, loading]);
+
+  // Correct slug to match current language (like Wikipedia canonical redirect)
+  useEffect(() => {
+    if (!event || loading) return;
+    const correctSlug = createSlug(event.metadata?.ultraShortHeadline || event.title);
+    if (!correctSlug || correctSlug === slug) return;
+    const prefix = language !== 'pl' ? `/${language}` : '';
+    navigate(`${prefix}/event/${event.id}/${correctSlug}`, { replace: true });
+  }, [event, loading, slug, language, navigate]);
 
   // Find previous and next events
   const { previousEvent, nextEvent } = useMemo(() => {
