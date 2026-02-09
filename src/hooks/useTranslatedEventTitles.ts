@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useLanguage } from '../stores/languageStore';
+import { useRouteLanguage } from './useRouteLanguage';
 import { API_BASE } from '../config/api';
 
 interface EventTitleData {
@@ -15,7 +15,7 @@ const titleCache = new Map<string, EventTitleData>();
  * Fetches titles based on current language and caches results.
  */
 export function useTranslatedEventTitles(eventIds: string[]) {
-  const language = useLanguage();
+  const language = useRouteLanguage();
   const [titles, setTitles] = useState<Record<string, EventTitleData>>({});
   const [loading, setLoading] = useState(false);
   const fetchedRef = useRef<Set<string>>(new Set());

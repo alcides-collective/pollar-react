@@ -2,7 +2,8 @@ import { useEffect, useMemo, useCallback, useRef } from 'react';
 import { useEventsStore } from '../stores/eventsStore';
 import { sanitizeEvent } from '../utils/sanitize';
 import { CATEGORY_ORDER } from '../constants/categories';
-import { useLanguage, type Language } from '../stores/languageStore';
+import type { Language } from '../stores/languageStore';
+import { useRouteLanguage } from './useRouteLanguage';
 import type { Event } from '../types/events';
 
 const ARCHIVE_API_BASE = 'https://pollar-backend-production.up.railway.app/api';
@@ -59,7 +60,7 @@ function mapArchiveEvent(raw: any): Event {
 }
 
 export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
-  const storeLanguage = useLanguage();
+  const storeLanguage = useRouteLanguage();
   const { limit = 200 } = options;
   const lang = options.lang ?? storeLanguage;
 

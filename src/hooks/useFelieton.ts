@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import type { Felieton } from '../types/felieton';
 import { API_BASE } from '../config/api';
 import { sanitizeFelieton } from '../utils/sanitize';
-import { useLanguage, type Language } from '../stores/languageStore';
+import type { Language } from '../stores/languageStore';
+import { useRouteLanguage } from './useRouteLanguage';
 
 export function useFelieton(id: string | undefined, langOverride?: Language) {
-  const storeLanguage = useLanguage();
+  const storeLanguage = useRouteLanguage();
   const lang = langOverride ?? storeLanguage;
   const [felieton, setFelieton] = useState<Felieton | null>(null);
   const [loading, setLoading] = useState(true);

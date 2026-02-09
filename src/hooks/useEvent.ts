@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import type { Event } from '../types/events';
 import { API_BASE } from '../config/api';
 import { sanitizeEvent } from '../utils/sanitize';
-import { useLanguage, type Language } from '../stores/languageStore';
+import type { Language } from '../stores/languageStore';
+import { useRouteLanguage } from './useRouteLanguage';
 
 const ARCHIVE_API_BASE = 'https://pollar-backend-production.up.railway.app/api';
 
@@ -48,7 +49,7 @@ function mapArchiveEvent(raw: any): Event {
 }
 
 export function useEvent(eventId: string | undefined, langOverride?: Language) {
-  const storeLanguage = useLanguage();
+  const storeLanguage = useRouteLanguage();
   const lang = langOverride ?? storeLanguage;
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
