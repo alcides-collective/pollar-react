@@ -17,8 +17,8 @@ export function PowiazaniaLives({ mistakes, maxMistakes }: PowiazaniaLivesProps)
             className={cn(
               'h-2.5 flex-1 border transition-colors',
               i < remaining
-                ? 'bg-black border-transparent'
-                : 'bg-black/10 border-black/10'
+                ? 'bg-black border-transparent dark:bg-white'
+                : 'bg-black/10 border-black/10 dark:bg-white/10 dark:border-white/10'
             )}
           />
         ))}

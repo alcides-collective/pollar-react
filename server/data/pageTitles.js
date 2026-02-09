@@ -172,9 +172,24 @@ export const PAGE_TITLES = {
   },
 };
 
+import { getCategoryFromSlug, getCategoryTitle, getCategoryDescription } from './translations.js';
+
 // Helper to resolve PAGE_TITLES entry for a given path and language
 export function getPageInfo(path, lang = 'pl') {
+  // Check static entries first
   const entry = PAGE_TITLES[path];
-  if (!entry) return null;
-  return entry[lang] || entry.pl || null;
+  if (entry) return entry[lang] || entry.pl || null;
+
+  // Check if path matches a category slug (e.g., /sport, /world, /wirtschaft)
+  const slug = path.replace(/^\//, '');
+  if (slug && !slug.includes('/')) {
+    const category = getCategoryFromSlug(slug, lang);
+    if (category) {
+      const title = getCategoryTitle(category, lang);
+      const description = getCategoryDescription(category, lang);
+      return { title, description };
+    }
+  }
+
+  return null;
 }

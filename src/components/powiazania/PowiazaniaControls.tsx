@@ -21,9 +21,9 @@ export function PowiazaniaControls({
       <button
         className={cn(
           'flex-1 px-4 py-2 text-[11px] tracking-[0.08em] uppercase',
-          'border border-black/10 transition-colors',
-          'hover:bg-black hover:text-white',
-          'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-black'
+          'border border-black/10 transition-colors dark:border-white/10 dark:text-white',
+          'hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black',
+          'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-black dark:disabled:hover:bg-transparent dark:disabled:hover:text-white'
         )}
         onClick={onHint}
         disabled={hintUsed || gameStatus !== 'playing'}
@@ -35,8 +35,8 @@ export function PowiazaniaControls({
         className={cn(
           'flex-1 px-6 py-2 text-[11px] tracking-[0.08em] uppercase transition-colors',
           canSubmit
-            ? 'bg-black text-white hover:opacity-80'
-            : 'bg-black/10 text-black/40 cursor-not-allowed'
+            ? 'bg-black text-white hover:opacity-80 dark:bg-white dark:text-black'
+            : 'bg-black/10 text-black/40 cursor-not-allowed dark:bg-white/10 dark:text-white/40'
         )}
         onClick={onSubmit}
         disabled={!canSubmit}

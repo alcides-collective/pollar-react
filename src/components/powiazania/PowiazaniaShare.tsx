@@ -69,7 +69,7 @@ export function PowiazaniaShare({ puzzle, guesses }: PowiazaniaShareProps) {
 
   return (
     <button
-      className="w-full px-4 py-2 text-[11px] tracking-[0.08em] uppercase border border-black/10 hover:bg-black hover:text-white transition-colors"
+      className="w-full px-4 py-2 text-[11px] tracking-[0.08em] uppercase border border-black/10 hover:bg-black hover:text-white transition-colors dark:border-white/10 dark:text-white dark:hover:bg-white dark:hover:text-black"
       onClick={handleShare}
     >
       {copied ? 'Skopiowano!' : 'Udostępnij'}

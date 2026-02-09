@@ -30,8 +30,8 @@ export function PowiazaniaTile({
         'text-[11px] sm:text-xs uppercase tracking-[0.05em]',
         'border transition-all duration-150',
         word.isSelected
-          ? 'bg-black text-white border-transparent'
-          : 'bg-white text-black border-black/10 hover:border-black',
+          ? 'bg-black text-white border-transparent dark:bg-white dark:text-black'
+          : 'bg-white text-black border-black/10 hover:border-black dark:bg-white/10 dark:text-white dark:border-white/10 dark:hover:border-white',
         animateSuccess && 'success-pulse',
         animateExit && 'tile-exiting',
         pushDown && 'tile-pushing-down'

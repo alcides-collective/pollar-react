@@ -30,6 +30,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { useThemePreference, useSetThemePreference } from '@/stores/themeStore';
 import { updateUserThemePreference } from '@/services/userService';
 import type { ThemePreference } from '@/types/auth';
+import { getCategorySlug } from '../utils/categorySlug';
 import logoImg from '../assets/logo-white.png';
 
 // Language config
@@ -261,7 +262,6 @@ export function Header() {
   const language = useLanguage();
   const { events } = useEvents({ limit: 100, lang: language });
   const selectedCategory = useUIStore((state) => state.selectedCategory);
-  const setSelectedCategory = useUIStore((state) => state.setSelectedCategory);
   const openSearch = useSearchStore((state) => state.openSearch);
   const isAuthenticated = useIsAuthenticated();
   // const openProModal = useProStore((state) => state.openProModal);
@@ -322,16 +322,17 @@ export function Header() {
 
   const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';
 
-  // Handle category selection - navigate to home if not already there
+  // Handle category selection - navigate to category URL
   const handleCategoryClick = (category: string | null) => {
-    setSelectedCategory(category);
-    // Scroll to top when changing category
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (pathWithoutLang !== '/') {
-      // Navigate to localized home
-      const prefix = language !== 'pl' ? `/${language}` : '';
+    const prefix = language !== 'pl' ? `/${language}` : '';
+    if (category) {
+      const slug = getCategorySlug(category, language);
+      navigate(prefix + '/' + slug);
+    } else {
       navigate(prefix + '/');
     }
+    // Scroll to top when changing category
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (

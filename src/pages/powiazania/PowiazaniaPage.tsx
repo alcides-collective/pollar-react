@@ -186,7 +186,7 @@ export function PowiazaniaPage() {
         style={{ '--pow-tile-gap': '0.5rem' } as React.CSSProperties}
       >
         <div className="flex flex-col items-center justify-center py-12">
-          <div className="animate-pulse text-black/40 text-sm tracking-[0.05em]">
+          <div className="animate-pulse text-black/40 dark:text-white/40 text-sm tracking-[0.05em]">
             Ładowanie...
           </div>
         </div>
@@ -250,7 +250,7 @@ export function PowiazaniaPage() {
 
         {/* Hint display */}
         {hintUsed && hintCategoryIndex !== null && (
-          <div className="text-center py-4 text-sm text-black/60">
+          <div className="text-center py-4 text-sm text-black/60 dark:text-white/60">
             Kategoria:{' '}
             <span className="font-semibold">
               {puzzle?.categories[hintCategoryIndex].name}

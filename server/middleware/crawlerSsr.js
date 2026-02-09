@@ -1,6 +1,7 @@
 import { API_BASE } from '../config.js';
 import { PAGE_TITLES, getPageInfo } from '../data/pageTitles.js';
 import { PAGE_FAQS } from '../data/pageFaqs.js';
+import { getCategoryFromSlug, getCategoryTitle, getCategoryDescription, CATEGORY_TRANSLATIONS } from '../data/translations.js';
 import { isCrawler, trackCrawlerVisit } from '../utils/crawler.js';
 import { escapeHtml, stripHtml, stripCustomTags, truncate, createSlug, escapeXml } from '../utils/text.js';
 import { fetchEventData, fetchBriefData, fetchSimilarEvents, fetchFelietonData } from '../utils/api.js';
@@ -362,6 +363,67 @@ export async function crawlerSsrMiddleware(req, res, next) {
       lang,
       answerCapsule: felietonCapsule
     }));
+  }
+
+  // Category pages (e.g., /sport, /en/sports, /de/wirtschaft)
+  const categorySlug = pathWithoutLang.replace(/^\//, '');
+  if (categorySlug && !categorySlug.includes('/')) {
+    const polishCategory = getCategoryFromSlug(categorySlug, lang);
+    if (polishCategory) {
+      const categoryTitle = getCategoryTitle(polishCategory, lang);
+      const categoryDescription = getCategoryDescription(polishCategory, lang);
+      const ogTitle = `Pollar News: ${categoryTitle}`;
+      const pageTitle = `${categoryTitle} | Pollar`;
+      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(categoryTitle)}&description=${encodeURIComponent(categoryDescription)}&lang=${lang}&category=${encodeURIComponent(polishCategory)}`;
+
+      const webPageSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: categoryTitle,
+        description: categoryDescription,
+        url: targetUrl,
+        isPartOf: { '@type': 'WebSite', name: 'Pollar News', url: baseUrl },
+      };
+
+      // Fetch category events for answer capsule
+      let categoryCapsule = '';
+      try {
+        const eventsRes = await fetch(`${API_BASE}/api/events?lang=${lang}&limit=15&category=${encodeURIComponent(polishCategory)}`);
+        if (eventsRes.ok) {
+          const eventsData = await eventsRes.json();
+          const events = Array.isArray(eventsData) ? eventsData : (eventsData.data || eventsData.events || []);
+          if (events.length > 0) {
+            const langPrefix = lang === 'pl' ? '' : `/${lang}`;
+            const eventItems = events.map(e => {
+              const title = escapeHtml(stripHtml(e.title || ''));
+              const lead = escapeHtml(truncate(stripHtml(e.lead || e.summary || ''), 200));
+              const date = e.createdAt ? new Date(e.createdAt).toLocaleDateString(lang === 'de' ? 'de-DE' : lang === 'en' ? 'en-US' : 'pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+              const eSlug = createSlug(e.metadata?.ultraShortHeadline || e.title);
+              const ePath = eSlug ? `/event/${e.id}/${eSlug}` : `/event/${e.id}`;
+              const link = `${baseUrl}${langPrefix}${ePath}`;
+              const sources = e.metadata?.articleCount ? ` · ${e.metadata.articleCount} articles` : '';
+              return `<li><a href="${link}"><strong>${title}</strong></a>${date ? ` <time>${date}</time>` : ''}${sources}<br>${lead}</li>`;
+            }).join('');
+            const heading = { pl: `Najważniejsze: ${categoryTitle}`, en: `Top: ${categoryTitle}`, de: `Top: ${categoryTitle}` }[lang] || categoryTitle;
+            categoryCapsule = `<section class="trending"><h2>${heading}</h2><ol>${eventItems}</ol></section>`;
+          }
+        }
+      } catch { /* skip if unavailable */ }
+
+      return res.send(generateSeoHtml({
+        pageTitle,
+        ogTitle,
+        headline: categoryTitle,
+        description: categoryDescription,
+        ogImage,
+        targetUrl,
+        ogType: 'website',
+        schema: webPageSchema,
+        pathWithoutLang,
+        lang,
+        answerCapsule: categoryCapsule || null,
+      }));
+    }
   }
 
   // Static pages from PAGE_TITLES map

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation, useNavigate, useParams, Navigate } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 import { motion } from 'framer-motion'
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
@@ -21,6 +21,8 @@ import { useAllSectionsReady } from './stores/imageLoadingStore'
 import { useLanguage, useSetLanguage, type Language } from './stores/languageStore'
 import { useResolvedTheme, useThemeStore } from './stores/themeStore'
 import { useContentsquare } from './hooks/useContentsquare'
+import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
+import { useUIStore } from './stores/uiStore'
 
 // Lazy load all page components for code splitting
 const EventPage = lazy(() => import('./pages/event').then(m => ({ default: m.EventPage })))
@@ -96,6 +98,30 @@ const SourcesPage = lazy(() => import('./pages/sources').then(m => ({ default: m
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })))
 
 function HomePage() {
+  const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
+  useEffect(() => {
+    setSelectedCategory(null)
+  }, [setSelectedCategory])
+  return <NewsGrid />
+}
+
+function CategoryPage() {
+  const { categorySlug } = useParams<{ categorySlug: string }>()
+  const language = useLanguage()
+  const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
+
+  const polishCategory = categorySlug ? getCategoryFromSlug(categorySlug, language) : null
+
+  useEffect(() => {
+    if (polishCategory) {
+      setSelectedCategory(polishCategory)
+    }
+  }, [polishCategory, setSelectedCategory])
+
+  if (!polishCategory) {
+    return <Navigate to="/" replace />
+  }
+
   return <NewsGrid />
 }
 
@@ -195,6 +221,8 @@ function getAppRoutes(prefix = '') {
       <Route path="indeksy/:symbol" element={<IndexDetailPage />} />
       <Route path="watchlist" element={<WatchlistPage />} />
     </Route>,
+    /* Category page (dynamic slug — React Router ranks static paths higher) */
+    <Route key={`${prefix}-category`} path={`${prefix}/:categorySlug`} element={<CategoryPage />} />,
     /* 404 catch-all */
     <Route key={`${prefix}-404`} path={`${prefix}/*`} element={<NotFoundPage />} />,
   ]
@@ -247,8 +275,10 @@ function AppContent() {
   const isFullscreen = useIsFullscreenRoute()
   const location = useLocation()
   const allSectionsReady = useAllSectionsReady()
+  const language = useLanguage()
   const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/'
-  const isHomePage = pathWithoutLang === '/'
+  const categorySlug = pathWithoutLang.replace(/^\//, '')
+  const isHomePage = pathWithoutLang === '/' || isValidCategorySlug(categorySlug, language)
 
   // Initialize auth listener
   const initializeAuth = useAuthStore((s) => s.initialize)

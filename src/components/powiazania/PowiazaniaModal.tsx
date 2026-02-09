@@ -25,7 +25,7 @@ export function PowiazaniaModal({
       aria-modal="true"
     >
       <div
-        className="bg-white border border-black/10 p-6 max-w-sm w-full text-center animate-in fade-in zoom-in-95 duration-200"
+        className="bg-white text-black border border-black/10 p-6 max-w-sm w-full text-center animate-in fade-in zoom-in-95 duration-200 dark:bg-zinc-900 dark:text-white dark:border-white/10"
         style={{ fontFamily: "'HK Grotesk', sans-serif" }}
       >
         <h2 className="text-xl mb-2">
@@ -54,14 +54,14 @@ export function PowiazaniaModal({
             <PowiazaniaShare puzzle={puzzle} guesses={guesses} />
           </div>
           <button
-            className="flex-1 px-6 py-2 text-[11px] tracking-[0.08em] uppercase bg-black text-white hover:opacity-80 transition-opacity w-full"
+            className="flex-1 px-6 py-2 text-[11px] tracking-[0.08em] uppercase bg-black text-white hover:opacity-80 transition-opacity w-full dark:bg-white dark:text-black"
             onClick={onPlayAgain}
           >
             Zagraj ponownie
           </button>
         </div>
 
-        <p className="mt-3 text-[10px] text-black/50">
+        <p className="mt-3 text-[10px] text-black/50 dark:text-white/50">
           Nowa zagadka codziennie o 6:00
         </p>
       </div>
