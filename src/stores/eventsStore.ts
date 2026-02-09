@@ -373,7 +373,7 @@ export function useEvents(params: UseEventsOptions = {}) {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         const items = Array.isArray(data) ? data : data.data ?? [];
-        return items.map(mapArchiveEvent);
+        return items.map(mapArchiveEvent).map(sanitizeEvent);
       });
     }
   }, [prodArchiveCacheKey, prodArchiveUrl, prodArchiveIsFresh, prodArchiveLoading, prodArchiveIsFetching, fetchEvents]);
