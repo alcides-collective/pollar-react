@@ -1,7 +1,7 @@
 import { API_BASE } from '../config.js';
 import { PAGE_TITLES, getPageInfo } from '../data/pageTitles.js';
 import { PAGE_FAQS } from '../data/pageFaqs.js';
-import { getCategoryFromSlug, getCategoryTitle, getCategoryDescription, CATEGORY_TRANSLATIONS } from '../data/translations.js';
+import { getCategoryFromSlug, getCategoryTitle, getCategoryDescription, CATEGORY_TRANSLATIONS, parseCountrySlugs, getCountryTitle, getCountryDescription } from '../data/translations.js';
 import { isCrawler, trackCrawlerVisit } from '../utils/crawler.js';
 import { escapeHtml, stripHtml, stripCustomTags, truncate, createSlug, escapeXml } from '../utils/text.js';
 import { fetchEventData, fetchBriefData, fetchSimilarEvents, fetchFelietonData } from '../utils/api.js';
@@ -363,6 +363,83 @@ export async function crawlerSsrMiddleware(req, res, next) {
       lang,
       answerCapsule: felietonCapsule
     }));
+  }
+
+  // Country pages (e.g., /kraj/polska, /en/kraj/germany+france)
+  const countryOnlyMatch = pathWithoutLang.match(/^\/kraj\/(.+)$/);
+  if (countryOnlyMatch) {
+    const countries = parseCountrySlugs(countryOnlyMatch[1], lang);
+    if (countries.length > 0) {
+      const countryNames = countries.map(c => getCountryTitle(c, lang));
+      const title = countryNames.join(', ');
+      const descParts = { pl: 'Wydarzenia dotyczące: ', en: 'News about: ', de: 'Nachrichten über: ' };
+      const description = (descParts[lang] || descParts.pl) + countryNames.join(', ');
+      const ogTitle = `Pollar News: ${title}`;
+      const pageTitle = `${title} | Pollar`;
+      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&lang=${lang}`;
+
+      const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: title,
+        description,
+        url: targetUrl,
+        isPartOf: { '@type': 'WebSite', name: 'Pollar News', url: baseUrl },
+      };
+
+      return res.send(generateSeoHtml({
+        pageTitle,
+        ogTitle,
+        headline: title,
+        description,
+        ogImage,
+        targetUrl,
+        ogType: 'website',
+        schema,
+        pathWithoutLang,
+        lang,
+      }));
+    }
+  }
+
+  // Category + Country pages (e.g., /sport/kraj/polska, /en/economy/kraj/germany+france)
+  const catCountryMatch = pathWithoutLang.match(/^\/([^/]+)\/kraj\/(.+)$/);
+  if (catCountryMatch) {
+    const polishCategory = getCategoryFromSlug(catCountryMatch[1], lang);
+    const countries = parseCountrySlugs(catCountryMatch[2], lang);
+    if (polishCategory && countries.length > 0) {
+      const categoryTitle = getCategoryTitle(polishCategory, lang);
+      const countryNames = countries.map(c => getCountryTitle(c, lang));
+      const title = `${categoryTitle} — ${countryNames.join(', ')}`;
+      const categoryDesc = getCategoryDescription(polishCategory, lang);
+      const countryParts = { pl: 'Kraj: ', en: 'Country: ', de: 'Land: ' };
+      const description = `${categoryDesc} ${countryParts[lang] || countryParts.pl}${countryNames.join(', ')}.`;
+      const ogTitle = `Pollar News: ${title}`;
+      const pageTitle = `${title} | Pollar`;
+      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(categoryDesc)}&lang=${lang}&category=${encodeURIComponent(polishCategory)}`;
+
+      const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: title,
+        description,
+        url: targetUrl,
+        isPartOf: { '@type': 'WebSite', name: 'Pollar News', url: baseUrl },
+      };
+
+      return res.send(generateSeoHtml({
+        pageTitle,
+        ogTitle,
+        headline: title,
+        description,
+        ogImage,
+        targetUrl,
+        ogType: 'website',
+        schema,
+        pathWithoutLang,
+        lang,
+      }));
+    }
   }
 
   // Category pages (e.g., /sport, /en/sports, /de/wirtschaft)

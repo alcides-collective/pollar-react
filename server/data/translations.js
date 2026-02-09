@@ -96,6 +96,74 @@ export function getCategoryDescription(polishCategory, lang = 'pl') {
   return CATEGORY_DESCRIPTIONS[polishCategory]?.[lang] || CATEGORY_DESCRIPTIONS[polishCategory]?.pl || '';
 }
 
+// Country translations (mirrors frontend src/utils/countrySlug.ts)
+export const COUNTRY_TRANSLATIONS = {
+  'Polska':          { pl: 'Polska',          en: 'Poland',         de: 'Polen' },
+  'Niemcy':          { pl: 'Niemcy',          en: 'Germany',        de: 'Deutschland' },
+  'Włochy':          { pl: 'Włochy',          en: 'Italy',          de: 'Italien' },
+  'USA':             { pl: 'USA',             en: 'USA',            de: 'USA' },
+  'Hiszpania':       { pl: 'Hiszpania',       en: 'Spain',          de: 'Spanien' },
+  'Francja':         { pl: 'Francja',         en: 'France',         de: 'Frankreich' },
+  'Rosja':           { pl: 'Rosja',           en: 'Russia',         de: 'Russland' },
+  'Ukraina':         { pl: 'Ukraina',         en: 'Ukraine',        de: 'Ukraine' },
+  'Austria':         { pl: 'Austria',         en: 'Austria',        de: 'Österreich' },
+  'Wielka Brytania': { pl: 'Wielka Brytania', en: 'United Kingdom', de: 'Großbritannien' },
+  'Chiny':           { pl: 'Chiny',           en: 'China',          de: 'China' },
+  'Czechy':          { pl: 'Czechy',          en: 'Czech Republic', de: 'Tschechien' },
+  'Szwajcaria':      { pl: 'Szwajcaria',      en: 'Switzerland',    de: 'Schweiz' },
+  'Izrael':          { pl: 'Izrael',          en: 'Israel',         de: 'Israel' },
+  'Holandia':        { pl: 'Holandia',        en: 'Netherlands',    de: 'Niederlande' },
+};
+
+// Country SEO descriptions
+const COUNTRY_DESCRIPTIONS = {
+  'Polska':          { pl: 'Najważniejsze wydarzenia dotyczące Polski. AI agreguje wiadomości z wielu źródeł.', en: 'Top news about Poland. AI aggregates news from multiple sources.', de: 'Die wichtigsten Nachrichten über Polen. KI aggregiert Nachrichten aus mehreren Quellen.' },
+  'Niemcy':          { pl: 'Najważniejsze wydarzenia dotyczące Niemiec.', en: 'Top news about Germany.', de: 'Die wichtigsten Nachrichten über Deutschland.' },
+  'Włochy':          { pl: 'Najważniejsze wydarzenia dotyczące Włoch.', en: 'Top news about Italy.', de: 'Die wichtigsten Nachrichten über Italien.' },
+  'USA':             { pl: 'Najważniejsze wydarzenia dotyczące USA.', en: 'Top news about the USA.', de: 'Die wichtigsten Nachrichten über die USA.' },
+  'Hiszpania':       { pl: 'Najważniejsze wydarzenia dotyczące Hiszpanii.', en: 'Top news about Spain.', de: 'Die wichtigsten Nachrichten über Spanien.' },
+  'Francja':         { pl: 'Najważniejsze wydarzenia dotyczące Francji.', en: 'Top news about France.', de: 'Die wichtigsten Nachrichten über Frankreich.' },
+  'Rosja':           { pl: 'Najważniejsze wydarzenia dotyczące Rosji.', en: 'Top news about Russia.', de: 'Die wichtigsten Nachrichten über Russland.' },
+  'Ukraina':         { pl: 'Najważniejsze wydarzenia dotyczące Ukrainy.', en: 'Top news about Ukraine.', de: 'Die wichtigsten Nachrichten über die Ukraine.' },
+  'Austria':         { pl: 'Najważniejsze wydarzenia dotyczące Austrii.', en: 'Top news about Austria.', de: 'Die wichtigsten Nachrichten über Österreich.' },
+  'Wielka Brytania': { pl: 'Najważniejsze wydarzenia dotyczące Wielkiej Brytanii.', en: 'Top news about the United Kingdom.', de: 'Die wichtigsten Nachrichten über Großbritannien.' },
+  'Chiny':           { pl: 'Najważniejsze wydarzenia dotyczące Chin.', en: 'Top news about China.', de: 'Die wichtigsten Nachrichten über China.' },
+  'Czechy':          { pl: 'Najważniejsze wydarzenia dotyczące Czech.', en: 'Top news about the Czech Republic.', de: 'Die wichtigsten Nachrichten über Tschechien.' },
+  'Szwajcaria':      { pl: 'Najważniejsze wydarzenia dotyczące Szwajcarii.', en: 'Top news about Switzerland.', de: 'Die wichtigsten Nachrichten über die Schweiz.' },
+  'Izrael':          { pl: 'Najważniejsze wydarzenia dotyczące Izraela.', en: 'Top news about Israel.', de: 'Die wichtigsten Nachrichten über Israel.' },
+  'Holandia':        { pl: 'Najważniejsze wydarzenia dotyczące Holandii.', en: 'Top news about the Netherlands.', de: 'Die wichtigsten Nachrichten über die Niederlande.' },
+};
+
+// Build slug → Polish country lookup per language
+const SLUG_TO_COUNTRY = {};
+for (const lang of ['pl', 'en', 'de']) {
+  SLUG_TO_COUNTRY[lang] = {};
+  for (const [polishName, translations] of Object.entries(COUNTRY_TRANSLATIONS)) {
+    const slug = createSlug(translations[lang]);
+    SLUG_TO_COUNTRY[lang][slug] = polishName;
+  }
+}
+
+/** Resolve a URL slug to the Polish country name, or null */
+export function getCountryFromSlug(slug, lang = 'pl') {
+  return SLUG_TO_COUNTRY[lang]?.[slug] ?? null;
+}
+
+/** Get the translated country name for a Polish country key */
+export function getCountryTitle(polishCountry, lang = 'pl') {
+  return COUNTRY_TRANSLATIONS[polishCountry]?.[lang] || polishCountry;
+}
+
+/** Get the SEO description for a country */
+export function getCountryDescription(polishCountry, lang = 'pl') {
+  return COUNTRY_DESCRIPTIONS[polishCountry]?.[lang] || COUNTRY_DESCRIPTIONS[polishCountry]?.pl || '';
+}
+
+/** Parse country slugs param (e.g. "polska+niemcy") into array of Polish keys */
+export function parseCountrySlugs(param, lang = 'pl') {
+  return param.split('+').map(s => getCountryFromSlug(s, lang)).filter(Boolean);
+}
+
 // Breadcrumb segment name mapping
 export const BREADCRUMB_NAMES = {
   sejm: 'Sejm',
