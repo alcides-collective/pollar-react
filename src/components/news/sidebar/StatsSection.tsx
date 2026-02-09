@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useEvents } from '../../../stores/eventsStore';
 import { useArchiveStats } from '../../../hooks/useArchiveStats';
-import { useLanguage } from '../../../stores/languageStore';
+import { useRouteLanguage } from '../../../hooks/useRouteLanguage';
 
 export function StatsSection() {
   const { t } = useTranslation('common');
-  const language = useLanguage();
+  const language = useRouteLanguage();
 
   // Stats data (city names, people) comes from backend in Polish only,
   // so hide entire section for non-Polish languages to avoid mixed-language display

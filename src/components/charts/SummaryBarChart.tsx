@@ -125,20 +125,10 @@ export function SummaryBarChart({ data }: SummaryBarChartProps) {
           color: tickColor,
           font: { size: 11, weight: 'bold' },
           formatter: (value: number) => {
-            // Format number
-            let formatted: string;
-            if (Math.abs(value) >= 1000000) {
-              formatted = (value / 1000000).toFixed(1) + 'M';
-            } else if (Math.abs(value) >= 1000) {
-              formatted = (value / 1000).toFixed(1) + 'k';
-            } else if (Number.isInteger(value)) {
-              formatted = value.toString();
-            } else {
-              formatted = value.toFixed(2);
-            }
-            // Add unit if not "liczba"
-            const displayUnit = data.unit.toLowerCase() === 'liczba' ? '' : ` ${data.unit}`;
-            return `${formatted}${displayUnit}`;
+            if (Math.abs(value) >= 1000000) return (value / 1000000).toFixed(1) + 'M';
+            if (Math.abs(value) >= 1000) return (value / 1000).toFixed(1) + 'k';
+            if (Number.isInteger(value)) return value.toString();
+            return value.toFixed(2);
           },
         },
       },
