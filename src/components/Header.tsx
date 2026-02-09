@@ -310,7 +310,7 @@ export function Header() {
   }, []);
 
   const allCategories = useMemo(() => {
-    const uniqueCategories = new Set(events.map(e => e.category).filter(Boolean));
+    const uniqueCategories = new Set(events.map(e => e.category).filter(c => Boolean(c) && c !== 'Uncategorized'));
     const categories = Array.from(uniqueCategories);
     return categories.sort((a, b) => {
       const indexA = CATEGORY_ORDER.indexOf(a);

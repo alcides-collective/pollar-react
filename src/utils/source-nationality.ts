@@ -517,6 +517,8 @@ export const sourceToNationality: Record<string, SourceNationality> = {
   'jastrzabpost.pl': 'polish',
   'krakow.tvp.pl': 'polish',
   'bialystok.tvp.pl': 'polish',
+  'warszawa.tvp.pl': 'polish',
+  'rzeszow.tvp.pl': 'polish',
   'wiadomoscihandlowe.pl': 'polish',
   'Wiadomości Handlowe': 'polish',
   'Bayerischer Rundfunk': 'german',

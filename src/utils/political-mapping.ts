@@ -485,6 +485,8 @@ export const sourceToPoliticalLeaning: Record<string, PoliticalLeaning> = {
   'jastrzabpost.pl': 'center',
   'krakow.tvp.pl': 'center_left',
   'bialystok.tvp.pl': 'center_left',
+  'warszawa.tvp.pl': 'center_left',
+  'rzeszow.tvp.pl': 'center_left',
   'wiadomoscihandlowe.pl': 'center',
   'Wiadomości Handlowe': 'center',
   'Bayerischer Rundfunk': 'center',
