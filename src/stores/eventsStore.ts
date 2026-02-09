@@ -191,10 +191,6 @@ export const useEventsStore = create<EventsStore>((set, get) => ({
           const { title, lead, ...nonTextFields } = partialEvent;
           const safeUpdate = langMatch ? partialEvent : nonTextFields;
 
-          if (title) {
-            console.log(`[SSE upsert] id=${partialEvent.id} lang=${currentLang} cacheKey=${key.slice(-30)} langMatch=${langMatch} title="${title.slice(0, 50)}" existing="${entry.data[existingIndex].title.slice(0, 50)}"`);
-          }
-
           const updatedEvents = [...entry.data];
           updatedEvents[existingIndex] = {
             ...updatedEvents[existingIndex],
@@ -370,23 +366,13 @@ export function useEvents(params: UseEventsOptions = {}) {
   useEffect(() => {
     if (!prodArchiveCacheKey) return;
     const shouldFetch = !prodArchiveIsFresh && !prodArchiveLoading && !prodArchiveIsFetching;
-    console.log(`[prodArchive effect] key=${prodArchiveCacheKey.slice(-40)}`, {
-      shouldFetch,
-      prodArchiveIsFresh,
-      prodArchiveLoading,
-      prodArchiveIsFetching,
-      alreadyInitiated: prodFetchInitiatedRef.current === prodArchiveCacheKey,
-    });
     if (shouldFetch && prodFetchInitiatedRef.current !== prodArchiveCacheKey) {
       prodFetchInitiatedRef.current = prodArchiveCacheKey;
-      console.log(`[prodArchive] fetching: ${prodArchiveUrl}`);
       fetchEvents(prodArchiveCacheKey, async () => {
         const response = await fetch(prodArchiveUrl);
-        console.log(`[prodArchive] response status: ${response.status}`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         const items = Array.isArray(data) ? data : data.data ?? [];
-        console.log(`[prodArchive] got ${items.length} items`);
         return items.map(mapArchiveEvent);
       });
     }
@@ -415,28 +401,6 @@ export function useEvents(params: UseEventsOptions = {}) {
   const isLoading = loadingState || (!isFresh && events.length === 0);
   const isArchiveLoading = params.includeArchive && archiveLoading && archiveEvents.length === 0;
   const isProdArchiveLoading = prodArchiveLoading && prodArchiveEvents.length === 0;
-
-  // Debug: log loading state breakdown for category pages
-  if (params.category) {
-    console.log(`[useEvents debug] category=${params.category}`, {
-      isLoading,
-      isArchiveLoading,
-      isProdArchiveLoading,
-      loadingState,
-      isFresh,
-      eventsCount: events.length,
-      archiveLoading,
-      archiveEventsCount: archiveEvents.length,
-      prodArchiveLoading,
-      prodArchiveEventsCount: prodArchiveEvents.length,
-      prodArchiveIsFresh,
-      prodArchiveIsFetching,
-      prodArchiveCacheKey: prodArchiveCacheKey || '(none)',
-      prodArchiveUrl: prodArchiveUrl || '(none)',
-      cacheKey,
-      finalLoading: isLoading || isArchiveLoading || isProdArchiveLoading,
-    });
-  }
 
   // Filter out hidden categories (only if user is logged in and has hidden categories)
   const hiddenCategories = useUserStore((s) => s.hiddenCategories);
