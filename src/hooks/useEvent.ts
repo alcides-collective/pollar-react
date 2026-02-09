@@ -77,16 +77,15 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
         if (response.ok) {
           const data = await response.json();
           if (!cancelled) {
-            const parsed = sanitizeEvent(data);
-            setEvent(parsed);
+            setEvent(sanitizeEvent(data));
 
-            // For non-PL: compare lead with Polish version to detect untranslated
+            // For non-PL: compare raw leads to detect untranslated content
             if (lang !== 'pl') {
               try {
                 const plRes = await fetch(`${API_BASE}/events/${eventId}?lang=pl`);
                 if (plRes.ok) {
                   const plData = await plRes.json();
-                  if (!cancelled && parsed.lead && plData.lead === parsed.lead) {
+                  if (!cancelled && data.lead && plData.lead === data.lead) {
                     setIsTranslated(false);
                   }
                 }
@@ -105,15 +104,16 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
           if (archiveResponse.ok) {
             const archiveData = await archiveResponse.json();
             if (!cancelled) {
-              const parsed = sanitizeEvent(mapArchiveEvent(archiveData));
-              setEvent(parsed);
+              const mapped = mapArchiveEvent(archiveData);
+              setEvent(sanitizeEvent(mapped));
 
               if (lang !== 'pl') {
                 try {
                   const plRes = await fetch(`${ARCHIVE_API_BASE}/archive/${eventId}?lang=pl`);
                   if (plRes.ok) {
                     const plData = await plRes.json();
-                    if (!cancelled && parsed.lead && plData.lead === parsed.lead) {
+                    const plMapped = mapArchiveEvent(plData);
+                    if (!cancelled && mapped.lead && plMapped.lead === mapped.lead) {
                       setIsTranslated(false);
                     }
                   }

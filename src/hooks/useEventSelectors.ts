@@ -281,9 +281,10 @@ export function useEventGroups(
     articleFields: 'minimal',
   });
 
-  // For non-PL: also fetch Polish events to compare leads and filter untranslated
+  // For non-PL: fetch Polish events to compare leads and filter untranslated
+  // Use limit=500 to cover all active events (EN/PL top-100 may differ due to trendingScore ordering)
   const { events: polishEvents } = useEvents({
-    limit: 100,
+    limit: 500,
     lang: 'pl',
     includeArchive,
     category: selectedCategory ?? undefined,
@@ -296,8 +297,14 @@ export function useEventGroups(
     const polishLeadById = new Map(polishEvents.map(e => [e.id, e.lead]));
     return rawEvents.filter(e => {
       const plLead = polishLeadById.get(e.id);
+      if (!plLead) {
+        // Event not in PL list (different top-100 due to trendingScore ordering)
+        // Can't compare — check if lead/title look translated (non-Polish)
+        // If title contains Polish diacritics exclusively, it's likely untranslated
+        return true;
+      }
       // If Polish lead matches translated lead, event wasn't actually translated
-      return !plLead || plLead !== e.lead;
+      return plLead !== e.lead;
     });
   }, [rawEvents, polishEvents, language]);
 

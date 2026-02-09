@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion } from 'framer-motion';
@@ -13,6 +13,8 @@ import { useViewTracking } from '../../hooks/useViewTracking';
 import { useWikipediaImages } from '../../hooks/useWikipediaImages';
 import { prepareOgDescription } from '../../utils/text';
 import { createSlug } from '../../utils/slug';
+import { trackEventOpened, inferEventSource } from '../../lib/analytics';
+import { incrementEventsViewed } from '../../hooks/useSessionTracking';
 import { staggerContainer, staggerItem, fadeInUp } from '../../lib/animations';
 import { Skeleton } from '../../components/ui/skeleton';
 import { EventHeader } from './EventHeader';
@@ -67,6 +69,19 @@ export function EventPage() {
       useReadHistoryStore.getState().markAsRead(user.uid, id);
     }
   }, [user?.uid, id, event, loading]);
+
+  // Track event_opened for registered users (retention analytics)
+  const eventOpenedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!user || !event || loading || eventOpenedRef.current === event.id) return;
+    eventOpenedRef.current = event.id;
+    trackEventOpened({
+      event_id: event.id,
+      category: event.category || '',
+      source: inferEventSource(),
+    });
+    incrementEventsViewed();
+  }, [user, event, loading]);
 
   // Correct slug to match current language (like Wikipedia canonical redirect)
   useEffect(() => {

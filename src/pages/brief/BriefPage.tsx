@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useBrief } from '../../hooks/useBrief';
@@ -5,6 +6,9 @@ import { useActiveSection } from '../../hooks/useActiveSection';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { prepareOgDescription } from '../../utils/text';
 import { useLanguage } from '../../stores/languageStore';
+import { useUser } from '../../stores/authStore';
+import { trackBriefViewed } from '../../lib/analytics';
+import { markBriefViewed } from '../../hooks/useSessionTracking';
 import { CcAttribution } from '../../components/common/CcAttribution';
 import {
   BriefHero,
@@ -22,6 +26,71 @@ export function BriefPage() {
   const { activeItem: activeSection, setSectionRef } = useActiveSection(
     brief?.sections ?? []
   );
+
+  const user = useUser();
+
+  // ── Brief engagement tracking (registered users only) ──
+  const briefLoadTimeRef = useRef(0);
+  const maxScrollDepthRef = useRef(0);
+  const hasFiredBriefRef = useRef(false);
+
+  // Reset tracking state when brief loads
+  useEffect(() => {
+    if (brief && !loading) {
+      briefLoadTimeRef.current = Date.now();
+      hasFiredBriefRef.current = false;
+      maxScrollDepthRef.current = 0;
+    }
+  }, [brief, loading]);
+
+  // Scroll depth tracking
+  useEffect(() => {
+    if (!brief || !user) return;
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      const depth = Math.min(100, Math.round((scrollTop / docHeight) * 100));
+      if (depth > maxScrollDepthRef.current) {
+        maxScrollDepthRef.current = depth;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [brief, user]);
+
+  // Fire brief_viewed on unmount, tab hidden, or page unload
+  useEffect(() => {
+    if (!brief || !user) return;
+
+    const fireBriefViewed = () => {
+      if (hasFiredBriefRef.current || !briefLoadTimeRef.current) return;
+      hasFiredBriefRef.current = true;
+
+      const timeSpent = Math.round((Date.now() - briefLoadTimeRef.current) / 1000);
+      trackBriefViewed({
+        scroll_depth: maxScrollDepthRef.current,
+        time_spent_seconds: timeSpent,
+        sections_count: brief.sections?.length ?? 0,
+      });
+      markBriefViewed();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') fireBriefViewed();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', fireBriefViewed);
+
+    return () => {
+      fireBriefViewed(); // Fire on unmount (navigation away)
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', fireBriefViewed);
+    };
+  }, [brief, user]);
 
   const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
 

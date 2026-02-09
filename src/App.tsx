@@ -23,6 +23,8 @@ import { useResolvedTheme, useThemeStore } from './stores/themeStore'
 import { useChartScaleStore } from './stores/chartScaleStore'
 import { useContentsquare } from './hooks/useContentsquare'
 import { useCountryRedirect } from './hooks/useCountryRedirect'
+import { useSessionTracking } from './hooks/useSessionTracking'
+import { initUserAnalytics, clearUserAnalytics } from './lib/analytics'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
 import { parseCountrySlugsParam, ALL_COUNTRY_SEGMENTS } from './utils/countrySlug'
 import { useUIStore } from './stores/uiStore'
@@ -399,6 +401,8 @@ function AppContent() {
         if (profile?.preferences?.selectedCountries) {
           useUIStore.getState().syncCountriesFromProfile(profile.preferences.selectedCountries)
         }
+        // Initialize analytics user identity for registered user tracking
+        initUserAnalytics(user, profile, language)
       })
     } else {
       // Clear all user-related stores on logout
@@ -408,8 +412,9 @@ function AppContent() {
       resetTheme()
       resetChartScale()
       useUIStore.getState().resetCountries()
+      clearUserAnalytics()
     }
-  }, [user, fetchProfile, clearProfile, clearAlertsStore, clearReadHistoryStore, resetTheme, resetChartScale])
+  }, [user, fetchProfile, clearProfile, clearAlertsStore, clearReadHistoryStore, resetTheme, resetChartScale, language])
 
   // Redirect to persisted country URL when landing on '/'
   useCountryRedirect()
@@ -419,6 +424,9 @@ function AppContent() {
 
   // Load Contentsquare/Hotjar analytics when consent granted
   useContentsquare()
+
+  // Track session-level engagement for registered users
+  useSessionTracking()
 
   const handleRouteChange = useCallback(() => {
     setShowFooter(false)
