@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { API_BASE } from '../config.js';
 import { PAGE_TITLES } from '../data/pageTitles.js';
-import { RSS_DESCRIPTIONS } from '../data/translations.js';
+import { RSS_DESCRIPTIONS, COUNTRY_TRANSLATIONS } from '../data/translations.js';
 import { createSlug, escapeXml, stripHtml } from '../utils/text.js';
 
 export const feedRoutes = Router();
@@ -87,6 +87,23 @@ feedRoutes.get('/sitemap.xml', async (req, res) => {
     ...felietony.map(f => {
       const slug = createSlug(f.ultraShortHeadline || f.title);
       return generateUrlEntry(slug ? `/felieton/${f.id}/${slug}` : `/felieton/${f.id}`, f.updatedAt || f.createdAt);
+    }),
+    // Country filter pages (each language has its own segment + slug)
+    ...Object.keys(COUNTRY_TRANSLATIONS).map(polishKey => {
+      const segments = { pl: 'kraj', en: 'country', de: 'land' };
+      const plSlug = createSlug(COUNTRY_TRANSLATIONS[polishKey].pl);
+      const enSlug = createSlug(COUNTRY_TRANSLATIONS[polishKey].en);
+      const deSlug = createSlug(COUNTRY_TRANSLATIONS[polishKey].de);
+      const plUrl = `${baseUrl}/${segments.pl}/${plSlug}`;
+      const enUrl = `${baseUrl}/en/${segments.en}/${enSlug}`;
+      const deUrl = `${baseUrl}/de/${segments.de}/${deSlug}`;
+      return `  <url>
+    <loc>${plUrl}</loc>
+      <xhtml:link rel="alternate" hreflang="pl" href="${plUrl}"/>
+      <xhtml:link rel="alternate" hreflang="en" href="${enUrl}"/>
+      <xhtml:link rel="alternate" hreflang="de" href="${deUrl}"/>
+      <xhtml:link rel="alternate" hreflang="x-default" href="${plUrl}"/>
+  </url>`;
     }),
     // External: status page (no hreflang — language-independent)
     `  <url>
