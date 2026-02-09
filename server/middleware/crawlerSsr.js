@@ -2,6 +2,7 @@ import { API_BASE } from '../config.js';
 import { PAGE_TITLES, getPageInfo } from '../data/pageTitles.js';
 import { PAGE_FAQS } from '../data/pageFaqs.js';
 import { getCategoryFromSlug, getCategoryTitle, getCategoryDescription, CATEGORY_TRANSLATIONS, parseCountrySlugs, getCountryTitle, getCountryDescription } from '../data/translations.js';
+import { CATEGORY_COUNTRY_DESCRIPTIONS } from '../data/categoryCountryDescriptions.js';
 import { isCrawler, trackCrawlerVisit } from '../utils/crawler.js';
 import { escapeHtml, stripHtml, stripCustomTags, truncate, createSlug, escapeXml } from '../utils/text.js';
 import { fetchEventData, fetchBriefData, fetchSimilarEvents, fetchFelietonData } from '../utils/api.js';
@@ -422,12 +423,21 @@ export async function crawlerSsrMiddleware(req, res, next) {
       const categoryTitle = getCategoryTitle(polishCategory, lang);
       const countryNames = countries.map(c => getCountryTitle(c, lang));
       const title = `${categoryTitle} — ${countryNames.join(', ')}`;
-      const categoryDesc = getCategoryDescription(polishCategory, lang);
-      const countryParts = { pl: 'Kraj: ', en: 'Country: ', de: 'Land: ' };
-      const description = `${categoryDesc} ${countryParts[lang] || countryParts.pl}${countryNames.join(', ')}.`;
+
+      // Use unique description for single-country pages, generic fallback for multi-country
+      let description;
+      if (countries.length === 1) {
+        description = CATEGORY_COUNTRY_DESCRIPTIONS[polishCategory]?.[countries[0]]?.[lang];
+      }
+      if (!description) {
+        const categoryDesc = getCategoryDescription(polishCategory, lang);
+        const countryParts = { pl: 'Kraj: ', en: 'Country: ', de: 'Land: ' };
+        description = `${categoryDesc} ${countryParts[lang] || countryParts.pl}${countryNames.join(', ')}.`;
+      }
       const ogTitle = `Pollar News: ${title}`;
       const pageTitle = `${title} | Pollar`;
-      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(categoryDesc)}&lang=${lang}&category=${encodeURIComponent(polishCategory)}`;
+      const ogDesc = truncate(description, 120);
+      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(ogDesc)}&lang=${lang}&category=${encodeURIComponent(polishCategory)}`;
 
       const schema = {
         '@context': 'https://schema.org',

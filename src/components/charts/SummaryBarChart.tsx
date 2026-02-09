@@ -181,7 +181,7 @@ export function SummaryBarChart({ data }: SummaryBarChartProps) {
         <ChartScaleToggle />
       </div>
       <div className="chart-title">{data.title}</div>
-      <div style={{ height: chartHeight }} className="p-3">
+      <div style={{ height: chartHeight }} className="p-3 overflow-hidden rounded-b-lg">
         <Bar ref={chartRef} data={chartData} options={options} />
       </div>
     </div>
