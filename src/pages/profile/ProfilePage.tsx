@@ -8,6 +8,7 @@ import {
   useSavedEventIds,
   useHiddenCategories,
   useFavoriteCategories,
+  useFavoriteCountries,
   useFollowedMPIds,
   useUserStore,
 } from '@/stores/userStore';
@@ -23,8 +24,10 @@ import { DeleteAccountDialog } from '@/components/profile/DeleteAccountDialog';
 import { EventImage } from '@/components/common/EventImage';
 import { Button } from '@/components/ui/button';
 import { isPrivateRelayEmail } from '@/types/auth';
-import { updateMarketingConsent } from '@/services/userService';
+import { updateMarketingConsent, updateUserSmartScalePreference } from '@/services/userService';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useSmartScale, useToggleSmartScale } from '@/stores/chartScaleStore';
+import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, getCountryDisplay, normalizeCountry } from '@/utils/countrySlug';
 
 // Static category list (same as Header)
 const ALL_CATEGORIES = [
@@ -58,12 +61,16 @@ function ProfileContent() {
   const savedEventIds = useSavedEventIds();
   const hiddenCategories = useHiddenCategories();
   const favoriteCategories = useFavoriteCategories();
+  const favoriteCountries = useFavoriteCountries();
   const followedMPIds = useFollowedMPIds();
   const recentlyRead = useRecentlyRead();
   const alerts = useAlerts();
   const toggleHiddenCategory = useUserStore((s) => s.toggleHiddenCategory);
   const toggleFavoriteCategory = useUserStore((s) => s.toggleFavoriteCategory);
+  const toggleFavoriteCountry = useUserStore((s) => s.toggleFavoriteCountry);
   const signOut = useAuthStore((s) => s.signOut);
+  const smartScale = useSmartScale();
+  const toggleSmartScale = useToggleSmartScale();
 
   const fetchReadHistory = useReadHistoryStore((s) => s.fetchReadHistory);
   const fetchAllAlerts = useAlertsStore((s) => s.fetchAllAlerts);
@@ -89,9 +96,17 @@ function ProfileContent() {
     recentlyRead.some((r) => r.eventId === e.id)
   );
 
-  // Filter events by favorite categories for "For You" section
-  const forYouEvents = favoriteCategories.length > 0
-    ? events.filter((e) => favoriteCategories.includes(e.category)).slice(0, 6)
+  // Filter events by favorite categories or countries for "For You" section
+  const hasPreferences = favoriteCategories.length > 0 || favoriteCountries.length > 0;
+  const forYouEvents = hasPreferences
+    ? events.filter((e) => {
+        const matchesCategory = favoriteCategories.length > 0 && favoriteCategories.includes(e.category);
+        const matchesCountry = favoriteCountries.length > 0 && e.metadata?.mentionedCountries?.some((c: string) => {
+          const norm = normalizeCountry(c);
+          return norm && favoriteCountries.includes(norm);
+        });
+        return matchesCategory || matchesCountry;
+      }).slice(0, 6)
     : events.slice(0, 6);
 
   // Get followed MPs data
@@ -121,6 +136,13 @@ function ProfileContent() {
       // silently fail — profile will show stale state
     } finally {
       setNewsletterLoading(false);
+    }
+  };
+
+  const handleSmartScaleToggle = () => {
+    toggleSmartScale();
+    if (user) {
+      updateUserSmartScalePreference(user.uid, !smartScale).catch(console.error);
     }
   };
 
@@ -399,6 +421,36 @@ function ProfileContent() {
               </div>
             </section>
 
+            {/* Favorite Countries */}
+            <section className="bg-surface-alt border border-divider rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-content-heading mb-2">
+                {t('favoriteCountries.title')}
+              </h3>
+              <p className="text-xs text-content-subtle mb-3">
+                {t('favoriteCountries.description')}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {COUNTRY_KEYS.map((country) => {
+                  const isFavorite = favoriteCountries.includes(country);
+                  return (
+                    <button
+                      key={country}
+                      onClick={() => toggleFavoriteCountry(country)}
+                      className={`px-2.5 py-1 rounded-full text-xs transition-colors ${
+                        isFavorite
+                          ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-700'
+                          : 'bg-surface text-content hover:bg-muted'
+                      }`}
+                    >
+                      {isFavorite && <span className="mr-1">★</span>}
+                      <span className={`fi fi-${COUNTRY_FLAG_CODES[country]} rounded-sm mr-1.5`} />
+                      {getCountryDisplay(country, language)}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
             {/* Hidden Categories */}
             <section className="bg-surface-alt border border-divider rounded-lg p-4">
               <h3 className="text-sm font-semibold text-content-heading mb-2">
@@ -465,6 +517,33 @@ function ProfileContent() {
                 {t('appearance.description')}
               </p>
               <ThemeToggle variant="profile" />
+
+              {/* Smart Scale toggle */}
+              <div className="mt-4 pt-4 border-t border-divider-subtle">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-content-heading">{t('appearance.smartScale')}</p>
+                    <p className="text-xs text-content-subtle mt-0.5">
+                      {t('appearance.smartScaleDescription')}
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleSmartScaleToggle}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${
+                      smartScale ? 'bg-primary' : 'bg-muted'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 rounded-full bg-white transition-transform ${
+                        smartScale ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+                <span className={`text-xs mt-1 block ${smartScale ? 'text-green-700 dark:text-green-400' : 'text-content-subtle'}`}>
+                  {smartScale ? t('appearance.smartScaleEnabled') : t('appearance.smartScaleDisabled')}
+                </span>
+              </div>
             </section>
 
             {/* Account Settings */}

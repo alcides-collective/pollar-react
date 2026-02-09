@@ -75,6 +75,10 @@
   },
   "appearance": {
     "title": "Wygląd",
-    "description": "Wybierz motyw kolorystyczny interfejsu."
+    "description": "Wybierz motyw kolorystyczny interfejsu.",
+    "smartScale": "Smart skala wykresów",
+    "smartScaleDescription": "Oś dopasowana do zakresu danych — widoczne szczegóły zmian. Wyłączone = oś od zera.",
+    "smartScaleEnabled": "Włączona",
+    "smartScaleDisabled": "Wyłączona"
   }
 }

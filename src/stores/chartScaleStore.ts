@@ -16,17 +16,38 @@ interface ChartScaleState {
 
 interface ChartScaleActions {
   toggleSmartScale: () => void;
+  /** Sync from Firestore profile after login */
+  syncFromProfile: (smartScale: boolean | undefined) => void;
+  /** Reset to default (on logout) */
+  reset: () => void;
 }
 
-export const useChartScaleStore = create<ChartScaleState & ChartScaleActions>((set, get) => ({
+export const useChartScaleStore = create<ChartScaleState & ChartScaleActions>((set) => ({
   smartScale: getStoredSetting(),
 
   toggleSmartScale: () => {
-    const next = !get().smartScale;
+    set((state) => {
+      const next = !state.smartScale;
+      try {
+        localStorage.setItem(STORAGE_KEY, String(next));
+      } catch { /* noop */ }
+      return { smartScale: next };
+    });
+  },
+
+  syncFromProfile: (smartScale) => {
+    if (smartScale === undefined) return;
     try {
-      localStorage.setItem(STORAGE_KEY, String(next));
+      localStorage.setItem(STORAGE_KEY, String(smartScale));
     } catch { /* noop */ }
-    set({ smartScale: next });
+    set({ smartScale });
+  },
+
+  reset: () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch { /* noop */ }
+    set({ smartScale: false });
   },
 }));
 

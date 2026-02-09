@@ -246,6 +246,20 @@ export async function updateUserThemePreference(
   });
 }
 
+/**
+ * Updates user's chart smart scale preference in Firestore
+ */
+export async function updateUserSmartScalePreference(
+  uid: string,
+  smartScale: boolean
+): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    'preferences.smartScale': smartScale,
+  });
+}
+
 // ============ Saved Events (Bookmarks) ============
 
 /**

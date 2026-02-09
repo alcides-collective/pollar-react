@@ -75,6 +75,10 @@
   },
   "appearance": {
     "title": "Erscheinungsbild",
-    "description": "Wählen Sie das Farbthema der Benutzeroberfläche."
+    "description": "Wählen Sie das Farbthema der Benutzeroberfläche.",
+    "smartScale": "Smarte Diagrammskala",
+    "smartScaleDescription": "Achse an den Datenbereich angepasst — Details sichtbar. Deaktiviert = Achse beginnt bei Null.",
+    "smartScaleEnabled": "Aktiviert",
+    "smartScaleDisabled": "Deaktiviert"
   }
 }

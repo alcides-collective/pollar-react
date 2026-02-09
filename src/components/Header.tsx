@@ -31,7 +31,7 @@ import { useThemePreference, useSetThemePreference } from '@/stores/themeStore';
 import { updateUserThemePreference } from '@/services/userService';
 import type { ThemePreference } from '@/types/auth';
 import { getCategorySlug } from '../utils/categorySlug';
-import { COUNTRY_KEYS, getCountrySlug, buildCountrySlugsParam } from '../utils/countrySlug';
+import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, buildCountrySlugsParam } from '../utils/countrySlug';
 import { useSelectedCountries } from '../stores/uiStore';
 import logoImg from '../assets/logo-white.png';
 
@@ -163,6 +163,7 @@ function CountryFilter() {
               }}
               className={`flex items-center gap-2 cursor-pointer ${isSelected ? 'bg-zinc-800 text-white' : ''}`}
             >
+              <span className={`fi fi-${COUNTRY_FLAG_CODES[country]} rounded-sm`} />
               <span className="flex-1">{t(`countries.${country}`, country)}</span>
               {isSelected && <i className="ri-check-line" />}
             </DropdownMenuItem>

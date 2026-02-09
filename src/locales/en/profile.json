@@ -75,6 +75,10 @@
   },
   "appearance": {
     "title": "Appearance",
-    "description": "Choose the color theme for the interface."
+    "description": "Choose the color theme for the interface.",
+    "smartScale": "Smart chart scale",
+    "smartScaleDescription": "Axis adapted to data range — details visible. Disabled = axis starts from zero.",
+    "smartScaleEnabled": "Enabled",
+    "smartScaleDisabled": "Disabled"
   }
 }

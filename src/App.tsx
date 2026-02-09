@@ -20,8 +20,10 @@ import { useEventStream } from './hooks/useEventStream'
 import { useAllSectionsReady } from './stores/imageLoadingStore'
 import { useLanguage, useSetLanguage, type Language } from './stores/languageStore'
 import { useResolvedTheme, useThemeStore } from './stores/themeStore'
+import { useChartScaleStore } from './stores/chartScaleStore'
 import { useContentsquare } from './hooks/useContentsquare'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
+import { parseCountrySlugsParam } from './utils/countrySlug'
 import { useUIStore } from './stores/uiStore'
 
 // Lazy load all page components for code splitting
@@ -99,9 +101,11 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ defa
 
 function HomePage() {
   const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
+  const clearSelectedCountries = useUIStore((s) => s.clearSelectedCountries)
   useEffect(() => {
     setSelectedCategory(null)
-  }, [setSelectedCategory])
+    clearSelectedCountries()
+  }, [setSelectedCategory, clearSelectedCountries])
   return <NewsGrid />
 }
 
@@ -119,6 +123,53 @@ function CategoryPage() {
   }, [polishCategory, setSelectedCategory])
 
   if (!polishCategory) {
+    return <Navigate to="/" replace />
+  }
+
+  return <NewsGrid />
+}
+
+function CountryPage() {
+  const { countrySlugs } = useParams<{ countrySlugs: string }>()
+  const language = useLanguage()
+  const setSelectedCountries = useUIStore((s) => s.setSelectedCountries)
+  const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
+
+  const countries = countrySlugs ? parseCountrySlugsParam(countrySlugs, language) : []
+
+  useEffect(() => {
+    setSelectedCategory(null)
+    if (countrySlugs) {
+      setSelectedCountries(parseCountrySlugsParam(countrySlugs, language))
+    }
+  }, [countrySlugs, language, setSelectedCountries, setSelectedCategory])
+
+  if (countries.length === 0) {
+    return <Navigate to="/" replace />
+  }
+
+  return <NewsGrid />
+}
+
+function CategoryCountryPage() {
+  const { categorySlug, countrySlugs } = useParams<{ categorySlug: string; countrySlugs: string }>()
+  const language = useLanguage()
+  const setSelectedCategory = useUIStore((s) => s.setSelectedCategory)
+  const setSelectedCountries = useUIStore((s) => s.setSelectedCountries)
+
+  const polishCategory = categorySlug ? getCategoryFromSlug(categorySlug, language) : null
+  const countries = countrySlugs ? parseCountrySlugsParam(countrySlugs, language) : []
+
+  useEffect(() => {
+    if (polishCategory) {
+      setSelectedCategory(polishCategory)
+    }
+    if (countrySlugs) {
+      setSelectedCountries(parseCountrySlugsParam(countrySlugs, language))
+    }
+  }, [categorySlug, countrySlugs, language, polishCategory, setSelectedCategory, setSelectedCountries])
+
+  if (!polishCategory || countries.length === 0) {
     return <Navigate to="/" replace />
   }
 
@@ -221,6 +272,9 @@ function getAppRoutes(prefix = '') {
       <Route path="indeksy/:symbol" element={<IndexDetailPage />} />
       <Route path="watchlist" element={<WatchlistPage />} />
     </Route>,
+    /* Country filter routes */
+    <Route key={`${prefix}-country`} path={`${prefix}/kraj/:countrySlugs`} element={<CountryPage />} />,
+    <Route key={`${prefix}-cat-country`} path={`${prefix}/:categorySlug/kraj/:countrySlugs`} element={<CategoryCountryPage />} />,
     /* Category page (dynamic slug — React Router ranks static paths higher) */
     <Route key={`${prefix}-category`} path={`${prefix}/:categorySlug`} element={<CategoryPage />} />,
     /* 404 catch-all */
@@ -278,7 +332,7 @@ function AppContent() {
   const language = useLanguage()
   const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/'
   const categorySlug = pathWithoutLang.replace(/^\//, '')
-  const isHomePage = pathWithoutLang === '/' || isValidCategorySlug(categorySlug, language)
+  const isHomePage = pathWithoutLang === '/' || isValidCategorySlug(categorySlug, language) || pathWithoutLang.startsWith('/kraj/') || /^\/[^/]+\/kraj\//.test(pathWithoutLang)
 
   // Initialize auth listener
   const initializeAuth = useAuthStore((s) => s.initialize)
@@ -292,6 +346,7 @@ function AppContent() {
   const resolvedTheme = useResolvedTheme()
   const onSystemThemeChange = useThemeStore((s) => s._onSystemThemeChange)
   const resetTheme = useThemeStore((s) => s.reset)
+  const resetChartScale = useChartScaleStore((s) => s.reset)
 
   useEffect(() => {
     const unsubscribe = initializeAuth()
@@ -324,6 +379,9 @@ function AppContent() {
         if (profile?.preferences?.theme) {
           useThemeStore.getState().syncFromProfile(profile.preferences.theme)
         }
+        if (profile?.preferences?.smartScale !== undefined) {
+          useChartScaleStore.getState().syncFromProfile(profile.preferences.smartScale)
+        }
       })
     } else {
       // Clear all user-related stores on logout
@@ -331,8 +389,9 @@ function AppContent() {
       clearAlertsStore()
       clearReadHistoryStore()
       resetTheme()
+      resetChartScale()
     }
-  }, [user, fetchProfile, clearProfile, clearAlertsStore, clearReadHistoryStore, resetTheme])
+  }, [user, fetchProfile, clearProfile, clearAlertsStore, clearReadHistoryStore, resetTheme, resetChartScale])
 
   // Connect to SSE for real-time event notifications
   useEventStream({ enabled: true })

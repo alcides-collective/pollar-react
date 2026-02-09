@@ -29,6 +29,25 @@ export const COUNTRIES: Record<string, Record<Language, string>> = {
 /** Polish key list for iteration */
 export const COUNTRY_KEYS = Object.keys(COUNTRIES);
 
+/** ISO 3166-1 alpha-2 codes for flag-icons CSS library */
+export const COUNTRY_FLAG_CODES: Record<string, string> = {
+  'Polska': 'pl',
+  'Niemcy': 'de',
+  'Włochy': 'it',
+  'USA': 'us',
+  'Hiszpania': 'es',
+  'Francja': 'fr',
+  'Rosja': 'ru',
+  'Ukraina': 'ua',
+  'Austria': 'at',
+  'Wielka Brytania': 'gb',
+  'Chiny': 'cn',
+  'Czechy': 'cz',
+  'Szwajcaria': 'ch',
+  'Izrael': 'il',
+  'Holandia': 'nl',
+};
+
 /**
  * Aliases map: maps inconsistent API names to canonical Polish keys.
  * Covers all 3 languages + known duplicates.
