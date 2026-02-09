@@ -3,3 +3,4 @@ export { useUIStore, useSelectedCategory, useSetSelectedCategory } from './uiSto
 export { useCookieConsentStore, useCookieConsent, useHasCookieConsent } from './cookieConsentStore';
 export { useImageLoadingStore, useSectionReady, useSectionPriority, useAllSectionsReady } from './imageLoadingStore';
 export { useLanguageStore, useLanguage, useSetLanguage, type Language } from './languageStore';
+export { useChartScaleStore, useSmartScale, useToggleSmartScale } from './chartScaleStore';

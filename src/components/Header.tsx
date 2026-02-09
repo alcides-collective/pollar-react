@@ -31,6 +31,8 @@ import { useThemePreference, useSetThemePreference } from '@/stores/themeStore';
 import { updateUserThemePreference } from '@/services/userService';
 import type { ThemePreference } from '@/types/auth';
 import { getCategorySlug } from '../utils/categorySlug';
+import { COUNTRY_KEYS, getCountrySlug, buildCountrySlugsParam } from '../utils/countrySlug';
+import { useSelectedCountries } from '../stores/uiStore';
 import logoImg from '../assets/logo-white.png';
 
 // Language config
@@ -79,6 +81,107 @@ function LanguageSelector() {
             )}
           </DropdownMenuItem>
         ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+// Country filter component
+function CountryFilter() {
+  const { t } = useTranslation('common');
+  const language = useLanguage();
+  const navigate = useNavigate();
+  const selectedCountries = useSelectedCountries();
+  const selectedCategory = useUIStore((state) => state.selectedCategory);
+  const toggleCountry = useUIStore((state) => state.toggleSelectedCountry);
+  const clearCountries = useUIStore((state) => state.clearSelectedCountries);
+
+  const handleToggle = (country: string) => {
+    // Compute next state
+    const next = selectedCountries.includes(country)
+      ? selectedCountries.filter(c => c !== country)
+      : [...selectedCountries, country];
+
+    toggleCountry(country);
+
+    // Build URL
+    const prefix = language !== 'pl' ? `/${language}` : '';
+    if (next.length === 0) {
+      // No countries selected — go to category or home
+      if (selectedCategory) {
+        navigate(prefix + '/' + getCategorySlug(selectedCategory, language));
+      } else {
+        navigate(prefix + '/');
+      }
+    } else {
+      const countrySlugs = buildCountrySlugsParam(next, language);
+      if (selectedCategory) {
+        navigate(prefix + '/' + getCategorySlug(selectedCategory, language) + '/kraj/' + countrySlugs);
+      } else {
+        navigate(prefix + '/kraj/' + countrySlugs);
+      }
+    }
+  };
+
+  const handleClear = () => {
+    clearCountries();
+    const prefix = language !== 'pl' ? `/${language}` : '';
+    if (selectedCategory) {
+      navigate(prefix + '/' + getCategorySlug(selectedCategory, language));
+    } else {
+      navigate(prefix + '/');
+    }
+  };
+
+  const count = selectedCountries.length;
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className={`h-9 flex items-center gap-1.5 text-sm rounded-lg border transition-colors outline-none ${
+        count > 0
+          ? 'text-white bg-zinc-700 border-zinc-600'
+          : 'text-zinc-300 hover:text-white hover:bg-zinc-800 border-zinc-700/50 hover:border-zinc-600'
+      } w-9 justify-center sm:w-auto sm:px-3`}>
+        <i className="ri-map-pin-line text-base" />
+        <span className="hidden sm:inline">{t('nav.countries')}</span>
+        {count > 0 && (
+          <span className="bg-white text-black text-[10px] font-bold rounded-full h-4 min-w-4 flex items-center justify-center px-1">
+            {count}
+          </span>
+        )}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuLabel>{t('nav.countries')}</DropdownMenuLabel>
+        {COUNTRY_KEYS.map((country) => {
+          const isSelected = selectedCountries.includes(country);
+          return (
+            <DropdownMenuItem
+              key={country}
+              onClick={(e) => {
+                e.preventDefault();
+                handleToggle(country);
+              }}
+              className={`flex items-center gap-2 cursor-pointer ${isSelected ? 'bg-zinc-800 text-white' : ''}`}
+            >
+              <span className="flex-1">{t(`countries.${country}`, country)}</span>
+              {isSelected && <i className="ri-check-line" />}
+            </DropdownMenuItem>
+          );
+        })}
+        {count > 0 && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.preventDefault();
+                handleClear();
+              }}
+              className="text-zinc-400 cursor-pointer"
+            >
+              {t('nav.clearCountries')}
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -388,6 +491,7 @@ export function Header() {
             <AlertsBell />
             {isAuthenticated && <div className="hidden sm:block"><ThemeToggle variant="header" /></div>}
             <div className="hidden sm:block"><LanguageSelector /></div>
+            <CountryFilter />
             <MobileSettingsMenu />
             <AuthButton />
             {/* <button

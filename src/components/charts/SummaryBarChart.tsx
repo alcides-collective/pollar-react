@@ -13,6 +13,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Bar } from 'react-chartjs-2';
 import { CHART_COLORS } from '../../utils/chartUtils';
 import { useIsDarkMode } from '@/stores/themeStore';
+import { useSmartScale } from '@/stores/chartScaleStore';
+import { ChartScaleToggle } from './ChartScaleToggle';
 
 ChartJS.register(
   CategoryScale,
@@ -38,6 +40,7 @@ interface SummaryBarChartProps {
 export function SummaryBarChart({ data }: SummaryBarChartProps) {
   const chartRef = useRef<ChartJS<'bar'>>(null);
   const isDark = useIsDarkMode();
+  const smartScale = useSmartScale();
 
   useEffect(() => {
     return () => {
@@ -56,25 +59,40 @@ export function SummaryBarChart({ data }: SummaryBarChartProps) {
     const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
     const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
 
-    // Calculate smart min/max - don't always start from 0
     const minValue = Math.min(...values);
     const maxValue = Math.max(...values);
     const range = maxValue - minValue;
-    // If all values are the same, use 20% of the value as padding (or 1 if value is 0)
     const padding = range > 0 ? range * 0.1 : Math.max(Math.abs(maxValue) * 0.2, 1);
 
-    // Determine bounds based on data sign
     const allPositive = minValue >= 0;
     const allNegative = maxValue <= 0;
 
-    // Calculate smart bounds
-    let smartMin = Math.floor(minValue - padding);
-    let smartMax = Math.ceil(maxValue + padding);
+    // Calculate X-axis bounds based on scale mode
+    let xMin: number;
+    let xMax: number;
 
-    if (allPositive) {
-      smartMin = Math.max(0, smartMin);
-    } else if (allNegative) {
-      smartMax = Math.min(0, smartMax);
+    if (smartScale) {
+      // Smart mode: zoom to data range
+      let smartMin = Math.floor(minValue - padding);
+      let smartMax = Math.ceil(maxValue + padding);
+      if (allPositive) smartMin = Math.max(0, smartMin);
+      else if (allNegative) smartMax = Math.min(0, smartMax);
+
+      xMin = smartMin - (minValue < 0 ? padding * 0.5 : 0);
+      xMax = smartMax + (maxValue >= 0 ? padding * 0.5 : 0);
+    } else {
+      // Normal mode: always include 0
+      const labelPadding = range > 0 ? range * 0.05 : Math.max(Math.abs(maxValue) * 0.1, 1);
+      if (allPositive) {
+        xMin = 0;
+        xMax = Math.ceil(maxValue + padding) + labelPadding;
+      } else if (allNegative) {
+        xMin = Math.floor(minValue - padding) - labelPadding;
+        xMax = 0;
+      } else {
+        xMin = Math.floor(minValue - padding) - labelPadding;
+        xMax = Math.ceil(maxValue + padding) + labelPadding;
+      }
     }
 
     const chartData = {
@@ -126,8 +144,8 @@ export function SummaryBarChart({ data }: SummaryBarChartProps) {
       },
       scales: {
         x: {
-          min: smartMin - (minValue < 0 ? padding * 0.5 : 0), // Extra space for negative labels
-          max: smartMax + (maxValue >= 0 ? padding * 0.5 : 0), // Extra space for positive labels
+          min: xMin,
+          max: xMax,
           grid: { color: gridColor },
           title: data.unit && data.unit.toLowerCase() !== 'liczba' ? {
             display: true,
@@ -154,11 +172,14 @@ export function SummaryBarChart({ data }: SummaryBarChartProps) {
     const chartHeight = Math.max(150, labels.length <= 3 ? labels.length * 50 + 40 : labels.length * 40 + 40);
 
     return { chartData, options, chartHeight };
-  }, [data, isDark]);
+  }, [data, isDark, smartScale]);
 
   return (
     <div className="chart-box">
-      <span className="chart-label">WYKRES</span>
+      <div className="flex items-center justify-between border-b border-divider">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-content-subtle px-4 py-2">WYKRES</span>
+        <ChartScaleToggle />
+      </div>
       <div className="chart-title">{data.title}</div>
       <div style={{ height: chartHeight }} className="p-3">
         <Bar ref={chartRef} data={chartData} options={options} />

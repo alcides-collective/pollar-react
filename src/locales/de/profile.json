@@ -12,6 +12,10 @@
     "title": "Lieblingskategorien",
     "description": "Beeinflusst die Reihenfolge der Ereignisse auf der Startseite und personalisiert deinen wöchentlichen Newsletter."
   },
+  "favoriteCountries": {
+    "title": "Lieblingsländer",
+    "description": "Ereignisse aus ausgewählten Ländern werden auf der Startseite höher angezeigt."
+  },
   "hiddenCategories": {
     "title": "Ausgeblendete Kategorien",
     "description": "Ereignisse aus ausgeblendeten Kategorien werden auf der Startseite nicht angezeigt."

@@ -178,7 +178,7 @@ export function parseComparisonData(str: string): { labels: string[]; forecast: 
 /**
  * Calculate smart Y-axis bounds
  */
-export function calculateYBounds(values: number[]): { yMin: number; yMax: number } {
+export function calculateYBounds(values: number[], startFromZero = false): { yMin: number; yMax: number } {
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
   const valueRange = maxValue - minValue;
@@ -188,14 +188,24 @@ export function calculateYBounds(values: number[]): { yMin: number; yMax: number
     ? valueRange * 0.15
     : Math.max(Math.abs(maxValue) * 0.1, 0.1);
 
-  // Don't round - keep precision for decimal data (like currency rates)
+  const allPositive = minValue >= 0;
+  const allNegative = maxValue <= 0;
+
+  if (startFromZero) {
+    // Simple mode: always include 0 on the value axis
+    if (allPositive) {
+      return { yMin: 0, yMax: maxValue + valuePadding };
+    } else if (allNegative) {
+      return { yMin: minValue - valuePadding, yMax: 0 };
+    }
+    return { yMin: minValue - valuePadding, yMax: maxValue + valuePadding };
+  }
+
+  // Smart mode: zoom to data range
   let yMin = minValue - valuePadding;
   let yMax = maxValue + valuePadding;
 
   // Only snap to 0 if data is close to 0 (within 2x the padding)
-  const allPositive = minValue >= 0;
-  const allNegative = maxValue <= 0;
-
   if (allPositive && yMin < valuePadding * 2) {
     yMin = 0;
   } else if (allNegative && yMax > -valuePadding * 2) {

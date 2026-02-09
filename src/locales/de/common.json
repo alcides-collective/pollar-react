@@ -22,7 +22,9 @@
       "data": "Daten & Analyse"
     },
     "language": "Sprache",
-    "theme": "Design"
+    "theme": "Design",
+    "countries": "Länder",
+    "clearCountries": "Löschen"
   },
   "categories": {
     "Świat": "Welt",
@@ -36,6 +38,23 @@
     "Pogoda i Środowisko": "Wetter & Umwelt",
     "Nauka i Technologia": "Wissenschaft & Technologie",
     "Inne": "Sonstiges"
+  },
+  "countries": {
+    "Polska": "Polen",
+    "Niemcy": "Deutschland",
+    "Włochy": "Italien",
+    "USA": "USA",
+    "Hiszpania": "Spanien",
+    "Francja": "Frankreich",
+    "Rosja": "Russland",
+    "Ukraina": "Ukraine",
+    "Austria": "Österreich",
+    "Wielka Brytania": "Großbritannien",
+    "Chiny": "China",
+    "Czechy": "Tschechien",
+    "Szwajcaria": "Schweiz",
+    "Izrael": "Israel",
+    "Holandia": "Niederlande"
   },
   "actions": {
     "save": "Speichern",

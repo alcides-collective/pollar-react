@@ -12,6 +12,10 @@
     "title": "Favorite categories",
     "description": "Affects the order of events on the home page and personalizes your weekly newsletter."
   },
+  "favoriteCountries": {
+    "title": "Favorite countries",
+    "description": "Events from selected countries will be displayed higher on the home page."
+  },
   "hiddenCategories": {
     "title": "Hidden categories",
     "description": "Events from hidden categories will not be displayed on the home page."

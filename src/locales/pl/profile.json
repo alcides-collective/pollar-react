@@ -12,6 +12,10 @@
     "title": "Ulubione kategorie",
     "description": "Wpływa na kolejność wydarzeń na stronie głównej oraz personalizację cotygodniowego newslettera."
   },
+  "favoriteCountries": {
+    "title": "Ulubione kraje",
+    "description": "Wydarzenia z wybranych krajów będą wyświetlane wyżej na stronie głównej."
+  },
   "hiddenCategories": {
     "title": "Ukryte kategorie",
     "description": "Wydarzenia z ukrytych kategorii nie będą wyświetlane na stronie głównej."

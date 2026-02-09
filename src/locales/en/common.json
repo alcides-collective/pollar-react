@@ -22,7 +22,9 @@
       "data": "Data & Analysis"
     },
     "language": "Language",
-    "theme": "Theme"
+    "theme": "Theme",
+    "countries": "Countries",
+    "clearCountries": "Clear"
   },
   "categories": {
     "Świat": "World",
@@ -36,6 +38,23 @@
     "Pogoda i Środowisko": "Weather & Environment",
     "Nauka i Technologia": "Science & Technology",
     "Inne": "Other"
+  },
+  "countries": {
+    "Polska": "Poland",
+    "Niemcy": "Germany",
+    "Włochy": "Italy",
+    "USA": "USA",
+    "Hiszpania": "Spain",
+    "Francja": "France",
+    "Rosja": "Russia",
+    "Ukraina": "Ukraine",
+    "Austria": "Austria",
+    "Wielka Brytania": "United Kingdom",
+    "Chiny": "China",
+    "Czechy": "Czech Republic",
+    "Szwajcaria": "Switzerland",
+    "Izrael": "Israel",
+    "Holandia": "Netherlands"
   },
   "actions": {
     "save": "Save",

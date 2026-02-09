@@ -2,10 +2,11 @@ import { useMemo } from 'react';
 import type { Event, FreshnessLevel } from '../types/events';
 import { CATEGORY_ORDER } from '../constants/categories';
 import { useEvents } from '../stores/eventsStore';
-import { useSelectedCategory } from '../stores/uiStore';
-import { useFavoriteCategories } from '../stores/userStore';
+import { useSelectedCategory, useSelectedCountries } from '../stores/uiStore';
+import { useFavoriteCategories, useFavoriteCountries } from '../stores/userStore';
 import { useLanguage } from '../stores/languageStore';
 import { isOlympicEvent } from '../components/news/OlympicsSection';
+import { normalizeCountry } from '../utils/countrySlug';
 
 // Fresh events can appear in all sections (featured, hero, tabs, latest)
 // OLD events are only shown in CategoryCarousel at the bottom
@@ -32,14 +33,32 @@ interface UseEventGroupsOptions {
 const OLYMPICS_START = new Date('2026-02-06').getTime();
 const OLYMPICS_END = new Date('2026-02-23').getTime();
 
+/** Check if an event mentions any of the given countries (normalized) */
+function eventMatchesCountries(event: Event, countries: string[]): boolean {
+  const mentioned = event.metadata?.mentionedCountries;
+  if (!mentioned || mentioned.length === 0) return false;
+  return mentioned.some(c => {
+    const norm = normalizeCountry(c);
+    return norm !== null && countries.includes(norm);
+  });
+}
+
 function computeEventGroups(
   events: Event[],
   selectedCategory: string | null,
-  favoriteCategories: string[] = []
+  selectedCountries: string[],
+  favoriteCategories: string[] = [],
+  favoriteCountries: string[] = [],
 ): Omit<EventGroups, 'loading' | 'error'> {
-  const filteredEvents = selectedCategory
+  // Filter by category
+  let filteredEvents = selectedCategory
     ? events.filter(e => e.category === selectedCategory)
     : events;
+
+  // Filter by countries (multi-select)
+  if (selectedCountries.length > 0) {
+    filteredEvents = filteredEvents.filter(e => eventMatchesCountries(e, selectedCountries));
+  }
 
   // Extract olympic events when Sport is selected and within Olympic dates
   const now = Date.now();
@@ -67,8 +86,7 @@ function computeEventGroups(
     console.groupEnd();
   }
 
-  // Boost events from favorite categories
-  // Create a map with boosted scores for sorting/selection
+  // Boost events from favorite categories AND favorite countries
   // Exclude olympic events from the general pool so they don't appear in other sections
   const poolEvents = olympicIds.size > 0
     ? filteredEvents.filter(e => !olympicIds.has(e.id))
@@ -76,7 +94,9 @@ function computeEventGroups(
 
   const boostedEvents = poolEvents
     .map(e => {
-      const isFavorite = favoriteCategories.includes(e.category);
+      const isFavCategory = favoriteCategories.includes(e.category);
+      const isFavCountry = favoriteCountries.length > 0 && eventMatchesCountries(e, favoriteCountries);
+      const isFavorite = isFavCategory || isFavCountry;
       return {
         ...e,
         // Boost sourceCount by 10 and trendingScore by 1.5x for favorites
@@ -247,9 +267,11 @@ export function useEventGroups(
   options: UseEventGroupsOptions = {}
 ): EventGroups & { loading: boolean; error: Error | null } {
   const selectedCategory = useSelectedCategory();
+  const selectedCountries = useSelectedCountries();
   const favoriteCategories = useFavoriteCategories();
+  const favoriteCountries = useFavoriteCountries();
   const language = useLanguage();
-  const includeArchive = options.includeArchive ?? !!selectedCategory;
+  const includeArchive = options.includeArchive ?? (!!selectedCategory || selectedCountries.length > 0);
 
   const { events, loading, error } = useEvents({
     limit: 100,
@@ -260,8 +282,8 @@ export function useEventGroups(
   });
 
   const groups = useMemo(
-    () => computeEventGroups(events, selectedCategory, favoriteCategories),
-    [events, selectedCategory, favoriteCategories]
+    () => computeEventGroups(events, selectedCategory, selectedCountries, favoriteCategories, favoriteCountries),
+    [events, selectedCategory, selectedCountries, favoriteCategories, favoriteCountries]
   );
 
   return {

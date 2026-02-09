@@ -7,6 +7,8 @@ import {
   removeHiddenCategory,
   addFavoriteCategory,
   removeFavoriteCategory,
+  addFavoriteCountry,
+  removeFavoriteCountry,
   followMP,
   unfollowMP,
 } from '@/services/userService';
@@ -20,6 +22,7 @@ interface UserState {
   savedEventIds: string[];
   hiddenCategories: string[];
   favoriteCategories: string[];
+  favoriteCountries: string[];
   followedMPIds: number[];
   isLoading: boolean;
   error: string | null;
@@ -42,6 +45,10 @@ interface UserActions {
   toggleFavoriteCategory: (category: string) => Promise<void>;
   isCategoryFavorite: (category: string) => boolean;
 
+  // Favorite Countries
+  toggleFavoriteCountry: (country: string) => Promise<void>;
+  isCountryFavorite: (country: string) => boolean;
+
   // Followed MPs
   toggleFollowMP: (mpId: number) => Promise<void>;
   isFollowingMP: (mpId: number) => boolean;
@@ -60,6 +67,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   savedEventIds: [],
   hiddenCategories: [],
   favoriteCategories: [],
+  favoriteCountries: [],
   followedMPIds: [],
   isLoading: false,
   error: null,
@@ -75,6 +83,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
           savedEventIds: profile.savedEventIds || [],
           hiddenCategories: profile.hiddenCategories || [],
           favoriteCategories: profile.favoriteCategories || [],
+          favoriteCountries: profile.favoriteCountries || [],
           followedMPIds: profile.followedMPIds || [],
         });
       }
@@ -92,6 +101,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
       savedEventIds: [],
       hiddenCategories: [],
       favoriteCategories: [],
+      favoriteCountries: [],
       followedMPIds: [],
       error: null,
     });
@@ -217,6 +227,46 @@ export const useUserStore = create<UserStore>((set, get) => ({
     return get().favoriteCategories.includes(category);
   },
 
+  // Favorite Countries
+  toggleFavoriteCountry: async (country) => {
+    const { profile, favoriteCountries } = get();
+    if (!profile) return;
+
+    const isFavorite = favoriteCountries.includes(country);
+
+    // Optimistic update
+    if (isFavorite) {
+      set({
+        favoriteCountries: favoriteCountries.filter((c) => c !== country),
+      });
+    } else {
+      set({ favoriteCountries: [...favoriteCountries, country] });
+    }
+
+    try {
+      if (isFavorite) {
+        await removeFavoriteCountry(profile.id, country);
+      } else {
+        await addFavoriteCountry(profile.id, country);
+      }
+    } catch (error) {
+      // Revert on error
+      if (isFavorite) {
+        set({ favoriteCountries: [...favoriteCountries, country] });
+      } else {
+        set({
+          favoriteCountries: favoriteCountries.filter((c) => c !== country),
+        });
+      }
+      set({ error: 'Nie udało się zaktualizować ulubionych krajów' });
+      throw error;
+    }
+  },
+
+  isCountryFavorite: (country) => {
+    return get().favoriteCountries.includes(country);
+  },
+
   // Followed MPs
   toggleFollowMP: async (mpId) => {
     const { profile, followedMPIds } = get();
@@ -289,6 +339,10 @@ export function useIsCategoryHidden(category: string) {
 
 export function useIsCategoryFavorite(category: string) {
   return useUserStore((state) => state.favoriteCategories.includes(category));
+}
+
+export function useFavoriteCountries() {
+  return useUserStore((state) => state.favoriteCountries);
 }
 
 export function useFollowedMPIds() {

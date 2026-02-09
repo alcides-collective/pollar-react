@@ -62,6 +62,7 @@ export async function createOrUpdateUserProfile(
     createdAt: serverTimestamp(),
     lastActiveAt: serverTimestamp(),
     favoriteCategories: [],
+    favoriteCountries: [],
     savedEventIds: [],
     hiddenCategories: [],
     photoURL: user.photoURL,
@@ -332,6 +333,36 @@ export async function removeFavoriteCategory(
   const userRef = doc(db, USERS_COLLECTION, uid);
   await updateDoc(userRef, {
     favoriteCategories: arrayRemove(category),
+  });
+}
+
+// ============ Favorite Countries ============
+
+/**
+ * Adds a country to user's favorites (Polish key)
+ */
+export async function addFavoriteCountry(
+  uid: string,
+  country: string
+): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    favoriteCountries: arrayUnion(country),
+  });
+}
+
+/**
+ * Removes a country from user's favorites (Polish key)
+ */
+export async function removeFavoriteCountry(
+  uid: string,
+  country: string
+): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    favoriteCountries: arrayRemove(country),
   });
 }
 

@@ -23,6 +23,8 @@ import {
   POLISH_MONTHS_SHORT,
 } from '../../utils/chartUtils';
 import { useIsDarkMode } from '@/stores/themeStore';
+import { useSmartScale } from '@/stores/chartScaleStore';
+import { ChartScaleToggle } from './ChartScaleToggle';
 
 ChartJS.register(
   CategoryScale,
@@ -50,6 +52,7 @@ interface SummaryLineChartProps {
 export function SummaryLineChart({ data }: SummaryLineChartProps) {
   const chartRef = useRef<ChartJS<'line'>>(null);
   const isDark = useIsDarkMode();
+  const smartScale = useSmartScale();
 
   useEffect(() => {
     return () => {
@@ -70,8 +73,8 @@ export function SummaryLineChart({ data }: SummaryLineChartProps) {
     const gridColor = isDark ? CHART_COLORS.grid.dark : CHART_COLORS.grid.light;
     const tickColor = isDark ? CHART_COLORS.tick.dark : CHART_COLORS.tick.light;
 
-    // Calculate smart Y bounds
-    const { yMin, yMax } = calculateYBounds(values);
+    // Calculate Y bounds (startFromZero when smart scale is off)
+    const { yMin, yMax } = calculateYBounds(values, !smartScale);
 
     // Check if data spans multiple years (for label formatting)
     let spansMultipleYears = false;
@@ -284,11 +287,14 @@ export function SummaryLineChart({ data }: SummaryLineChartProps) {
 
       return { chartData, options };
     }
-  }, [data, isDark]);
+  }, [data, isDark, smartScale]);
 
   return (
     <div className="chart-box">
-      <span className="chart-label">WYKRES</span>
+      <div className="flex items-center justify-between border-b border-divider">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-content-subtle px-4 py-2">WYKRES</span>
+        <ChartScaleToggle />
+      </div>
       <div className="chart-title">{data.title}</div>
       <div className="h-[200px] p-3">
         <Line ref={chartRef} data={chartData} options={options} />

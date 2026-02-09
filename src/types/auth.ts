@@ -47,6 +47,8 @@ export interface UserProfile {
   savedEventIds: string[];
   /** Hidden categories - events from these won't be displayed */
   hiddenCategories: string[];
+  /** Favorite countries for boosting (Polish country keys) */
+  favoriteCountries?: string[];
   /** Avatar URL from Firebase Storage */
   photoURL?: string | null;
   /** Followed MP IDs */

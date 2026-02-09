@@ -22,7 +22,9 @@
       "data": "Dane i analiza"
     },
     "language": "Język",
-    "theme": "Motyw"
+    "theme": "Motyw",
+    "countries": "Kraje",
+    "clearCountries": "Wyczyść"
   },
   "categories": {
     "Świat": "Świat",
@@ -36,6 +38,23 @@
     "Pogoda i Środowisko": "Pogoda i Środowisko",
     "Nauka i Technologia": "Nauka i Technologia",
     "Inne": "Inne"
+  },
+  "countries": {
+    "Polska": "Polska",
+    "Niemcy": "Niemcy",
+    "Włochy": "Włochy",
+    "USA": "USA",
+    "Hiszpania": "Hiszpania",
+    "Francja": "Francja",
+    "Rosja": "Rosja",
+    "Ukraina": "Ukraina",
+    "Austria": "Austria",
+    "Wielka Brytania": "Wielka Brytania",
+    "Chiny": "Chiny",
+    "Czechy": "Czechy",
+    "Szwajcaria": "Szwajcaria",
+    "Izrael": "Izrael",
+    "Holandia": "Holandia"
   },
   "actions": {
     "save": "Zapisz",
