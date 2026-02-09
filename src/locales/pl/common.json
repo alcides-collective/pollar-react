@@ -24,6 +24,7 @@
     "language": "Język",
     "theme": "Motyw",
     "countries": "Kraje",
+    "countriesHint": "Filtruj wiadomości wg kraju",
     "clearCountries": "Wyczyść"
   },
   "categories": {

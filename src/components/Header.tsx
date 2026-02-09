@@ -31,7 +31,7 @@ import { useThemePreference, useSetThemePreference } from '@/stores/themeStore';
 import { updateUserThemePreference } from '@/services/userService';
 import type { ThemePreference } from '@/types/auth';
 import { getCategorySlug } from '../utils/categorySlug';
-import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, buildCountrySlugsParam } from '../utils/countrySlug';
+import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, COUNTRY_SEGMENT, buildCountrySlugsParam } from '../utils/countrySlug';
 import { useSelectedCountries } from '../stores/uiStore';
 import logoImg from '../assets/logo-white.png';
 
@@ -115,10 +115,11 @@ function CountryFilter() {
       }
     } else {
       const countrySlugs = buildCountrySlugsParam(next, language);
+      const seg = COUNTRY_SEGMENT[language];
       if (selectedCategory) {
-        navigate(prefix + '/' + getCategorySlug(selectedCategory, language) + '/kraj/' + countrySlugs);
+        navigate(prefix + '/' + getCategorySlug(selectedCategory, language) + '/' + seg + '/' + countrySlugs);
       } else {
-        navigate(prefix + '/kraj/' + countrySlugs);
+        navigate(prefix + '/' + seg + '/' + countrySlugs);
       }
     }
   };
@@ -145,13 +146,14 @@ function CountryFilter() {
         <i className="ri-map-pin-line text-base" />
         <span className="hidden sm:inline">{t('nav.countries')}</span>
         {count > 0 && (
-          <span className="bg-white text-black text-[10px] font-bold rounded-full h-4 min-w-4 flex items-center justify-center px-1">
+          <span className="bg-white text-black text-[10px] font-bold rounded-full h-4 min-w-4 hidden sm:flex items-center justify-center px-1">
             {count}
           </span>
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuLabel>{t('nav.countries')}</DropdownMenuLabel>
+        <p className="px-2 pb-2 text-[11px] text-zinc-500 leading-tight">{t('nav.countriesHint')}</p>
         {COUNTRY_KEYS.map((country) => {
           const isSelected = selectedCountries.includes(country);
           return (

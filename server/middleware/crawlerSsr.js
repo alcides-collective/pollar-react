@@ -365,18 +365,29 @@ export async function crawlerSsrMiddleware(req, res, next) {
     }));
   }
 
-  // Country pages (e.g., /kraj/polska, /en/kraj/germany+france)
-  const countryOnlyMatch = pathWithoutLang.match(/^\/kraj\/(.+)$/);
+  // Country pages (e.g., /kraj/polska, /en/country/germany+france, /de/land/deutschland)
+  const countryOnlyMatch = pathWithoutLang.match(/^\/(kraj|country|land)\/(.+)$/);
   if (countryOnlyMatch) {
-    const countries = parseCountrySlugs(countryOnlyMatch[1], lang);
+    const countries = parseCountrySlugs(countryOnlyMatch[2], lang);
     if (countries.length > 0) {
+      const isSingle = countries.length === 1;
       const countryNames = countries.map(c => getCountryTitle(c, lang));
-      const title = countryNames.join(', ');
-      const descParts = { pl: 'Wydarzenia dotyczące: ', en: 'News about: ', de: 'Nachrichten über: ' };
-      const description = (descParts[lang] || descParts.pl) + countryNames.join(', ');
-      const ogTitle = `Pollar News: ${title}`;
+
+      // Single country: rich custom title & description; multi: generic
+      let title, description;
+      if (isSingle) {
+        const titleParts = { pl: 'Wiadomości: ', en: 'News: ', de: 'Nachrichten: ' };
+        title = (titleParts[lang] || titleParts.pl) + countryNames[0];
+        description = getCountryDescription(countries[0], lang);
+      } else {
+        title = countryNames.join(', ');
+        const descParts = { pl: 'Wydarzenia dotyczące: ', en: 'News about: ', de: 'Nachrichten über: ' };
+        description = (descParts[lang] || descParts.pl) + countryNames.join(', ');
+      }
+
+      const ogTitle = `Pollar News: ${isSingle ? countryNames[0] : title}`;
       const pageTitle = `${title} | Pollar`;
-      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&lang=${lang}`;
+      const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(isSingle ? countryNames[0] : title)}&description=${encodeURIComponent(truncate(description, 200))}&lang=${lang}`;
 
       const schema = {
         '@context': 'https://schema.org',
@@ -402,11 +413,11 @@ export async function crawlerSsrMiddleware(req, res, next) {
     }
   }
 
-  // Category + Country pages (e.g., /sport/kraj/polska, /en/economy/kraj/germany+france)
-  const catCountryMatch = pathWithoutLang.match(/^\/([^/]+)\/kraj\/(.+)$/);
+  // Category + Country pages (e.g., /sport/kraj/polska, /en/economy/country/germany+france)
+  const catCountryMatch = pathWithoutLang.match(/^\/([^/]+)\/(kraj|country|land)\/(.+)$/);
   if (catCountryMatch) {
     const polishCategory = getCategoryFromSlug(catCountryMatch[1], lang);
-    const countries = parseCountrySlugs(catCountryMatch[2], lang);
+    const countries = parseCountrySlugs(catCountryMatch[3], lang);
     if (polishCategory && countries.length > 0) {
       const categoryTitle = getCategoryTitle(polishCategory, lang);
       const countryNames = countries.map(c => getCountryTitle(c, lang));

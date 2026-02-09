@@ -24,6 +24,7 @@
     "language": "Language",
     "theme": "Theme",
     "countries": "Countries",
+    "countriesHint": "Filter news by country",
     "clearCountries": "Clear"
   },
   "categories": {

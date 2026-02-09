@@ -115,23 +115,83 @@ export const COUNTRY_TRANSLATIONS = {
   'Holandia':        { pl: 'Holandia',        en: 'Netherlands',    de: 'Niederlande' },
 };
 
-// Country SEO descriptions
+// Country SEO descriptions — rich, unique per country per language
 const COUNTRY_DESCRIPTIONS = {
-  'Polska':          { pl: 'Najważniejsze wydarzenia dotyczące Polski. AI agreguje wiadomości z wielu źródeł.', en: 'Top news about Poland. AI aggregates news from multiple sources.', de: 'Die wichtigsten Nachrichten über Polen. KI aggregiert Nachrichten aus mehreren Quellen.' },
-  'Niemcy':          { pl: 'Najważniejsze wydarzenia dotyczące Niemiec.', en: 'Top news about Germany.', de: 'Die wichtigsten Nachrichten über Deutschland.' },
-  'Włochy':          { pl: 'Najważniejsze wydarzenia dotyczące Włoch.', en: 'Top news about Italy.', de: 'Die wichtigsten Nachrichten über Italien.' },
-  'USA':             { pl: 'Najważniejsze wydarzenia dotyczące USA.', en: 'Top news about the USA.', de: 'Die wichtigsten Nachrichten über die USA.' },
-  'Hiszpania':       { pl: 'Najważniejsze wydarzenia dotyczące Hiszpanii.', en: 'Top news about Spain.', de: 'Die wichtigsten Nachrichten über Spanien.' },
-  'Francja':         { pl: 'Najważniejsze wydarzenia dotyczące Francji.', en: 'Top news about France.', de: 'Die wichtigsten Nachrichten über Frankreich.' },
-  'Rosja':           { pl: 'Najważniejsze wydarzenia dotyczące Rosji.', en: 'Top news about Russia.', de: 'Die wichtigsten Nachrichten über Russland.' },
-  'Ukraina':         { pl: 'Najważniejsze wydarzenia dotyczące Ukrainy.', en: 'Top news about Ukraine.', de: 'Die wichtigsten Nachrichten über die Ukraine.' },
-  'Austria':         { pl: 'Najważniejsze wydarzenia dotyczące Austrii.', en: 'Top news about Austria.', de: 'Die wichtigsten Nachrichten über Österreich.' },
-  'Wielka Brytania': { pl: 'Najważniejsze wydarzenia dotyczące Wielkiej Brytanii.', en: 'Top news about the United Kingdom.', de: 'Die wichtigsten Nachrichten über Großbritannien.' },
-  'Chiny':           { pl: 'Najważniejsze wydarzenia dotyczące Chin.', en: 'Top news about China.', de: 'Die wichtigsten Nachrichten über China.' },
-  'Czechy':          { pl: 'Najważniejsze wydarzenia dotyczące Czech.', en: 'Top news about the Czech Republic.', de: 'Die wichtigsten Nachrichten über Tschechien.' },
-  'Szwajcaria':      { pl: 'Najważniejsze wydarzenia dotyczące Szwajcarii.', en: 'Top news about Switzerland.', de: 'Die wichtigsten Nachrichten über die Schweiz.' },
-  'Izrael':          { pl: 'Najważniejsze wydarzenia dotyczące Izraela.', en: 'Top news about Israel.', de: 'Die wichtigsten Nachrichten über Israel.' },
-  'Holandia':        { pl: 'Najważniejsze wydarzenia dotyczące Holandii.', en: 'Top news about the Netherlands.', de: 'Die wichtigsten Nachrichten über die Niederlande.' },
+  'Polska': {
+    pl: 'Wiadomości z Polski — polityka, gospodarka, społeczeństwo i sport. AI agreguje najważniejsze wydarzenia z polskich i zagranicznych mediów w jednym miejscu.',
+    en: 'News from Poland — politics, economy, society and sports. AI aggregates the most important events from Polish and international media in one place.',
+    de: 'Nachrichten aus Polen — Politik, Wirtschaft, Gesellschaft und Sport. KI aggregiert die wichtigsten Ereignisse aus polnischen und internationalen Medien.',
+  },
+  'Niemcy': {
+    pl: 'Wiadomości z Niemiec — polityka Bundestagu, gospodarka strefy euro, relacje polsko-niemieckie. AI podsumowuje najważniejsze wydarzenia.',
+    en: 'News from Germany — Bundestag politics, eurozone economy, industry and trade. AI summarizes the most important events from German media.',
+    de: 'Nachrichten aus Deutschland — Bundestag-Politik, Wirtschaft, Industrie und Handel. KI fasst die wichtigsten Ereignisse aus deutschen Medien zusammen.',
+  },
+  'Włochy': {
+    pl: 'Wiadomości z Włoch — polityka, gospodarka, kultura i sport. Serie A, Watykan, wydarzenia w basenie Morza Śródziemnego.',
+    en: 'News from Italy — politics, economy, culture and sports. Serie A, the Vatican, and Mediterranean affairs.',
+    de: 'Nachrichten aus Italien — Politik, Wirtschaft, Kultur und Sport. Serie A, der Vatikan und das Geschehen im Mittelmeerraum.',
+  },
+  'USA': {
+    pl: 'Wiadomości z USA — polityka Białego Domu i Kongresu, Wall Street, technologia z Doliny Krzemowej. AI agreguje media amerykańskie i polskie relacje.',
+    en: 'News from the USA — White House and Congress politics, Wall Street, Silicon Valley tech. AI aggregates American and international media coverage.',
+    de: 'Nachrichten aus den USA — Politik des Weißen Hauses und des Kongresses, Wall Street, Technologie aus dem Silicon Valley. KI aggregiert amerikanische Medienberichte.',
+  },
+  'Hiszpania': {
+    pl: 'Wiadomości z Hiszpanii — polityka, gospodarka, La Liga i kultura. AI podsumowuje najważniejsze wydarzenia z Półwyspu Iberyjskiego.',
+    en: 'News from Spain — politics, economy, La Liga and culture. AI summarizes the most important events from the Iberian Peninsula.',
+    de: 'Nachrichten aus Spanien — Politik, Wirtschaft, La Liga und Kultur. KI fasst die wichtigsten Ereignisse der Iberischen Halbinsel zusammen.',
+  },
+  'Francja': {
+    pl: 'Wiadomości z Francji — polityka Pałacu Elizejskiego, gospodarka, protesty społeczne i kultura. AI agreguje francuskie i międzynarodowe media.',
+    en: 'News from France — Élysée Palace politics, economy, social movements and culture. AI aggregates French and international media.',
+    de: 'Nachrichten aus Frankreich — Élysée-Politik, Wirtschaft, soziale Bewegungen und Kultur. KI aggregiert französische und internationale Medien.',
+  },
+  'Rosja': {
+    pl: 'Wiadomości z Rosji — polityka Kremla, sankcje, konflikt z Ukrainą, gospodarka. AI agreguje relacje z mediów międzynarodowych.',
+    en: 'News from Russia — Kremlin politics, sanctions, the conflict with Ukraine, economy. AI aggregates reports from international media.',
+    de: 'Nachrichten aus Russland — Kreml-Politik, Sanktionen, der Konflikt mit der Ukraine, Wirtschaft. KI aggregiert Berichte aus internationalen Medien.',
+  },
+  'Ukraina': {
+    pl: 'Wiadomości z Ukrainy — wojna, polityka, pomoc międzynarodowa i odbudowa. AI agreguje relacje z ukraińskich i światowych mediów.',
+    en: 'News from Ukraine — war, politics, international aid and reconstruction. AI aggregates reports from Ukrainian and global media.',
+    de: 'Nachrichten aus der Ukraine — Krieg, Politik, internationale Hilfe und Wiederaufbau. KI aggregiert Berichte aus ukrainischen und weltweiten Medien.',
+  },
+  'Austria': {
+    pl: 'Wiadomości z Austrii — polityka, gospodarka, relacje z UE i Europą Środkową. AI podsumowuje najważniejsze wydarzenia.',
+    en: 'News from Austria — politics, economy, EU relations and Central European affairs. AI summarizes the most important events.',
+    de: 'Nachrichten aus Österreich — Politik, Wirtschaft, EU-Beziehungen und mitteleuropäische Angelegenheiten. KI fasst die wichtigsten Ereignisse zusammen.',
+  },
+  'Wielka Brytania': {
+    pl: 'Wiadomości z Wielkiej Brytanii — polityka Westminsteru, gospodarka post-Brexit, Premier League. AI agreguje brytyjskie i międzynarodowe media.',
+    en: 'News from the United Kingdom — Westminster politics, post-Brexit economy, Premier League. AI aggregates British and international media.',
+    de: 'Nachrichten aus Großbritannien — Westminster-Politik, Post-Brexit-Wirtschaft, Premier League. KI aggregiert britische und internationale Medien.',
+  },
+  'Chiny': {
+    pl: 'Wiadomości z Chin — polityka Pekinu, handel międzynarodowy, technologia i geopolityka. AI agreguje relacje z mediów światowych.',
+    en: 'News from China — Beijing politics, international trade, technology and geopolitics. AI aggregates reports from global media.',
+    de: 'Nachrichten aus China — Pekings Politik, internationaler Handel, Technologie und Geopolitik. KI aggregiert Berichte aus weltweiten Medien.',
+  },
+  'Czechy': {
+    pl: 'Wiadomości z Czech — polityka, gospodarka, relacje polsko-czeskie i sprawy Grupy Wyszehradzkiej. AI podsumowuje najważniejsze wydarzenia.',
+    en: 'News from the Czech Republic — politics, economy, and Visegrád Group affairs. AI summarizes the most important events.',
+    de: 'Nachrichten aus Tschechien — Politik, Wirtschaft und Visegrád-Angelegenheiten. KI fasst die wichtigsten Ereignisse zusammen.',
+  },
+  'Szwajcaria': {
+    pl: 'Wiadomości ze Szwajcarii — finanse, bankowość, neutralność i polityka europejska. AI agreguje media szwajcarskie i międzynarodowe.',
+    en: 'News from Switzerland — finance, banking, neutrality and European politics. AI aggregates Swiss and international media.',
+    de: 'Nachrichten aus der Schweiz — Finanzen, Bankwesen, Neutralität und europäische Politik. KI aggregiert Schweizer und internationale Medien.',
+  },
+  'Izrael': {
+    pl: 'Wiadomości z Izraela — konflikt bliskowschodni, polityka, technologia i bezpieczeństwo. AI agreguje relacje z mediów międzynarodowych.',
+    en: 'News from Israel — Middle East conflict, politics, technology and security. AI aggregates reports from international media.',
+    de: 'Nachrichten aus Israel — Nahostkonflikt, Politik, Technologie und Sicherheit. KI aggregiert Berichte aus internationalen Medien.',
+  },
+  'Holandia': {
+    pl: 'Wiadomości z Holandii — polityka, gospodarka, handel i innowacje. AI podsumowuje najważniejsze wydarzenia z Niderlandów.',
+    en: 'News from the Netherlands — politics, economy, trade and innovation. AI summarizes the most important events.',
+    de: 'Nachrichten aus den Niederlanden — Politik, Wirtschaft, Handel und Innovation. KI fasst die wichtigsten Ereignisse zusammen.',
+  },
 };
 
 // Build slug → Polish country lookup per language

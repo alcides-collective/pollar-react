@@ -7,6 +7,12 @@
 import { createSlug } from './slug';
 import type { Language } from '../stores/languageStore';
 
+/** URL segment for country filter per language */
+export const COUNTRY_SEGMENT: Record<Language, string> = { pl: 'kraj', en: 'country', de: 'land' };
+
+/** All country segments for route matching */
+export const ALL_COUNTRY_SEGMENTS = Object.values(COUNTRY_SEGMENT);
+
 /** Canonical list of 15 supported countries (key = Polish name) */
 export const COUNTRIES: Record<string, Record<Language, string>> = {
   'Polska':          { pl: 'Polska',          en: 'Poland',         de: 'Polen' },

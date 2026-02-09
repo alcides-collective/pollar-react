@@ -24,6 +24,7 @@
     "language": "Sprache",
     "theme": "Design",
     "countries": "Länder",
+    "countriesHint": "Nachrichten nach Land filtern",
     "clearCountries": "Löschen"
   },
   "categories": {

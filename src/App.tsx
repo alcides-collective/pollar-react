@@ -23,7 +23,7 @@ import { useResolvedTheme, useThemeStore } from './stores/themeStore'
 import { useChartScaleStore } from './stores/chartScaleStore'
 import { useContentsquare } from './hooks/useContentsquare'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
-import { parseCountrySlugsParam } from './utils/countrySlug'
+import { parseCountrySlugsParam, ALL_COUNTRY_SEGMENTS } from './utils/countrySlug'
 import { useUIStore } from './stores/uiStore'
 
 // Lazy load all page components for code splitting
@@ -272,9 +272,11 @@ function getAppRoutes(prefix = '') {
       <Route path="indeksy/:symbol" element={<IndexDetailPage />} />
       <Route path="watchlist" element={<WatchlistPage />} />
     </Route>,
-    /* Country filter routes */
-    <Route key={`${prefix}-country`} path={`${prefix}/kraj/:countrySlugs`} element={<CountryPage />} />,
-    <Route key={`${prefix}-cat-country`} path={`${prefix}/:categorySlug/kraj/:countrySlugs`} element={<CategoryCountryPage />} />,
+    /* Country filter routes (segment translated: kraj/country/land) */
+    ...ALL_COUNTRY_SEGMENTS.flatMap(seg => [
+      <Route key={`${prefix}-country-${seg}`} path={`${prefix}/${seg}/:countrySlugs`} element={<CountryPage />} />,
+      <Route key={`${prefix}-cat-country-${seg}`} path={`${prefix}/:categorySlug/${seg}/:countrySlugs`} element={<CategoryCountryPage />} />,
+    ]),
     /* Category page (dynamic slug — React Router ranks static paths higher) */
     <Route key={`${prefix}-category`} path={`${prefix}/:categorySlug`} element={<CategoryPage />} />,
     /* 404 catch-all */
@@ -332,7 +334,7 @@ function AppContent() {
   const language = useLanguage()
   const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/'
   const categorySlug = pathWithoutLang.replace(/^\//, '')
-  const isHomePage = pathWithoutLang === '/' || isValidCategorySlug(categorySlug, language) || pathWithoutLang.startsWith('/kraj/') || /^\/[^/]+\/kraj\//.test(pathWithoutLang)
+  const isHomePage = pathWithoutLang === '/' || isValidCategorySlug(categorySlug, language) || ALL_COUNTRY_SEGMENTS.some(seg => pathWithoutLang.startsWith(`/${seg}/`) || new RegExp(`^/[^/]+/${seg}/`).test(pathWithoutLang))
 
   // Initialize auth listener
   const initializeAuth = useAuthStore((s) => s.initialize)
