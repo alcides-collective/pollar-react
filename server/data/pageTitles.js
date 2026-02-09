@@ -1,9 +1,9 @@
 // Static page titles mapping (multilingual: pl/en/de)
 export const PAGE_TITLES = {
   '/': {
-    pl: { title: 'Pollar News', description: 'Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.' },
-    en: { title: 'Pollar News', description: 'All the most important news in one place. AI organizes and summarizes today\'s events — no clickbait, only verified facts.' },
-    de: { title: 'Pollar News', description: 'Alle wichtigen Nachrichten an einem Ort. KI organisiert und fasst die Ereignisse des Tages zusammen — ohne Clickbait, nur verifizierte Fakten.' },
+    pl: { title: 'Pollar News', tagline: 'Wiesz więcej', description: 'Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.' },
+    en: { title: 'Pollar News', tagline: 'Know More', description: 'All the most important news in one place. AI organizes and summarizes today\'s events — no clickbait, only verified facts.' },
+    de: { title: 'Pollar News', tagline: 'Mehr wissen', description: 'Alle wichtigen Nachrichten an einem Ort. KI organisiert und fasst die Ereignisse des Tages zusammen — ohne Clickbait, nur verifizierte Fakten.' },
   },
   '/brief': null, // handled separately (dynamic)
   '/powiazania': {
