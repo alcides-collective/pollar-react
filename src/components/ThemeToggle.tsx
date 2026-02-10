@@ -100,7 +100,7 @@ export function ThemeToggle({ variant = 'header' }: ThemeToggleProps) {
   }
 
   return (
-    <div className="flex items-center rounded-lg p-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+    <div className="inline-flex items-center rounded-lg p-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
       {OPTIONS.map((opt) => (
         <button
           key={opt.value}

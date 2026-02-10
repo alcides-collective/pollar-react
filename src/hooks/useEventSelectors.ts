@@ -107,12 +107,12 @@ function computeEventGroups(
     // Sort by boosted trendingScore (favorites will naturally rise to top)
     .sort((a, b) => b.trendingScore - a.trendingScore);
 
-  // Split into fresh (for main sections) and all events (for carousel)
-  // OLD events should only appear in CategoryCarousel at the bottom
+  // Split into fresh (preferred for main sections) and all events
+  // OLD events are used as fallback when fresh events are insufficient
   const freshBoostedEvents = boostedEvents.filter(isFreshEvent);
 
   // Featured events: prioritize 15+ sources, fill remaining with highest sourceCount
-  // Only use FRESH events for featured section
+  // Prefer FRESH events, but backfill from ALL events when not enough
   const withMinSources = freshBoostedEvents.filter(e => e.sourceCount >= 15);
   let featured: Event[];
   if (withMinSources.length >= 3) {
@@ -124,12 +124,29 @@ function computeEventGroups(
       .sort((a, b) => b.sourceCount - a.sourceCount)
       .slice(0, 3 - withMinSources.length);
     featured = [...withMinSources, ...remaining];
+
+    // Backfill from ALL events (including OLD/archive) if still < 3
+    if (featured.length < 3) {
+      const featuredIds = new Set(featured.map(e => e.id));
+      const backfill = boostedEvents
+        .filter(e => !featuredIds.has(e.id))
+        .sort((a, b) => b.sourceCount - a.sourceCount)
+        .slice(0, 3 - featured.length);
+      featured = [...featured, ...backfill];
+    }
   }
 
   // Group events by shared people/countries for tabs
-  // Only use FRESH events for category tabs
+  // Prefer FRESH events, but extend with ALL events when fresh pool is too small
   const featuredIds = new Set(featured.map(e => e.id));
-  const eventsForGrid = freshBoostedEvents.filter(e => !featuredIds.has(e.id));
+  let eventsForGrid = freshBoostedEvents.filter(e => !featuredIds.has(e.id));
+
+  // When fresh events are sparse, include OLD events so tabs/hero sections can fill
+  if (eventsForGrid.length < 6) {
+    const gridIds = new Set(eventsForGrid.map(e => e.id));
+    const oldBackfill = boostedEvents.filter(e => !featuredIds.has(e.id) && !gridIds.has(e.id));
+    eventsForGrid = [...eventsForGrid, ...oldBackfill];
+  }
   const groupUsedIds = new Set<string>();
   const groups: Array<[string, Event[]]> = [];
 
@@ -245,11 +262,19 @@ function computeEventGroups(
     events: grouped.get(category)!
   }));
 
-  // Latest events - only FRESH events (sorted by date)
-  // OLD events shouldn't appear in "Najnowsze" sidebar
-  const latestEvents = [...freshBoostedEvents]
+  // Latest events - prefer FRESH, backfill with OLD when insufficient
+  const freshLatest = [...freshBoostedEvents]
     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
     .slice(0, 6);
+  let latestEvents = freshLatest;
+  if (latestEvents.length < 6) {
+    const latestIds = new Set(latestEvents.map(e => e.id));
+    const oldLatest = boostedEvents
+      .filter(e => !latestIds.has(e.id))
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+      .slice(0, 6 - latestEvents.length);
+    latestEvents = [...latestEvents, ...oldLatest];
+  }
 
   return {
     featured,

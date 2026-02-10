@@ -521,16 +521,17 @@ function ProfileContent() {
 
               {/* Smart Scale toggle */}
               <div className="mt-4 pt-4 border-t border-divider-subtle">
+                <p className="text-sm font-semibold text-content-heading mb-2">{t('appearance.smartScale')}</p>
+                <p className="text-xs text-content-subtle mb-3">
+                  {t('appearance.smartScaleDescription')}
+                </p>
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-content-heading">{t('appearance.smartScale')}</p>
-                    <p className="text-xs text-content-subtle mt-0.5">
-                      {t('appearance.smartScaleDescription')}
-                    </p>
-                  </div>
+                  <span className={`text-sm ${smartScale ? 'text-green-700 dark:text-green-400' : 'text-content-subtle'}`}>
+                    {smartScale ? t('appearance.smartScaleEnabled') : t('appearance.smartScaleDisabled')}
+                  </span>
                   <button
                     onClick={handleSmartScaleToggle}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${
+                    className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${
                       smartScale ? 'bg-primary' : 'bg-muted'
                     }`}
                   >
@@ -541,9 +542,6 @@ function ProfileContent() {
                     />
                   </button>
                 </div>
-                <span className={`text-xs mt-1 block ${smartScale ? 'text-green-700 dark:text-green-400' : 'text-content-subtle'}`}>
-                  {smartScale ? t('appearance.smartScaleEnabled') : t('appearance.smartScaleDisabled')}
-                </span>
               </div>
             </section>
 
