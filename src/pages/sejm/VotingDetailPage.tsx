@@ -7,6 +7,7 @@ import { useMPs } from '../../hooks/useMPs';
 import { VotingResultBar, VoteIndicator, PartyBadge, SejmApiError } from '../../components/sejm';
 import { useLanguageStore } from '../../stores/languageStore';
 import { TitleWithDrukLinks } from '../../utils/druk-parser';
+import { isQuorumVoting } from '../../types/sejm';
 
 export function VotingDetailPage() {
   const { t } = useTranslation('sejm');
@@ -94,6 +95,7 @@ export function VotingDetailPage() {
     );
   }
 
+  const isQuorum = isQuorumVoting(voting);
   const passed = voting.yes > voting.no;
   const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   const formatDate = (dateStr: string) => {
@@ -105,6 +107,10 @@ export function VotingDetailPage() {
       minute: '2-digit',
     });
   };
+
+  const presentCount = voting.present ?? 0;
+  const absentCount = voting.notParticipating;
+  const quorumTotal = presentCount + absentCount;
 
   return (
     <div className="space-y-6">
@@ -119,17 +125,23 @@ export function VotingDetailPage() {
           <span className="text-sm text-content-subtle">
             {t('votingDetail.sittingVoting', { sitting: voting.sitting, number: voting.votingNumber })}
           </span>
-          <span
-            className={`text-xs font-medium px-2 py-0.5 rounded ${
-              passed ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
-            }`}
-          >
-            {passed ? t('votingDetail.passed') : t('votingDetail.rejected')}
-          </span>
+          {isQuorum ? (
+            <span className="text-xs font-medium px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400">
+              {t('votingDetail.quorum')}
+            </span>
+          ) : (
+            <span
+              className={`text-xs font-medium px-2 py-0.5 rounded ${
+                passed ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
+              }`}
+            >
+              {passed ? t('votingDetail.passed') : t('votingDetail.rejected')}
+            </span>
+          )}
         </div>
         <h1 className="text-xl font-semibold text-content-heading mb-2 break-words">
           <TitleWithDrukLinks
-            title={voting.title}
+            title={voting.topic || voting.title}
             linkClassName="text-blue-600 dark:text-blue-400 hover:underline font-mono"
           />
         </h1>
@@ -138,33 +150,69 @@ export function VotingDetailPage() {
 
       {/* Results */}
       <div className="rounded-lg border border-divider p-4">
-        <VotingResultBar
-          yes={voting.yes}
-          no={voting.no}
-          abstain={voting.abstain}
-          notParticipating={voting.notParticipating}
-          showNumbers={true}
-          height="md"
-        />
+        {isQuorum ? (
+          <>
+            {/* Quorum bar */}
+            <div className="w-full">
+              <div className="flex h-3 rounded-full overflow-hidden bg-surface">
+                {presentCount > 0 && (
+                  <div
+                    className="transition-all duration-300"
+                    style={{
+                      width: quorumTotal > 0 ? `${(presentCount / quorumTotal) * 100}%` : '100%',
+                      backgroundColor: 'oklch(60% 0.14 250)',
+                    }}
+                  />
+                )}
+              </div>
+              <div className="flex justify-between mt-1 text-xs font-mono">
+                <span style={{ color: 'oklch(50% 0.12 250)' }}>{presentCount}</span>
+                <span className="text-content-faint">{absentCount}</span>
+              </div>
+            </div>
 
-        <div className="grid grid-cols-4 gap-4 mt-4 text-center">
-          <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded-lg">
-            <div className="text-2xl font-semibold text-green-700 dark:text-green-400">{voting.yes}</div>
-            <div className="text-xs text-green-600 dark:text-green-500">{t('votingDetail.for')}</div>
-          </div>
-          <div className="p-3 bg-red-50 dark:bg-red-950/30 rounded-lg">
-            <div className="text-2xl font-semibold text-red-700 dark:text-red-400">{voting.no}</div>
-            <div className="text-xs text-red-600 dark:text-red-500">{t('votingDetail.against')}</div>
-          </div>
-          <div className="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-lg">
-            <div className="text-2xl font-semibold text-amber-700 dark:text-amber-400">{voting.abstain}</div>
-            <div className="text-xs text-amber-600 dark:text-amber-500">{t('votingDetail.abstained')}</div>
-          </div>
-          <div className="p-3 bg-surface rounded-lg">
-            <div className="text-2xl font-semibold text-content">{voting.notParticipating}</div>
-            <div className="text-xs text-content">{t('votingDetail.absent')}</div>
-          </div>
-        </div>
+            <div className="grid grid-cols-2 gap-4 mt-4 text-center">
+              <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
+                <div className="text-2xl font-semibold text-blue-700 dark:text-blue-400">{presentCount}</div>
+                <div className="text-xs text-blue-600 dark:text-blue-500">{t('votingDetail.present')}</div>
+              </div>
+              <div className="p-3 bg-surface rounded-lg">
+                <div className="text-2xl font-semibold text-content">{absentCount}</div>
+                <div className="text-xs text-content">{t('votingDetail.absent')}</div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <VotingResultBar
+              yes={voting.yes}
+              no={voting.no}
+              abstain={voting.abstain}
+              notParticipating={voting.notParticipating}
+              showNumbers={true}
+              height="md"
+            />
+
+            <div className="grid grid-cols-4 gap-4 mt-4 text-center">
+              <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded-lg">
+                <div className="text-2xl font-semibold text-green-700 dark:text-green-400">{voting.yes}</div>
+                <div className="text-xs text-green-600 dark:text-green-500">{t('votingDetail.for')}</div>
+              </div>
+              <div className="p-3 bg-red-50 dark:bg-red-950/30 rounded-lg">
+                <div className="text-2xl font-semibold text-red-700 dark:text-red-400">{voting.no}</div>
+                <div className="text-xs text-red-600 dark:text-red-500">{t('votingDetail.against')}</div>
+              </div>
+              <div className="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-lg">
+                <div className="text-2xl font-semibold text-amber-700 dark:text-amber-400">{voting.abstain}</div>
+                <div className="text-xs text-amber-600 dark:text-amber-500">{t('votingDetail.abstained')}</div>
+              </div>
+              <div className="p-3 bg-surface rounded-lg">
+                <div className="text-2xl font-semibold text-content">{voting.notParticipating}</div>
+                <div className="text-xs text-content">{t('votingDetail.absent')}</div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Individual votes */}

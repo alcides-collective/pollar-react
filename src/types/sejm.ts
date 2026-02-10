@@ -85,6 +85,7 @@ export interface SejmVoting {
   no: number;
   abstain: number;
   notParticipating: number;
+  present?: number;
   totalVoted: number;
   kind: 'ELECTRONIC' | 'ON_LIST' | 'BY_RISING';
   majorityType?: string;
@@ -94,13 +95,21 @@ export interface SejmVoting {
 
 export type VotingDetails = SejmVoting;
 
+/** Helper to detect quorum-check votings (only PRESENT/ABSENT votes) */
+export function isQuorumVoting(voting: { yes: number; no: number; abstain: number; topic?: string }): boolean {
+  return voting.yes === 0 && voting.no === 0 && voting.abstain === 0;
+}
+
 export interface VotingListItem {
   votingNumber: number;
   date: string;
   title: string;
+  topic?: string;
   yes: number;
   no: number;
   abstain: number;
+  notParticipating?: number;
+  present?: number;
   sitting: number;
   id?: string;
 }

@@ -147,7 +147,9 @@
     "searchMP": "Szukaj posła...",
     "allClubs": "Wszystkie kluby",
     "undefined": "Nieokreślony",
-    "mpLabel": "Poseł {{id}}"
+    "mpLabel": "Poseł {{id}}",
+    "quorum": "Sprawdzanie kworum",
+    "votingNr": "Głosowanie nr {{number}}"
   },
   "processesPage": {
     "title": "Procesy legislacyjne",

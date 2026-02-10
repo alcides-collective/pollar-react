@@ -147,7 +147,9 @@
     "searchMP": "Search MP...",
     "allClubs": "All clubs",
     "undefined": "Undefined",
-    "mpLabel": "MP {{id}}"
+    "mpLabel": "MP {{id}}",
+    "quorum": "Quorum check",
+    "votingNr": "Voting no. {{number}}"
   },
   "processesPage": {
     "title": "Legislative processes",
