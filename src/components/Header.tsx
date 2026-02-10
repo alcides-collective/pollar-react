@@ -425,15 +425,13 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Use static category list so buttons render immediately (no waiting for events API).
+  // Append any extra categories from events that aren't in the static list.
   const allCategories = useMemo(() => {
-    const uniqueCategories = new Set(events.map(e => e.category).filter(c => Boolean(c) && c !== 'Uncategorized'));
-    const categories = Array.from(uniqueCategories);
-    return categories.sort((a, b) => {
-      const indexA = CATEGORY_ORDER.indexOf(a);
-      const indexB = CATEGORY_ORDER.indexOf(b);
-      // Unknown categories go to the end
-      return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
-    });
+    const extraFromEvents = events
+      .map(e => e.category)
+      .filter(c => Boolean(c) && c !== 'Uncategorized' && !CATEGORY_ORDER.includes(c));
+    return [...CATEGORY_ORDER, ...Array.from(new Set(extraFromEvents))];
   }, [events]);
 
   const pathWithoutLang = location.pathname.replace(/^\/(en|de)/, '') || '/';

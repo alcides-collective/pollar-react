@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation, useNavigate, useParams, Navigate } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 import { motion } from 'framer-motion'
-import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react'
 import { Toaster } from 'sonner'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Header } from './components/Header'
@@ -383,9 +383,14 @@ function AppContent() {
     return () => mq.removeEventListener('change', handler)
   }, [onSystemThemeChange])
 
+  // Track whether user was ever logged in — so we only reset on actual logout,
+  // not on cold start where user is null from the beginning.
+  const wasLoggedInRef = useRef(false)
+
   // Fetch user profile when user changes
   useEffect(() => {
     if (user) {
+      wasLoggedInRef.current = true
       fetchProfile(user.uid).then(() => {
         const profile = useUserStore.getState().profile
         if (profile?.preferences?.theme) {
@@ -401,14 +406,18 @@ function AppContent() {
         initUserAnalytics(user, profile, language)
       })
     } else {
-      // Clear all user-related stores on logout
-      clearProfile()
-      clearAlertsStore()
-      clearReadHistoryStore()
-      resetTheme()
-      resetChartScale()
-      useUIStore.getState().resetCountries()
-      clearUserAnalytics()
+      // Only clear stores on actual logout (user was logged in before),
+      // not on initial mount where user starts as null — that would wipe
+      // URL-derived state (selectedCountries from /kraj/polska routes).
+      if (wasLoggedInRef.current) {
+        clearProfile()
+        clearAlertsStore()
+        clearReadHistoryStore()
+        resetTheme()
+        resetChartScale()
+        useUIStore.getState().resetCountries()
+        clearUserAnalytics()
+      }
     }
   }, [user, fetchProfile, clearProfile, clearAlertsStore, clearReadHistoryStore, resetTheme, resetChartScale, language])
 
