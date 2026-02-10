@@ -69,6 +69,7 @@
     "against": "Przeciw",
     "abstain": "Wstrzymał się",
     "absent": "Nieobecny",
+    "present": "Obecny",
     "passed": "Przyjęta",
     "rejected": "Odrzucona"
   },
@@ -141,6 +142,7 @@
     "against": "Przeciw",
     "abstained": "Wstrzymało się",
     "absent": "Nieobecnych",
+    "present": "Obecnych",
     "individualVotes": "Głosy indywidualne",
     "searchMP": "Szukaj posła...",
     "allClubs": "Wszystkie kluby",
@@ -209,6 +211,7 @@
     "against": "Przeciw",
     "abstained": "Wstrzymał się",
     "absent": "Nieobecny",
+    "present": "Obecny",
     "votingHistory": "Historia głosowań",
     "noVotings": "Brak głosowań",
     "loadingVotings": "Ładowanie głosowań..."

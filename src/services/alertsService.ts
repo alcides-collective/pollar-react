@@ -13,7 +13,7 @@ export interface HistoricalVotingAlert {
   mpId: number;
   mpName: string;
   votingTitle: string;
-  vote: 'yes' | 'no' | 'abstain' | 'absent';
+  vote: 'yes' | 'no' | 'abstain' | 'absent' | 'present';
   date: string;
   isHistorical: true;
 }

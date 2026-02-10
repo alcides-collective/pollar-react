@@ -69,6 +69,7 @@
     "against": "Against",
     "abstain": "Abstained",
     "absent": "Absent",
+    "present": "Present",
     "passed": "Passed",
     "rejected": "Rejected"
   },
@@ -141,6 +142,7 @@
     "against": "Against",
     "abstained": "Abstained",
     "absent": "Absent",
+    "present": "Present",
     "individualVotes": "Individual votes",
     "searchMP": "Search MP...",
     "allClubs": "All clubs",
@@ -209,6 +211,7 @@
     "against": "Against",
     "abstained": "Abstained",
     "absent": "Absent",
+    "present": "Present",
     "votingHistory": "Voting history",
     "noVotings": "No votings",
     "loadingVotings": "Loading votings..."

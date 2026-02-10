@@ -16,6 +16,7 @@ export function VoteIndicator({ vote, showLabel = false, size = 'sm' }: VoteIndi
     'NO': '−',
     'ABSTAIN': '○',
     'ABSENT': '·',
+    'PRESENT': '◉',
     'VOTE_VALID': '✓',
   };
 

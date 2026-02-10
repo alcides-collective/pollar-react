@@ -120,6 +120,7 @@ function ProfileContent() {
       case 'no': return { text: tDashboard('voting.against'), color: 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30' };
       case 'abstain': return { text: tDashboard('voting.abstained'), color: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30' };
       case 'absent': return { text: tDashboard('voting.absent'), color: 'text-content-subtle bg-surface' };
+      case 'present': return { text: tDashboard('voting.present'), color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30' };
       default: return { text: vote, color: 'text-content bg-surface' };
     }
   };

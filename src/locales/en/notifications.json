@@ -15,7 +15,8 @@
     "for": "For",
     "against": "Against",
     "abstained": "Abstained",
-    "absent": "Absent"
+    "absent": "Absent",
+    "present": "Present"
   },
   "categoryLabels": {
     "polityka": "Politics",

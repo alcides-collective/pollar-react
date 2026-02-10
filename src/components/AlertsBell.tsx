@@ -32,6 +32,8 @@ function VotingAlertItem({ alert, onMarkAsRead }: { alert: CombinedAlert & { ale
         return { text: t('voting.abstained'), color: 'text-amber-400' };
       case 'absent':
         return { text: t('voting.absent'), color: 'text-content-subtle' };
+      case 'present':
+        return { text: t('voting.present'), color: 'text-blue-400' };
       default:
         return { text: vote, color: 'text-content-faint' };
     }

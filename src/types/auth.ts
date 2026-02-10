@@ -140,7 +140,7 @@ export interface VotingAlert {
   mpId: number;
   mpName: string;
   votingTitle: string;
-  vote: 'yes' | 'no' | 'abstain' | 'absent';
+  vote: 'yes' | 'no' | 'abstain' | 'absent' | 'present';
   createdAt: Timestamp;
   read: boolean;
 }

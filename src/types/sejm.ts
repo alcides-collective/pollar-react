@@ -61,7 +61,7 @@ export interface MPVotingHistoryResponse {
 
 // ============ Votings (Głosowania) ============
 
-export type VoteValue = 'YES' | 'NO' | 'ABSTAIN' | 'ABSENT' | 'VOTE_VALID';
+export type VoteValue = 'YES' | 'NO' | 'ABSTAIN' | 'ABSENT' | 'PRESENT' | 'VOTE_VALID';
 
 export interface IndividualVote {
   MP: number;
@@ -439,6 +439,7 @@ export const VOTE_COLORS: Record<VoteValue, VoteColorInfo> = {
   'NO': { bg: 'oklch(58% 0.20 25)', text: 'white', label: 'Przeciw' },
   'ABSTAIN': { bg: 'oklch(82% 0.12 85)', text: 'oklch(35% 0.05 85)', label: 'Wstrzymał się' },
   'ABSENT': { bg: 'oklch(72% 0.02 260)', text: 'oklch(35% 0.02 260)', label: 'Nieobecny' },
+  'PRESENT': { bg: 'oklch(75% 0.10 250)', text: 'oklch(30% 0.05 250)', label: 'Obecny' },
   'VOTE_VALID': { bg: 'oklch(60% 0.14 250)', text: 'white', label: 'Głos ważny' },
 };
 

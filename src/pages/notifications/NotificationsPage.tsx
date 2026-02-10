@@ -18,7 +18,7 @@ import { useRouteLanguage } from '@/hooks/useRouteLanguage';
 import { useTranslatedEventTitles } from '@/hooks/useTranslatedEventTitles';
 
 type FilterType = 'all' | 'voting' | 'category';
-type VoteFilter = 'all' | 'yes' | 'no' | 'abstain' | 'absent';
+type VoteFilter = 'all' | 'yes' | 'no' | 'abstain' | 'absent' | 'present';
 
 // Normalize category key for translation lookup (lowercase, no diacritics)
 function normalizeCategoryKey(category: string): string {
@@ -39,6 +39,8 @@ function formatVote(vote: string, t: (key: string) => string): { text: string; c
       return { text: t('voting.abstained'), color: 'text-amber-700 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/40' };
     case 'absent':
       return { text: t('voting.absent'), color: 'text-content', bg: 'bg-surface' };
+    case 'present':
+      return { text: t('voting.present'), color: 'text-blue-700 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/40' };
     default:
       return { text: vote, color: 'text-content', bg: 'bg-surface' };
   }
@@ -297,6 +299,7 @@ function NotificationsContent() {
               <option value="no">{t('voting.against')}</option>
               <option value="abstain">{t('voting.abstained')}</option>
               <option value="absent">{t('voting.absent')}</option>
+              <option value="present">{t('voting.present')}</option>
             </select>
           </div>
         )}
