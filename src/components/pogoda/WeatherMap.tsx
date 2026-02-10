@@ -34,10 +34,10 @@ export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 			const popup = new mapboxgl.Popup({ offset: 20, closeButton: true, maxWidth: '220px' })
 				.setLngLat([coords.lon, coords.lat])
 				.setHTML(`
-					<div style="font-family: inherit; padding: 4px 0;">
+					<div style="font-family: inherit; padding: 4px 0; color: #18181b;">
 						<div style="font-weight: 600; font-size: 14px; margin-bottom: 6px;">${cityName}</div>
 						<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-							<i class="${wmo.icon}" style="font-size: 24px;"></i>
+							<i class="${wmo.icon}" style="font-size: 24px; color: #18181b;"></i>
 							<span style="font-size: 22px; font-weight: 700; color: ${tempColor};">
 								${formatTemperature(weather.temperature)}
 							</span>
