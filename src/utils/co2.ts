@@ -7,8 +7,8 @@ export function getModelDisplayName(modelId: string | undefined): string {
 
   const modelNames: Record<string, string> = {
     'deepseek/deepseek-v3.2': 'DeepSeek v3.2',
-    'google/gemini-3-pro-preview': 'Gemini 3 Pro',
-    'google/gemini-3-flash-preview': 'Gemini 3 Flash',
+    'google/gemini-3-pro-preview': 'Gemini 3 Pro Preview',
+    'google/gemini-3-flash-preview': 'Gemini 3 Flash Preview',
     'google/gemini-2.5-pro-preview-06-05': 'Gemini 2.5 Pro',
     'z-ai/glm-4.7': 'GLM-4.7',
     'openai/gpt-5.1-codex-mini': 'GPT-5.1 Codex Mini',
@@ -240,11 +240,11 @@ export function getModelDescription(modelId: string | undefined): { title: strin
 
   const descriptions: Record<string, { title: string; text: string }> = {
     'google/gemini-3-pro-preview': {
-      title: 'Gemini 3 Pro',
+      title: 'Gemini 3 Pro Preview',
       text: 'Topowy model Google z listopada 2025. Przetwarza do miliona tokenów na wejściu i 64 tysiące na wyjściu. W testach MMMU-Pro osiąga 81%, a w trybie Deep Think poprawia wynik ARC-AGI-2 z 31% do 45%. Rozumie tekst, obrazy, wideo i dźwięk.'
     },
     'google/gemini-3-flash-preview': {
-      title: 'Gemini 3 Flash',
+      title: 'Gemini 3 Flash Preview',
       text: 'Szybki model Google z grudnia 2025, generuje 218 tokenów na sekundę — trzy razy więcej niż poprzednik. W testach kodowania SWE-bench zdobywa 78%, a w rozumowaniu GPQA Diamond aż 90%. Kosztuje pół dolara za milion tokenów wejściowych.'
     },
     'google/gemini-2.5-pro-preview-06-05': {
