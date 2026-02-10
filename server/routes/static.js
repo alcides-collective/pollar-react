@@ -33,6 +33,7 @@ staticRoutes.get('/robots.txt', (req, res) => {
 # All crawlers welcome (including AI: GPTBot, ClaudeBot, PerplexityBot, etc.)
 User-agent: *
 Allow: /
+Allow: /api/og
 Disallow: /api/
 Disallow: /assets/
 
