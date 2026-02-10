@@ -24,7 +24,7 @@ import { useChartScaleStore } from './stores/chartScaleStore'
 import { useContentsquare } from './hooks/useContentsquare'
 import { useCountryRedirect } from './hooks/useCountryRedirect'
 import { useSessionTracking } from './hooks/useSessionTracking'
-import { initUserAnalytics, clearUserAnalytics } from './lib/analytics'
+import { initUserAnalytics, clearUserAnalytics, trackPageView } from './lib/analytics'
 import { captureUtmParams } from './lib/utm'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
 import { parseCountrySlugsParam, ALL_COUNTRY_SEGMENTS } from './utils/countrySlug'
@@ -423,6 +423,14 @@ function AppContent() {
 
   // Track session-level engagement for registered users
   useSessionTracking()
+
+  // Track SPA page views in GA4 on every route change
+  useEffect(() => {
+    trackPageView(document.title, {
+      page_path: location.pathname,
+      page_location: window.location.href,
+    })
+  }, [location.pathname])
 
   const handleRouteChange = useCallback(() => {
     setShowFooter(false)

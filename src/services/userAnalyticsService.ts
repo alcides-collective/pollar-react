@@ -134,10 +134,13 @@ export function recordEventOpened(uid: string): void {
 export function recordSourceClicked(uid: string): void {
   if (!isFirebaseConfigured || !db) return;
   const ref = doc(db, COLLECTION, uid);
+  const today = new Date().toISOString().split('T')[0];
 
   ensureDocAndCacheFlags(uid).then(() => {
     const updates: Record<string, unknown> = {
       totalSourcesClicked: increment(1),
+      lastActiveAt: serverTimestamp(),
+      activeDays: arrayUnion(today),
     };
     if (cachedFlags && !cachedFlags.firstSourceClickAt) {
       updates.firstSourceClickAt = serverTimestamp();
@@ -154,10 +157,13 @@ export function recordSourceClicked(uid: string): void {
 export function recordBriefViewed(uid: string): void {
   if (!isFirebaseConfigured || !db) return;
   const ref = doc(db, COLLECTION, uid);
+  const today = new Date().toISOString().split('T')[0];
 
   ensureDocAndCacheFlags(uid).then(() => {
     const updates: Record<string, unknown> = {
       totalBriefsViewed: increment(1),
+      lastActiveAt: serverTimestamp(),
+      activeDays: arrayUnion(today),
     };
     if (cachedFlags && !cachedFlags.firstBriefAt) {
       updates.firstBriefAt = serverTimestamp();
@@ -177,10 +183,13 @@ export function recordBriefViewed(uid: string): void {
 export function recordMapUsed(uid: string): void {
   if (!isFirebaseConfigured || !db) return;
   const ref = doc(db, COLLECTION, uid);
+  const today = new Date().toISOString().split('T')[0];
 
   ensureDocAndCacheFlags(uid).then(() => {
     const updates: Record<string, unknown> = {
       totalMapActions: increment(1),
+      lastActiveAt: serverTimestamp(),
+      activeDays: arrayUnion(today),
     };
     if (cachedFlags && !cachedFlags.firstMapAt) {
       updates.firstMapAt = serverTimestamp();

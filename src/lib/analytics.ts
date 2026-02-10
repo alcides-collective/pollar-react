@@ -103,14 +103,26 @@ export function trackAvatarUpload(success: boolean) {
 }
 
 /**
- * Track page view (custom)
+ * Track page view (custom).
+ * Sends to both Firebase Analytics and gtag.js so GA4 properly tracks SPA navigations.
  */
 export function trackPageView(pageName: string, pageParams?: Record<string, string>) {
-  if (!analytics) return;
-  logEvent(analytics, 'page_view', {
-    page_title: pageName,
-    ...pageParams,
-  });
+  // Firebase Analytics
+  if (analytics) {
+    logEvent(analytics, 'page_view', {
+      page_title: pageName,
+      ...pageParams,
+    });
+  }
+
+  // gtag.js (GA4 direct) — works even before consent (queued by consent mode)
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('event', 'page_view', {
+      page_title: pageName,
+      page_path: pageParams?.page_path,
+      page_location: pageParams?.page_location,
+    });
+  }
 }
 
 /**
