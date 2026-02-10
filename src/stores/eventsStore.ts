@@ -297,7 +297,7 @@ export function useEvents(params: UseEventsOptions = {}) {
       prodParams.set('limit', String(params.limit || 100));
       prodParams.set('lang', lang);
       prodParams.set('category', params.category);
-      prodParams.set('includeArticles', 'true');
+      prodParams.set('includeArticles', 'false');
       prodArchiveUrl = `${PRODUCTION_ARCHIVE_BASE}/archive?${prodParams.toString()}`;
       prodArchiveCacheKey = `prod-archive:${prodArchiveUrl}`;
     }
