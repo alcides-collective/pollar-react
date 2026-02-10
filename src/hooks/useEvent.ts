@@ -55,6 +55,7 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [isTranslated, setIsTranslated] = useState(true);
+  const [successorEventIds, setSuccessorEventIds] = useState<string[] | null>(null);
 
   useEffect(() => {
 
@@ -70,6 +71,7 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
       setLoading(true);
       setError(null);
       setIsTranslated(true);
+      setSuccessorEventIds(null);
 
       try {
         const response = await fetch(`${API_BASE}/events/${eventId}?lang=${lang}`);
@@ -95,6 +97,15 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
           return;
         }
 
+        // On 410 — event was archived with successors (superseded mega-event)
+        if (response.status === 410) {
+          const data = await response.json();
+          if (!cancelled && data.successorEventIds?.length > 0) {
+            setSuccessorEventIds(data.successorEventIds);
+          }
+          throw new Error('Wydarzenie zostało zastąpione');
+        }
+
         // On 404 — try archive API as fallback
         if (response.status === 404) {
           const archiveResponse = await fetch(
@@ -104,6 +115,12 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
           if (archiveResponse.ok) {
             const archiveData = await archiveResponse.json();
             if (!cancelled) {
+              // Check if archived event has successors (redirect instead of showing stale content)
+              if (archiveData.successorEventIds?.length > 0) {
+                setSuccessorEventIds(archiveData.successorEventIds);
+                throw new Error('Wydarzenie zostało zastąpione');
+              }
+
               const mapped = mapArchiveEvent(archiveData);
               setEvent(sanitizeEvent(mapped));
 
@@ -146,5 +163,5 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
     };
   }, [eventId, lang]);
 
-  return { event, loading, error, isTranslated };
+  return { event, loading, error, isTranslated, successorEventIds };
 }

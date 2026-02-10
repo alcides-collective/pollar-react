@@ -31,7 +31,7 @@ export function EventPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { id, slug } = useParams<{ id: string; slug?: string }>();
-  const { event, loading, error, isTranslated } = useEvent(id);
+  const { event, loading, error, isTranslated, successorEventIds } = useEvent(id);
   const { events: allEvents } = useEvents({ limit: 100, lang: language });
   const user = useUser();
 
@@ -90,6 +90,13 @@ export function EventPage() {
     contentId: event?.id,
     enabled: !!user && !!event && !loading,
   });
+
+  // Redirect to successor event if this one was superseded (archived mega-event)
+  useEffect(() => {
+    if (!successorEventIds?.length || loading) return;
+    const prefix = language !== 'pl' ? `/${language}` : '';
+    navigate(`${prefix}/event/${successorEventIds[0]}`, { replace: true });
+  }, [successorEventIds, loading, language, navigate]);
 
   // Correct slug to match current language (like Wikipedia canonical redirect)
   useEffect(() => {
