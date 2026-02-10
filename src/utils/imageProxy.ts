@@ -72,7 +72,15 @@ export function getProxiedImageUrlWithFallbacks(
     }
   }
 
-  if (candidates.length === 0) return '';
+  if (candidates.length === 0) {
+    // No proxiable candidates — return the first valid direct URL (e.g. Firebase Storage,
+    // already-proxied, or local paths) instead of dropping it and showing the placeholder.
+    const allUrls = [primaryUrl, ...fallbackUrls];
+    for (const url of allUrls) {
+      if (url && url.trim()) return url.trim();
+    }
+    return '';
+  }
 
   const params = new URLSearchParams();
   for (const url of candidates) {
