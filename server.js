@@ -75,8 +75,27 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
+
+  // Purge Cloudflare cache on deploy so crawlers get fresh robots.txt, OG images, etc.
+  const cfZone = process.env.CLOUDFLARE_ZONE_ID || 'a04a6a3ed2fbe2e830e8025e8b972c4c';
+  const cfToken = process.env.CLOUDFLARE_API_TOKEN;
+  if (cfToken) {
+    try {
+      const resp = await fetch(`https://api.cloudflare.com/client/v4/zones/${cfZone}/purge_cache`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${cfToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ purge_everything: true }),
+      });
+      const data = await resp.json();
+      console.log(`[Cloudflare] Cache purge: ${data.success ? 'OK' : 'FAILED'}`, data.success ? '' : data.errors);
+    } catch (err) {
+      console.warn('[Cloudflare] Cache purge failed:', err.message);
+    }
+  } else {
+    console.log('[Cloudflare] No CLOUDFLARE_API_TOKEN set, skipping cache purge');
+  }
 
   // Log crawler stats summary every hour
   setInterval(() => {
