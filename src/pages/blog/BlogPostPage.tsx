@@ -52,6 +52,11 @@ function TableOfContents({ items }: { items: TocItem[] }) {
           <a
             key={item.id}
             href={`#${item.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              history.replaceState(null, '', `#${item.id}`);
+            }}
             className={`block text-sm text-content hover:text-primary transition-colors py-1 ${
               item.level === 3 ? 'pl-4' : ''
             }`}
