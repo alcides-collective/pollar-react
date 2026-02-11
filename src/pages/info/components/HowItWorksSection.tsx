@@ -190,7 +190,7 @@ export function HowItWorksSection() {
     <section
       ref={containerRef}
       className="relative bg-zinc-900"
-      style={{ height: '180vh' }}
+      style={{ height: '280vh' }}
     >
       {/* Subtle radial gradient for depth */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-800/30 via-transparent to-transparent pointer-events-none" />
