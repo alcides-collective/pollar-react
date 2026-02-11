@@ -25,7 +25,9 @@
     "theme": "Theme",
     "countries": "Countries",
     "countriesHint": "Filter news by country",
-    "clearCountries": "Clear"
+    "clearCountries": "Clear",
+    "blog": "Blog",
+    "weather": "Weather"
   },
   "categories": {
     "Świat": "World",
@@ -394,6 +396,20 @@
     "title": "Olympics 2026",
     "subtitle": "Milan — Cortina d'Ampezzo",
     "details": "February 6–22, 2026"
+  },
+  "blog": {
+    "subtitle": "Articles, analyses and commentary",
+    "noPostsYet": "No articles yet",
+    "readingTime": "min read",
+    "tableOfContents": "Table of contents",
+    "sharePost": "Share",
+    "copyLink": "Copy link",
+    "linkCopied": "Copied!",
+    "relatedPosts": "More articles",
+    "notFound": "Post not found",
+    "loadError": "Failed to load post",
+    "backToList": "Back to blog",
+    "author": "Author"
   },
   "theme": {
     "light": "Light",

@@ -3,7 +3,7 @@ import { API_BASE } from '../config.js';
 import { PAGE_TITLES } from '../data/pageTitles.js';
 import { RSS_DESCRIPTIONS, COUNTRY_TRANSLATIONS } from '../data/translations.js';
 import { createSlug, escapeXml, stripHtml } from '../utils/text.js';
-import { fetchMPsList } from '../utils/api.js';
+import { fetchMPsList, fetchBlogPosts } from '../utils/api.js';
 
 export const feedRoutes = Router();
 
@@ -87,6 +87,14 @@ feedRoutes.get('/sitemap.xml', async (req, res) => {
     console.warn('Could not fetch MPs for sitemap:', err.message);
   }
 
+  // Fetch blog posts
+  let blogPosts = [];
+  try {
+    blogPosts = await fetchBlogPosts('pl', 100);
+  } catch (err) {
+    console.warn('Could not fetch blog posts for sitemap:', err.message);
+  }
+
   // Generate XML with multilingual support
   const urls = [
     ...staticPages.map(path => generateUrlEntry(path)),
@@ -102,6 +110,7 @@ feedRoutes.get('/sitemap.xml', async (req, res) => {
       const slug = createSlug(mp.firstLastName);
       return generateUrlEntry(slug ? `/sejm/poslowie/${mp.id}/${slug}` : `/sejm/poslowie/${mp.id}`);
     }),
+    ...blogPosts.map(p => generateUrlEntry(`/blog/${p.slug}`, p.updatedAt || p.publishedAt || p.createdAt)),
     // Country filter pages (each language has its own segment + slug)
     ...Object.keys(COUNTRY_TRANSLATIONS).map(polishKey => {
       const segments = { pl: 'kraj', en: 'country', de: 'land' };
@@ -227,13 +236,29 @@ feedRoutes.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
     console.warn('Could not fetch events for RSS:', err.message);
   }
 
+  // Fetch blog posts
+  let blogItems = [];
+  try {
+    const posts = await fetchBlogPosts(lang, 20);
+    blogItems = posts.map(p => ({
+      title: p.title || '',
+      description: p.excerpt || '',
+      link: `${baseUrl}${langPrefix}/blog/${p.slug}`,
+      guid: `${baseUrl}/blog/${p.slug}`,
+      pubDate: p.publishedAt || p.createdAt,
+      category: 'Blog',
+    }));
+  } catch (err) {
+    console.warn('Could not fetch blog posts for RSS:', err.message);
+  }
+
   // Sort by createdAt descending and take top 50 for RSS
   events.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   events = events.slice(0, 50);
 
   const now = new Date().toUTCString();
 
-  const items = events.map(e => {
+  const eventItems = events.map(e => {
     const title = escapeXml(stripHtml(e.title || ''));
     const lead = escapeXml(stripHtml(e.lead || e.summary || ''));
     const slug = createSlug(e.metadata?.ultraShortHeadline || stripHtml(e.title || ''));
@@ -250,7 +275,21 @@ feedRoutes.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
       <pubDate>${pubDate}</pubDate>
       <creativeCommons:license>https://creativecommons.org/licenses/by-nc-sa/4.0/</creativeCommons:license>
     </item>`;
-  }).join('\n');
+  });
+
+  const blogRssItems = blogItems.map(b => {
+    return `    <item>
+      <title>${escapeXml(stripHtml(b.title))}</title>
+      <description>${escapeXml(stripHtml(b.description))}</description>
+      <link>${b.link}</link>
+      <guid isPermaLink="true">${b.guid}</guid>
+      <pubDate>${b.pubDate ? new Date(b.pubDate).toUTCString() : now}</pubDate>
+      <category>Blog</category>
+      <creativeCommons:license>https://creativecommons.org/licenses/by-nc-sa/4.0/</creativeCommons:license>
+    </item>`;
+  });
+
+  const items = [...eventItems, ...blogRssItems].join('\n');
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:creativeCommons="http://backend.userland.com/creativeCommonsRssModule">

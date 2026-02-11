@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export type OgImageType = 'event' | 'brief' | 'felieton' | 'newsletter';
+export type OgImageType = 'event' | 'brief' | 'felieton' | 'newsletter' | 'blog';
 
 export interface DocumentHeadOptions {
   title?: string;

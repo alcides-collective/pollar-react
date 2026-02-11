@@ -25,7 +25,9 @@
     "theme": "Motyw",
     "countries": "Kraje",
     "countriesHint": "Filtruj wiadomości wg kraju",
-    "clearCountries": "Wyczyść"
+    "clearCountries": "Wyczyść",
+    "blog": "Blog",
+    "weather": "Pogoda"
   },
   "categories": {
     "Świat": "Świat",
@@ -394,6 +396,20 @@
     "title": "Igrzyska Olimpijskie 2026",
     "subtitle": "Mediolan — Cortina d'Ampezzo",
     "details": "6–22 lutego 2026"
+  },
+  "blog": {
+    "subtitle": "Artykuły, analizy i komentarze",
+    "noPostsYet": "Brak artykułów",
+    "readingTime": "min czytania",
+    "tableOfContents": "Spis treści",
+    "sharePost": "Udostępnij",
+    "copyLink": "Kopiuj link",
+    "linkCopied": "Skopiowano!",
+    "relatedPosts": "Więcej artykułów",
+    "notFound": "Post nie został znaleziony",
+    "loadError": "Nie udało się załadować posta",
+    "backToList": "Powrót do bloga",
+    "author": "Autor"
   },
   "theme": {
     "light": "Jasny",

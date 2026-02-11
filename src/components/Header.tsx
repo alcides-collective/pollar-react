@@ -821,6 +821,13 @@ export function Header() {
                     {pathWithoutLang.startsWith('/archiwum') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/blog" className="w-full flex items-center gap-2">
+                    <i className="ri-article-line" />
+                    {t('nav.blog', 'Blog')}
+                    {pathWithoutLang.startsWith('/blog') && <i className="ri-check-line ml-auto" />}
+                  </LocalizedLink>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
 
               <DropdownMenuSeparator />

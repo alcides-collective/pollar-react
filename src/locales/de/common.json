@@ -25,7 +25,9 @@
     "theme": "Design",
     "countries": "Länder",
     "countriesHint": "Nachrichten nach Land filtern",
-    "clearCountries": "Löschen"
+    "clearCountries": "Löschen",
+    "blog": "Blog",
+    "weather": "Wetter"
   },
   "categories": {
     "Świat": "Welt",
@@ -394,6 +396,20 @@
     "title": "Olympische Spiele 2026",
     "subtitle": "Mailand — Cortina d'Ampezzo",
     "details": "6.–22. Februar 2026"
+  },
+  "blog": {
+    "subtitle": "Artikel, Analysen und Kommentare",
+    "noPostsYet": "Keine Artikel",
+    "readingTime": "Min. Lesezeit",
+    "tableOfContents": "Inhaltsverzeichnis",
+    "sharePost": "Teilen",
+    "copyLink": "Link kopieren",
+    "linkCopied": "Kopiert!",
+    "relatedPosts": "Weitere Artikel",
+    "notFound": "Beitrag nicht gefunden",
+    "loadError": "Beitrag konnte nicht geladen werden",
+    "backToList": "Zurück zum Blog",
+    "author": "Autor"
   },
   "theme": {
     "light": "Hell",

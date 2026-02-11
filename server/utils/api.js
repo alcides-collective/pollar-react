@@ -74,6 +74,29 @@ export async function fetchMPVotings(mpId, limit = 10) {
   }
 }
 
+// Fetch blog post by slug from API
+export async function fetchBlogPost(slug, lang = 'pl') {
+  try {
+    const response = await fetch(`${API_BASE}/api/blog/${slug}?lang=${lang}`);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
+// Fetch published blog posts list from API
+export async function fetchBlogPosts(lang = 'pl', limit = 50) {
+  try {
+    const response = await fetch(`${API_BASE}/api/blog?lang=${lang}&limit=${limit}`);
+    if (!response.ok) return [];
+    const data = await response.json();
+    return data.posts || [];
+  } catch {
+    return [];
+  }
+}
+
 // Fetch all MPs list (cached 10min)
 export async function fetchMPsList() {
   const now = Date.now();

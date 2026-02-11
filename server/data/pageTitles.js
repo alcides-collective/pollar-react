@@ -160,6 +160,11 @@ export const PAGE_TITLES = {
     en: { title: 'News Sources', description: 'All news sources tracked by Pollar with ownership classification and political orientation.' },
     de: { title: 'Nachrichtenquellen', description: 'Alle von Pollar verfolgten Nachrichtenquellen mit Eigentümerklassifizierung und politischer Ausrichtung.' },
   },
+  '/blog': {
+    pl: { title: 'Blog', description: 'Blog Pollar — artykuły, analizy i komentarze.' },
+    en: { title: 'Blog', description: 'Pollar Blog — articles, analyses and commentary.' },
+    de: { title: 'Blog', description: 'Pollar Blog — Artikel, Analysen und Kommentare.' },
+  },
   '/kontakt': {
     pl: { title: 'Kontakt', description: 'Skontaktuj się z zespołem Pollar News. Formularz kontaktowy, FAQ i dane firmy.' },
     en: { title: 'Contact', description: 'Get in touch with the Pollar News team. Contact form, FAQ and company details.' },

@@ -5,7 +5,7 @@ import { getCategoryFromSlug, getCategoryTitle, getCategoryDescription, CATEGORY
 import { CATEGORY_COUNTRY_DESCRIPTIONS } from '../data/categoryCountryDescriptions.js';
 import { isCrawler, trackCrawlerVisit } from '../utils/crawler.js';
 import { escapeHtml, stripHtml, stripCustomTags, truncate, createSlug, escapeXml } from '../utils/text.js';
-import { fetchEventData, fetchBriefData, fetchSimilarEvents, fetchFelietonData, fetchMPData, fetchMPVotings, fetchMPsList } from '../utils/api.js';
+import { fetchEventData, fetchBriefData, fetchSimilarEvents, fetchFelietonData, fetchBlogPost, fetchBlogPosts, fetchMPData, fetchMPVotings, fetchMPsList } from '../utils/api.js';
 import { generateNewsArticleSchema, generateOrganizationSchema, generateFAQSchema, generateLiveBlogPostingSchema, addSpeakable, generateBreadcrumbSchema, generatePersonSchema } from '../utils/schema.js';
 
 const PARTY_NAMES = {
@@ -379,6 +379,127 @@ export async function crawlerSsrMiddleware(req, res, next) {
       pathWithoutLang,
       lang,
       answerCapsule: felietonCapsule
+    }));
+  }
+
+  // Blog post page
+  const blogPostMatch = pathWithoutLang.match(/^\/blog\/([^/?#]+)$/);
+  if (blogPostMatch) {
+    const blogPost = await fetchBlogPost(blogPostMatch[1], lang);
+    if (blogPost) {
+      const blogTitle = blogPost.seo?.metaTitle || blogPost.title || 'Blog';
+      const description = truncate(stripHtml(blogPost.seo?.metaDescription || blogPost.excerpt || ''), 160);
+      const ogTitle = blogPost.seo?.ogTitle || blogTitle;
+      const ogDescription = blogPost.seo?.ogDescription || description;
+      const ogImage = blogPost.seo?.ogImage || blogPost.coverImage?.url || `${baseUrl}/api/og?title=${encodeURIComponent(blogTitle)}&type=blog&lang=${lang}`;
+      const langPrefix = lang === 'pl' ? '' : `/${lang}`;
+      const targetUrl = `${baseUrl}${langPrefix}/blog/${blogPost.slug}`;
+      const keywords = blogPost.seo?.keywords || [];
+
+      // Strip markdown for article body
+      const articleBody = truncate(stripHtml(blogPost.content || '').replace(/[#*_`\[\]]/g, ''), 5000);
+
+      // BlogPosting JSON-LD schema
+      const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: blogTitle,
+        description,
+        datePublished: blogPost.publishedAt || blogPost.createdAt,
+        dateModified: blogPost.updatedAt || blogPost.publishedAt || blogPost.createdAt,
+        url: targetUrl,
+        image: blogPost.coverImage?.url || ogImage,
+        author: { '@type': 'Person', name: blogPost.author?.name || 'Pollar' },
+        publisher: { '@type': 'Organization', name: 'Pollar News', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/logo-white.png` } },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': targetUrl },
+        wordCount: (blogPost.content || '').split(/\s+/).length,
+        timeRequired: `PT${blogPost.readingTimeMinutes || 5}M`,
+        ...(articleBody ? { articleBody } : {}),
+        ...(keywords.length > 0 ? { keywords: keywords.join(', ') } : {}),
+      };
+
+      // Answer capsule for AI crawlers
+      const capsuleParts = [];
+      if (blogPost.excerpt) {
+        capsuleParts.push(`<section class="lead"><p>${escapeHtml(stripHtml(blogPost.excerpt))}</p></section>`);
+      }
+      if (blogPost.content) {
+        const cleanContent = blogPost.content.replace(/[#*_`\[\]]/g, '');
+        const paragraphs = cleanContent.split('\n\n').filter(p => p.trim()).slice(0, 20);
+        const contentHtml = paragraphs.map(p => `<p>${escapeHtml(p.trim())}</p>`).join('');
+        capsuleParts.push(`<section class="summary">${contentHtml}</section>`);
+      }
+
+      return res.send(generateSeoHtml({
+        pageTitle: `${blogTitle} | Pollar`,
+        ogTitle: `Pollar News: ${ogTitle}`,
+        headline: blogTitle,
+        description,
+        ogImage,
+        targetUrl,
+        schema,
+        articlePublished: blogPost.publishedAt || blogPost.createdAt,
+        articleModified: blogPost.updatedAt || blogPost.publishedAt || blogPost.createdAt,
+        articleSection: 'Blog',
+        keywords: keywords.length > 0 ? keywords.join(', ') : null,
+        keywordsList: keywords,
+        pathWithoutLang,
+        lang,
+        answerCapsule: capsuleParts.join(''),
+      }));
+    }
+  }
+
+  // Blog list page
+  if (pathWithoutLang === '/blog') {
+    const langPrefix = lang === 'pl' ? '' : `/${lang}`;
+    const blogTargetUrl = `${baseUrl}${langPrefix}/blog`;
+    const blogTitles = { pl: 'Blog', en: 'Blog', de: 'Blog' };
+    const blogDescriptions = {
+      pl: 'Blog Pollar — artykuły, analizy i komentarze.',
+      en: 'Pollar Blog — articles, analyses and commentary.',
+      de: 'Pollar Blog — Artikel, Analysen und Kommentare.',
+    };
+    const blogTitle = blogTitles[lang] || blogTitles.pl;
+    const blogDescription = blogDescriptions[lang] || blogDescriptions.pl;
+    const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(blogTitle)}&type=blog&lang=${lang}`;
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: blogTitle,
+      description: blogDescription,
+      url: blogTargetUrl,
+      isPartOf: { '@type': 'WebSite', name: 'Pollar News', url: baseUrl },
+    };
+
+    // Fetch blog posts for answer capsule
+    let blogCapsule = '';
+    try {
+      const posts = await fetchBlogPosts(lang, 10);
+      if (posts.length > 0) {
+        const postItems = posts.map(p => {
+          const title = escapeHtml(stripHtml(p.title || ''));
+          const excerpt = escapeHtml(truncate(stripHtml(p.excerpt || ''), 200));
+          const link = `${baseUrl}${langPrefix}/blog/${p.slug}`;
+          return `<li><a href="${link}"><strong>${title}</strong></a><br>${excerpt}</li>`;
+        }).join('');
+        blogCapsule = `<section class="trending"><h2>${blogTitle}</h2><ol>${postItems}</ol></section>`;
+      }
+    } catch { /* skip if unavailable */ }
+
+    return res.send(generateSeoHtml({
+      pageTitle: `${blogTitle} | Pollar`,
+      ogTitle: `Pollar News: ${blogTitle}`,
+      headline: blogTitle,
+      description: blogDescription,
+      ogImage,
+      targetUrl: blogTargetUrl,
+      ogType: 'website',
+      schema,
+      pathWithoutLang,
+      lang,
+      answerCapsule: blogCapsule || null,
     }));
   }
 

@@ -49,6 +49,10 @@ const CategoryArchivePage = lazy(() => import('./pages/archiwum').then(m => ({ d
 const NewsletterPage = lazy(() => import('./pages/newsletter').then(m => ({ default: m.NewsletterPage })))
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })))
 
+// Blog
+const BlogListPage = lazy(() => import('./pages/blog').then(m => ({ default: m.BlogListPage })))
+const BlogPostPage = lazy(() => import('./pages/blog').then(m => ({ default: m.BlogPostPage })))
+
 // Sejm section (heavy - lots of data visualization)
 const SejmLayout = lazy(() => import('./pages/sejm').then(m => ({ default: m.SejmLayout })))
 const SejmDashboard = lazy(() => import('./pages/sejm').then(m => ({ default: m.SejmDashboard })))
@@ -235,6 +239,8 @@ function getAppRoutes(prefix = '') {
     <Route key={`${prefix}-archiwum`} path={`${prefix}/archiwum`} element={<ArchivePage />} />,
     <Route key={`${prefix}-archiwum-cat`} path={`${prefix}/archiwum/:category`} element={<CategoryArchivePage />} />,
     <Route key={`${prefix}-kontakt`} path={`${prefix}/kontakt`} element={<ContactPage />} />,
+    <Route key={`${prefix}-blog`} path={`${prefix}/blog`} element={<BlogListPage />} />,
+    <Route key={`${prefix}-blog-post`} path={`${prefix}/blog/:slug`} element={<BlogPostPage />} />,
     <Route key={`${prefix}-pogoda`} path={`${prefix}/pogoda`} element={<PogodaPage />} />,
     <Route key={`${prefix}-sources`} path={`${prefix}/sources`} element={<SourcesPage />} />,
     /* Sejm routes */
