@@ -39,14 +39,6 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
     return rtf.format(-diffDays, 'day');
   };
 
-  // Use relative time for events < 7 days old, full date for older
-  const ageMs = Date.now() - createdAt.getTime();
-  const publishedDate = ageMs < 7 * 24 * 60 * 60 * 1000
-    ? formatRelative(createdAt)
-    : new Intl.DateTimeFormat(dateLocale, {
-        day: 'numeric', month: 'long', year: 'numeric'
-      }).format(createdAt) + (lang === 'pl' ? ' roku' : '');
-
   // lastSummarizationComplete is not synced to events_en/events_de; fall back to lastContentUpdate
   const lastUpdatedRaw = event.lastSummarizationComplete || event.lastContentUpdate;
   const lastUpdated = lastUpdatedRaw ? new Date(lastUpdatedRaw) : null;
@@ -57,6 +49,16 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
     && (lastUpdated.getTime() - createdAt.getTime() > 10 * 60000);
 
   const updatedAgo = showUpdated && lastUpdated ? formatRelative(lastUpdated) : '';
+
+  // Full date when there's also "updated" (two relative times next to each other is confusing),
+  // relative time for recent events without update
+  const fullDate = new Intl.DateTimeFormat(dateLocale, {
+    day: 'numeric', month: 'long', year: 'numeric'
+  }).format(createdAt) + (lang === 'pl' ? ' roku' : '');
+  const ageMs = Date.now() - createdAt.getTime();
+  const publishedDate = showUpdated || ageMs >= 7 * 24 * 60 * 60 * 1000
+    ? fullDate
+    : formatRelative(createdAt);
   const co2Grams = estimateCO2(event);
   const co2Value = formatCO2(co2Grams);
   const co2Equivalents = getCO2Equivalents(co2Grams);
