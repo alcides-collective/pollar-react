@@ -125,7 +125,6 @@ function ShareButtons({ title, url }: { title: string; url: string }) {
 
 function RelatedPosts({ posts, currentSlug }: { posts: BlogPostSummary[]; currentSlug: string }) {
   const { t } = useTranslation('common');
-  const lang = useRouteLanguage();
   const filtered = posts.filter(p => p.slug !== currentSlug).slice(0, 3);
   if (filtered.length === 0) return null;
 
