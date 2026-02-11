@@ -123,7 +123,7 @@
     "feature5": "Zwischen hellem und dunklem Modus wechseln"
   },
   "footer": {
-    "description": "KI-gestützter Nachrichten-Aggregator. Verfolge Ereignisse, analysiere Parlamentsdaten und erkunde öffentliche Statistiken.",
+    "description": "KI-gestützter polnischer Nachrichten-Aggregator. Verfolge Ereignisse, analysiere Parlamentsdaten und erkunde öffentliche Statistiken.",
     "allRightsReserved": "Alle Rechte vorbehalten.",
     "navigation": "Navigation",
     "home": "Startseite",
@@ -144,7 +144,7 @@
     "noResponse": "Keine Antwort",
     "cannotConnect": "Verbindung zum Server nicht möglich"
   },
-  "defaultDescription": "Alle wichtigen Nachrichten an einem Ort. KI organisiert und fasst die heutigen Ereignisse ohne Clickbait zusammen — nur verifizierte Fakten.",
+  "defaultDescription": "Polnischer KI-Nachrichten-Aggregator. Pollar sammelt Artikel aus Dutzenden Redaktionen, gruppiert sie zu Ereignissen und erstellt Zusammenfassungen. Parlament, Börse, öffentliche Daten.",
   "seo": {
     "archiveTitle": "Ereignisarchiv",
     "archiveDescription": "Durchsuche das Ereignisarchiv nach Kategorien",

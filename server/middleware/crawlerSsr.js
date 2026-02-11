@@ -529,7 +529,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
   if (pageInfo) {
     const isHomepage = pathWithoutLang === '/';
     const ogTitle = isHomepage ? pageInfo.title : `Pollar News: ${pageInfo.title}`;
-    const pageTitle = isHomepage ? `Pollar — ${pageInfo.tagline || 'Wiesz więcej'}` : `${pageInfo.title} | Pollar`;
+    const pageTitle = isHomepage ? `${pageInfo.title} | ${pageInfo.tagline || 'Wiesz więcej'}` : `${pageInfo.title} | Pollar`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}&description=${encodeURIComponent(pageInfo.description)}&lang=${lang}`;
 
     // Use Organization schema for homepage, WebPage + BreadcrumbList + FAQPage for other static pages
@@ -575,7 +575,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
       const about = {
         pl: `<section class="about">
 <h2>Czym jest Pollar News?</h2>
-<p>Pollar News to polska platforma informacyjna zasilana sztuczną inteligencją. AI automatycznie agreguje artykuły z dziesiątek redakcji, grupuje je w wydarzenia, generuje streszczenia z kluczowymi punktami i prezentuje różne perspektywy — bez clickbaitów, tylko sprawdzone fakty.</p>
+<p>Pollar News to polski agregator newsów napędzany sztuczną inteligencją. Nasz agregator wiadomości automatycznie zbiera artykuły z dziesiątek redakcji, grupuje je w wydarzenia, generuje streszczenia z kluczowymi punktami i prezentuje różne perspektywy — bez clickbaitów, tylko sprawdzone fakty.</p>
 <h3>Co oferuje Pollar?</h3>
 <ul>
 <li><strong>Wydarzenia</strong> — zagregowane wiadomości z wielu źródeł w jednym miejscu</li>
@@ -590,7 +590,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
 </section>`,
         en: `<section class="about">
 <h2>What is Pollar News?</h2>
-<p>Pollar News is a Polish AI-powered news platform. AI automatically aggregates articles from dozens of newsrooms, groups them into events, generates summaries with key points, and presents different perspectives — no clickbait, only verified facts.</p>
+<p>Pollar News is a Polish AI-powered news aggregator. Our news aggregator automatically collects articles from dozens of newsrooms, groups them into events, generates summaries with key points, and presents different perspectives — no clickbait, only verified facts.</p>
 <h3>What does Pollar offer?</h3>
 <ul>
 <li><strong>Events</strong> — aggregated news from multiple sources in one place</li>
@@ -605,7 +605,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
 </section>`,
         de: `<section class="about">
 <h2>Was ist Pollar News?</h2>
-<p>Pollar News ist eine polnische KI-gestützte Nachrichtenplattform. KI aggregiert automatisch Artikel aus Dutzenden von Redaktionen, gruppiert sie zu Ereignissen, erstellt Zusammenfassungen mit Kernpunkten und präsentiert verschiedene Perspektiven — ohne Clickbait, nur verifizierte Fakten.</p>
+<p>Pollar News ist ein polnischer KI-gestützter Nachrichten-Aggregator. Unser News-Aggregator sammelt automatisch Artikel aus Dutzenden von Redaktionen, gruppiert sie zu Ereignissen, erstellt Zusammenfassungen mit Kernpunkten und präsentiert verschiedene Perspektiven — ohne Clickbait, nur verifizierte Fakten.</p>
 <h3>Was bietet Pollar?</h3>
 <ul>
 <li><strong>Ereignisse</strong> — aggregierte Nachrichten aus mehreren Quellen an einem Ort</li>

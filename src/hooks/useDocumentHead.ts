@@ -28,7 +28,7 @@ export function generateOgImageUrl(title: string, type?: OgImageType): string {
   return `/api/og?${params.toString()}`;
 }
 
-const DEFAULT_TITLE = 'Pollar News';
+const DEFAULT_TITLE = 'Pollar';
 const DEFAULT_IMAGE = '/opengraph-image.jpg';
 
 /**
@@ -67,7 +67,7 @@ export function useDocumentHead(options: DocumentHeadOptions) {
 
     // Update document title
     if (title) {
-      document.title = `${title} | Pollar News`;
+      document.title = `${title} | Pollar`;
     }
 
     // Helper to update or create meta tag

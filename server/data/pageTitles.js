@@ -1,9 +1,9 @@
 // Static page titles mapping (multilingual: pl/en/de)
 export const PAGE_TITLES = {
   '/': {
-    pl: { title: 'Pollar News', tagline: 'Wiesz więcej', description: 'Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.' },
-    en: { title: 'Pollar News', tagline: 'Know More', description: 'All the most important news in one place. AI organizes and summarizes today\'s events — no clickbait, only verified facts.' },
-    de: { title: 'Pollar News', tagline: 'Mehr wissen', description: 'Alle wichtigen Nachrichten an einem Ort. KI organisiert und fasst die Ereignisse des Tages zusammen — ohne Clickbait, nur verifizierte Fakten.' },
+    pl: { title: 'Pollar — Agregator newsów z AI', tagline: 'Wiadomości bez clickbaitów', description: 'Polski agregator wiadomości napędzany AI. Pollar zbiera artykuły z dziesiątek redakcji, grupuje w wydarzenia i generuje streszczenia. Sejm, giełda GPW, dane publiczne.' },
+    en: { title: 'Pollar — AI-Powered News Aggregator', tagline: 'News without clickbait', description: 'Polish AI news aggregator. Pollar collects articles from dozens of newsrooms, groups them into events and generates summaries. Parliament, stock market, public data.' },
+    de: { title: 'Pollar — KI-gestützter Nachrichten-Aggregator', tagline: 'Nachrichten ohne Clickbait', description: 'Polnischer KI-Nachrichten-Aggregator. Pollar sammelt Artikel aus Dutzenden Redaktionen, gruppiert sie zu Ereignissen und erstellt Zusammenfassungen. Parlament, Börse, öffentliche Daten.' },
   },
   '/brief': null, // handled separately (dynamic)
   '/powiazania': {

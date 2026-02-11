@@ -123,7 +123,7 @@
     "feature5": "Switch between light and dark mode"
   },
   "footer": {
-    "description": "AI-powered news aggregator. Track events, analyze Parliament data and explore public statistics.",
+    "description": "AI-powered Polish news aggregator. Track events, analyze Parliament data and explore public statistics.",
     "allRightsReserved": "All rights reserved.",
     "navigation": "Navigation",
     "home": "Home",
@@ -144,7 +144,7 @@
     "noResponse": "No response",
     "cannotConnect": "Cannot connect to server"
   },
-  "defaultDescription": "All the important news in one place. AI organizes and summarizes today's events without clickbait — only verified facts.",
+  "defaultDescription": "Polish AI news aggregator. Pollar collects articles from dozens of newsrooms, groups them into events and generates summaries. Parliament, stock market, public data.",
   "seo": {
     "archiveTitle": "Event Archive",
     "archiveDescription": "Browse event archive grouped by category",

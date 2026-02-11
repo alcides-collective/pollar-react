@@ -123,7 +123,7 @@
     "feature5": "Zmiany motywu jasnego i ciemnego"
   },
   "footer": {
-    "description": "Agregator wiadomości napędzany AI. Śledź wydarzenia, analizuj dane Sejmu i eksploruj statystyki publiczne.",
+    "description": "Agregator newsów napędzany AI. Śledź wydarzenia, analizuj dane Sejmu i eksploruj statystyki publiczne.",
     "allRightsReserved": "Wszelkie prawa zastrzeżone.",
     "navigation": "Nawigacja",
     "home": "Strona główna",
@@ -144,7 +144,7 @@
     "noResponse": "Brak odpowiedzi",
     "cannotConnect": "Nie można połączyć z serwerem"
   },
-  "defaultDescription": "Wszystkie najważniejsze wiadomości w jednym miejscu. AI porządkuje i streszcza dzisiejsze wydarzenia bez clickbaitów — tylko sprawdzone fakty.",
+  "defaultDescription": "Polski agregator wiadomości napędzany AI. Pollar zbiera artykuły z dziesiątek redakcji, grupuje w wydarzenia i generuje streszczenia. Sejm, giełda GPW, dane publiczne.",
   "seo": {
     "archiveTitle": "Archiwum wydarzeń",
     "archiveDescription": "Przeglądaj archiwum wydarzeń pogrupowane według kategorii",
