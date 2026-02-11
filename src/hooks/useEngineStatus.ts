@@ -5,7 +5,7 @@ const POLL_INTERVAL = 60_000; // 1 minute
 
 export function useEngineStatus() {
   const [isDown, setIsDown] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval>>();
+  const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
 
   useEffect(() => {
     const check = async () => {
