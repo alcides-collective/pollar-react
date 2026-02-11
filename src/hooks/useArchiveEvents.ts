@@ -194,7 +194,7 @@ export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
   return {
     events,
     groupedByCategory,
-    loading: loadingState || (!isFresh && events.length === 0),
+    loading: loadingState || (!isFresh && !error && events.length === 0),
     error,
   };
 }

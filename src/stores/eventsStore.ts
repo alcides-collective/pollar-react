@@ -399,9 +399,9 @@ export function useEvents(params: UseEventsOptions = {}) {
     return combined;
   }, [events, archiveEvents, params.includeArchive, prodArchiveEvents]);
 
-  const isLoading = loadingState || (!isFresh && events.length === 0);
-  const isArchiveLoading = params.includeArchive && archiveLoading && archiveEvents.length === 0;
-  const isProdArchiveLoading = prodArchiveLoading && prodArchiveEvents.length === 0;
+  const isLoading = loadingState || (!isFresh && !error && events.length === 0);
+  const isArchiveLoading = params.includeArchive && archiveLoading && !archiveError && archiveEvents.length === 0;
+  const isProdArchiveLoading = prodArchiveLoading && !prodArchiveError && prodArchiveEvents.length === 0;
 
   // Filter out hidden categories (only if user is logged in and has hidden categories)
   const hiddenCategories = useUserStore((s) => s.hiddenCategories);
