@@ -33,8 +33,11 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
   // lastSummarizationComplete is not synced to events_en/events_de; fall back to lastContentUpdate
   const lastUpdatedRaw = event.lastSummarizationComplete || event.lastContentUpdate;
   const lastUpdated = lastUpdatedRaw ? new Date(lastUpdatedRaw) : null;
-  // Initial summarization takes 2-5 min after creation; only show "updated" for re-summarizations
-  const showUpdated = lastUpdated && (lastUpdated.getTime() - createdAt.getTime() > 10 * 60000);
+  // Initial summarization takes 2-5 min after creation; only show "updated" for re-summarizations.
+  // Archived events have archivedAt mapped to lastSummarizationComplete which is misleading.
+  const showUpdated = lastUpdated
+    && event.freshnessLevel !== 'OLD'
+    && (lastUpdated.getTime() - createdAt.getTime() > 10 * 60000);
 
   let updatedAgo = '';
   if (showUpdated && lastUpdated) {
