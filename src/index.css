@@ -167,7 +167,7 @@ body {
 }
 
 .quote-author-photo img {
-  @apply w-full h-full object-cover;
+  @apply w-full h-full object-cover !m-0 !rounded-none !border-0;
 }
 
 .quote-content {
