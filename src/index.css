@@ -153,9 +153,17 @@ body {
   @apply text-sm text-content leading-relaxed m-0;
 }
 
-/* Quote Box */
+/* Quote Box — reset prose blockquote styles */
+.prose .quote-box,
 .quote-box {
   @apply my-6 p-4 bg-surface border border-divider rounded-lg overflow-hidden;
+  font-style: normal;
+  border-left: none;
+  quotes: none;
+}
+.prose .quote-box::before,
+.prose .quote-box::after {
+  content: none;
 }
 
 .quote-box.has-photo {
