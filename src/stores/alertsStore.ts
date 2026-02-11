@@ -82,12 +82,7 @@ export const useAlertsStore = create<AlertsStore>((set, get) => ({
   fetchVotingAlerts: async () => {
     try {
       const votingAlerts = await getVotingAlerts(50);
-      const votingUnreadCount = votingAlerts.filter(a => !a.read).length;
-      set({
-        votingAlerts,
-        votingUnreadCount,
-        totalUnreadCount: votingUnreadCount + get().categoryUnreadCount,
-      });
+      set({ votingAlerts });
     } catch (error) {
       console.error('Error fetching voting alerts:', error);
     }
@@ -159,12 +154,7 @@ export const useAlertsStore = create<AlertsStore>((set, get) => ({
   fetchCategoryAlerts: async () => {
     try {
       const categoryAlerts = await getCategoryAlerts(50);
-      const categoryUnreadCount = categoryAlerts.filter(a => !a.read).length;
-      set({
-        categoryAlerts,
-        categoryUnreadCount,
-        totalUnreadCount: get().votingUnreadCount + categoryUnreadCount,
-      });
+      set({ categoryAlerts });
     } catch (error) {
       console.error('Error fetching category alerts:', error);
     }

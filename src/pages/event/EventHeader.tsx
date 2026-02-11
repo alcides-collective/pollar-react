@@ -28,9 +28,9 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
   return (
     <header className="px-6 pt-8 pb-6">
       {/* AI generation info */}
-      <div className="flex items-center gap-3 mb-4 text-xs text-content-subtle">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-4 text-xs text-content-subtle">
         {modelId && (
-          <span className="font-light">
+          <span className="font-light order-1">
             {t('header.generatedBy')}{' '}
             <span
               className={`relative inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ring-1 ring-inset cursor-help ${getModelPillClasses(modelId)}`}
@@ -43,7 +43,17 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
                   {modelDescription.text}
                 </span>
               )}
-            </span>{' '}
+            </span>
+          </span>
+        )}
+        {displayViewCount > 0 && (
+          <span className="flex items-center gap-1 ml-auto order-2 md:order-3">
+            <i className="ri-eye-line" />
+            {displayViewCount.toLocaleString()}
+          </span>
+        )}
+        {modelId && (
+          <span className="font-light order-3 w-full md:order-2 md:w-auto">
             {t('header.emitting')}{' '}
             <span
               className="relative cursor-help border-b border-dotted border-content-faint"
@@ -60,15 +70,6 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
               )}
             </span>
           </span>
-        )}
-        {displayViewCount > 0 && (
-          <>
-            {modelId && <span className="text-content-faint">•</span>}
-            <span className="flex items-center gap-1">
-              <i className="ri-eye-line" />
-              {displayViewCount.toLocaleString()}
-            </span>
-          </>
         )}
       </div>
 

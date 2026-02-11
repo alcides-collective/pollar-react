@@ -29,6 +29,13 @@ import { AlertsBell } from '@/components/AlertsBell';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useThemePreference, useSetThemePreference } from '@/stores/themeStore';
 import { updateUserThemePreference, updateUserSelectedCountries } from '@/services/userService';
+import {
+  useAlertsStore,
+  useTotalUnreadCount,
+  useCombinedAlerts,
+  type CombinedAlert,
+} from '@/stores/alertsStore';
+import { useTranslatedEventTitles } from '@/hooks/useTranslatedEventTitles';
 import type { ThemePreference } from '@/types/auth';
 import { getCategorySlug } from '../utils/categorySlug';
 import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, COUNTRY_SEGMENT, buildCountrySlugsParam, translatePath } from '../utils/countrySlug';
@@ -282,6 +289,190 @@ function MobileSettingsMenu() {
   );
 }
 
+// Mobile-only combined user menu (profile + alerts)
+function MobileUserMenu() {
+  const { t } = useTranslation('common');
+  const { t: tNotif } = useTranslation('notifications');
+  const isAuthenticated = useIsAuthenticated();
+  const user = useUser();
+  const openAuthModal = useAuthStore((s) => s.openAuthModal);
+  const signOut = useAuthStore((s) => s.signOut);
+  const totalUnreadCount = useTotalUnreadCount();
+  const combinedAlerts = useCombinedAlerts();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const categoryEventIds = useMemo(() => {
+    return combinedAlerts
+      .filter((a): a is CombinedAlert & { alertType: 'category' } => a.alertType === 'category')
+      .slice(0, 5)
+      .map(a => a.eventId);
+  }, [combinedAlerts]);
+
+  const { titles: translatedTitles } = useTranslatedEventTitles(categoryEventIds);
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (open && isAuthenticated) {
+      useAlertsStore.getState().fetchAllAlerts();
+    }
+  };
+
+  const handleMarkAllAsRead = (e: React.MouseEvent) => {
+    e.preventDefault();
+    useAlertsStore.getState().markAllAlertsAsRead();
+  };
+
+  const formatVote = (vote: string): { text: string; color: string } => {
+    switch (vote) {
+      case 'yes': return { text: tNotif('voting.for'), color: 'text-green-400' };
+      case 'no': return { text: tNotif('voting.against'), color: 'text-red-400' };
+      case 'abstain': return { text: tNotif('voting.abstained'), color: 'text-amber-400' };
+      case 'absent': return { text: tNotif('voting.absent'), color: 'text-content-subtle' };
+      case 'present': return { text: tNotif('voting.present'), color: 'text-blue-400' };
+      default: return { text: vote, color: 'text-content-faint' };
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="sm:hidden">
+        <button
+          onClick={() => openAuthModal('login')}
+          className="h-9 w-9 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors"
+        >
+          <i className="ri-user-line text-lg" />
+        </button>
+      </div>
+    );
+  }
+
+  const displayName = user?.displayName || user?.email || t('user.defaultName');
+  const initials = displayName.charAt(0).toUpperCase();
+  const displayAlerts = combinedAlerts.slice(0, 5);
+
+  return (
+    <div className="sm:hidden">
+      <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
+        <DropdownMenuTrigger className="relative h-9 flex items-center justify-center rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors outline-none">
+          {user?.photoURL ? (
+            <img src={user.photoURL} alt="" className="h-full aspect-square object-cover rounded-[7px]" />
+          ) : (
+            <div className="h-full aspect-square bg-zinc-600 flex items-center justify-center text-sm font-medium text-white rounded-[7px]">
+              {initials}
+            </div>
+          )}
+          {totalUnreadCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 h-4 min-w-4 px-1 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full">
+              {totalUnreadCount > 99 ? '99+' : totalUnreadCount}
+            </span>
+          )}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-72">
+          {/* Profile */}
+          <DropdownMenuLabel className="text-zinc-400 truncate">{displayName}</DropdownMenuLabel>
+          <DropdownMenuItem asChild>
+            <LocalizedLink to="/profil" className="w-full cursor-pointer flex items-center gap-2">
+              <i className="ri-user-line" />
+              {t('user.myProfile')}
+            </LocalizedLink>
+          </DropdownMenuItem>
+
+          {/* Alerts */}
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel className="text-zinc-400 !pb-0">{tNotif('title')}</DropdownMenuLabel>
+          {totalUnreadCount > 0 && (
+            <button
+              onClick={handleMarkAllAsRead}
+              className="w-full text-left px-2 pt-0.5 pb-2 text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              {tNotif('markAsRead')}
+            </button>
+          )}
+
+          {displayAlerts.length === 0 ? (
+            <div className="px-2 py-3 text-center">
+              <p className="text-xs text-zinc-500">{tNotif('noNew')}</p>
+            </div>
+          ) : (
+            displayAlerts.map((alert) => {
+              if (alert.alertType === 'voting') {
+                const voteInfo = formatVote(alert.vote);
+                return (
+                  <DropdownMenuItem
+                    key={`voting-${alert.id}`}
+                    asChild
+                    className={`py-2 cursor-pointer ${!alert.read ? 'bg-blue-500/20' : ''}`}
+                    onClick={() => useAlertsStore.getState().markVotingAlertAsRead(alert.id)}
+                  >
+                    <LocalizedLink to={`/sejm/glosowania/${alert.sitting}/${alert.votingNumber}`}>
+                      <div className="flex items-start gap-1.5 w-full">
+                        <p className="text-xs text-zinc-400 line-clamp-2 flex-1">
+                          <span className="inline-flex items-baseline gap-1 mr-1 text-xs font-medium">
+                            <span className="text-white">{alert.mpName}</span>
+                            <span className={voteInfo.color}>{voteInfo.text}</span>
+                          </span>
+                          {alert.votingTitle}
+                        </p>
+                        {!alert.read && (
+                          <span className="shrink-0 h-1.5 w-1.5 bg-blue-400 rounded-full mt-1" />
+                        )}
+                      </div>
+                    </LocalizedLink>
+                  </DropdownMenuItem>
+                );
+              } else {
+                const categoryKey = alert.category
+                  ?.toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
+                  .replace(/ł/g, 'l');
+                const categoryLabel = tNotif(`categoryLabels.${categoryKey}`, alert.category);
+                const displayTitle = translatedTitles[alert.eventId]?.title || alert.eventTitle;
+                return (
+                  <DropdownMenuItem
+                    key={`category-${alert.id}`}
+                    asChild
+                    className={`py-2 cursor-pointer ${!alert.read ? 'bg-blue-500/20' : ''}`}
+                    onClick={() => useAlertsStore.getState().markCategoryAlertAsRead(alert.id)}
+                  >
+                    <LocalizedLink to={`/event/${alert.eventId}`}>
+                      <div className="flex items-start gap-1.5 w-full">
+                        <p className="text-xs text-zinc-300 line-clamp-2 flex-1">
+                          <span className="inline text-[10px] px-1.5 py-0.5 bg-amber-500/20 text-amber-300 rounded font-medium mr-1">
+                            {categoryLabel}
+                          </span>
+                          {displayTitle}
+                        </p>
+                        {!alert.read && (
+                          <span className="shrink-0 h-1.5 w-1.5 bg-blue-400 rounded-full mt-1" />
+                        )}
+                      </div>
+                    </LocalizedLink>
+                  </DropdownMenuItem>
+                );
+              }
+            })
+          )}
+
+          <DropdownMenuItem asChild>
+            <LocalizedLink to="/powiadomienia" className="w-full cursor-pointer flex items-center gap-2 text-zinc-400">
+              <i className="ri-notification-line" />
+              {tNotif('viewAll')}
+            </LocalizedLink>
+          </DropdownMenuItem>
+
+          {/* Logout */}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer flex items-center gap-2">
+            <i className="ri-logout-box-line" />
+            {t('user.logout')}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
+
 // Auth button component
 function AuthButton() {
   const { t } = useTranslation('common');
@@ -511,12 +702,13 @@ export function Header() {
             >
               {t('nav.privacy')}
             </LocalizedLink>
-            <AlertsBell />
+            <div className="hidden sm:block"><AlertsBell /></div>
             {isAuthenticated && <div className="hidden sm:block"><ThemeToggle variant="header" /></div>}
             <div className="hidden sm:block"><LanguageSelector /></div>
             <CountryFilter />
             <MobileSettingsMenu />
-            <AuthButton />
+            <MobileUserMenu />
+            <div className="hidden sm:block"><AuthButton /></div>
             {/* <button
               onClick={openProModal}
               className="text-sm text-white bg-amber-500/10 hover:bg-amber-500/20 rounded-lg px-3 py-1.5 border border-amber-500/30 hover:border-amber-500/50 transition-colors"

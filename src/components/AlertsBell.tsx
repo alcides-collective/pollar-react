@@ -175,7 +175,7 @@ export function AlertsBell() {
         <button className="relative h-9 w-9 flex items-center justify-center text-content-faint hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors">
           <Bell className="h-5 w-5" />
           {totalUnreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full">
+            <span className="absolute -top-1.5 -right-1.5 h-4 min-w-4 px-1 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full">
               {totalUnreadCount > 99 ? '99+' : totalUnreadCount}
             </span>
           )}
