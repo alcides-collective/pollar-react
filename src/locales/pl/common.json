@@ -304,9 +304,10 @@
   },
   "contact": {
     "title": "Kim jesteśmy",
-    "intro": "Pollar tworzą Jakub Dudek i Bartosz Kasprzycki.",
+    "intro": "Pollar tworzą Jakub Dudek, Bartosz Kasprzycki i Ignacy Nowina Konopka.",
     "jakub": "Jakub, programista z Krakowa, buduje całą stronę techniczną — od interfejsu po serwery — dbając, by wszystko działało szybko, sprawnie i niezawodnie.",
     "bartosz": "Bartosz odpowiada za produkt i marketing — pilnuje, by każda interakcja z Pollarem była intuicyjna i nie zabierała więcej czasu niż trzeba.",
+    "ignacy": "Ignacy rozwija Pollar od strony biznesowej i B2B — buduje relacje z partnerami i odpowiada za strategiczny rozwój platformy.",
     "goal": "Cel jest wspólny: pomóc ludziom być na bieżąco bez przytłaczania ich nadmiarem informacji. Projekt jest w fazie beta — jeśli masz pomysł lub zauważysz błąd, napisz.",
     "feedback": "Masz uwagi?",
     "feedbackText": "Chętnie wysłuchamy Twoich sugestii, pomysłów lub zgłoszeń błędów. Napisz bezpośrednio na maila."

@@ -32,12 +32,17 @@
     "jakub": {
       "name": "Jakub Dudek",
       "role": "Developer",
-      "email": "jakub@pollar.pl"
+      "email": "jakubdudek@pollar.news"
     },
     "bartosz": {
       "name": "Bartosz Kasprzycki",
       "role": "Product & Marketing",
-      "email": "bartosz@pollar.pl"
+      "email": "bartoszkasprzycki@pollar.news"
+    },
+    "ignacy": {
+      "name": "Ignacy Nowina Konopka",
+      "role": "B2B & Business",
+      "email": "ignacykonopka@pollar.news"
     }
   },
   "social": {
@@ -56,11 +61,11 @@
     "items": [
       {
         "question": "How do I report a bug?",
-        "answer": "The quickest way is through the form above — select \"Bug report\" as the subject and describe the issue. You can also email jakub@pollar.pl directly."
+        "answer": "The quickest way is through the form above — select \"Bug report\" as the subject and describe the issue. You can also email jakubdudek@pollar.news directly."
       },
       {
         "question": "How do I delete my account?",
-        "answer": "Email us from the address associated with your account at jakub@pollar.pl requesting account deletion. We'll delete it within 7 business days."
+        "answer": "Email us from the address associated with your account at jakubdudek@pollar.news requesting account deletion. We'll delete it within 7 business days."
       },
       {
         "question": "Is Pollar free?",

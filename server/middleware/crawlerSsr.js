@@ -831,7 +831,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
 <li><strong>Mapa wydarzeń</strong> — interaktywna mapa bieżących wydarzeń w Polsce</li>
 </ul>
 <p>Serwis jest dostępny w języku polskim, angielskim i niemieckim. Treści oryginalne są licencjonowane na zasadach <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
-<p>Pollar P.S.A. — firma zarejestrowana w Krakowie (KRS 0001194489). Zespół: Jakub Dudek (Developer), Bartosz Kasprzycki (Product &amp; Marketing).</p>
+<p>Pollar P.S.A. — firma zarejestrowana w Krakowie (KRS 0001194489). Zespół: Jakub Dudek (Developer), Bartosz Kasprzycki (Product &amp; Marketing), Ignacy Nowina Konopka (B2B &amp; Biznes).</p>
 <p><a href="https://pollar.news/kontakt">Kontakt</a> · <a href="https://pollar.news/info">O Pollar</a> · <a href="https://pollar.news/regulamin">Regulamin</a> · <a href="https://pollar.news/feed.xml">RSS</a> · <a href="https://pollar.news/llms.txt">llms.txt</a></p>
 </section>`,
         en: `<section class="about">
@@ -846,7 +846,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
 <li><strong>Event map</strong> — interactive map of current events in Poland</li>
 </ul>
 <p>Available in Polish, English, and German. Original content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
-<p>Pollar P.S.A. — company registered in Kraków, Poland (KRS 0001194489). Team: Jakub Dudek (Developer), Bartosz Kasprzycki (Product &amp; Marketing).</p>
+<p>Pollar P.S.A. — company registered in Kraków, Poland (KRS 0001194489). Team: Jakub Dudek (Developer), Bartosz Kasprzycki (Product &amp; Marketing), Ignacy Nowina Konopka (B2B &amp; Business).</p>
 <p><a href="https://pollar.news/kontakt">Contact</a> · <a href="https://pollar.news/info">About</a> · <a href="https://pollar.news/regulamin">Terms</a> · <a href="https://pollar.news/en/feed.xml">RSS</a> · <a href="https://pollar.news/llms.txt">llms.txt</a></p>
 </section>`,
         de: `<section class="about">
@@ -861,7 +861,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
 <li><strong>Ereigniskarte</strong> — interaktive Karte aktueller Ereignisse in Polen</li>
 </ul>
 <p>Verfügbar auf Polnisch, Englisch und Deutsch. Originalinhalte sind lizenziert unter <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
-<p>Pollar P.S.A. — Unternehmen mit Sitz in Kraków, Polen (KRS 0001194489). Team: Jakub Dudek (Entwickler), Bartosz Kasprzycki (Produkt &amp; Marketing).</p>
+<p>Pollar P.S.A. — Unternehmen mit Sitz in Kraków, Polen (KRS 0001194489). Team: Jakub Dudek (Entwickler), Bartosz Kasprzycki (Produkt &amp; Marketing), Ignacy Nowina Konopka (B2B &amp; Business).</p>
 <p><a href="https://pollar.news/kontakt">Kontakt</a> · <a href="https://pollar.news/info">Über uns</a> · <a href="https://pollar.news/regulamin">AGB</a> · <a href="https://pollar.news/de/feed.xml">RSS</a> · <a href="https://pollar.news/llms.txt">llms.txt</a></p>
 </section>`
       };

@@ -98,8 +98,8 @@
   },
   "team": {
     "title": "Gründer",
-    "subtitle": "Zwei Freunde mit einer Vision — wir helfen Menschen, informiert zu bleiben, ohne sie mit Informationen zu überfordern.",
-    "photoAlt": "Jakub und Bartosz - Pollar-Gründer",
+    "subtitle": "Ein Team mit einer Vision — wir helfen Menschen, informiert zu bleiben, ohne sie mit Informationen zu überfordern.",
+    "photoAlt": "Pollar-Team",
     "betaNotice": "Pollar befindet sich in der <strong>Beta-Phase</strong>. Ihr Feedback ist für uns von unschätzbarem Wert — schreiben Sie uns!",
     "members": {
       "jakub": {
@@ -109,6 +109,10 @@
       "bartosz": {
         "role": "Produkt & Marketing",
         "description": "Sorgt für Intuitivität und stellt sicher, dass Pollar nicht zu viel Ihrer Zeit beansprucht und gleichzeitig Mehrwert liefert."
+      },
+      "ignacy": {
+        "role": "B2B & Business",
+        "description": "Verantwortlich für Geschäftsentwicklung und B2B-Partnerschaften — baut Beziehungen zu Partnern auf und entwickelt Pollar strategisch weiter."
       }
     }
   },

@@ -32,12 +32,17 @@
     "jakub": {
       "name": "Jakub Dudek",
       "role": "Entwickler",
-      "email": "jakub@pollar.pl"
+      "email": "jakubdudek@pollar.news"
     },
     "bartosz": {
       "name": "Bartosz Kasprzycki",
       "role": "Produkt & Marketing",
-      "email": "bartosz@pollar.pl"
+      "email": "bartoszkasprzycki@pollar.news"
+    },
+    "ignacy": {
+      "name": "Ignacy Nowina Konopka",
+      "role": "B2B & Business",
+      "email": "ignacykonopka@pollar.news"
     }
   },
   "social": {
@@ -56,11 +61,11 @@
     "items": [
       {
         "question": "Wie melde ich einen Fehler?",
-        "answer": "Am schnellsten über das Formular oben — wählen Sie \"Fehlerbericht\" als Betreff und beschreiben Sie das Problem. Sie können auch direkt an jakub@pollar.pl schreiben."
+        "answer": "Am schnellsten über das Formular oben — wählen Sie \"Fehlerbericht\" als Betreff und beschreiben Sie das Problem. Sie können auch direkt an jakubdudek@pollar.news schreiben."
       },
       {
         "question": "Wie lösche ich mein Konto?",
-        "answer": "Schreiben Sie uns von der mit Ihrem Konto verknüpften E-Mail-Adresse an jakub@pollar.pl mit der Bitte um Kontolöschung. Wir löschen es innerhalb von 7 Werktagen."
+        "answer": "Schreiben Sie uns von der mit Ihrem Konto verknüpften E-Mail-Adresse an jakubdudek@pollar.news mit der Bitte um Kontolöschung. Wir löschen es innerhalb von 7 Werktagen."
       },
       {
         "question": "Ist Pollar kostenlos?",

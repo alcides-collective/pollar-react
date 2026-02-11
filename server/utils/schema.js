@@ -62,7 +62,8 @@ export function generateOrganizationSchema() {
     foundingDate: '2025',
     founders: [
       { '@type': 'Person', name: 'Jakub Dudek' },
-      { '@type': 'Person', name: 'Bartosz Kasprzycki' }
+      { '@type': 'Person', name: 'Bartosz Kasprzycki' },
+      { '@type': 'Person', name: 'Ignacy Nowina Konopka' }
     ],
     sameAs: [
       'https://pollar.pl',
@@ -72,7 +73,7 @@ export function generateOrganizationSchema() {
     ],
     contactPoint: {
       '@type': 'ContactPoint',
-      email: 'jakub@pollar.pl',
+      email: 'jakubdudek@pollar.news',
       contactType: 'customer service'
     },
     address: {

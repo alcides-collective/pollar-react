@@ -89,7 +89,7 @@ Disallow-Training: /assets/*
 Disallow-Training: /logo.png
 
 # Contact
-Contact: jakub@pollar.pl
+Contact: jakubdudek@pollar.news
 Operator: Pollar P.S.A., KRS 0001194489, Kraków, Poland
 `;
   res.set('Content-Type', 'text/plain; charset=utf-8');

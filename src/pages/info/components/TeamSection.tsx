@@ -2,8 +2,9 @@ import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 
 const teamMembers = [
-  { key: 'jakub', name: 'Jakub Dudek', location: 'Kraków', email: 'jakub@pollar.pl' },
-  { key: 'bartosz', name: 'Bartosz Kasprzycki', location: 'Berlin', email: 'bartosz@pollar.pl' },
+  { key: 'jakub', name: 'Jakub Dudek', location: 'Kraków', email: 'jakubdudek@pollar.news' },
+  { key: 'bartosz', name: 'Bartosz Kasprzycki', location: 'Berlin', email: 'bartoszkasprzycki@pollar.news' },
+  { key: 'ignacy', name: 'Ignacy Nowina Konopka', location: 'Warszawa', email: 'ignacykonopka@pollar.news' },
 ] as const;
 
 export function TeamSection() {

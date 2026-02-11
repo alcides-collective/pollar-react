@@ -304,9 +304,10 @@
   },
   "contact": {
     "title": "Wer wir sind",
-    "intro": "Pollar wird von Jakub Dudek und Bartosz Kasprzycki erstellt.",
+    "intro": "Pollar wird von Jakub Dudek, Bartosz Kasprzycki und Ignacy Nowina Konopka erstellt.",
     "jakub": "Jakub, ein Entwickler aus Krakau, baut die gesamte technische Seite — von der Oberfläche bis zu den Servern — und sorgt dafür, dass alles schnell, effizient und zuverlässig funktioniert.",
     "bartosz": "Bartosz ist für Produkt und Marketing verantwortlich — er achtet darauf, dass jede Interaktion mit Pollar intuitiv ist und nicht mehr Zeit als nötig in Anspruch nimmt.",
+    "ignacy": "Ignacy treibt die Geschäftsentwicklung und B2B-Partnerschaften voran — baut Beziehungen zu Partnern auf und entwickelt Pollar strategisch weiter.",
     "goal": "Das Ziel ist gemeinsam: Menschen zu helfen, auf dem Laufenden zu bleiben, ohne sie mit zu vielen Informationen zu überwältigen. Das Projekt befindet sich in der Beta-Phase — wenn Sie eine Idee haben oder einen Fehler bemerken, schreiben Sie uns.",
     "feedback": "Haben Sie Feedback?",
     "feedbackText": "Wir würden uns freuen, Ihre Vorschläge, Ideen oder Fehlerberichte zu hören. Schreiben Sie direkt an unsere E-Mail."

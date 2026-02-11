@@ -205,7 +205,7 @@ function TermsContentPL() {
         </ul>
         <p className="text-content mb-3">Rejestracja możliwa jest również za pośrednictwem konta Google lub Apple.</p>
         <p className="text-content mb-3">Użytkownik zobowiązuje się do podania prawdziwych danych oraz do nieudostępniania danych logowania osobom trzecim.</p>
-        <p className="text-content">Użytkownik może w każdym momencie usunąć swoje Konto w ustawieniach profilu lub kontaktując się z Usługodawcą pod adresem <strong>jakub@pollar.pl</strong>.</p>
+        <p className="text-content">Użytkownik może w każdym momencie usunąć swoje Konto w ustawieniach profilu lub kontaktując się z Usługodawcą pod adresem <strong>jakubdudek@pollar.news</strong>.</p>
       </section>
 
       <section id="wlasnosc" className="mb-14 scroll-mt-24">
@@ -247,7 +247,7 @@ function TermsContentPL() {
 
       <section id="reklamacje" className="mb-14 scroll-mt-24">
         <h2 className="text-xl font-semibold mb-4 text-content-heading">9. Reklamacje</h2>
-        <p className="text-content mb-3">Reklamacje dotyczące funkcjonowania Serwisu można składać na adres e-mail: <strong>jakub@pollar.pl</strong>.</p>
+        <p className="text-content mb-3">Reklamacje dotyczące funkcjonowania Serwisu można składać na adres e-mail: <strong>jakubdudek@pollar.news</strong>.</p>
         <p className="text-content">Reklamacja powinna zawierać opis problemu oraz dane kontaktowe Użytkownika. Usługodawca rozpatruje reklamacje w terminie 14 dni od dnia ich otrzymania.</p>
       </section>
 
@@ -334,7 +334,7 @@ function TermsContentEN() {
         </ul>
         <p className="text-content mb-3">Registration is also possible via a Google or Apple account.</p>
         <p className="text-content mb-3">Users agree to provide accurate information and not to share their login credentials with third parties.</p>
-        <p className="text-content">Users may delete their Account at any time from the profile settings or by contacting the Provider at <strong>jakub@pollar.pl</strong>.</p>
+        <p className="text-content">Users may delete their Account at any time from the profile settings or by contacting the Provider at <strong>jakubdudek@pollar.news</strong>.</p>
       </section>
 
       <section id="ip" className="mb-14 scroll-mt-24">
@@ -376,7 +376,7 @@ function TermsContentEN() {
 
       <section id="complaints" className="mb-14 scroll-mt-24">
         <h2 className="text-xl font-semibold mb-4 text-content-heading">9. Complaints</h2>
-        <p className="text-content mb-3">Complaints regarding the Website may be submitted by email to: <strong>jakub@pollar.pl</strong>.</p>
+        <p className="text-content mb-3">Complaints regarding the Website may be submitted by email to: <strong>jakubdudek@pollar.news</strong>.</p>
         <p className="text-content">A complaint should include a description of the issue and the User's contact details. The Provider processes complaints within 14 days of receipt.</p>
       </section>
 
@@ -463,7 +463,7 @@ function TermsContentDE() {
         </ul>
         <p className="text-content mb-3">Die Registrierung ist auch über ein Google- oder Apple-Konto möglich.</p>
         <p className="text-content mb-3">Die Nutzer verpflichten sich, korrekte Angaben zu machen und ihre Anmeldedaten nicht an Dritte weiterzugeben.</p>
-        <p className="text-content">Nutzer können ihr Konto jederzeit in den Profileinstellungen löschen oder den Anbieter unter <strong>jakub@pollar.pl</strong> kontaktieren.</p>
+        <p className="text-content">Nutzer können ihr Konto jederzeit in den Profileinstellungen löschen oder den Anbieter unter <strong>jakubdudek@pollar.news</strong> kontaktieren.</p>
       </section>
 
       <section id="eigentum" className="mb-14 scroll-mt-24">
@@ -505,7 +505,7 @@ function TermsContentDE() {
 
       <section id="beschwerden" className="mb-14 scroll-mt-24">
         <h2 className="text-xl font-semibold mb-4 text-content-heading">9. Beschwerden</h2>
-        <p className="text-content mb-3">Beschwerden bezüglich der Website können per E-Mail an <strong>jakub@pollar.pl</strong> gerichtet werden.</p>
+        <p className="text-content mb-3">Beschwerden bezüglich der Website können per E-Mail an <strong>jakubdudek@pollar.news</strong> gerichtet werden.</p>
         <p className="text-content">Eine Beschwerde sollte eine Beschreibung des Problems und die Kontaktdaten des Nutzers enthalten. Der Anbieter bearbeitet Beschwerden innerhalb von 14 Tagen nach Eingang.</p>
       </section>
 

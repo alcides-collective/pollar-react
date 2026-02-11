@@ -98,8 +98,8 @@
   },
   "team": {
     "title": "Creators",
-    "subtitle": "Two friends with a vision — we help people stay informed without overwhelming them with information.",
-    "photoAlt": "Jakub and Bartosz - Pollar creators",
+    "subtitle": "A team with a vision — we help people stay informed without overwhelming them with information.",
+    "photoAlt": "Pollar team",
     "betaNotice": "Pollar is in <strong>beta</strong>. Your feedback is invaluable to us — don't hesitate to reach out!",
     "members": {
       "jakub": {
@@ -109,6 +109,10 @@
       "bartosz": {
         "role": "Product & Marketing",
         "description": "Ensures intuitiveness and makes sure Pollar doesn't take too much of your time while delivering value."
+      },
+      "ignacy": {
+        "role": "B2B & Business",
+        "description": "Drives business development and B2B partnerships — building relationships with partners and growing Pollar strategically."
       }
     }
   },

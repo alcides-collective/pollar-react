@@ -32,12 +32,17 @@
     "jakub": {
       "name": "Jakub Dudek",
       "role": "Developer",
-      "email": "jakub@pollar.pl"
+      "email": "jakubdudek@pollar.news"
     },
     "bartosz": {
       "name": "Bartosz Kasprzycki",
       "role": "Product & Marketing",
-      "email": "bartosz@pollar.pl"
+      "email": "bartoszkasprzycki@pollar.news"
+    },
+    "ignacy": {
+      "name": "Ignacy Nowina Konopka",
+      "role": "B2B & Biznes",
+      "email": "ignacykonopka@pollar.news"
     }
   },
   "social": {
@@ -56,11 +61,11 @@
     "items": [
       {
         "question": "Jak zgłosić błąd?",
-        "answer": "Najszybciej przez formularz powyżej — wybierz temat \"Błąd / Bug report\" i opisz problem. Możesz też napisać bezpośrednio na jakub@pollar.pl."
+        "answer": "Najszybciej przez formularz powyżej — wybierz temat \"Błąd / Bug report\" i opisz problem. Możesz też napisać bezpośrednio na jakubdudek@pollar.news."
       },
       {
         "question": "Jak usunąć konto?",
-        "answer": "Napisz do nas z adresu email powiązanego z kontem na jakub@pollar.pl z prośbą o usunięcie konta. Usuniemy je w ciągu 7 dni roboczych."
+        "answer": "Napisz do nas z adresu email powiązanego z kontem na jakubdudek@pollar.news z prośbą o usunięcie konta. Usuniemy je w ciągu 7 dni roboczych."
       },
       {
         "question": "Czy Pollar jest darmowy?",

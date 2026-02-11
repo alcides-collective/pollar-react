@@ -10,6 +10,7 @@ export function ContactSection() {
         <p>{t("contact.intro")}</p>
         <p>{t("contact.jakub")}</p>
         <p>{t("contact.bartosz")}</p>
+        <p>{t("contact.ignacy")}</p>
         <p>{t("contact.goal")}</p>
       </div>
 
@@ -19,16 +20,22 @@ export function ContactSection() {
       </p>
       <div className="flex flex-col gap-1">
         <a
-          href="mailto:jakub@pollar.pl"
+          href="mailto:jakubdudek@pollar.news"
           className="text-sm text-content-heading hover:underline"
         >
-          jakub@pollar.pl
+          jakubdudek@pollar.news
         </a>
         <a
-          href="mailto:bartosz@pollar.pl"
+          href="mailto:bartoszkasprzycki@pollar.news"
           className="text-sm text-content-heading hover:underline"
         >
-          bartosz@pollar.pl
+          bartoszkasprzycki@pollar.news
+        </a>
+        <a
+          href="mailto:ignacykonopka@pollar.news"
+          className="text-sm text-content-heading hover:underline"
+        >
+          ignacykonopka@pollar.news
         </a>
       </div>
     </div>
