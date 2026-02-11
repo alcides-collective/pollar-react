@@ -1,11 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import type { DailyBrief } from '../../types/brief';
-import { GrainImage } from '../common/GrainImage';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { LocalizedLink } from '../LocalizedLink';
 import { AnimatedUnderline } from '../common/AnimatedUnderline';
-import dailyBriefImg from '../../assets/images/daily/day.webp';
 
 interface DailyBriefSectionProps {
   brief: DailyBrief;
@@ -27,14 +25,23 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
   const language = useRouteLanguage();
   const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
 
+  const hour = new Date().getHours();
+
   const getTimeBasedGreeting = () => {
-    const hour = new Date().getHours();
     if (hour >= 5 && hour < 18) return t('greetings.morning');
     if (hour >= 18 && hour < 22) return t('greetings.evening');
     return t('greetings.default');
   };
 
+  const getTimeBasedVideo = () => {
+    if (hour >= 5 && hour < 12) return '/videos/daily-brief-morning.webm';
+    if (hour >= 12 && hour < 18) return '/videos/daily-brief-afternoon.webm';
+    if (hour >= 18 && hour < 22) return '/videos/daily-brief-evening.webm';
+    return '/videos/daily-brief-night.webm';
+  };
+
   const timeGreeting = getTimeBasedGreeting();
+  const briefVideo = getTimeBasedVideo();
   const dateStr = new Date().toLocaleDateString(localeMap[language] || 'pl-PL', {
     weekday: 'long',
     day: 'numeric',
@@ -56,15 +63,27 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
             {brief.greeting && (
               <p className="text-sm text-sky-700 dark:text-sky-300 mt-1">{brief.greeting}</p>
             )}
-            <GrainImage
-              src={dailyBriefImg}
-              className="w-full aspect-video object-cover mt-4"
-              groupHover
-              width={800}
-              height={450}
-              fetchPriority="high"
-              loading="eager"
-            />
+            <div className="relative overflow-hidden w-full aspect-video mt-4 transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-xl">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+              >
+                <source src={briefVideo} type="video/webm" />
+              </video>
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  backgroundImage: 'url(/grain.webp)',
+                  backgroundRepeat: 'repeat',
+                  backgroundSize: '256px 256px',
+                  opacity: 0.25,
+                  mixBlendMode: 'overlay',
+                }}
+              />
+            </div>
             <h2 className="text-3xl font-bold text-content-heading mb-4 mt-4 leading-tight">
               <AnimatedUnderline>{brief.headline}</AnimatedUnderline>
             </h2>
@@ -83,15 +102,27 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
               {brief.greeting && (
                 <p className="text-sm text-sky-700 dark:text-sky-300 mt-1">{brief.greeting}</p>
               )}
-              <GrainImage
-                src={dailyBriefImg}
-                className="w-full aspect-video object-cover mt-4"
-                groupHover
-                width={800}
-                height={450}
-                fetchPriority="high"
-                loading="eager"
-              />
+              <div className="relative overflow-hidden w-full aspect-video mt-4 transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-xl">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <source src={briefVideo} type="video/webm" />
+                </video>
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    backgroundImage: 'url(/grain.webp)',
+                    backgroundRepeat: 'repeat',
+                    backgroundSize: '256px 256px',
+                    opacity: 0.25,
+                    mixBlendMode: 'overlay',
+                  }}
+                />
+              </div>
             </div>
             {/* Right column: date + headline + lead */}
             <div>
