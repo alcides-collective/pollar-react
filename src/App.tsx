@@ -241,7 +241,7 @@ function getAppRoutes(prefix = '') {
     <Route key={`${prefix}-sejm`} path={`${prefix}/sejm`} element={<SejmLayout />}>
       <Route index element={<SejmDashboard />} />
       <Route path="poslowie" element={<MPsPage />} />
-      <Route path="poslowie/:id" element={<MPDetailPage />} />
+      <Route path="poslowie/:id/:slug?" element={<MPDetailPage />} />
       <Route path="kluby" element={<ClubsPage />} />
       <Route path="kluby/:id" element={<ClubDetailPage />} />
       <Route path="glosowania" element={<VotingsPage />} />

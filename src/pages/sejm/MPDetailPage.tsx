@@ -1,4 +1,5 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useMP } from '../../hooks/useMP';
@@ -7,15 +8,47 @@ import { PartyBadge, SejmApiError, VoteIndicator, VotingResultBar } from '../../
 import { FollowMPButton } from '../../components/FollowMPButton';
 import { useLanguageStore } from '../../stores/languageStore';
 import { TitleWithDrukLinks } from '../../utils/druk-parser';
-import { getPartyColor } from '../../types/sejm';
+import { getPartyColor, getPartyName } from '../../types/sejm';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
+import { createSlug } from '../../utils/slug';
 
 export function MPDetailPage() {
   const { t } = useTranslation('sejm');
   const language = useLanguageStore((s) => s.language);
-  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { id, slug } = useParams<{ id: string; slug?: string }>();
   const mpId = id ? parseInt(id) : null;
   const { mp, loading, error } = useMP(mpId);
   const { votings, loading: votingsLoading } = useMPVotings(mpId);
+
+  // Slug redirect — canonical URL with name slug
+  useEffect(() => {
+    if (!mp || !id) return;
+    const expectedSlug = createSlug(mp.firstLastName);
+    if (expectedSlug && slug !== expectedSlug) {
+      navigate(`/sejm/poslowie/${id}/${expectedSlug}`, { replace: true });
+    }
+  }, [mp, id, slug, navigate]);
+
+  // SEO meta tags
+  const partyFullName = mp ? getPartyName(mp.club) : '';
+  const attendance = mp?.votingStats?.votingsAttendance;
+  const seoDescription = mp
+    ? [
+        `${mp.firstLastName}, ${partyFullName}.`,
+        `Okręg ${mp.districtNum} ${mp.districtName}, woj. ${mp.voivodeship}.`,
+        attendance != null ? `Frekwencja: ${attendance.toFixed(1)}%.` : '',
+      ].filter(Boolean).join(' ')
+    : '';
+
+  useDocumentHead({
+    title: mp ? `${mp.firstLastName} — Poseł ${mp.club}` : undefined,
+    description: seoDescription || undefined,
+    ogImage: mp ? `/api/og?title=${encodeURIComponent(mp.firstLastName)}&type=mp&description=${encodeURIComponent(partyFullName)}` : undefined,
+    keywords: mp
+      ? [mp.firstLastName, mp.club, partyFullName, mp.districtName, mp.voivodeship, 'Sejm', 'poseł'].filter(Boolean)
+      : undefined,
+  });
 
   if (error) {
     return <SejmApiError message={error.message} />;

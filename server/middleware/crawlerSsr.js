@@ -5,8 +5,15 @@ import { getCategoryFromSlug, getCategoryTitle, getCategoryDescription, CATEGORY
 import { CATEGORY_COUNTRY_DESCRIPTIONS } from '../data/categoryCountryDescriptions.js';
 import { isCrawler, trackCrawlerVisit } from '../utils/crawler.js';
 import { escapeHtml, stripHtml, stripCustomTags, truncate, createSlug, escapeXml } from '../utils/text.js';
-import { fetchEventData, fetchBriefData, fetchSimilarEvents, fetchFelietonData } from '../utils/api.js';
-import { generateNewsArticleSchema, generateOrganizationSchema, generateFAQSchema, generateLiveBlogPostingSchema, addSpeakable, generateBreadcrumbSchema } from '../utils/schema.js';
+import { fetchEventData, fetchBriefData, fetchSimilarEvents, fetchFelietonData, fetchMPData, fetchMPVotings, fetchMPsList } from '../utils/api.js';
+import { generateNewsArticleSchema, generateOrganizationSchema, generateFAQSchema, generateLiveBlogPostingSchema, addSpeakable, generateBreadcrumbSchema, generatePersonSchema } from '../utils/schema.js';
+
+const PARTY_NAMES = {
+  'PiS': 'Prawo i Sprawiedliwość', 'KO': 'Koalicja Obywatelska',
+  'Polska2050-TD': 'Polska 2050 – TD', 'PSL-TD': 'PSL – Trzecia Droga',
+  'Lewica': 'Lewica', 'Konfederacja': 'Konfederacja', 'niez.': 'Niezrzeszeni',
+  'TD': 'Trzecia Droga', 'PL2050-TD': 'Polska 2050 – TD', 'Polska2050': 'Polska 2050',
+};
 import { generateSeoHtml } from '../utils/seoHtml.js';
 
 export async function crawlerSsrMiddleware(req, res, next) {
@@ -113,12 +120,21 @@ export async function crawlerSsrMiddleware(req, res, next) {
         capsuleParts.push(`<section class="summary">${summaryHtml}</section>`);
       }
 
-      // Mentioned people with Wikipedia links
+      // Mentioned people with internal MP links (fallback to Wikipedia)
       const people = event.metadata?.mentionedPeople || [];
       if (people.length > 0) {
+        const allMPs = await fetchMPsList();
+        const mpNameMap = new Map(allMPs.map(mp => [mp.firstLastName.toLowerCase(), mp]));
+
         const peopleItems = people.map(p => {
           const name = escapeHtml(p.name || '');
           const context = p.context ? ` — ${escapeHtml(stripHtml(p.context))}` : '';
+          const matchedMP = mpNameMap.get((p.name || '').toLowerCase());
+          if (matchedMP) {
+            const mpSlug = createSlug(matchedMP.firstLastName);
+            const mpLink = mpSlug ? `/sejm/poslowie/${matchedMP.id}/${mpSlug}` : `/sejm/poslowie/${matchedMP.id}`;
+            return `<li><a href="https://pollar.news${langPrefix}${mpLink}">${name}</a>${context}</li>`;
+          }
           return p.wikipediaUrl
             ? `<li><a href="${escapeHtml(p.wikipediaUrl)}">${name}</a>${context}</li>`
             : `<li>${name}${context}</li>`;
@@ -520,6 +536,115 @@ export async function crawlerSsrMiddleware(req, res, next) {
         pathWithoutLang,
         lang,
         answerCapsule: categoryCapsule || null,
+      }));
+    }
+  }
+
+  // MP profile page
+  const mpMatch = pathWithoutLang.match(/^\/sejm\/poslowie\/(\d+)/);
+  if (mpMatch) {
+    const mp = await fetchMPData(mpMatch[1]);
+    if (mp) {
+      const partyName = PARTY_NAMES[mp.club] || mp.club;
+
+      // Canonical URL with slug
+      const mpSlug = createSlug(mp.firstLastName);
+      const langPrefix = lang === 'pl' ? '' : `/${lang}`;
+      const canonicalPath = mpSlug ? `/sejm/poslowie/${mpMatch[1]}/${mpSlug}` : `/sejm/poslowie/${mpMatch[1]}`;
+      const mpTargetUrl = `${baseUrl}${langPrefix}${canonicalPath}`;
+
+      // 301 redirect slug-less URLs to canonical slug version
+      if (mpSlug && !pathWithoutLang.includes(`/${mpSlug}`)) {
+        return res.redirect(301, `${langPrefix}${canonicalPath}`);
+      }
+
+      const mpTitle = `${mp.firstLastName} — Poseł ${mp.club}`;
+      const description = [
+        `${mp.firstLastName}, ${partyName}.`,
+        mp.districtName ? `Okręg ${mp.districtNum} ${mp.districtName}, woj. ${mp.voivodeship}.` : '',
+      ].filter(Boolean).join(' ');
+      const ogTitle = `Pollar News: ${mp.firstLastName}`;
+      const ogImage = `${baseUrl}/api/og/mp/${mpMatch[1]}`;
+      const keywords = [mp.firstLastName, mp.club, partyName, mp.districtName, mp.voivodeship, 'Sejm', 'poseł'].filter(Boolean);
+
+      // Person schema
+      const personSchema = generatePersonSchema({
+        name: mp.firstLastName,
+        club: mp.club,
+        partyName,
+        birthDate: mp.birthDate,
+        birthLocation: mp.birthLocation,
+        email: mp.email,
+        photoUrl: `https://api.sejm.gov.pl/sejm/term10/MP/${mpMatch[1]}/photo`,
+        targetUrl: mpTargetUrl,
+      });
+
+      // Breadcrumb schema
+      const mpBreadcrumb = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Pollar', item: baseUrl },
+          { '@type': 'ListItem', position: 2, name: 'Sejm', item: `${baseUrl}${langPrefix}/sejm` },
+          { '@type': 'ListItem', position: 3, name: { pl: 'Posłowie', en: 'MPs', de: 'Abgeordnete' }[lang] || 'Posłowie', item: `${baseUrl}${langPrefix}/sejm/poslowie` },
+          { '@type': 'ListItem', position: 4, name: mp.firstLastName, item: mpTargetUrl },
+        ]
+      };
+
+      // Answer capsule
+      const capsuleParts = [];
+
+      // Bio section
+      const bioItems = [
+        `<strong>${escapeHtml(mp.firstLastName)}</strong>`,
+        `Klub: ${escapeHtml(partyName)} (${escapeHtml(mp.club)})`,
+        mp.districtName ? `Okręg ${mp.districtNum}: ${escapeHtml(mp.districtName)}, woj. ${escapeHtml(mp.voivodeship)}` : '',
+        mp.profession ? `Zawód: ${escapeHtml(mp.profession)}` : '',
+        mp.educationLevel ? `Wykształcenie: ${escapeHtml(mp.educationLevel)}` : '',
+        mp.numberOfVotes ? `Głosy: ${mp.numberOfVotes.toLocaleString('pl-PL')}` : '',
+        mp.birthDate ? `Data urodzenia: ${mp.birthDate}` : '',
+        mp.email ? `Email: ${escapeHtml(mp.email)}` : '',
+      ].filter(Boolean);
+      capsuleParts.push(`<section class="lead"><ul>${bioItems.map(i => `<li>${i}</li>`).join('')}</ul></section>`);
+
+      // Recent votings
+      const votings = await fetchMPVotings(mpMatch[1], 10);
+      if (votings.length > 0) {
+        const votingItems = votings.map(v => {
+          const vTitle = escapeHtml(v.title || '');
+          const vote = v.vote || v.mpVote || '';
+          const voteLabel = { 'YES': 'Za', 'NO': 'Przeciw', 'ABSTAIN': 'Wstrzymał się', 'ABSENT': 'Nieobecny', 'PRESENT': 'Obecny' }[vote] || vote;
+          return `<li><a href="${baseUrl}${langPrefix}/sejm/glosowania/${v.sitting}/${v.votingNumber}">${vTitle}</a> — ${voteLabel} (za: ${v.yes || 0}, przeciw: ${v.no || 0}, wstrz.: ${v.abstain || 0})</li>`;
+        }).join('');
+        capsuleParts.push(`<section class="summary"><h3>Ostatnie głosowania</h3><ul>${votingItems}</ul></section>`);
+      }
+
+      // Related navigation
+      const navLabels = {
+        pl: { allMPs: 'Wszyscy posłowie', votings: 'Głosowania Sejmu', clubs: 'Kluby parlamentarne' },
+        en: { allMPs: 'All MPs', votings: 'Parliament votings', clubs: 'Parliamentary clubs' },
+        de: { allMPs: 'Alle Abgeordneten', votings: 'Parlamentsabstimmungen', clubs: 'Parlamentarische Clubs' },
+      };
+      const nav = navLabels[lang] || navLabels.pl;
+      capsuleParts.push(`<nav class="related"><h3>Sejm RP</h3><ul>
+        <li><a href="${baseUrl}${langPrefix}/sejm/poslowie">${nav.allMPs}</a></li>
+        <li><a href="${baseUrl}${langPrefix}/sejm/glosowania">${nav.votings}</a></li>
+        <li><a href="${baseUrl}${langPrefix}/sejm/kluby">${nav.clubs}</a></li>
+      </ul></nav>`);
+
+      return res.send(generateSeoHtml({
+        pageTitle: `${mp.firstLastName} — Poseł ${mp.club} | Pollar`,
+        ogTitle,
+        headline: mp.firstLastName,
+        description,
+        ogImage,
+        targetUrl: mpTargetUrl,
+        schema: [personSchema, mpBreadcrumb],
+        keywords: keywords.join(', '),
+        keywordsList: keywords,
+        pathWithoutLang,
+        lang,
+        answerCapsule: capsuleParts.join(''),
       }));
     }
   }

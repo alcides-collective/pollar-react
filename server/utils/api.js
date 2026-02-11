@@ -1,5 +1,11 @@
 import { API_BASE } from '../config.js';
 
+const SEJM_API = 'https://api.sejm.gov.pl/sejm/term10';
+
+// In-memory cache for MPs list (10 min TTL)
+let mpListCache = { data: null, timestamp: 0 };
+const MP_LIST_TTL = 10 * 60 * 1000;
+
 // Fetch event data from API
 export async function fetchEventData(eventId, lang = 'pl') {
   try {
@@ -43,5 +49,44 @@ export async function fetchFelietonData(felietonId, lang = 'pl') {
     return await response.json();
   } catch {
     return null;
+  }
+}
+
+// Fetch single MP data from Sejm API
+export async function fetchMPData(mpId) {
+  try {
+    const response = await fetch(`${SEJM_API}/MP/${mpId}`);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
+// Fetch MP voting history from Sejm API
+export async function fetchMPVotings(mpId, limit = 10) {
+  try {
+    const response = await fetch(`${SEJM_API}/MP/${mpId}/votings?limit=${limit}`);
+    if (!response.ok) return [];
+    return await response.json();
+  } catch {
+    return [];
+  }
+}
+
+// Fetch all MPs list (cached 10min)
+export async function fetchMPsList() {
+  const now = Date.now();
+  if (mpListCache.data && (now - mpListCache.timestamp) < MP_LIST_TTL) {
+    return mpListCache.data;
+  }
+  try {
+    const response = await fetch(`${SEJM_API}/MP`);
+    if (!response.ok) return mpListCache.data || [];
+    const data = await response.json();
+    mpListCache = { data, timestamp: now };
+    return data;
+  } catch {
+    return mpListCache.data || [];
   }
 }

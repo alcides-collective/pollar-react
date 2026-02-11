@@ -7,6 +7,9 @@ import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { useUser } from '../../stores/authStore';
 import { trackSourceClicked } from '../../lib/analytics';
 import { incrementSourcesClicked } from '../../hooks/useSessionTracking';
+import { useMPLookup } from '../../hooks/useMPLookup';
+import { mpPath } from '../../utils/slug';
+import { LocalizedLink } from '../../components/LocalizedLink';
 
 interface EventSidebarProps {
   event: Event;
@@ -45,6 +48,7 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
   const { t } = useTranslation('event');
   const language = useRouteLanguage();
   const user = useUser();
+  const { findMP } = useMPLookup();
   const articles = event.articles || [];
   const location = event.metadata?.location;
 
@@ -114,7 +118,8 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
           </h3>
           <ul className="space-y-2">
             {event.metadata.mentionedPeople.map((person, index) => {
-              const imageUrl = wikipediaImages[person.name];
+              const matchedMP = findMP(person.name);
+              const imageUrl = matchedMP?.photoMiniUrl || wikipediaImages[person.name];
               const initials = person.name.split(' ').map(n => n[0]).join('').toUpperCase();
               const content = (
                 <div className="flex items-start gap-3">
@@ -133,7 +138,7 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
                   <div className="flex-1 flex flex-col justify-center min-h-[3.5rem]">
                     <div className="flex items-center gap-1.5 text-sm text-content-heading font-medium">
                       <span>{person.name}</span>
-                      {person.wikipediaUrl && (
+                      {!matchedMP && person.wikipediaUrl && (
                         <i className="ri-external-link-line text-content-faint text-xs" />
                       )}
                     </div>
@@ -148,7 +153,14 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
 
               return (
                 <li key={index}>
-                  {person.wikipediaUrl ? (
+                  {matchedMP ? (
+                    <LocalizedLink
+                      to={mpPath(matchedMP)}
+                      className="block p-3 rounded-lg border border-divider hover:border-divider hover:bg-surface transition-colors"
+                    >
+                      {content}
+                    </LocalizedLink>
+                  ) : person.wikipediaUrl ? (
                     <a
                       href={person.wikipediaUrl}
                       target="_blank"

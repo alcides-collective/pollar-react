@@ -3,6 +3,7 @@ import { API_BASE } from '../config.js';
 import { PAGE_TITLES } from '../data/pageTitles.js';
 import { RSS_DESCRIPTIONS, COUNTRY_TRANSLATIONS } from '../data/translations.js';
 import { createSlug, escapeXml, stripHtml } from '../utils/text.js';
+import { fetchMPsList } from '../utils/api.js';
 
 export const feedRoutes = Router();
 
@@ -17,7 +18,8 @@ feedRoutes.get('/sitemap.xml', async (req, res) => {
     // Slug-less URLs work fine since :slug? is optional in routing
     const hreflangPath = path
       .replace(/^(\/event\/[^/?#/]+)\/[^/?#]+/, '$1')
-      .replace(/^(\/felieton\/[^/?#/]+)\/[^/?#]+/, '$1');
+      .replace(/^(\/felieton\/[^/?#/]+)\/[^/?#]+/, '$1')
+      .replace(/^(\/sejm\/poslowie\/\d+)\/[^/?#]+/, '$1');
     const plUrl = `${baseUrl}${hreflangPath}`;
     const enUrl = `${baseUrl}/en${hreflangPath}`;
     const deUrl = `${baseUrl}/de${hreflangPath}`;
@@ -77,6 +79,14 @@ feedRoutes.get('/sitemap.xml', async (req, res) => {
     console.warn('Could not fetch felietony for sitemap:', err.message);
   }
 
+  // Fetch MPs from Sejm API
+  let mps = [];
+  try {
+    mps = await fetchMPsList();
+  } catch (err) {
+    console.warn('Could not fetch MPs for sitemap:', err.message);
+  }
+
   // Generate XML with multilingual support
   const urls = [
     ...staticPages.map(path => generateUrlEntry(path)),
@@ -87,6 +97,10 @@ feedRoutes.get('/sitemap.xml', async (req, res) => {
     ...felietony.map(f => {
       const slug = createSlug(f.ultraShortHeadline || f.title);
       return generateUrlEntry(slug ? `/felieton/${f.id}/${slug}` : `/felieton/${f.id}`, f.updatedAt || f.createdAt);
+    }),
+    ...mps.map(mp => {
+      const slug = createSlug(mp.firstLastName);
+      return generateUrlEntry(slug ? `/sejm/poslowie/${mp.id}/${slug}` : `/sejm/poslowie/${mp.id}`);
     }),
     // Country filter pages (each language has its own segment + slug)
     ...Object.keys(COUNTRY_TRANSLATIONS).map(polishKey => {

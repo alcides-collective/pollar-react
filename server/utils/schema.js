@@ -161,6 +161,30 @@ export function addSpeakable(schema, speakableSelectors = ['.article-body', '.su
   };
 }
 
+export function generatePersonSchema(opts) {
+  const { name, club, partyName, birthDate, birthLocation, email, photoUrl, targetUrl } = opts;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name,
+    jobTitle: 'Poseł na Sejm RP',
+    memberOf: {
+      '@type': 'Organization',
+      name: partyName || club,
+    },
+    worksFor: {
+      '@type': 'GovernmentOrganization',
+      name: 'Sejm Rzeczypospolitej Polskiej',
+      url: 'https://sejm.gov.pl'
+    },
+    ...(photoUrl ? { image: photoUrl } : {}),
+    url: targetUrl,
+    ...(birthDate ? { birthDate } : {}),
+    ...(birthLocation ? { birthPlace: { '@type': 'Place', name: birthLocation } } : {}),
+    ...(email ? { email } : {}),
+  };
+}
+
 export function generateBreadcrumbSchema(path, pageTitles, lang = 'pl') {
   const baseUrl = 'https://pollar.news';
   const segments = path.split('/').filter(Boolean);

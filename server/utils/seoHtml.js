@@ -28,7 +28,8 @@ export function generateSeoHtml(opts) {
   // Slug-less URLs work fine since :slug? is optional in routing
   const hreflangPath = basePath
     .replace(/^(\/event\/[^/?#/]+)\/[^/?#]+/, '$1')
-    .replace(/^(\/felieton\/[^/?#/]+)\/[^/?#]+/, '$1');
+    .replace(/^(\/felieton\/[^/?#/]+)\/[^/?#]+/, '$1')
+    .replace(/^(\/sejm\/poslowie\/\d+)\/[^/?#]+/, '$1');
   const hreflangTags = [
     `<link rel="alternate" hreflang="pl" href="${baseUrlForHreflang}${hreflangPath === '/' ? '' : hreflangPath}" />`,
     `<link rel="alternate" hreflang="en" href="${baseUrlForHreflang}/en${hreflangPath === '/' ? '' : hreflangPath}" />`,

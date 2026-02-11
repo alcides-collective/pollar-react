@@ -8,6 +8,7 @@ export async function renderOgImage(res, { title = 'Pollar News', type = 'defaul
     event: { pl: 'WYDARZENIE', en: 'EVENT', de: 'EREIGNIS' },
     brief: { pl: 'DAILY BRIEF', en: 'DAILY BRIEF', de: 'DAILY BRIEF' },
     felieton: { pl: 'FELIETON', en: 'OPINION', de: 'KOLUMNE' },
+    mp: { pl: 'POSEŁ NA SEJM RP', en: 'MEMBER OF PARLIAMENT', de: 'ABGEORDNETER' },
     default: { pl: '', en: '', de: '' },
   };
 

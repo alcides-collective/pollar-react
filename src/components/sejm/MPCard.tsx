@@ -1,6 +1,7 @@
 import { PartyBadge } from './PartyBadge';
 import type { SejmMP } from '../../types/sejm';
 import { LocalizedLink } from '../LocalizedLink';
+import { mpPath } from '../../utils/slug';
 
 interface MPCardProps {
   mp: SejmMP;
@@ -9,7 +10,7 @@ interface MPCardProps {
 export function MPCard({ mp }: MPCardProps) {
   return (
     <LocalizedLink
-      to={`/sejm/poslowie/${mp.id}`}
+      to={mpPath(mp)}
       className="block rounded overflow-hidden border border-divider hover:border-divider transition-all"
     >
       <div className="relative aspect-[3/4]">

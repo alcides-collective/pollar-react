@@ -34,3 +34,8 @@ export function felietonPath(felieton: { id: string; title?: string; ultraShortH
   const slug = createSlug(felieton.ultraShortHeadline || felieton.title);
   return slug ? `/felieton/${felieton.id}/${slug}` : `/felieton/${felieton.id}`;
 }
+
+export function mpPath(mp: { id: number; firstLastName: string }): string {
+  const slug = createSlug(mp.firstLastName);
+  return slug ? `/sejm/poslowie/${mp.id}/${slug}` : `/sejm/poslowie/${mp.id}`;
+}
