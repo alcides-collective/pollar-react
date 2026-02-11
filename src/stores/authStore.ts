@@ -19,7 +19,8 @@ import {
 } from 'firebase/auth';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { auth, db, isFirebaseConfigured } from '@/config/firebase';
-import { createOrUpdateUserProfile } from '@/services/userService';
+import { createOrUpdateUserProfile, touchUserLastActive } from '@/services/userService';
+import { touchAnalyticsLastActive } from '@/services/userAnalyticsService';
 import { getAuthErrorMessage } from '@/lib/auth-errors';
 import { trackLogin, trackSignUp, trackLogout } from '@/lib/analytics';
 import type {
@@ -387,6 +388,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Update activity timestamp on every page load / session restore
+        touchUserLastActive(user.uid).catch(() => {});
+        touchAnalyticsLastActive(user.uid);
+      }
       set({
         user: user ? transformUser(user) : null,
         isInitialized: true,

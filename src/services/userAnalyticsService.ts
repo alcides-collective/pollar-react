@@ -107,6 +107,20 @@ export async function initUserAnalyticsDoc(
 }
 
 /**
+ * Lightweight "touch" — updates lastActiveAt + activeDays on page load.
+ * Called from onAuthStateChanged so every visit counts as activity.
+ */
+export function touchAnalyticsLastActive(uid: string): void {
+  if (!isFirebaseConfigured || !db) return;
+  const ref = doc(db, COLLECTION, uid);
+  const today = new Date().toISOString().split('T')[0];
+  updateDoc(ref, {
+    lastActiveAt: serverTimestamp(),
+    activeDays: arrayUnion(today),
+  }).catch(() => {});
+}
+
+/**
  * Record event_opened. Fire-and-forget.
  */
 export function recordEventOpened(uid: string): void {

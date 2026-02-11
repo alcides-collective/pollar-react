@@ -235,6 +235,16 @@ export async function updateMarketingConsent(
   });
 }
 
+/**
+ * Lightweight "touch" — updates lastActiveAt without reading the doc first.
+ * Called on every page load (session restore via onAuthStateChanged).
+ */
+export async function touchUserLastActive(uid: string): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, { lastActiveAt: serverTimestamp() });
+}
+
 // ============ User Preferences ============
 
 /**
