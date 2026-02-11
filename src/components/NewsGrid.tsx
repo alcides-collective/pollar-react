@@ -15,6 +15,7 @@ import { LatestEvents, /* NewsletterSection, */ MapSection, AboutSection, Contac
 import { AISidebarWidget } from './ai';
 import { LoadingSpinner } from './common/LoadingSpinner';
 import { LazySection } from './common/LazySection';
+import { EngineStatusBanner } from './common/EngineStatusBanner';
 
 export function NewsGrid() {
   const selectedCategory = useSelectedCategory();
@@ -55,6 +56,11 @@ export function NewsGrid() {
       <div className="border border-divider">
         {/* Market Ticker */}
         <MarketTicker />
+
+        {/* Engine status - mobile only (desktop has it in sidebar) */}
+        <div className="lg:hidden">
+          <EngineStatusBanner className="mx-3 my-3" />
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px]">
         {/* Main Content */}
