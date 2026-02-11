@@ -316,7 +316,7 @@ export function useEventGroups(
     articleFields: 'minimal',
   });
 
-  const { events, removedCount } = useMemo(() => {
+  const { events } = useMemo(() => {
     if (language === 'pl') return { events: rawEvents, removedCount: 0 };
     if (polishEvents.length === 0) return { events: rawEvents, removedCount: 0 };
     const polishLeadById = new Map(polishEvents.map(e => [e.id, e.lead]));
