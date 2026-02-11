@@ -26,9 +26,26 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
   // Timestamps
   const dateLocale = lang === 'pl' ? 'pl-PL' : lang === 'de' ? 'de-DE' : 'en-US';
   const createdAt = new Date(event.createdAt);
-  const publishedDate = new Intl.DateTimeFormat(dateLocale, {
-    day: 'numeric', month: 'long', year: 'numeric'
-  }).format(createdAt) + (lang === 'pl' ? ' roku' : '');
+  const rtf = new Intl.RelativeTimeFormat(dateLocale, { numeric: 'auto' });
+
+  const formatRelative = (date: Date) => {
+    const diffMs = Date.now() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    if (diffMins < 1) return rtf.format(0, 'second');
+    if (diffMins < 60) return rtf.format(-diffMins, 'minute');
+    if (diffHours < 24) return rtf.format(-diffHours, 'hour');
+    return rtf.format(-diffDays, 'day');
+  };
+
+  // Use relative time for events < 7 days old, full date for older
+  const ageMs = Date.now() - createdAt.getTime();
+  const publishedDate = ageMs < 7 * 24 * 60 * 60 * 1000
+    ? formatRelative(createdAt)
+    : new Intl.DateTimeFormat(dateLocale, {
+        day: 'numeric', month: 'long', year: 'numeric'
+      }).format(createdAt) + (lang === 'pl' ? ' roku' : '');
 
   // lastSummarizationComplete is not synced to events_en/events_de; fall back to lastContentUpdate
   const lastUpdatedRaw = event.lastSummarizationComplete || event.lastContentUpdate;
@@ -39,18 +56,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
     && event.freshnessLevel !== 'OLD'
     && (lastUpdated.getTime() - createdAt.getTime() > 10 * 60000);
 
-  let updatedAgo = '';
-  if (showUpdated && lastUpdated) {
-    const diffMs = Date.now() - lastUpdated.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMins / 60);
-    const diffDays = Math.floor(diffHours / 24);
-    const rtf = new Intl.RelativeTimeFormat(dateLocale, { numeric: 'auto' });
-    if (diffMins < 1) updatedAgo = rtf.format(0, 'second');
-    else if (diffMins < 60) updatedAgo = rtf.format(-diffMins, 'minute');
-    else if (diffHours < 24) updatedAgo = rtf.format(-diffHours, 'hour');
-    else updatedAgo = rtf.format(-diffDays, 'day');
-  }
+  const updatedAgo = showUpdated && lastUpdated ? formatRelative(lastUpdated) : '';
   const co2Grams = estimateCO2(event);
   const co2Value = formatCO2(co2Grams);
   const co2Equivalents = getCO2Equivalents(co2Grams);
