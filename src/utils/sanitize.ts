@@ -36,6 +36,13 @@ export function sanitizeEvent(event: Event): Event {
     title: preventWidows(decodeHtmlEntities(event.title)),
     lead: preventWidows(decodeHtmlEntities(event.lead)),
     summary: decodeHtmlEntities(event.summary),
+    metadata: event.metadata ? {
+      ...event.metadata,
+      mentionedPeople: event.metadata.mentionedPeople?.map(person => ({
+        ...person,
+        context: person.context ? decodeHtmlEntities(person.context) : person.context,
+      })),
+    } : event.metadata,
   };
 }
 
