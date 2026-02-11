@@ -269,7 +269,8 @@
   },
   "sidebar": {
     "latest": "Najnowsze",
-    "whatsNew": "Co nowego"
+    "whatsNew": "Co nowego",
+    "engineDown": "Pollar Engine — system odpowiedzialny za pozyskiwanie, analizę i aktualizację treści — jest chwilowo niedostępny. Nowe artykuły i aktualizacje mogą być opóźnione."
   },
   "stats": {
     "title": "Statystyki",

@@ -4,6 +4,7 @@ import type { Event } from '../../../types/events';
 import { LiveTimeAgo } from '../../common/LiveTimeAgo';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { useEventsStore } from '../../../stores/eventsStore';
+import { useEngineStatus } from '../../../hooks/useEngineStatus';
 import { LocalizedLink } from '../../LocalizedLink';
 import { eventPath } from '../../../utils/slug';
 
@@ -15,6 +16,7 @@ export function LatestEvents({ events }: LatestEventsProps) {
   const { t } = useTranslation('common');
   const newEventIds = useEventsStore((s) => s.newEventIds);
   const markEventAsSeen = useEventsStore((s) => s.markEventAsSeen);
+  const engineDown = useEngineStatus();
 
   const handleEventClick = (eventId: string) => {
     // Remove highlight when user clicks the event
@@ -26,6 +28,16 @@ export function LatestEvents({ events }: LatestEventsProps) {
   return (
     <div className="p-6">
       <h3 className="text-red-500 font-semibold mb-4">{t('sidebar.latest')}</h3>
+      {engineDown && (
+        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 dark:border-amber-800/50 dark:bg-amber-950/30 p-3">
+          <div className="flex items-start gap-2">
+            <i className="ri-alert-line text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+            <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+              {t('sidebar.engineDown')}
+            </p>
+          </div>
+        </div>
+      )}
       <motion.div
         key={events.map(e => e.id).join(',')}
         className="space-y-5"
