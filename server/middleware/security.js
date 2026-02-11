@@ -25,7 +25,7 @@ export function setupSecurity(app) {
           "https://t.contentsquare.net",
           "https://*.contentsquare.net",
         ],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://api.mapbox.com"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://api.mapbox.com", "https://fonts.googleapis.com"],
         imgSrc: [
           "'self'",
           "data:",
@@ -45,7 +45,7 @@ export function setupSecurity(app) {
           "https://*.contentsquare.net",
           "https://upload.wikimedia.org",
         ],
-        fontSrc: ["'self'", "data:"],
+        fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
         connectSrc: [
           "'self'",
           "https://pollar.up.railway.app",
@@ -57,6 +57,7 @@ export function setupSecurity(app) {
           "https://api.sejm.gov.pl",
           "https://*.firebaseio.com",
           "https://*.googleapis.com",
+          "https://fonts.gstatic.com",
           "https://firebaseinstallations.googleapis.com",
           "https://identitytoolkit.googleapis.com",
           "https://securetoken.googleapis.com",
