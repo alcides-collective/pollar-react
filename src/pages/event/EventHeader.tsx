@@ -51,13 +51,18 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
   const updatedAgo = showUpdated && lastUpdated ? formatRelative(lastUpdated) : '';
 
   // Full date when there's also "updated" (two relative times next to each other is confusing),
-  // relative time for recent events without update
+  // relative time for recent events without update.
+  // Add exact time (hour:minute) for events from today/yesterday.
+  const ageMs = Date.now() - createdAt.getTime();
+  const isRecent = ageMs < 48 * 60 * 60 * 1000;
   const fullDate = new Intl.DateTimeFormat(dateLocale, {
     day: 'numeric', month: 'long', year: 'numeric'
   }).format(createdAt) + (lang === 'pl' ? ' roku' : '');
-  const ageMs = Date.now() - createdAt.getTime();
+  const timeStr = isRecent
+    ? ` ${lang === 'de' ? 'um' : lang === 'en' ? 'at' : 'o'} ${new Intl.DateTimeFormat(dateLocale, { hour: '2-digit', minute: '2-digit' }).format(createdAt)}`
+    : '';
   const publishedDate = showUpdated || ageMs >= 7 * 24 * 60 * 60 * 1000
-    ? fullDate
+    ? fullDate + timeStr
     : formatRelative(createdAt);
   const co2Grams = estimateCO2(event);
   const co2Value = formatCO2(co2Grams);
