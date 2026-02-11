@@ -60,21 +60,21 @@ export function TeamSection() {
 
           {/* Team members */}
           <motion.div
-            className="space-y-10"
+            className="space-y-6"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             {team.map((member, index) => (
-              <div key={member.name} className={index > 0 ? 'pt-10 border-t border-divider' : ''}>
+              <div key={member.name} className={index > 0 ? 'pt-6 border-t border-divider' : ''}>
                 <h3 className="text-xl font-semibold text-content-heading mb-1">
                   {member.name}
                 </h3>
-                <p className="text-sky-600 font-medium mb-3">
+                <p className="text-sky-600 font-medium mb-2 text-sm">
                   {member.role} • {member.location}
                 </p>
-                <p className="text-content leading-relaxed mb-3">
+                <p className="text-content leading-relaxed mb-2 text-sm">
                   {member.description}
                 </p>
                 <a
