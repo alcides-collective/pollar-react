@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useEvents } from '../stores/eventsStore';
+import { useRouteLanguage } from './useRouteLanguage';
 import type { Event } from '../types/events';
 
 interface GeoJSONFeature {
@@ -42,7 +43,8 @@ function getEventLocations(event: Event): { lat: number; lng: number; city: stri
 }
 
 export function useMapEvents() {
-  const { events, loading, error } = useEvents({ limit: 200, lang: 'pl' });
+  const language = useRouteLanguage();
+  const { events, loading, error } = useEvents({ limit: 200, lang: language });
 
   const eventsWithCoords = useMemo(() => {
     return events.filter((e) => getEventLocations(e).length > 0);

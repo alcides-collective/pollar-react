@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { useEvents } from '../stores/eventsStore';
 import { useGrafStore } from '../stores/grafStore';
+import { useRouteLanguage } from './useRouteLanguage';
 import type { Event } from '../types/events';
 import type {
   GraphData,
@@ -60,9 +61,10 @@ function findSharedItems(
 }
 
 export function useGraphData() {
+  const language = useRouteLanguage();
   const { events, loading, error } = useEvents({
     limit: 200,
-    lang: 'pl',
+    lang: language,
     skipHiddenFilter: true,
   });
   const enabledConnections = useGrafStore((s) => s.enabledConnections);

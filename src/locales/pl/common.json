@@ -417,5 +417,72 @@
     "light": "Jasny",
     "dark": "Ciemny",
     "system": "System"
+  },
+  "chart": {
+    "label": "WYKRES",
+    "smartScaleOn": "Oś dopasowana do zakresu danych — widoczne szczegóły zmian. Kliknij aby rozpocząć od zera.",
+    "smartScaleOff": "Oś wykresu zaczyna się od zera — uczciwe proporcje wizualne. Kliknij aby dopasować do danych."
+  },
+  "summaryLabels": {
+    "politicalPerspectives": "PERSPEKTYWY POLITYCZNE",
+    "liberalSources": "Źródła liberalne",
+    "conservativeSources": "Źródła konserwatywne",
+    "manipulationDetected": "WYKRYTO MANIPULACJĘ",
+    "source": "Źródło",
+    "factCheck": "WERYFIKACJA",
+    "comparison": "PORÓWNANIE",
+    "before": "Przed",
+    "after": "Po",
+    "resultSingle": "WYNIK",
+    "resultMultiple": "WYNIKI",
+    "classification": "KLASYFIKACJA",
+    "achievements": "OSIĄGNIĘCIA",
+    "ranking": "RANKING",
+    "calendar": "KALENDARZ",
+    "structure": "STRUKTURA"
+  },
+  "map": {
+    "eventsInArea": "{{count}} wydarzeń w tym obszarze",
+    "sources": "{{count}} źródeł",
+    "details": "Szczegóły",
+    "close": "Zamknij",
+    "loading": "Ładowanie wydarzeń...",
+    "eventsOnMap": "{{count}} wydarzeń na mapie",
+    "categories": {
+      "polityka": "Polityka",
+      "gospodarka": "Gospodarka",
+      "swiat": "Świat",
+      "spoleczenstwo": "Społeczeństwo",
+      "nauka": "Nauka",
+      "technologia": "Technologia",
+      "kultura": "Kultura",
+      "sport": "Sport"
+    },
+    "titles": {
+      "0": "Kartografia insomników",
+      "1": "Atlas północny",
+      "2": "Mapa bezsennych",
+      "3": "Zwiad o trzeciej",
+      "4": "Atlas świtu",
+      "5": "Pierwsze współrzędne",
+      "6": "Rekonesans poranka",
+      "7": "Mapa przy kawie",
+      "8": "Dzienny porządek rzeczy",
+      "9": "Orientacja w terenie",
+      "10": "Punkt na mapie",
+      "11": "Atlas przedpołudnia",
+      "12": "Mapa w zenicie",
+      "13": "Kartografia lunchu",
+      "14": "Mapa po obiedzie",
+      "15": "Herbaciana kartografia",
+      "16": "Naniesienia schyłkowe",
+      "17": "Mapa po godzinach",
+      "18": "Topografia zmierzchu",
+      "19": "Mapa przy kolacji",
+      "20": "Przegląd granic",
+      "21": "Orientacja nocna",
+      "22": "Ostatni rzut oka",
+      "23": "Atlas północnej godziny"
+    }
   }
 }

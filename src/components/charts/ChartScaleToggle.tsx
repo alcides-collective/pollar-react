@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { useSmartScale, useToggleSmartScale } from '@/stores/chartScaleStore';
 import { useUser } from '@/stores/authStore';
 import { updateUserSmartScalePreference } from '@/services/userService';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 
 export function ChartScaleToggle() {
+  const { t } = useTranslation();
   const smartScale = useSmartScale();
   const toggle = useToggleSmartScale();
   const user = useUser();
@@ -40,9 +42,7 @@ export function ChartScaleToggle() {
           </button>
         </TooltipTrigger>
         <TooltipContent side="top" align="end" className="max-w-56 leading-relaxed">
-          {smartScale
-            ? 'Oś dopasowana do zakresu danych — widoczne szczegóły zmian. Kliknij aby rozpocząć od zera.'
-            : 'Oś wykresu zaczyna się od zera — uczciwe proporcje wizualne. Kliknij aby dopasować do danych.'}
+          {smartScale ? t('chart.smartScaleOn') : t('chart.smartScaleOff')}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

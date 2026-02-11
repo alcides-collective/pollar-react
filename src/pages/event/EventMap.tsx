@@ -4,6 +4,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { EventLocation } from '../../types/events';
 import { useIsDarkMode } from '@/stores/themeStore';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFrdWJkdWRlayIsImEiOiJjbWRyMWx1Z3EwOTR6MmtzYjJvYzJncmZhIn0.5Fn6PxkRaqVkEwJLhP-8_Q';
 
@@ -13,6 +14,7 @@ interface EventMapProps {
 
 export function EventMap({ location }: EventMapProps) {
   const { t } = useTranslation('event');
+  const lang = useRouteLanguage();
   const isDark = useIsDarkMode();
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -62,9 +64,9 @@ export function EventMap({ location }: EventMapProps) {
     map.current.setStyle(style);
   }, [isDark]);
 
-  // Fallback: show city name if no coordinates
+  // Fallback: show city name if no coordinates (only in Polish — names are untranslated)
   if (!hasCoordinates) {
-    if (!location?.city) return null;
+    if (!location?.city || lang !== 'pl') return null;
 
     return (
       <div className="h-32 bg-surface flex items-center justify-center">
@@ -84,9 +86,11 @@ export function EventMap({ location }: EventMapProps) {
         {t('location')}
       </h3>
       <div ref={mapContainer} className="h-48 overflow-hidden border border-divider" />
-      <p className="text-xs text-content-subtle mt-2">
-        {location.city}{location.country ? `, ${location.country}` : ''}
-      </p>
+      {lang === 'pl' && (
+        <p className="text-xs text-content-subtle mt-2">
+          {location.city}{location.country ? `, ${location.country}` : ''}
+        </p>
+      )}
     </div>
   );
 }

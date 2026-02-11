@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import type { BriefInsights as BriefInsightsType } from '../../types/brief';
 import { sanitizeAndProcessInlineHtml } from '../../utils/text';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
+import type { Language } from '../../stores/languageStore';
 
 interface BriefInsightsProps {
   insights: BriefInsightsType;
@@ -8,6 +10,7 @@ interface BriefInsightsProps {
 
 export function BriefInsights({ insights }: BriefInsightsProps) {
   const { t } = useTranslation('brief');
+  const lang = useRouteLanguage();
   const hasInsights =
     insights.trends.length > 0 ||
     insights.correlations.length > 0 ||
@@ -27,6 +30,7 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {insights.trends.length > 0 && (
           <InsightCard
+            lang={lang}
             label={t('insights.trends')}
             items={insights.trends}
             colorClass="border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/30"
@@ -34,6 +38,7 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
         )}
         {insights.correlations.length > 0 && (
           <InsightCard
+            lang={lang}
             label={t('insights.correlations')}
             items={insights.correlations}
             colorClass="border-purple-200 dark:border-purple-800 bg-purple-50/50 dark:bg-purple-950/30"
@@ -41,6 +46,7 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
         )}
         {insights.anomalies.length > 0 && (
           <InsightCard
+            lang={lang}
             label={t('insights.anomalies')}
             items={insights.anomalies}
             colorClass="border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/30"
@@ -48,6 +54,7 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
         )}
         {insights.implications.length > 0 && (
           <InsightCard
+            lang={lang}
             label={t('insights.implications')}
             items={insights.implications}
             colorClass="border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/30"
@@ -63,7 +70,7 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
           </p>
           <p
             className="text-sm text-content"
-            dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(insights.metaCommentary) }}
+            dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(insights.metaCommentary, lang) }}
           />
         </div>
       )}
@@ -72,12 +79,13 @@ export function BriefInsights({ insights }: BriefInsightsProps) {
 }
 
 interface InsightCardProps {
+  lang: Language;
   label: string;
   items: string[];
   colorClass: string;
 }
 
-function InsightCard({ label, items, colorClass }: InsightCardProps) {
+function InsightCard({ lang, label, items, colorClass }: InsightCardProps) {
   return (
     <article className={`p-4 rounded-lg border ${colorClass}`}>
       <p className="text-xs uppercase tracking-wider text-content font-semibold mb-3">
@@ -88,7 +96,7 @@ function InsightCard({ label, items, colorClass }: InsightCardProps) {
           <li
             key={i}
             className="text-sm text-content p-2 rounded border border-divider/50 bg-background/50"
-            dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(item) }}
+            dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(item, lang) }}
           />
         ))}
       </ul>

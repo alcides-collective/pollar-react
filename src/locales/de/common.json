@@ -417,5 +417,72 @@
     "light": "Hell",
     "dark": "Dunkel",
     "system": "System"
+  },
+  "chart": {
+    "label": "DIAGRAMM",
+    "smartScaleOn": "Achse an den Datenbereich angepasst — Details der Änderungen sichtbar. Klicken, um bei Null zu beginnen.",
+    "smartScaleOff": "Diagrammachse beginnt bei Null — faire visuelle Proportionen. Klicken, um an die Daten anzupassen."
+  },
+  "summaryLabels": {
+    "politicalPerspectives": "POLITISCHE PERSPEKTIVEN",
+    "liberalSources": "Liberale Quellen",
+    "conservativeSources": "Konservative Quellen",
+    "manipulationDetected": "MANIPULATION ERKANNT",
+    "source": "Quelle",
+    "factCheck": "FAKTENCHECK",
+    "comparison": "VERGLEICH",
+    "before": "Vorher",
+    "after": "Nachher",
+    "resultSingle": "ERGEBNIS",
+    "resultMultiple": "ERGEBNISSE",
+    "classification": "KLASSIFIKATION",
+    "achievements": "ERFOLGE",
+    "ranking": "RANKING",
+    "calendar": "KALENDER",
+    "structure": "STRUKTUR"
+  },
+  "map": {
+    "eventsInArea": "{{count}} Ereignisse in diesem Bereich",
+    "sources": "{{count}} Quellen",
+    "details": "Details",
+    "close": "Schließen",
+    "loading": "Ereignisse werden geladen...",
+    "eventsOnMap": "{{count}} Ereignisse auf der Karte",
+    "categories": {
+      "polityka": "Politik",
+      "gospodarka": "Wirtschaft",
+      "swiat": "Welt",
+      "spoleczenstwo": "Gesellschaft",
+      "nauka": "Wissenschaft",
+      "technologia": "Technologie",
+      "kultura": "Kultur",
+      "sport": "Sport"
+    },
+    "titles": {
+      "0": "Kartografie der Schlaflosen",
+      "1": "Mitternachtsatlas",
+      "2": "Karte der Schlaflosen",
+      "3": "Erkundung um drei",
+      "4": "Atlas der Dämmerung",
+      "5": "Erste Koordinaten",
+      "6": "Morgenaufklärung",
+      "7": "Karte zum Kaffee",
+      "8": "Tagesordnung",
+      "9": "Geländeorientierung",
+      "10": "Punkt auf der Karte",
+      "11": "Vormittagsatlas",
+      "12": "Karte im Zenit",
+      "13": "Mittagskartografie",
+      "14": "Karte nach dem Essen",
+      "15": "Teezeit-Kartografie",
+      "16": "Dämmerungsmarkierungen",
+      "17": "Feierabendkarte",
+      "18": "Topografie der Abenddämmerung",
+      "19": "Karte beim Abendessen",
+      "20": "Grenzüberprüfung",
+      "21": "Nachtorientierung",
+      "22": "Letzter Blick",
+      "23": "Atlas der Mitternachtsstunde"
+    }
   }
 }

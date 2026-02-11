@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useRef } from 'react';
+import { useMemo } from 'react';
 import type { Event, FreshnessLevel } from '../types/events';
 import { CATEGORY_ORDER } from '../constants/categories';
 import { useEvents } from '../stores/eventsStore';
@@ -339,31 +339,6 @@ export function useEventGroups(
     () => computeEventGroups(events, selectedCategory, selectedCountries, favoriteCategories, favoriteCountries),
     [events, selectedCategory, selectedCountries, favoriteCategories, favoriteCountries]
   );
-
-  // Debug: log visible events (debounced — only after data stabilizes)
-  const debugTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  useEffect(() => {
-    clearTimeout(debugTimerRef.current);
-    debugTimerRef.current = setTimeout(() => {
-      const all = new Map<string, Event>();
-      groups.featured.forEach(e => all.set(e.id, e));
-      groups.doubleHeroSections.flat().forEach(e => all.set(e.id, e));
-      groups.categoryGroups.forEach(([, evts]) => evts.forEach(e => all.set(e.id, e)));
-      groups.moreEvents.forEach(e => all.set(e.id, e));
-      groups.olympicEvents.forEach(e => all.set(e.id, e));
-      if (all.size === 0) return;
-      const visible = Array.from(all.values());
-      const header = removedCount > 0
-        ? `[Page] ${visible.length} visible events, ${removedCount} untranslated filtered (lang=${language})`
-        : `[Page] ${visible.length} visible events (lang=${language})`;
-      console.group(header);
-      visible.forEach(e =>
-        console.log(`${e.id.slice(0, 8)} | ${e.metadata?.ultraShortHeadline || '—'} | ${e.title?.slice(0, 50)}`)
-      );
-      console.groupEnd();
-    }, 1000);
-    return () => clearTimeout(debugTimerRef.current);
-  }, [groups, language, removedCount]);
 
   return {
     ...groups,

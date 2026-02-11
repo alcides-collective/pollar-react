@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useEvents } from '../../stores/eventsStore';
+import { useLanguageNavigate } from '../../hooks/useLanguageNavigate';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { useMarketData } from '../../hooks/useMarketData';
 import { TerminalHeader } from './components/TerminalHeader';
 import { EventDetailsPanel } from './components/EventDetailsPanel';
@@ -17,10 +18,11 @@ const PROGRESS_UPDATE_MS = 50;
 type FocusedPanel = 'details' | 'list' | 'sidebar';
 
 export function TerminalPage() {
-  const navigate = useNavigate();
+  const navigate = useLanguageNavigate();
+  const language = useRouteLanguage();
 
   // Data fetching
-  const { events, loading, error } = useEvents({ limit: 500, includeArchive: true, articleFields: 'minimal' });
+  const { events, loading, error } = useEvents({ limit: 500, lang: language, includeArchive: true, articleFields: 'minimal' });
   const { indices } = useMarketData();
 
   // Sort events by trending score

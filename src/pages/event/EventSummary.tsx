@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { sanitizeAndProcessHtml, removeExtractedElements } from '../../utils/text';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { SummaryLineChart, type LineChartData } from '../../components/charts/SummaryLineChart';
 import { SummaryBarChart, type BarChartData } from '../../components/charts/SummaryBarChart';
 import { parseSimpleData } from '../../utils/chartUtils';
@@ -19,7 +20,7 @@ interface ContentSegment {
 /**
  * Parse summary to extract charts and split into segments
  */
-function parseContentWithCharts(summary: string): ContentSegment[] {
+function parseContentWithCharts(summary: string, lang: 'pl' | 'en' | 'de' = 'pl'): ContentSegment[] {
   // First remove sidebar-extracted elements
   const cleanedSummary = removeExtractedElements(summary);
 
@@ -44,7 +45,7 @@ function parseContentWithCharts(summary: string): ContentSegment[] {
       if (htmlContent.trim()) {
         segments.push({
           type: 'html',
-          content: sanitizeAndProcessHtml(htmlContent)
+          content: sanitizeAndProcessHtml(htmlContent, lang)
         });
       }
     }
@@ -97,7 +98,7 @@ function parseContentWithCharts(summary: string): ContentSegment[] {
     if (htmlContent.trim()) {
       segments.push({
         type: 'html',
-        content: sanitizeAndProcessHtml(htmlContent)
+        content: sanitizeAndProcessHtml(htmlContent, lang)
       });
     }
   }
@@ -106,7 +107,7 @@ function parseContentWithCharts(summary: string): ContentSegment[] {
   if (segments.length === 0) {
     segments.push({
       type: 'html',
-      content: sanitizeAndProcessHtml(cleanedSummary)
+      content: sanitizeAndProcessHtml(cleanedSummary, lang)
     });
   }
 
@@ -133,7 +134,8 @@ function injectQuotePhotos(html: string, wikipediaImages: Record<string, string>
 }
 
 export function EventSummary({ summary, wikipediaImages = {} }: EventSummaryProps) {
-  const segments = useMemo(() => parseContentWithCharts(summary), [summary]);
+  const lang = useRouteLanguage();
+  const segments = useMemo(() => parseContentWithCharts(summary, lang), [summary, lang]);
 
   // Re-process HTML segments with Wikipedia images injected
   const processedSegments = useMemo(() => {

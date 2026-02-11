@@ -4,6 +4,7 @@ import { useFelieton } from '../../hooks/useFelieton';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
 import { sanitizeAndProcessHtml, prepareOgDescription } from '../../utils/text';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { GrainImage } from '../../components/common/GrainImage';
 import ekonomiaImg from '../../assets/images/felietony/ekonomia.webp';
 import geopolitykaImg from '../../assets/images/felietony/geopolityka.webp';
@@ -86,6 +87,7 @@ function FelietonSidebar({ sourceEvents }: { sourceEvents: SourceEvent[] }) {
 export function FelietonPage() {
   const { id } = useParams<{ id: string }>();
   const { felieton, loading, error } = useFelieton(id);
+  const lang = useRouteLanguage();
 
   // SEO meta tags
   const fullTitle = felieton?.title || '';
@@ -223,7 +225,7 @@ export function FelietonPage() {
           <article>
             <div
               className="prose prose-zinc prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: sanitizeAndProcessHtml(felieton.content) }}
+              dangerouslySetInnerHTML={{ __html: sanitizeAndProcessHtml(felieton.content, lang) }}
             />
           </article>
 

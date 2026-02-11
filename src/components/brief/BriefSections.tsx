@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import type { BriefSection } from '../../types/brief';
 import { sanitizeAndProcessHtml, sanitizeAndProcessInlineHtml } from '../../utils/text';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 
 interface BriefSectionsProps {
   sections: BriefSection[];
@@ -8,6 +9,7 @@ interface BriefSectionsProps {
 }
 
 export function BriefSections({ sections, setSectionRef }: BriefSectionsProps) {
+  const lang = useRouteLanguage();
   return (
     <section className="mb-10">
       <h2 className="text-sm text-content-subtle mb-5 pb-2 border-b border-divider font-medium">
@@ -18,6 +20,7 @@ export function BriefSections({ sections, setSectionRef }: BriefSectionsProps) {
           <SectionCard
             key={index}
             section={section}
+            lang={lang}
             ref={setSectionRef?.(index)}
           />
         ))}
@@ -26,8 +29,8 @@ export function BriefSections({ sections, setSectionRef }: BriefSectionsProps) {
   );
 }
 
-const SectionCard = forwardRef<HTMLDivElement, { section: BriefSection }>(
-  function SectionCard({ section }, ref) {
+const SectionCard = forwardRef<HTMLDivElement, { section: BriefSection; lang: 'pl' | 'en' | 'de' }>(
+  function SectionCard({ section, lang }, ref) {
     const keyPoints = section.keyPoints ?? [];
 
     return (
@@ -38,7 +41,7 @@ const SectionCard = forwardRef<HTMLDivElement, { section: BriefSection }>(
 
         <div
           className="prose prose-zinc max-w-none text-content"
-          dangerouslySetInnerHTML={{ __html: sanitizeAndProcessHtml(section.content) }}
+          dangerouslySetInnerHTML={{ __html: sanitizeAndProcessHtml(section.content, lang) }}
         />
 
         {keyPoints.length > 0 && (
@@ -46,7 +49,7 @@ const SectionCard = forwardRef<HTMLDivElement, { section: BriefSection }>(
             {keyPoints.map((point, i) => (
               <li key={i} className="flex items-start gap-2 text-base text-content">
                 <span className="text-content-faint">•</span>
-                <span dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(point) }} />
+                <span dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(point, lang) }} />
               </li>
             ))}
           </ul>

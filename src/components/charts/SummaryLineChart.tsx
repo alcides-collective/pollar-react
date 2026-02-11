@@ -1,4 +1,5 @@
 import { useEffect, useRef, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -50,6 +51,7 @@ interface SummaryLineChartProps {
 }
 
 export function SummaryLineChart({ data }: SummaryLineChartProps) {
+  const { t } = useTranslation();
   const chartRef = useRef<ChartJS<'line'>>(null);
   const isDark = useIsDarkMode();
   const smartScale = useSmartScale();
@@ -292,7 +294,7 @@ export function SummaryLineChart({ data }: SummaryLineChartProps) {
   return (
     <div className="chart-box">
       <div className="flex items-center justify-between border-b border-divider">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-content-subtle px-4 py-2">WYKRES</span>
+        <span className="text-[10px] font-bold uppercase tracking-wider text-content-subtle px-4 py-2">{t('chart.label')}</span>
         <ChartScaleToggle />
       </div>
       <div className="chart-title">{data.title}</div>

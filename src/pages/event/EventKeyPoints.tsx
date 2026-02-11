@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { KeyPoint } from '../../types/events';
 import { sanitizeAndProcessInlineHtml } from '../../utils/text';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 
 interface EventKeyPointsProps {
   keyPoints: KeyPoint[];
@@ -14,6 +15,7 @@ const priorityStyles: Record<KeyPoint['priority'], string> = {
 
 export function EventKeyPoints({ keyPoints }: EventKeyPointsProps) {
   const { t } = useTranslation('event');
+  const lang = useRouteLanguage();
   if (!keyPoints || keyPoints.length === 0) return null;
 
   return (
@@ -33,7 +35,7 @@ export function EventKeyPoints({ keyPoints }: EventKeyPointsProps) {
               </h3>
               <p
                 className="text-sm text-content leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(point.description) }}
+                dangerouslySetInnerHTML={{ __html: sanitizeAndProcessInlineHtml(point.description, lang) }}
               />
             </div>
           </li>

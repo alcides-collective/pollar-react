@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { AnimatePresence } from 'framer-motion';
@@ -18,6 +19,7 @@ mapboxgl.workerClass = null;
 (mapboxgl as unknown as { collectResourceTiming: boolean }).collectResourceTiming = false;
 
 export function EventsMap() {
+  const { t } = useTranslation();
   const isDark = useIsDarkMode();
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -308,14 +310,14 @@ export function EventsMap() {
       {/* Loading indicator */}
       {loading && (
         <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg text-sm text-content">
-          Ładowanie wydarzeń...
+          {t('map.loading')}
         </div>
       )}
 
       {/* Event count */}
       {!loading && totalCount > 0 && (
         <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg text-sm text-content">
-          {totalCount} wydarzeń na mapie
+          {t('map.eventsOnMap', { count: totalCount })}
         </div>
       )}
 

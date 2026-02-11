@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useLanguageNavigate } from '../../hooks/useLanguageNavigate';
 import type { Event } from '../../types/events';
 
 interface EventCardProps {
@@ -7,19 +8,9 @@ interface EventCardProps {
   onClose: () => void;
 }
 
-const categoryLabels: Record<string, string> = {
-  polityka: 'Polityka',
-  gospodarka: 'Gospodarka',
-  swiat: 'Świat',
-  spoleczenstwo: 'Społeczeństwo',
-  nauka: 'Nauka',
-  technologia: 'Technologia',
-  kultura: 'Kultura',
-  sport: 'Sport',
-};
-
 export function EventCard({ event, onClose }: EventCardProps) {
-  const navigate = useNavigate();
+  const navigate = useLanguageNavigate();
+  const { t } = useTranslation();
 
   const handleDetails = () => {
     navigate(`/event/${event.id}`);
@@ -42,13 +33,13 @@ export function EventCard({ event, onClose }: EventCardProps) {
         <div className="flex items-center gap-3 mb-3 text-[11px] tracking-wide uppercase font-medium">
           {event.category && (
             <span className="text-content-subtle">
-              {categoryLabels[event.category] || event.category}
+              {t(`map.categories.${event.category}`, { defaultValue: event.category })}
             </span>
           )}
           <span className="flex-1 h-px bg-divider" />
           {event.articleCount > 0 && (
             <span className="text-content-faint">
-              {event.articleCount} źródeł
+              {t('map.sources', { count: event.articleCount })}
             </span>
           )}
         </div>
@@ -71,13 +62,13 @@ export function EventCard({ event, onClose }: EventCardProps) {
             onClick={handleDetails}
             className="flex-1 text-xs tracking-wide uppercase px-3 py-2 rounded-md bg-primary text-primary-foreground font-semibold transition-opacity hover:opacity-80"
           >
-            Szczegóły
+            {t('map.details')}
           </button>
           <button
             onClick={onClose}
             className="text-xs tracking-wide uppercase px-3 py-2 rounded-md border border-divider text-content-subtle hover:text-content-heading hover:border-divider transition-colors"
           >
-            Zamknij
+            {t('map.close')}
           </button>
         </div>
       </div>

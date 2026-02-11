@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useLanguageNavigate } from '../../hooks/useLanguageNavigate';
 import type { Event } from '../../types/events';
 
 interface ClusterPanelProps {
@@ -7,19 +8,9 @@ interface ClusterPanelProps {
   onClose: () => void;
 }
 
-const categoryLabels: Record<string, string> = {
-  polityka: 'Polityka',
-  gospodarka: 'Gospodarka',
-  swiat: 'Świat',
-  spoleczenstwo: 'Społeczeństwo',
-  nauka: 'Nauka',
-  technologia: 'Technologia',
-  kultura: 'Kultura',
-  sport: 'Sport',
-};
-
 export function ClusterPanel({ events, onClose }: ClusterPanelProps) {
-  const navigate = useNavigate();
+  const navigate = useLanguageNavigate();
+  const { t } = useTranslation();
 
   const handleEventClick = (event: Event) => {
     navigate(`/event/${event.id}`);
@@ -37,7 +28,7 @@ export function ClusterPanel({ events, onClose }: ClusterPanelProps) {
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-3 pb-2">
         <span className="text-[11px] tracking-wide uppercase text-content-faint font-medium">
-          {events.length} wydarzeń w tym obszarze
+          {t('map.eventsInArea', { count: events.length })}
         </span>
         <button
           onClick={onClose}
@@ -66,7 +57,7 @@ export function ClusterPanel({ events, onClose }: ClusterPanelProps) {
               </span>
               {event.category && (
                 <span className="text-content-subtle">
-                  {categoryLabels[event.category] || event.category}
+                  {t(`map.categories.${event.category}`, { defaultValue: event.category })}
                 </span>
               )}
             </div>

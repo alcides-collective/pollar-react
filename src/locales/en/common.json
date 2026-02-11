@@ -417,5 +417,72 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System"
+  },
+  "chart": {
+    "label": "CHART",
+    "smartScaleOn": "Axis fitted to data range — details of changes visible. Click to start from zero.",
+    "smartScaleOff": "Chart axis starts from zero — fair visual proportions. Click to fit to data."
+  },
+  "summaryLabels": {
+    "politicalPerspectives": "POLITICAL PERSPECTIVES",
+    "liberalSources": "Liberal sources",
+    "conservativeSources": "Conservative sources",
+    "manipulationDetected": "MANIPULATION DETECTED",
+    "source": "Source",
+    "factCheck": "FACT CHECK",
+    "comparison": "COMPARISON",
+    "before": "Before",
+    "after": "After",
+    "resultSingle": "RESULT",
+    "resultMultiple": "RESULTS",
+    "classification": "CLASSIFICATION",
+    "achievements": "ACHIEVEMENTS",
+    "ranking": "RANKING",
+    "calendar": "CALENDAR",
+    "structure": "STRUCTURE"
+  },
+  "map": {
+    "eventsInArea": "{{count}} events in this area",
+    "sources": "{{count}} sources",
+    "details": "Details",
+    "close": "Close",
+    "loading": "Loading events...",
+    "eventsOnMap": "{{count}} events on map",
+    "categories": {
+      "polityka": "Politics",
+      "gospodarka": "Economy",
+      "swiat": "World",
+      "spoleczenstwo": "Society",
+      "nauka": "Science",
+      "technologia": "Technology",
+      "kultura": "Culture",
+      "sport": "Sports"
+    },
+    "titles": {
+      "0": "Insomniac cartography",
+      "1": "Midnight atlas",
+      "2": "Map of the sleepless",
+      "3": "Three o'clock recon",
+      "4": "Atlas of dawn",
+      "5": "First coordinates",
+      "6": "Morning reconnaissance",
+      "7": "Map over coffee",
+      "8": "Daily order of things",
+      "9": "Field orientation",
+      "10": "Point on the map",
+      "11": "Forenoon atlas",
+      "12": "Map at zenith",
+      "13": "Lunchtime cartography",
+      "14": "Afternoon map",
+      "15": "Tea-time cartography",
+      "16": "Twilight markings",
+      "17": "After-hours map",
+      "18": "Dusk topography",
+      "19": "Map over dinner",
+      "20": "Border review",
+      "21": "Night orientation",
+      "22": "Last glance",
+      "23": "Midnight hour atlas"
+    }
   }
 }

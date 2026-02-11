@@ -3,6 +3,13 @@
  * Ported from pollar-web/pollar-sveltekit/src/lib/utils/text.ts
  */
 
+import type { Language } from '../stores/languageStore';
+import i18n from '../i18n';
+
+function label(key: string, lang: Language): string {
+  return i18n.t(`summaryLabels.${key}`, { lng: lang, postProcess: [] as string[] });
+}
+
 // ==========================================
 // Extraction functions for sidebar display
 // ==========================================
@@ -66,6 +73,10 @@ function normalizeEnglishTags(text: string): string {
     .replace(/<(\/?)manipulation(\s|>)/gi, '<$1manipulacja$2')
     .replace(/<(\/?)verification(\s|>)/gi, '<$1weryfikacja$2')
     .replace(/<(\/?)fact-check(\s|>)/gi, '<$1weryfikacja$2')
+    // Chart tag names: EN → PL
+    .replace(/<(\/?)bar-chart(\s|>)/gi, '<$1wykres-słupkowy$2')
+    .replace(/<(\/?)line-chart(\s|>)/gi, '<$1wykres-liniowy$2')
+    .replace(/<(\/?)pie-chart(\s|>)/gi, '<$1wykres-kołowy$2')
     // Attribute names within specific tags: EN → PL
     .replace(/(<przypis\s[^>]*)description=/gi, '$1opis=')
     .replace(/(<cytat\s[^>]*)author=/gi, '$1autor=')
@@ -77,7 +88,14 @@ function normalizeEnglishTags(text: string): string {
     .replace(/(<manipulacja\s[^>]*)author=/gi, '$1autor=')
     .replace(/(<manipulacja\s[^>]*)quote=/gi, '$1cytat=')
     .replace(/(<weryfikacja\s[^>]*)verdict=/gi, '$1werdykt=')
-    .replace(/(<weryfikacja\s[^>]*)source=/gi, '$1źródło=');
+    .replace(/(<weryfikacja\s[^>]*)source=/gi, '$1źródło=')
+    // Chart attribute names: title → tytuł, unit → jednostka
+    .replace(/(<wykres-s[łt][uó]pkowy\s[^>]*)title=/gi, '$1tytuł=')
+    .replace(/(<wykres-s[łt][uó]pkowy\s[^>]*)unit=/gi, '$1jednostka=')
+    .replace(/(<wykres-liniowy\s[^>]*)title=/gi, '$1tytuł=')
+    .replace(/(<wykres-liniowy\s[^>]*)unit=/gi, '$1jednostka=')
+    .replace(/(<wykres-kołowy\s[^>]*)title=/gi, '$1tytuł=')
+    .replace(/(<wykres-kołowy\s[^>]*)unit=/gi, '$1jednostka=');
 }
 
 /**
@@ -278,7 +296,7 @@ export function stripHtmlForPlainText(text: string): string {
  * Sanitizes HTML and processes custom tags into styled components
  * Main function for processing summary content
  */
-export function sanitizeAndProcessHtml(text: string): string {
+export function sanitizeAndProcessHtml(text: string, lang: Language = 'pl'): string {
   if (!text || typeof text !== 'string') return text ?? '';
 
   // FIRST: Decode ALL HTML entities that might appear in tag attributes
@@ -333,6 +351,10 @@ export function sanitizeAndProcessHtml(text: string): string {
     .replace(/&lt;(\/?)manipulation/gi, '<$1manipulation')
     .replace(/&lt;(\/?)verification/gi, '<$1verification')
     .replace(/&lt;(\/?)fact-check/gi, '<$1fact-check')
+    // English chart tag entity decoders
+    .replace(/&lt;(\/?)bar-chart/gi, '<$1bar-chart')
+    .replace(/&lt;(\/?)line-chart/gi, '<$1line-chart')
+    .replace(/&lt;(\/?)pie-chart/gi, '<$1pie-chart')
     .replace(/&gt;/g, '>');
 
   // Normalize English tag names and attributes to Polish equivalents
@@ -359,20 +381,20 @@ export function sanitizeAndProcessHtml(text: string): string {
     // Convert <bias left="..." right="..."> tags to styled bias comparison box
     // Use [^"]* for double-quoted and [^']* for single-quoted attrs to allow apostrophes/quotes inside
     .replace(/<bias\s+left\s*=\s*"([^"]*)"\s+right\s*=\s*"([^"]*)"\s*(?:\/>|><\/bias>)/gi,
-      '\n\n<div class="bias-wrapper"><span class="bias-header">PERSPEKTYWY POLITYCZNE</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">Źródła liberalne</span><p class="bias-text">$1</p></div><div class="bias-column bias-right"><span class="bias-label">Źródła konserwatywne</span><p class="bias-text">$2</p></div></div></div>\n\n')
+      (_, left, right) => `\n\n<div class="bias-wrapper"><span class="bias-header">${label('politicalPerspectives', lang)}</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">${label('liberalSources', lang)}</span><p class="bias-text">${left}</p></div><div class="bias-column bias-right"><span class="bias-label">${label('conservativeSources', lang)}</span><p class="bias-text">${right}</p></div></div></div>\n\n`)
     .replace(/<bias\s+left\s*=\s*'([^']*)'\s+right\s*=\s*'([^']*)'\s*(?:\/>|><\/bias>)/gi,
-      '\n\n<div class="bias-wrapper"><span class="bias-header">PERSPEKTYWY POLITYCZNE</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">Źródła liberalne</span><p class="bias-text">$1</p></div><div class="bias-column bias-right"><span class="bias-label">Źródła konserwatywne</span><p class="bias-text">$2</p></div></div></div>\n\n')
+      (_, left, right) => `\n\n<div class="bias-wrapper"><span class="bias-header">${label('politicalPerspectives', lang)}</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">${label('liberalSources', lang)}</span><p class="bias-text">${left}</p></div><div class="bias-column bias-right"><span class="bias-label">${label('conservativeSources', lang)}</span><p class="bias-text">${right}</p></div></div></div>\n\n`)
     // Handle alternate attribute order: right first, then left
     .replace(/<bias\s+right\s*=\s*"([^"]*)"\s+left\s*=\s*"([^"]*)"\s*(?:\/>|><\/bias>)/gi,
-      '\n\n<div class="bias-wrapper"><span class="bias-header">PERSPEKTYWY POLITYCZNE</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">Źródła liberalne</span><p class="bias-text">$2</p></div><div class="bias-column bias-right"><span class="bias-label">Źródła konserwatywne</span><p class="bias-text">$1</p></div></div></div>\n\n')
+      (_, right, left) => `\n\n<div class="bias-wrapper"><span class="bias-header">${label('politicalPerspectives', lang)}</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">${label('liberalSources', lang)}</span><p class="bias-text">${left}</p></div><div class="bias-column bias-right"><span class="bias-label">${label('conservativeSources', lang)}</span><p class="bias-text">${right}</p></div></div></div>\n\n`)
     .replace(/<bias\s+right\s*=\s*'([^']*)'\s+left\s*=\s*'([^']*)'\s*(?:\/>|><\/bias>)/gi,
-      '\n\n<div class="bias-wrapper"><span class="bias-header">PERSPEKTYWY POLITYCZNE</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">Źródła liberalne</span><p class="bias-text">$2</p></div><div class="bias-column bias-right"><span class="bias-label">Źródła konserwatywne</span><p class="bias-text">$1</p></div></div></div>\n\n')
+      (_, right, left) => `\n\n<div class="bias-wrapper"><span class="bias-header">${label('politicalPerspectives', lang)}</span><div class="bias-columns"><div class="bias-column bias-left"><span class="bias-label">${label('liberalSources', lang)}</span><p class="bias-text">${left}</p></div><div class="bias-column bias-right"><span class="bias-label">${label('conservativeSources', lang)}</span><p class="bias-text">${right}</p></div></div></div>\n\n`)
     // Convert <manipulacja autor="..." cytat="...">explanation</manipulacja> to styled manipulation callout
     .replace(/<manipulacja\s+autor\s*=\s*["']([^"']+)["']\s+cytat\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/manipulacja>/gi,
-      '\n\n<div class="manipulation-box"><span class="manipulation-label">WYKRYTO MANIPULACJĘ</span><div class="manipulation-source">Źródło: $1</div><blockquote class="manipulation-quote">„$2"</blockquote><p class="manipulation-explanation">$3</p></div>\n\n')
+      (_, autor, cytat, explanation) => `\n\n<div class="manipulation-box"><span class="manipulation-label">${label('manipulationDetected', lang)}</span><div class="manipulation-source">${label('source', lang)}: ${autor}</div><blockquote class="manipulation-quote">„${cytat}"</blockquote><p class="manipulation-explanation">${explanation}</p></div>\n\n`)
     // Handle alternate attribute order: cytat first, then autor
     .replace(/<manipulacja\s+cytat\s*=\s*["']([^"']+)["']\s+autor\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/manipulacja>/gi,
-      '\n\n<div class="manipulation-box"><span class="manipulation-label">WYKRYTO MANIPULACJĘ</span><div class="manipulation-source">Źródło: $2</div><blockquote class="manipulation-quote">„$1"</blockquote><p class="manipulation-explanation">$3</p></div>\n\n')
+      (_, cytat, autor, explanation) => `\n\n<div class="manipulation-box"><span class="manipulation-label">${label('manipulationDetected', lang)}</span><div class="manipulation-source">${label('source', lang)}: ${autor}</div><blockquote class="manipulation-quote">„${cytat}"</blockquote><p class="manipulation-explanation">${explanation}</p></div>\n\n`)
     // Convert <kluczowa-liczba wartość="...">description</kluczowa-liczba> to number callout (double quotes)
     .replace(/<kluczowa-liczba\s+wartość\s*=\s*"([^"]+)">([\s\S]*?)<\/kluczowa-liczba>/gi,
       '\n\n<div class="key-number-box"><span class="key-number-value">$1</span><span class="key-number-description">$2</span></div>\n\n')
@@ -386,7 +408,7 @@ export function sanitizeAndProcessHtml(text: string): string {
                             verdict.toLowerCase().includes('prawdziwe') || verdict.toLowerCase() === 'prawda' ? 'verdict-true' : 'verdict-partial';
         const verdictIcon = verdict.toLowerCase().includes('fałsz') ? '✗' :
                            verdict.toLowerCase().includes('prawdziwe') || verdict.toLowerCase() === 'prawda' ? '✓' : '~';
-        return `\n\n<div class="factcheck-box ${verdictClass}"><span class="factcheck-label">WERYFIKACJA</span><div class="factcheck-verdict"><span class="verdict-icon">${verdictIcon}</span><span class="verdict-text">${verdict}</span></div><p class="factcheck-explanation">${explanation}</p><div class="factcheck-source">Źródło: ${source}</div></div>\n\n`;
+        return `\n\n<div class="factcheck-box ${verdictClass}"><span class="factcheck-label">${label('factCheck', lang)}</span><div class="factcheck-verdict"><span class="verdict-icon">${verdictIcon}</span><span class="verdict-text">${verdict}</span></div><p class="factcheck-explanation">${explanation}</p><div class="factcheck-source">${label('source', lang)}: ${source}</div></div>\n\n`;
       })
     // Handle alternate attribute order for weryfikacja
     .replace(/<weryfikacja\s+źródło\s*=\s*["']([^"']+)["']\s+werdykt\s*=\s*["']([^"']+)["']>([\s\S]*?)<\/weryfikacja>/gi,
@@ -395,7 +417,7 @@ export function sanitizeAndProcessHtml(text: string): string {
                             verdict.toLowerCase().includes('prawdziwe') || verdict.toLowerCase() === 'prawda' ? 'verdict-true' : 'verdict-partial';
         const verdictIcon = verdict.toLowerCase().includes('fałsz') ? '✗' :
                            verdict.toLowerCase().includes('prawdziwe') || verdict.toLowerCase() === 'prawda' ? '✓' : '~';
-        return `\n\n<div class="factcheck-box ${verdictClass}"><span class="factcheck-label">WERYFIKACJA</span><div class="factcheck-verdict"><span class="verdict-icon">${verdictIcon}</span><span class="verdict-text">${verdict}</span></div><p class="factcheck-explanation">${explanation}</p><div class="factcheck-source">Źródło: ${source}</div></div>\n\n`;
+        return `\n\n<div class="factcheck-box ${verdictClass}"><span class="factcheck-label">${label('factCheck', lang)}</span><div class="factcheck-verdict"><span class="verdict-icon">${verdictIcon}</span><span class="verdict-text">${verdict}</span></div><p class="factcheck-explanation">${explanation}</p><div class="factcheck-source">${label('source', lang)}: ${source}</div></div>\n\n`;
       })
     // Convert <cytat autor="..." miejsce="..."> tags to styled quote box (double quotes)
     .replace(/<cytat\s+autor\s*=\s*"([^"]+)"\s+miejsce\s*=\s*"([^"]+)">([\s\S]*?)<\/cytat>/gi,
@@ -518,11 +540,11 @@ export function sanitizeAndProcessHtml(text: string): string {
             return `<div class="comparison-card">` +
             `<div class="comparison-aspect">${item.aspekt || ''}</div>` +
             `<div class="comparison-columns">` +
-            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${przedValue}</span></div>` +
-            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${poValue}</span></div>` +
+            `<div class="comparison-before"><span class="comparison-change-label">${label('before', lang)}</span><span class="comparison-change-text">${przedValue}</span></div>` +
+            `<div class="comparison-after"><span class="comparison-change-label">${label('after', lang)}</span><span class="comparison-change-text">${poValue}</span></div>` +
             `</div></div>`;
           }).join('');
-          return `\n\n<div class="comparison-box"><span class="comparison-label">PORÓWNANIE</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
+          return `\n\n<div class="comparison-box"><span class="comparison-label">${label('comparison', lang)}</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -542,11 +564,11 @@ export function sanitizeAndProcessHtml(text: string): string {
             return `<div class="comparison-card">` +
             `<div class="comparison-aspect">${item.aspekt || ''}</div>` +
             `<div class="comparison-columns">` +
-            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${przedValue}</span></div>` +
-            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${poValue}</span></div>` +
+            `<div class="comparison-before"><span class="comparison-change-label">${label('before', lang)}</span><span class="comparison-change-text">${przedValue}</span></div>` +
+            `<div class="comparison-after"><span class="comparison-change-label">${label('after', lang)}</span><span class="comparison-change-text">${poValue}</span></div>` +
             `</div></div>`;
           }).join('');
-          return `\n\n<div class="comparison-box"><span class="comparison-label">PORÓWNANIE</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
+          return `\n\n<div class="comparison-box"><span class="comparison-label">${label('comparison', lang)}</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -566,11 +588,11 @@ export function sanitizeAndProcessHtml(text: string): string {
             return `<div class="comparison-card">` +
             `<div class="comparison-aspect">${item.aspekt || ''}</div>` +
             `<div class="comparison-columns">` +
-            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${przedValue}</span></div>` +
-            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${poValue}</span></div>` +
+            `<div class="comparison-before"><span class="comparison-change-label">${label('before', lang)}</span><span class="comparison-change-text">${przedValue}</span></div>` +
+            `<div class="comparison-after"><span class="comparison-change-label">${label('after', lang)}</span><span class="comparison-change-text">${poValue}</span></div>` +
             `</div></div>`;
           }).join('');
-          return `\n\n<div class="comparison-box"><span class="comparison-label">PORÓWNANIE</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
+          return `\n\n<div class="comparison-box"><span class="comparison-label">${label('comparison', lang)}</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -590,11 +612,11 @@ export function sanitizeAndProcessHtml(text: string): string {
             return `<div class="comparison-card">` +
             `<div class="comparison-aspect">${item.aspekt || ''}</div>` +
             `<div class="comparison-columns">` +
-            `<div class="comparison-before"><span class="comparison-change-label">Przed</span><span class="comparison-change-text">${przedValue}</span></div>` +
-            `<div class="comparison-after"><span class="comparison-change-label">Po</span><span class="comparison-change-text">${poValue}</span></div>` +
+            `<div class="comparison-before"><span class="comparison-change-label">${label('before', lang)}</span><span class="comparison-change-text">${przedValue}</span></div>` +
+            `<div class="comparison-after"><span class="comparison-change-label">${label('after', lang)}</span><span class="comparison-change-text">${poValue}</span></div>` +
             `</div></div>`;
           }).join('');
-          return `\n\n<div class="comparison-box"><span class="comparison-label">PORÓWNANIE</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
+          return `\n\n<div class="comparison-box"><span class="comparison-label">${label('comparison', lang)}</span><div class="comparison-title">${title}</div><div class="comparison-cards">${cardsHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -613,7 +635,7 @@ export function sanitizeAndProcessHtml(text: string): string {
             const winner = score1 > score2 ? 1 : score1 < score2 ? 2 : 0;
             return `\n\n<div class="results-box results-box-single">` +
               `<div class="results-single-header">` +
-              `<span class="results-label">WYNIK</span>` +
+              `<span class="results-label">${label('resultSingle', lang)}</span>` +
               `<span class="results-title">${title}</span>` +
               `</div>` +
               `<div class="results-single-match">` +
@@ -637,7 +659,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               `<span class="match-team${winner === 2 ? ' match-winner' : ''}">${match.strona2 || ''}</span>` +
               `</div></div>`;
           }).join('');
-          return `\n\n<div class="results-box"><span class="results-label">WYNIKI</span><div class="results-title">${title}</div><div class="results-matches">${matchesHtml}</div></div>\n\n`;
+          return `\n\n<div class="results-box"><span class="results-label">${label('resultMultiple', lang)}</span><div class="results-title">${title}</div><div class="results-matches">${matchesHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -656,7 +678,7 @@ export function sanitizeAndProcessHtml(text: string): string {
             const winner = score1 > score2 ? 1 : score1 < score2 ? 2 : 0;
             return `\n\n<div class="results-box results-box-single">` +
               `<div class="results-single-header">` +
-              `<span class="results-label">WYNIK</span>` +
+              `<span class="results-label">${label('resultSingle', lang)}</span>` +
               `<span class="results-title">${title}</span>` +
               `</div>` +
               `<div class="results-single-match">` +
@@ -680,7 +702,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               `<span class="match-team${winner === 2 ? ' match-winner' : ''}">${match.strona2 || ''}</span>` +
               `</div></div>`;
           }).join('');
-          return `\n\n<div class="results-box"><span class="results-label">WYNIKI</span><div class="results-title">${title}</div><div class="results-matches">${matchesHtml}</div></div>\n\n`;
+          return `\n\n<div class="results-box"><span class="results-label">${label('resultMultiple', lang)}</span><div class="results-title">${title}</div><div class="results-matches">${matchesHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -698,7 +720,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               `<td class="ranking-score">${entry.wynik || ''}</td>` +
               `</tr>`;
           }).join('');
-          return `\n\n<div class="ranking-box"><span class="ranking-label">KLASYFIKACJA</span><div class="ranking-title">${title}</div><table class="ranking-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
+          return `\n\n<div class="ranking-box"><span class="ranking-label">${label('classification', lang)}</span><div class="ranking-title">${title}</div><table class="ranking-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
         } catch {
           return '';
         }
@@ -716,7 +738,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               `<td class="ranking-score">${entry.wynik || ''}</td>` +
               `</tr>`;
           }).join('');
-          return `\n\n<div class="ranking-box"><span class="ranking-label">KLASYFIKACJA</span><div class="ranking-title">${title}</div><table class="ranking-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
+          return `\n\n<div class="ranking-box"><span class="ranking-label">${label('classification', lang)}</span><div class="ranking-title">${title}</div><table class="ranking-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
         } catch {
           return '';
         }
@@ -728,7 +750,7 @@ export function sanitizeAndProcessHtml(text: string): string {
           const entries = JSON.parse(jsonData.trim());
           if (!Array.isArray(entries)) return '';
           const isTrofea = typ.toLowerCase() === 'trofea';
-          const label = isTrofea ? 'OSIĄGNIĘCIA' : 'RANKING';
+          const rankLabel = isTrofea ? label('achievements', lang) : label('ranking', lang);
           const rowsHtml = entries.map((entry: {pozycja?: number, nazwa?: string, info?: string}, index: number) => {
             const position = isTrofea ? `<span class="ranking-trophy"><i class="ri-trophy-fill"></i></span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
             return `<div class="ranking-item">` +
@@ -737,7 +759,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               (entry.info ? `<span class="ranking-info">${entry.info}</span>` : '') +
               `</div>`;
           }).join('');
-          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${label}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
+          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${rankLabel}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -749,7 +771,7 @@ export function sanitizeAndProcessHtml(text: string): string {
           const entries = JSON.parse(jsonData.trim());
           if (!Array.isArray(entries)) return '';
           const isTrofea = typ.toLowerCase() === 'trofea';
-          const label = isTrofea ? 'OSIĄGNIĘCIA' : 'RANKING';
+          const rankLabel = isTrofea ? label('achievements', lang) : label('ranking', lang);
           const rowsHtml = entries.map((entry: {pozycja?: number, nazwa?: string, info?: string}, index: number) => {
             const position = isTrofea ? `<span class="ranking-trophy"><i class="ri-trophy-fill"></i></span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
             return `<div class="ranking-item">` +
@@ -758,7 +780,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               (entry.info ? `<span class="ranking-info">${entry.info}</span>` : '') +
               `</div>`;
           }).join('');
-          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${label}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
+          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${rankLabel}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -770,7 +792,7 @@ export function sanitizeAndProcessHtml(text: string): string {
           const entries = JSON.parse(jsonData.trim());
           if (!Array.isArray(entries)) return '';
           const isTrofea = typ.toLowerCase() === 'trofea';
-          const label = isTrofea ? 'OSIĄGNIĘCIA' : 'RANKING';
+          const rankLabel = isTrofea ? label('achievements', lang) : label('ranking', lang);
           const rowsHtml = entries.map((entry: {pozycja?: number, nazwa?: string, info?: string}, index: number) => {
             const position = isTrofea ? `<span class="ranking-trophy"><i class="ri-trophy-fill"></i></span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
             return `<div class="ranking-item">` +
@@ -779,7 +801,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               (entry.info ? `<span class="ranking-info">${entry.info}</span>` : '') +
               `</div>`;
           }).join('');
-          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${label}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
+          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${rankLabel}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -791,7 +813,7 @@ export function sanitizeAndProcessHtml(text: string): string {
           const entries = JSON.parse(jsonData.trim());
           if (!Array.isArray(entries)) return '';
           const isTrofea = typ.toLowerCase() === 'trofea';
-          const label = isTrofea ? 'OSIĄGNIĘCIA' : 'RANKING';
+          const rankLabel = isTrofea ? label('achievements', lang) : label('ranking', lang);
           const rowsHtml = entries.map((entry: {pozycja?: number, nazwa?: string, info?: string}, index: number) => {
             const position = isTrofea ? `<span class="ranking-trophy"><i class="ri-trophy-fill"></i></span>` : `<span class="ranking-pos">${entry.pozycja || index + 1}.</span>`;
             return `<div class="ranking-item">` +
@@ -800,7 +822,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               (entry.info ? `<span class="ranking-info">${entry.info}</span>` : '') +
               `</div>`;
           }).join('');
-          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${label}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
+          return `\n\n<div class="ranking-list-box ${isTrofea ? 'ranking-trofea' : 'ranking-pozycje'}"><span class="ranking-label">${rankLabel}</span><div class="ranking-title">${title}</div><div class="ranking-items">${rowsHtml}</div></div>\n\n`;
         } catch {
           return '';
         }
@@ -817,7 +839,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               `<td class="calendar-desc">${event.wydarzenie || ''}</td>` +
               `</tr>`;
           }).join('');
-          return `\n\n<div class="calendar-box"><span class="calendar-label">KALENDARZ</span><div class="calendar-title">${title}</div><table class="calendar-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
+          return `\n\n<div class="calendar-box"><span class="calendar-label">${label('calendar', lang)}</span><div class="calendar-title">${title}</div><table class="calendar-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
         } catch {
           return '';
         }
@@ -834,7 +856,7 @@ export function sanitizeAndProcessHtml(text: string): string {
               `<td class="calendar-desc">${event.wydarzenie || ''}</td>` +
               `</tr>`;
           }).join('');
-          return `\n\n<div class="calendar-box"><span class="calendar-label">KALENDARZ</span><div class="calendar-title">${title}</div><table class="calendar-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
+          return `\n\n<div class="calendar-box"><span class="calendar-label">${label('calendar', lang)}</span><div class="calendar-title">${title}</div><table class="calendar-table"><tbody>${rowsHtml}</tbody></table></div>\n\n`;
         } catch {
           return '';
         }
@@ -867,7 +889,7 @@ export function sanitizeAndProcessHtml(text: string): string {
           const pct = Math.round((item.value / total) * 100);
           return `<div class="stacked-legend-item"><span class="stacked-legend-color" style="background: ${COLORS[i % COLORS.length]};"></span><span class="stacked-legend-text">${item.label}</span><span class="stacked-legend-pct">${pct}%</span></div>`;
         }).join('');
-        return `\n\n<div class="stacked-box"><span class="stacked-label">STRUKTURA</span><div class="stacked-title">${title}</div><div class="stacked-bar">${segmentsHtml}</div><div class="stacked-legend">${legendHtml}</div></div>\n\n`;
+        return `\n\n<div class="stacked-box"><span class="stacked-label">${label('structure', lang)}</span><div class="stacked-title">${title}</div><div class="stacked-bar">${segmentsHtml}</div><div class="stacked-legend">${legendHtml}</div></div>\n\n`;
       })
     // Convert <wykres-kołowy> to stacked bar representation (single quotes)
     .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*'([^']+)'(?:\s+jednostk[ai]?\s*=\s*'[^']*')?>([\s\S]*?)<\/wykres-kołowy>/gi,
@@ -891,7 +913,7 @@ export function sanitizeAndProcessHtml(text: string): string {
           const pct = Math.round((item.value / total) * 100);
           return `<div class="stacked-legend-item"><span class="stacked-legend-color" style="background: ${COLORS[i % COLORS.length]};"></span><span class="stacked-legend-text">${item.label}</span><span class="stacked-legend-pct">${pct}%</span></div>`;
         }).join('');
-        return `\n\n<div class="stacked-box"><span class="stacked-label">STRUKTURA</span><div class="stacked-title">${title}</div><div class="stacked-bar">${segmentsHtml}</div><div class="stacked-legend">${legendHtml}</div></div>\n\n`;
+        return `\n\n<div class="stacked-box"><span class="stacked-label">${label('structure', lang)}</span><div class="stacked-title">${title}</div><div class="stacked-bar">${segmentsHtml}</div><div class="stacked-legend">${legendHtml}</div></div>\n\n`;
       })
     // Remove all remaining HTML tags except allowed ones
     .replace(/<(?!a\s|\/a>|b>|\/b>|i\s|\/i>|strong>|\/strong>|div\s|\/div>|span\s|\/span>|p\s|\/p>|blockquote\s|\/blockquote>|cite\s|\/cite>|table\s|\/table>|thead>|\/thead>|tbody>|\/tbody>|tr\s|\/tr>|th>|\/th>|td\s|\/td>|h3\s|\/h3>|br\s|br>|br\/>)[^>]+>/gi, '')
@@ -969,7 +991,7 @@ export function prepareOgDescription(text: string | undefined): string {
 /**
  * Simplified version for inline contexts (no paragraph wrapping)
  */
-export function sanitizeAndProcessInlineHtml(text: string): string {
+export function sanitizeAndProcessInlineHtml(text: string, _lang: Language = 'pl'): string {
   if (!text || typeof text !== 'string') return text ?? '';
 
   let processedText = text

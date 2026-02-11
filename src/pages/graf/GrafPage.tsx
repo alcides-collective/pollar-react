@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { useLanguageNavigate } from '@/hooks/useLanguageNavigate';
 import { useGrafStore } from '@/stores/grafStore';
 import { useGraphData } from '@/hooks/useGraphData';
 import { GraphCanvas } from './components/GraphCanvas';
@@ -13,7 +13,7 @@ import './graf.css';
 const MOBILE_BREAKPOINT = 768;
 
 export function GrafPage() {
-  const navigate = useNavigate();
+  const navigate = useLanguageNavigate();
   const { graphData, loading, nodeCount, linkCount, getConnectedNodeIds, getNodeById } =
     useGraphData();
 
