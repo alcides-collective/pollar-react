@@ -270,7 +270,8 @@
   "sidebar": {
     "latest": "Latest",
     "whatsNew": "What's new",
-    "engineDown": "Pollar Engine — the system responsible for content aggregation, analysis, and updates — is temporarily unavailable. New articles and updates may be delayed."
+    "engineDown": "Pollar Engine — the system responsible for content aggregation, analysis, and updates — is temporarily unavailable. New articles and updates may be delayed.",
+    "engineStatusLink": "Check status"
   },
   "stats": {
     "title": "Statistics",

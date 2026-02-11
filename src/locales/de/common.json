@@ -270,7 +270,8 @@
   "sidebar": {
     "latest": "Neueste",
     "whatsNew": "Neuigkeiten",
-    "engineDown": "Pollar Engine — das System für Inhaltserfassung, Analyse und Aktualisierungen — ist vorübergehend nicht erreichbar. Neue Artikel und Aktualisierungen können verzögert sein."
+    "engineDown": "Pollar Engine — das System für Inhaltserfassung, Analyse und Aktualisierungen — ist vorübergehend nicht erreichbar. Neue Artikel und Aktualisierungen können verzögert sein.",
+    "engineStatusLink": "Status prüfen"
   },
   "stats": {
     "title": "Statistiken",
