@@ -196,7 +196,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
   if (error) {
     return (
       <div
-        className={`inline-flex items-center rounded border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 ${
+        className={`inline-flex items-center rounded-lg border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 ${
           small ? 'gap-1.5 px-2 py-1 text-xs' : 'gap-2 px-3 py-1.5 text-sm'
         } ${fullWidth ? 'w-full' : ''}`}
       >
@@ -212,7 +212,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
         ref={seekRef}
         onMouseDown={handleSeekMouseDown}
         onDoubleClick={togglePlay}
-        className={`inline-flex items-center rounded border border-divider hover:border-divider transition-colors select-none ${
+        className={`inline-flex items-center rounded-lg border border-divider hover:border-divider transition-colors select-none ${
           small ? 'gap-1.5 px-2 py-1 text-xs' : 'gap-2 px-3 py-1.5 text-sm'
         } ${fullWidth ? 'flex-1' : ''} ${isDraggingSeek ? 'cursor-grabbing' : 'cursor-pointer'}`}
         style={{
@@ -227,7 +227,10 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
             togglePlay();
           }}
         />
-        <span className={`font-mono text-content ${small ? 'text-[10px]' : 'text-xs'}`}>
+        <span
+          className={`text-content ${small ? 'text-[10px]' : 'text-xs'}`}
+          style={{ fontFamily: "'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace" }}
+        >
           {formatTime(currentTime)} / {formatTime(duration)}
         </span>
       </button>
@@ -238,7 +241,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
         onMouseLeave={handleVolumeMouseLeave}
       >
         <button
-          className={`inline-flex items-center justify-center rounded border border-divider hover:border-divider transition-colors text-content ${
+          className={`inline-flex items-center justify-center rounded-lg border border-divider hover:border-divider transition-colors text-content ${
             small ? 'size-[26px] text-xs' : 'size-[34px] text-sm'
           }`}
           onClick={() => setShowVolumeSlider(!showVolumeSlider)}
@@ -246,34 +249,34 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
           <i className={getVolumeIcon(volume)} />
         </button>
 
-        {showVolumeSlider && (
+        <div
+          className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-1 rounded-lg border border-divider bg-background shadow-sm flex items-center justify-center transition-all duration-200 ${
+            showVolumeSlider ? 'opacity-100 visible' : 'opacity-0 invisible'
+          } ${
+            small ? 'w-[26px] h-20 py-2' : 'w-[34px] h-24 py-3'
+          }`}
+          onMouseEnter={handleVolumeMouseEnter}
+          onMouseLeave={handleVolumeMouseLeave}
+        >
           <div
-            className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-1 rounded border border-divider bg-background shadow-sm flex items-center justify-center ${
-              small ? 'w-[26px] h-20 py-2' : 'w-[34px] h-24 py-3'
-            }`}
-            onMouseEnter={handleVolumeMouseEnter}
-            onMouseLeave={handleVolumeMouseLeave}
+            ref={volumeTrackRef}
+            className={`relative rounded-full bg-divider select-none ${
+              small ? 'w-1 h-full' : 'w-1.5 h-full'
+            } ${isDraggingVolume ? 'cursor-grabbing' : 'cursor-pointer'}`}
+            onMouseDown={handleVolumeMouseDown}
           >
             <div
-              ref={volumeTrackRef}
-              className={`relative rounded-full bg-divider select-none ${
-                small ? 'w-1 h-full' : 'w-1.5 h-full'
-              } ${isDraggingVolume ? 'cursor-grabbing' : 'cursor-pointer'}`}
-              onMouseDown={handleVolumeMouseDown}
-            >
-              <div
-                className="absolute bottom-0 left-0 right-0 rounded-full bg-blue-500"
-                style={{ height: `${volume * 100}%` }}
-              />
-              <div
-                className={`absolute left-1/2 -translate-x-1/2 rounded-full bg-blue-600 shadow-sm ${
-                  small ? 'w-2 h-2' : 'w-2.5 h-2.5'
-                } ${isDraggingVolume ? 'scale-125' : ''} transition-transform`}
-                style={{ bottom: `calc(${volume * 100}% - ${small ? '4px' : '5px'})` }}
-              />
-            </div>
+              className="absolute bottom-0 left-0 right-0 rounded-full bg-blue-500"
+              style={{ height: `${volume * 100}%` }}
+            />
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 rounded-full bg-blue-600 shadow-sm ${
+                small ? 'w-2 h-2' : 'w-2.5 h-2.5'
+              } ${isDraggingVolume ? 'scale-125' : ''} transition-transform`}
+              style={{ bottom: `calc(${volume * 100}% - ${small ? '4px' : '5px'})` }}
+            />
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
