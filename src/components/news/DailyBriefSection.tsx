@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { DailyBrief } from '../../types/brief';
 import { SectionWrapper } from '../common/SectionWrapper';
@@ -40,6 +41,18 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
     return '/videos/daily-brief-night.webm';
   };
 
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef2 = useRef<HTMLVideoElement>(null);
+
+  const handleMouseEnter = () => {
+    videoRef.current?.play();
+    videoRef2.current?.play();
+  };
+  const handleMouseLeave = () => {
+    videoRef.current?.pause();
+    videoRef2.current?.pause();
+  };
+
   const timeGreeting = getTimeBasedGreeting();
   const briefVideo = getTimeBasedVideo();
   const dateStr = new Date().toLocaleDateString(localeMap[language] || 'pl-PL', {
@@ -56,7 +69,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
       priority="high"
     >
       <LocalizedLink to="/brief" className="group group/underline block">
-        <div className="bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/40 dark:hover:bg-sky-900/40 transition-colors cursor-pointer p-6">
+        <div className="bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/40 dark:hover:bg-sky-900/40 transition-colors cursor-pointer p-6" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {/* Mobile layout */}
           <div className="md:hidden">
             <p className="text-2xl font-semibold text-content-heading">Daily Brief</p>
@@ -65,7 +78,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
             )}
             <div className="relative overflow-hidden w-full aspect-video mt-4 transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-xl">
               <video
-                autoPlay
+                ref={videoRef}
                 loop
                 muted
                 playsInline
@@ -104,7 +117,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
               )}
               <div className="relative overflow-hidden w-full aspect-video mt-4 transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-xl">
                 <video
-                  autoPlay
+                  ref={videoRef2}
                   loop
                   muted
                   playsInline
