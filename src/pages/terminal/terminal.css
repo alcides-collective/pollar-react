@@ -621,6 +621,100 @@
   background: #444;
 }
 
+/* ========================================
+   MOTION: Terminal animations
+   ======================================== */
+
+/* 1. Key Point Rotation — typewriter fade */
+@keyframes keypoint-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.keypoint-display {
+  animation: keypoint-enter 0.2s ease-out;
+}
+
+/* 2. Event Selection — yellow flash */
+@keyframes selection-enter {
+  from { background: rgba(234, 179, 8, 0.08); }
+}
+
+.event-row.selected {
+  animation: selection-enter 0.15s ease-out;
+}
+
+/* 3. Progress Bar — subtle glow */
+@keyframes progress-glow {
+  0%, 100% { box-shadow: 0 0 2px rgba(234, 179, 8, 0.3); }
+  50% { box-shadow: 0 0 6px rgba(234, 179, 8, 0.6); }
+}
+
+.event-progress-fill {
+  animation: progress-glow 2s ease-in-out infinite;
+}
+
+/* 4. Initial Load — staggered boot */
+@keyframes panel-boot {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal-header { animation: panel-boot 0.2s ease-out both; }
+.details-panel { animation: panel-boot 0.2s ease-out 0.05s both; }
+.list-panel { animation: panel-boot 0.2s ease-out 0.1s both; }
+.sidebar-panel.panel { animation: panel-boot 0.2s ease-out 0.15s both; }
+.terminal-status { animation: panel-boot 0.2s ease-out 0.2s both; }
+
+/* 5. Fresh Data Flash — green blink */
+@keyframes dot-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+}
+
+.recent-dot {
+  animation: dot-pulse 0.3s ease-out;
+}
+
+/* 6. Sidebar Indicators — value flash */
+@keyframes value-flash {
+  from { background: rgba(234, 179, 8, 0.1); }
+  to { background: transparent; }
+}
+
+.indicator {
+  animation: value-flash 0.4s ease-out;
+}
+
+/* 7. Status Bar — connection heartbeat */
+@keyframes heartbeat {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.status-indicator.connected::before {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+/* 8. Mobile — tap feedback */
+@media (max-width: 1023px) {
+  .event-row:active {
+    background: rgba(234, 179, 8, 0.15);
+  }
+}
+
 /* Mobile back button (hidden on desktop) */
 .mobile-back {
   display: none;

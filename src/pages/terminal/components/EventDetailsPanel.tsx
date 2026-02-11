@@ -133,7 +133,7 @@ export function EventDetailsPanel({
               </div>
               <div className="panel-body">
                 {currentKeyPoint ? (
-                  <div className="keypoint-display">
+                  <div key={keyPointIndex} className="keypoint-display">
                     <div className="keypoint-title">{currentKeyPoint.title}</div>
                     {currentKeyPoint.description && (
                       <div className="keypoint-content">

@@ -43,7 +43,7 @@ export function TerminalSidebar({
         <div className="indicators-grid">
           {indices.length > 0 ? (
             indices.slice(0, 8).map(index => (
-              <div key={index.symbol} className="indicator">
+              <div key={`${index.symbol}-${index.changePercent}`} className="indicator">
                 <span className="indicator-code">{index.name}</span>
                 <span className={`indicator-value ${
                   index.changePercent > 0 ? 'positive' :
