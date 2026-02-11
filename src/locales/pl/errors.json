@@ -42,7 +42,9 @@
     "failedToUpload": "Nie udało się przesłać",
     "fileTooLarge": "Plik jest zbyt duży (maksymalnie {{size}})",
     "failedToLoadArchive": "Nie udało się załadować archiwum",
-    "failedToLoadStock": "Nie udało się załadować danych giełdowych"
+    "failedToLoadStock": "Nie udało się załadować danych giełdowych",
+    "mainServerUnavailable": "Serwer główny jest chwilowo niedostępny",
+    "archiveServerUnavailable": "Serwer archiwum jest chwilowo niedostępny"
   },
   "errorBoundary": {
     "title": "Coś poszło nie tak",

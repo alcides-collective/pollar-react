@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import useSWR from 'swr';
 import type { Newsletter, NewsletterResponse } from '../types/newsletter';
 import { API_BASE } from '../config/api';
+import { showBackendErrorToast } from '../utils/backendToast';
 
 async function fetchNewsletter(url: string): Promise<Newsletter | null> {
   const response = await fetch(url);
@@ -24,6 +26,10 @@ export function useNewsletter() {
     revalidateOnReconnect: false,
     dedupingInterval: 60000,
   });
+
+  useEffect(() => {
+    showBackendErrorToast('main', error ?? null);
+  }, [error]);
 
   return {
     newsletter: data ?? null,

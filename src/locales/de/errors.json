@@ -42,7 +42,9 @@
     "failedToUpload": "Hochladen fehlgeschlagen",
     "fileTooLarge": "Datei ist zu groß (maximal {{size}})",
     "failedToLoadArchive": "Archiv konnte nicht geladen werden",
-    "failedToLoadStock": "Börsendaten konnten nicht geladen werden"
+    "failedToLoadStock": "Börsendaten konnten nicht geladen werden",
+    "mainServerUnavailable": "Hauptserver vorübergehend nicht erreichbar",
+    "archiveServerUnavailable": "Archivserver vorübergehend nicht erreichbar"
   },
   "errorBoundary": {
     "title": "Etwas ist schiefgelaufen",

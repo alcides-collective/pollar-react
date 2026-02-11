@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useCallback, useRef } from 'react';
 import { useEventsStore } from '../stores/eventsStore';
 import { sanitizeEvent } from '../utils/sanitize';
+import { showBackendErrorToast } from '../utils/backendToast';
 import { CATEGORY_ORDER } from '../constants/categories';
 import type { Language } from '../stores/languageStore';
 import { useRouteLanguage } from './useRouteLanguage';
@@ -145,6 +146,11 @@ export function useArchiveEvents(options: UseArchiveEventsOptions = {}) {
       fetchEvents(plCacheKey, fetchPlArchiveFn);
     }
   }, [lang, plCacheKey, plIsFresh, plLoading, plIsFetching, fetchEvents, fetchPlArchiveFn]);
+
+  // Toast on archive backend error
+  useEffect(() => {
+    showBackendErrorToast('archive', error);
+  }, [error]);
 
   // Filter untranslated events by comparing leads with Polish version
   const events = useMemo(() => {

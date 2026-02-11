@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { showBackendErrorToast } from '../utils/backendToast';
 
 const ARCHIVE_API_BASE = 'https://pollar-backend-production.up.railway.app/api';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
@@ -44,6 +45,10 @@ export function useArchiveStats() {
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    showBackendErrorToast('archive', error);
+  }, [error]);
 
   return { data, loading, error };
 }

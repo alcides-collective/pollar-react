@@ -3,6 +3,7 @@ import { useEffect, useMemo, useCallback, useRef } from 'react';
 import type { Event, EventsResponse } from '../types/events';
 import { API_BASE, apiConfig } from '../config/api';
 import { sanitizeEvent } from '../utils/sanitize';
+import { showBackendErrorToast } from '../utils/backendToast';
 import { useUserStore } from './userStore';
 import { useLanguageStore, useLanguage, type Language } from './languageStore';
 
@@ -411,9 +412,29 @@ export function useEvents(params: UseEventsOptions = {}) {
     return finalEvents.filter((event) => !hiddenCategories.includes(event.category));
   }, [finalEvents, hiddenCategories, params.skipHiddenFilter]);
 
+  // Toast for individual backend errors (non-fatal)
+  useEffect(() => {
+    showBackendErrorToast('main', error);
+  }, [error]);
+
+  useEffect(() => {
+    showBackendErrorToast('archive', archiveError);
+  }, [archiveError]);
+
+  useEffect(() => {
+    showBackendErrorToast('archive', prodArchiveError);
+  }, [prodArchiveError]);
+
+  // Only surface error when ALL sources fail AND no data loaded
+  const aggregatedError =
+    (error && archiveError && prodArchiveError) ||
+    (error && !params.includeArchive && filteredEvents.length === 0)
+      ? error
+      : null;
+
   return {
     events: filteredEvents,
     loading: isLoading || isArchiveLoading || isProdArchiveLoading,
-    error: error || archiveError || prodArchiveError
+    error: aggregatedError,
   };
 }

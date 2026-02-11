@@ -42,7 +42,9 @@
     "failedToUpload": "Failed to upload",
     "fileTooLarge": "File is too large (maximum {{size}})",
     "failedToLoadArchive": "Failed to load archive",
-    "failedToLoadStock": "Failed to load stock data"
+    "failedToLoadStock": "Failed to load stock data",
+    "mainServerUnavailable": "Main server temporarily unavailable",
+    "archiveServerUnavailable": "Archive server temporarily unavailable"
   },
   "errorBoundary": {
     "title": "Something went wrong",

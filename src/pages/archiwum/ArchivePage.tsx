@@ -46,7 +46,7 @@ export function ArchivePage() {
   }
 
   // Error state
-  if (error) {
+  if (error && groupedByCategory.length === 0) {
     return (
       <div className="max-w-[1400px] mx-auto px-6 py-16">
         <div className="text-center">

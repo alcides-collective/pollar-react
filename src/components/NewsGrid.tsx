@@ -40,7 +40,7 @@ export function NewsGrid() {
     );
   }
 
-  if (error) {
+  if (error && featured.length === 0) {
     return (
       <section className="max-w-[1400px] mx-auto px-4 pb-6">
         <div className="text-red-500 text-center py-12">Błąd: {error.message}</div>

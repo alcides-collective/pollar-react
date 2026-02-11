@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import type { Event } from '../types/events';
 import { API_BASE } from '../config/api';
 import { sanitizeEvent } from '../utils/sanitize';
+import { showBackendErrorToast } from '../utils/backendToast';
 import type { Language } from '../stores/languageStore';
 import { useRouteLanguage } from './useRouteLanguage';
 
@@ -143,7 +144,11 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
           throw new Error('Wydarzenie nie zostało znalezione');
         }
 
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const httpError = new Error(`HTTP error! status: ${response.status}`);
+        if (response.status >= 500) {
+          showBackendErrorToast('main', httpError);
+        }
+        throw httpError;
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err : new Error('Failed to fetch event'));

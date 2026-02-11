@@ -74,6 +74,7 @@ export async function getUnreadAlertsCount(): Promise<number> {
   });
 
   if (response.status === 401) return 0;
+
   if (!response.ok) {
     throw new Error(`Failed to get unread alerts count: ${response.status}`);
   }
@@ -189,6 +190,7 @@ export async function getUnreadCategoryAlertsCount(): Promise<number> {
   });
 
   if (response.status === 401) return 0;
+
   if (!response.ok) {
     throw new Error(`Failed to get unread category alerts count: ${response.status}`);
   }
