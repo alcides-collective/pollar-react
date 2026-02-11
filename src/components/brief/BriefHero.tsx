@@ -30,8 +30,8 @@ export function BriefHero({ brief }: BriefHeroProps) {
   const modelId = brief.metadata?.model;
   const co2Grams = estimateBriefCO2(brief);
   const co2Value = formatCO2(co2Grams);
-  const co2Equivalents = getCO2Equivalents(co2Grams);
-  const modelDescription = getModelDescription(modelId);
+  const co2Equivalents = getCO2Equivalents(co2Grams, language);
+  const modelDescription = getModelDescription(modelId, language);
 
   return (
     <header className="mb-14">

@@ -35,7 +35,7 @@ function mapArchiveEvent(raw: any): Event {
     sources: raw.sources ?? raw.metadata?.sources ?? [],
     trendingScore: raw.metadata?.trendingScore ?? 0,
     articleCount: raw.articleCount ?? raw.metadata?.articleCount ?? 0,
-    sourceCount: raw.sources?.length ?? raw.metadata?.sourceCount ?? 0,
+    sourceCount: raw.historicalMaxSourceCount ?? raw.sources?.length ?? raw.metadata?.sourceCount ?? 0,
     viewCount: raw.metadata?.viewCount ?? 0,
     freshnessLevel: 'OLD',
     metadata: {
@@ -51,7 +51,7 @@ function mapArchiveEvent(raw: any): Event {
       ultraShortHeadline: raw.metadata?.ultraShortHeadline ?? '',
       sources: raw.sources ?? raw.metadata?.sources ?? [],
       articleCount: raw.articleCount ?? 0,
-      sourceCount: raw.sources?.length ?? 0,
+      sourceCount: raw.historicalMaxSourceCount ?? raw.sources?.length ?? 0,
       imageAttribution: raw.metadata?.imageAttribution ?? null,
       isLowQualityContent: raw.metadata?.isLowQualityContent ?? false,
       viewCount: raw.metadata?.viewCount ?? 0,

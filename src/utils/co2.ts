@@ -219,7 +219,7 @@ export function formatCO2(grams: number): string {
 }
 
 // Calculate CO2 equivalents for tooltip
-export function getCO2Equivalents(grams: number): string[] {
+export function getCO2Equivalents(grams: number, lang: string = 'pl'): string[] {
   // 1 km car (avg petrol) = ~120g CO2
   const carMeters = (grams / 120) * 1000;
   // 1 hour 50" LED TV (~100W) = ~36g CO2 (Poland grid ~360g/kWh)
@@ -227,62 +227,96 @@ export function getCO2Equivalents(grams: number): string[] {
   // 1ml of milk = ~2g CO2 (production)
   const milkMl = grams / 2;
 
+  const car = carMeters.toFixed(1);
+  const tv = tvSeconds.toFixed(0);
+  const milk = milkMl.toFixed(1);
+
+  if (lang === 'en') return [
+    `= ${car}m by petrol car`,
+    `= ${tv}s of 50" LED TV`,
+    `= ${milk}ml of milk`,
+  ];
+  if (lang === 'de') return [
+    `= ${car}m mit Benzin-Auto`,
+    `= ${tv}s eines 50"-LED-TVs`,
+    `= ${milk}ml Milch`,
+  ];
   return [
-    `= ${carMeters.toFixed(1)}m autem benzynowym`,
-    `= ${tvSeconds.toFixed(0)}s telewizora 50" LED`,
-    `= ${milkMl.toFixed(1)}ml mleka`
+    `= ${car}m autem benzynowym`,
+    `= ${tv}s telewizora 50" LED`,
+    `= ${milk}ml mleka`,
   ];
 }
 
 // Model descriptions for tooltips
-export function getModelDescription(modelId: string | undefined): { title: string; text: string } {
+export function getModelDescription(modelId: string | undefined, lang: string = 'pl'): { title: string; text: string } {
   if (!modelId) return { title: 'AI', text: '' };
 
-  const descriptions: Record<string, { title: string; text: string }> = {
+  const descriptions: Record<string, Record<string, { title: string; text: string }>> = {
     'google/gemini-3-pro-preview': {
-      title: 'Gemini 3 Pro Preview',
-      text: 'Topowy model Google z listopada 2025. Przetwarza do miliona tokenów na wejściu i 64 tysiące na wyjściu. W testach MMMU-Pro osiąga 81%, a w trybie Deep Think poprawia wynik ARC-AGI-2 z 31% do 45%. Rozumie tekst, obrazy, wideo i dźwięk.'
+      pl: { title: 'Gemini 3 Pro Preview', text: 'Topowy model Google z listopada 2025. Przetwarza do miliona tokenów na wejściu i 64 tysiące na wyjściu. W testach MMMU-Pro osiąga 81%, a w trybie Deep Think poprawia wynik ARC-AGI-2 z 31% do 45%. Rozumie tekst, obrazy, wideo i dźwięk.' },
+      en: { title: 'Gemini 3 Pro Preview', text: 'Google\'s top model from November 2025. Processes up to one million input tokens and 64 thousand output tokens. Scores 81% on MMMU-Pro, and in Deep Think mode improves ARC-AGI-2 from 31% to 45%. Understands text, images, video and audio.' },
+      de: { title: 'Gemini 3 Pro Preview', text: 'Googles Spitzenmodell vom November 2025. Verarbeitet bis zu eine Million Eingabe-Tokens und 64.000 Ausgabe-Tokens. Erreicht 81% bei MMMU-Pro und verbessert im Deep-Think-Modus ARC-AGI-2 von 31% auf 45%. Versteht Text, Bilder, Video und Audio.' },
     },
     'google/gemini-3-flash-preview': {
-      title: 'Gemini 3 Flash Preview',
-      text: 'Szybki model Google z grudnia 2025, generuje 218 tokenów na sekundę — trzy razy więcej niż poprzednik. W testach kodowania SWE-bench zdobywa 78%, a w rozumowaniu GPQA Diamond aż 90%. Kosztuje pół dolara za milion tokenów wejściowych.'
+      pl: { title: 'Gemini 3 Flash Preview', text: 'Szybki model Google z grudnia 2025, generuje 218 tokenów na sekundę — trzy razy więcej niż poprzednik. W testach kodowania SWE-bench zdobywa 78%, a w rozumowaniu GPQA Diamond aż 90%. Kosztuje pół dolara za milion tokenów wejściowych.' },
+      en: { title: 'Gemini 3 Flash Preview', text: 'Google\'s fast model from December 2025, generating 218 tokens per second — three times more than its predecessor. Scores 78% on the SWE-bench coding benchmark and 90% on GPQA Diamond reasoning. Costs half a dollar per million input tokens.' },
+      de: { title: 'Gemini 3 Flash Preview', text: 'Googles schnelles Modell vom Dezember 2025, generiert 218 Tokens pro Sekunde — dreimal mehr als der Vorgänger. Erreicht 78% beim SWE-bench-Coding-Benchmark und 90% bei GPQA Diamond. Kostet einen halben Dollar pro Million Eingabe-Tokens.' },
     },
     'google/gemini-2.5-pro-preview-06-05': {
-      title: 'Gemini 2.5 Pro',
-      text: 'Model z maja 2025, poprzednia generacja flagowca Google. Obsługuje milion tokenów kontekstu i rozumie różne formaty — tekst, obrazy, wideo oraz audio. Został zastąpiony przez nowszą serię 3, ale wciąż działa stabilnie.'
+      pl: { title: 'Gemini 2.5 Pro', text: 'Model z maja 2025, poprzednia generacja flagowca Google. Obsługuje milion tokenów kontekstu i rozumie różne formaty — tekst, obrazy, wideo oraz audio. Został zastąpiony przez nowszą serię 3, ale wciąż działa stabilnie.' },
+      en: { title: 'Gemini 2.5 Pro', text: 'Model from May 2025, the previous generation of Google\'s flagship. Supports one million context tokens and understands multiple formats — text, images, video and audio. Superseded by the newer series 3, but still runs reliably.' },
+      de: { title: 'Gemini 2.5 Pro', text: 'Modell vom Mai 2025, die vorherige Generation von Googles Flaggschiff. Unterstützt eine Million Kontext-Tokens und versteht verschiedene Formate — Text, Bilder, Video und Audio. Wurde durch die neuere Serie 3 abgelöst, läuft aber weiterhin stabil.' },
     },
     'deepseek/deepseek-v3.2': {
-      title: 'DeepSeek v3.2',
-      text: 'Chiński model open-source z grudnia 2025, licencja Apache 2.0. Ma 671 miliardów parametrów, ale dzięki architekturze MoE aktywuje tylko 37 miliardów na token. W teście AIME 2025 zdobywa 96% — więcej niż GPT-5. Kosztuje 10× mniej niż konkurenci.'
+      pl: { title: 'DeepSeek v3.2', text: 'Chiński model open-source z grudnia 2025, licencja Apache 2.0. Ma 671 miliardów parametrów, ale dzięki architekturze MoE aktywuje tylko 37 miliardów na token. W teście AIME 2025 zdobywa 96% — więcej niż GPT-5. Kosztuje 10× mniej niż konkurenci.' },
+      en: { title: 'DeepSeek v3.2', text: 'Chinese open-source model from December 2025, Apache 2.0 license. Has 671 billion parameters, but thanks to the MoE architecture only activates 37 billion per token. Scores 96% on AIME 2025 — higher than GPT-5. Costs 10× less than competitors.' },
+      de: { title: 'DeepSeek v3.2', text: 'Chinesisches Open-Source-Modell vom Dezember 2025, Apache-2.0-Lizenz. Hat 671 Milliarden Parameter, aktiviert dank MoE-Architektur aber nur 37 Milliarden pro Token. Erreicht 96% bei AIME 2025 — mehr als GPT-5. Kostet 10× weniger als die Konkurrenz.' },
     },
     'z-ai/glm-4.7': {
-      title: 'GLM-4.7',
-      text: 'Model open-source od Z.AI z grudnia 2025. Ma 355 miliardów parametrów, ale architektura MoE aktywuje tylko 32 miliardy na token. Zajmuje 1. miejsce wśród modeli open-source na Code Arena. W SWE-bench zdobywa 73,8%, a w τ²-Bench aż 87,4%.'
+      pl: { title: 'GLM-4.7', text: 'Model open-source od Z.AI z grudnia 2025. Ma 355 miliardów parametrów, ale architektura MoE aktywuje tylko 32 miliardy na token. Zajmuje 1. miejsce wśród modeli open-source na Code Arena. W SWE-bench zdobywa 73,8%, a w τ²-Bench aż 87,4%.' },
+      en: { title: 'GLM-4.7', text: 'Open-source model by Z.AI from December 2025. Has 355 billion parameters, but the MoE architecture activates only 32 billion per token. Ranks 1st among open-source models on Code Arena. Scores 73.8% on SWE-bench and 87.4% on τ²-Bench.' },
+      de: { title: 'GLM-4.7', text: 'Open-Source-Modell von Z.AI vom Dezember 2025. Hat 355 Milliarden Parameter, die MoE-Architektur aktiviert jedoch nur 32 Milliarden pro Token. Platz 1 unter Open-Source-Modellen auf Code Arena. Erreicht 73,8% bei SWE-bench und 87,4% bei τ²-Bench.' },
     },
     'openai/gpt-5.1-codex-mini': {
-      title: 'GPT-5.1 Codex Mini',
-      text: 'Mniejszy model z rodziny Codex od OpenAI, listopad 2025. Zoptymalizowany pod kątem szybkości i kosztu. Osiąga 96% w matematyce i 98% w rozumowaniu. Idealny do codziennych zadań przy zachowaniu wysokiej jakości.'
+      pl: { title: 'GPT-5.1 Codex Mini', text: 'Mniejszy model z rodziny Codex od OpenAI, listopad 2025. Zoptymalizowany pod kątem szybkości i kosztu. Osiąga 96% w matematyce i 98% w rozumowaniu. Idealny do codziennych zadań przy zachowaniu wysokiej jakości.' },
+      en: { title: 'GPT-5.1 Codex Mini', text: 'Smaller model from OpenAI\'s Codex family, November 2025. Optimized for speed and cost. Scores 96% in mathematics and 98% in reasoning. Ideal for everyday tasks while maintaining high quality.' },
+      de: { title: 'GPT-5.1 Codex Mini', text: 'Kleineres Modell aus OpenAIs Codex-Familie, November 2025. Optimiert für Geschwindigkeit und Kosten. Erreicht 96% in Mathematik und 98% im Reasoning. Ideal für alltägliche Aufgaben bei hoher Qualität.' },
     },
     'openai/gpt-5.1-codex-max': {
-      title: 'GPT-5.1 Codex Max',
-      text: 'Flagowy model agentyczny OpenAI z listopada 2025. Pierwszy model trenowany na milionach tokenów kontekstu przez kompaktowanie. W SWE-Bench zdobywa 77,9%, używając 30% mniej tokenów reasoning niż poprzednik.'
+      pl: { title: 'GPT-5.1 Codex Max', text: 'Flagowy model agentyczny OpenAI z listopada 2025. Pierwszy model trenowany na milionach tokenów kontekstu przez kompaktowanie. W SWE-Bench zdobywa 77,9%, używając 30% mniej tokenów reasoning niż poprzednik.' },
+      en: { title: 'GPT-5.1 Codex Max', text: 'OpenAI\'s flagship agentic model from November 2025. First model trained on millions of context tokens through compaction. Scores 77.9% on SWE-Bench, using 30% fewer reasoning tokens than its predecessor.' },
+      de: { title: 'GPT-5.1 Codex Max', text: 'OpenAIs agentisches Flaggschiff-Modell vom November 2025. Erstes Modell, das durch Kompaktierung auf Millionen Kontext-Tokens trainiert wurde. Erreicht 77,9% bei SWE-Bench mit 30% weniger Reasoning-Tokens als der Vorgänger.' },
     },
     'anthropic/claude-opus-4-5': {
-      title: 'Claude Opus 4.5',
-      text: 'Flagowy model Anthropic z lutego 2025. Pierwszy model hybrydowy łączący rozumowanie z intuicją. Osiąga najwyższe wyniki w testach kreatywności i pisania. Okno kontekstowe 200K tokenów.'
+      pl: { title: 'Claude Opus 4.5', text: 'Flagowy model Anthropic z lutego 2025. Pierwszy model hybrydowy łączący rozumowanie z intuicją. Osiąga najwyższe wyniki w testach kreatywności i pisania. Okno kontekstowe 200K tokenów.' },
+      en: { title: 'Claude Opus 4.5', text: 'Anthropic\'s flagship model from February 2025. The first hybrid model combining reasoning with intuition. Achieves top scores in creativity and writing benchmarks. 200K token context window.' },
+      de: { title: 'Claude Opus 4.5', text: 'Anthropics Flaggschiff-Modell vom Februar 2025. Das erste hybride Modell, das Reasoning mit Intuition verbindet. Erzielt Spitzenwerte bei Kreativitäts- und Schreibtests. Kontextfenster von 200K Tokens.' },
     },
     'anthropic/claude-opus-4-6': {
-      title: 'Claude Opus 4.6',
-      text: 'Najnowszy flagowy model Anthropic z lutego 2026. Okno kontekstowe 1M tokenów i 128K tokenów na wyjściu. W GDPval-AA (finanse, prawo) zdobywa 1606 Elo — 144 pkt więcej niż GPT-5.2. W BigLaw Bench osiąga 90,2%, a w BrowseComp 84%. Obsługuje agent teams i adaptive thinking.'
+      pl: { title: 'Claude Opus 4.6', text: 'Najnowszy flagowy model Anthropic z lutego 2026. Okno kontekstowe 1M tokenów i 128K tokenów na wyjściu. W GDPval-AA (finanse, prawo) zdobywa 1606 Elo — 144 pkt więcej niż GPT-5.2. W BigLaw Bench osiąga 90,2%, a w BrowseComp 84%. Obsługuje agent teams i adaptive thinking.' },
+      en: { title: 'Claude Opus 4.6', text: 'Anthropic\'s latest flagship model from February 2026. 1M token context window and 128K output tokens. Scores 1606 Elo on GDPval-AA (finance, law) — 144 pts above GPT-5.2. Achieves 90.2% on BigLaw Bench and 84% on BrowseComp. Supports agent teams and adaptive thinking.' },
+      de: { title: 'Claude Opus 4.6', text: 'Anthropics neuestes Flaggschiff-Modell vom Februar 2026. 1M Token Kontextfenster und 128K Ausgabe-Tokens. Erreicht 1606 Elo bei GDPval-AA (Finanzen, Recht) — 144 Pkt. mehr als GPT-5.2. Erzielt 90,2% beim BigLaw Bench und 84% bei BrowseComp. Unterstützt Agent Teams und Adaptive Thinking.' },
     },
     'anthropic/claude-sonnet-4': {
-      title: 'Claude Sonnet 4',
-      text: 'Zbalansowany model Anthropic z lutego 2025. Oferuje optymalny stosunek jakości do ceny. Idealny do codziennych zadań analitycznych i pisarskich. Okno kontekstowe 200K tokenów.'
-    }
+      pl: { title: 'Claude Sonnet 4', text: 'Zbalansowany model Anthropic z lutego 2025. Oferuje optymalny stosunek jakości do ceny. Idealny do codziennych zadań analitycznych i pisarskich. Okno kontekstowe 200K tokenów.' },
+      en: { title: 'Claude Sonnet 4', text: 'Anthropic\'s balanced model from February 2025. Offers an optimal quality-to-cost ratio. Ideal for everyday analytical and writing tasks. 200K token context window.' },
+      de: { title: 'Claude Sonnet 4', text: 'Anthropics ausgewogenes Modell vom Februar 2025. Bietet ein optimales Qualitäts-Kosten-Verhältnis. Ideal für alltägliche analytische und schriftliche Aufgaben. Kontextfenster von 200K Tokens.' },
+    },
   };
 
-  return descriptions[modelId] || {
+  const fallback: Record<string, string> = {
+    pl: 'Model sztucznej inteligencji użyty do analizy i podsumowania tego wydarzenia.',
+    en: 'AI model used to analyse and summarise this event.',
+    de: 'KI-Modell, das für die Analyse und Zusammenfassung dieses Ereignisses verwendet wurde.',
+  };
+
+  const model = descriptions[modelId];
+  if (model) {
+    return model[lang] || model['pl'];
+  }
+  return {
     title: getModelDisplayName(modelId),
-    text: 'Model sztucznej inteligencji użyty do analizy i podsumowania tego wydarzenia.'
+    text: fallback[lang] || fallback['pl'],
   };
 }

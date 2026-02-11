@@ -61,8 +61,8 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
     : formatRelative(createdAt);
   const co2Grams = estimateCO2(event);
   const co2Value = formatCO2(co2Grams);
-  const co2Equivalents = getCO2Equivalents(co2Grams);
-  const modelDescription = getModelDescription(modelId);
+  const co2Equivalents = getCO2Equivalents(co2Grams, lang);
+  const modelDescription = getModelDescription(modelId, lang);
 
   return (
     <header className="px-6 pt-8 pb-6">
