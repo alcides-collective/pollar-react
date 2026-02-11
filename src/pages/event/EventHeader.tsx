@@ -30,15 +30,15 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
     day: 'numeric', month: 'long', year: 'numeric'
   }).format(createdAt) + (lang === 'pl' ? ' roku' : '');
 
-  const lastSummarized = event.lastSummarizationComplete
-    ? new Date(event.lastSummarizationComplete)
-    : null;
+  // lastSummarizationComplete is not synced to events_en/events_de; fall back to lastContentUpdate
+  const lastUpdatedRaw = event.lastSummarizationComplete || event.lastContentUpdate;
+  const lastUpdated = lastUpdatedRaw ? new Date(lastUpdatedRaw) : null;
   // Initial summarization takes 2-5 min after creation; only show "updated" for re-summarizations
-  const showUpdated = lastSummarized && (lastSummarized.getTime() - createdAt.getTime() > 10 * 60000);
+  const showUpdated = lastUpdated && (lastUpdated.getTime() - createdAt.getTime() > 10 * 60000);
 
   let updatedAgo = '';
-  if (showUpdated && lastSummarized) {
-    const diffMs = Date.now() - lastSummarized.getTime();
+  if (showUpdated && lastUpdated) {
+    const diffMs = Date.now() - lastUpdated.getTime();
     const diffMins = Math.floor(diffMs / 60000);
     const diffHours = Math.floor(diffMins / 60);
     const diffDays = Math.floor(diffHours / 24);
