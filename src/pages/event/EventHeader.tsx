@@ -5,6 +5,7 @@ import { AudioPlayer } from './AudioPlayer';
 import { BookmarkButton } from '../../components/BookmarkButton';
 import { ShareButton } from '../../components/ShareButton';
 import { getModelDisplayName, getModelPillClasses, getModelDescription, estimateCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
+import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 
 interface EventHeaderProps {
   event: Event;
@@ -14,12 +15,39 @@ interface EventHeaderProps {
 
 export function EventHeader({ event, viewCount }: EventHeaderProps) {
   const { t } = useTranslation('event');
+  const lang = useRouteLanguage();
   // Use tracked viewCount if provided, fallback to event.viewCount
   const displayViewCount = viewCount ?? event.viewCount;
   const [showCO2Tooltip, setShowCO2Tooltip] = useState(false);
   const [showModelTooltip, setShowModelTooltip] = useState(false);
 
   const modelId = event.metadata?.summarizationModel || event.summarizationModel;
+
+  // Timestamps
+  const dateLocale = lang === 'pl' ? 'pl-PL' : lang === 'de' ? 'de-DE' : 'en-US';
+  const createdAt = new Date(event.createdAt);
+  const publishedDate = new Intl.DateTimeFormat(dateLocale, {
+    day: 'numeric', month: 'long', year: 'numeric'
+  }).format(createdAt) + (lang === 'pl' ? ' roku' : '');
+
+  const lastSummarized = event.lastSummarizationComplete
+    ? new Date(event.lastSummarizationComplete)
+    : null;
+  // Initial summarization takes 2-5 min after creation; only show "updated" for re-summarizations
+  const showUpdated = lastSummarized && (lastSummarized.getTime() - createdAt.getTime() > 10 * 60000);
+
+  let updatedAgo = '';
+  if (showUpdated && lastSummarized) {
+    const diffMs = Date.now() - lastSummarized.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    const rtf = new Intl.RelativeTimeFormat(dateLocale, { numeric: 'auto' });
+    if (diffMins < 1) updatedAgo = rtf.format(0, 'second');
+    else if (diffMins < 60) updatedAgo = rtf.format(-diffMins, 'minute');
+    else if (diffHours < 24) updatedAgo = rtf.format(-diffHours, 'hour');
+    else updatedAgo = rtf.format(-diffDays, 'day');
+  }
   const co2Grams = estimateCO2(event);
   const co2Value = formatCO2(co2Grams);
   const co2Equivalents = getCO2Equivalents(co2Grams);
@@ -87,6 +115,12 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
           <BookmarkButton eventId={event.id} size="md" />
         </div>
       </div>
+
+      {/* Timestamps */}
+      <p className="text-xs text-content-subtle mt-1 mb-4">
+        {t('header.published')} {publishedDate}
+        {showUpdated && <>,<br className="md:hidden" /> {t('header.updated')} {updatedAgo}</>}
+      </p>
 
       {/* Lead */}
       <p className="text-lg text-content leading-relaxed">

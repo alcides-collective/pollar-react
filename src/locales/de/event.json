@@ -6,7 +6,9 @@
   },
   "header": {
     "generatedBy": "Generiert von",
-    "emitting": "emittiert"
+    "emitting": "emittiert",
+    "published": "Veröffentlicht",
+    "updated": "aktualisiert"
   },
   "summary": "Zusammenfassung",
   "location": "Standort",
