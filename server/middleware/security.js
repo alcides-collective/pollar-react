@@ -23,6 +23,7 @@ export function setupSecurity(app) {
           "https://apis.google.com",
           "https://static.ads-twitter.com",
           "https://t.contentsquare.net",
+          "https://*.contentsquare.net",
         ],
         styleSrc: ["'self'", "'unsafe-inline'", "https://api.mapbox.com"],
         imgSrc: [
@@ -41,6 +42,7 @@ export function setupSecurity(app) {
           "https://t.co",
           "https://analytics.twitter.com",
           "https://t.contentsquare.net",
+          "https://*.contentsquare.net",
           "https://upload.wikimedia.org",
         ],
         fontSrc: ["'self'", "data:"],
@@ -70,6 +72,7 @@ export function setupSecurity(app) {
           "https://analytics.twitter.com",
           "https://t.co",
           "https://t.contentsquare.net",
+          "https://*.contentsquare.net",
           "wss://*.firebaseio.com",
         ],
         frameSrc: [
