@@ -206,7 +206,7 @@ export function TerminalPage() {
 
   return (
     <div className="terminal-container">
-      <TerminalHeader currentTime={currentTime} />
+      <TerminalHeader currentTime={currentTime} onBack={() => navigate('/')} />
 
       <main className="terminal-main">
         <section className="main-panel">

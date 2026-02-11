@@ -620,3 +620,119 @@
 .sidebar-panel::-webkit-scrollbar-thumb:hover {
   background: #444;
 }
+
+/* Mobile back button (hidden on desktop) */
+.mobile-back {
+  display: none;
+  background: none;
+  border: none;
+  color: #666;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 8px 0 0;
+  line-height: 1;
+}
+
+.mobile-back:hover {
+  color: #eab308;
+}
+
+/* ========================================
+   RESPONSIVE: Tablets & small desktops
+   ======================================== */
+@media (max-width: 1023px) {
+  /* Hide sidebar entirely */
+  .sidebar-panel.panel {
+    display: none;
+  }
+
+  /* Details panel: 2 columns (event + keypoints), hide sources + stats */
+  .details-panels {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .detail-panel.panel-sources,
+  .detail-panel.panel-stats {
+    display: none;
+  }
+
+  /* Details takes 2/3, list takes 1/3 */
+  .details-panel {
+    flex: 2;
+  }
+
+  .list-panel {
+    flex: 1;
+  }
+
+  /* Event list: simplified 4-column grid */
+  .event-row {
+    grid-template-columns: 16px 24px 1fr 40px;
+    padding: 8px 12px;
+  }
+
+  .event-row.selected {
+    padding-left: 10px;
+  }
+
+  .event-category,
+  .event-city,
+  .event-time,
+  .event-count {
+    display: none;
+  }
+
+  /* Header: compact */
+  .mode,
+  .header-right {
+    display: none;
+  }
+
+  .mobile-back {
+    display: block;
+  }
+
+  /* Status bar: hide center (last update) */
+  .status-center {
+    display: none;
+  }
+}
+
+/* ========================================
+   RESPONSIVE: Small phones
+   ======================================== */
+@media (max-width: 640px) {
+  /* Stack details panels vertically */
+  .details-panels {
+    grid-template-columns: 1fr;
+  }
+
+  /* Slightly larger key point for readability */
+  .keypoint-title {
+    font-size: 15px;
+  }
+
+  .keypoint-content {
+    font-size: 13px;
+  }
+
+  /* Compact details text */
+  .details-title {
+    font-size: 14px;
+  }
+
+  .details-lead {
+    font-size: 12px;
+  }
+
+  /* Tighter header */
+  .terminal-header {
+    padding: 6px 12px;
+  }
+
+  /* Tighter status bar */
+  .terminal-status {
+    padding: 4px 12px;
+  }
+}

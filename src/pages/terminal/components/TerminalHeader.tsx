@@ -1,5 +1,6 @@
 interface TerminalHeaderProps {
   currentTime: Date;
+  onBack: () => void;
 }
 
 function formatTime(date: Date): string {
@@ -19,10 +20,11 @@ function formatDate(date: Date): string {
   });
 }
 
-export function TerminalHeader({ currentTime }: TerminalHeaderProps) {
+export function TerminalHeader({ currentTime, onBack }: TerminalHeaderProps) {
   return (
     <header className="terminal-header">
       <div className="header-left">
+        <button className="mobile-back" onClick={onBack} aria-label="Wróć">←</button>
         <span className="logo">POLLAR</span>
         <span className="separator">|</span>
         <span className="mode">TERMINAL (ALPHA)</span>
