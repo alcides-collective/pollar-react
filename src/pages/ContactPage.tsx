@@ -217,7 +217,7 @@ export function ContactPage() {
           <section>
             <h2 className="text-lg font-semibold text-content-heading mb-3">{t('team.title')}</h2>
             <div className="space-y-3">
-              {(['jakub', 'bartosz'] as const).map((key) => (
+              {(['jakub', 'bartosz', 'ignacy'] as const).map((key) => (
                 <div key={key} className="bg-background border border-divider rounded-lg p-4">
                   <p className="font-medium text-content-heading">{t(`team.${key}.name`)}</p>
                   <p className="text-sm text-content-subtle mt-0.5">{t(`team.${key}.role`)}</p>
@@ -243,7 +243,7 @@ export function ContactPage() {
                 className="inline-flex items-center gap-2 rounded-lg border border-divider bg-background px-4 py-2.5 text-sm text-content hover:border-divider hover:text-content-heading transition-colors"
               >
                 <i className="ri-twitter-x-line text-base" />
-                @pollarpl
+                @pollarnews
               </a>
               <a
                 href="https://www.linkedin.com/company/108790026"
@@ -253,6 +253,15 @@ export function ContactPage() {
               >
                 <i className="ri-linkedin-line text-base" />
                 LinkedIn
+              </a>
+              <a
+                href="https://www.instagram.com/pollar.news"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-divider bg-background px-4 py-2.5 text-sm text-content hover:border-divider hover:text-content-heading transition-colors"
+              >
+                <i className="ri-instagram-line text-base" />
+                @pollar.news
               </a>
             </div>
           </section>
