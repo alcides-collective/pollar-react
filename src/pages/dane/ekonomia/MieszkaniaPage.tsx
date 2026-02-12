@@ -1,11 +1,17 @@
+import { useEffect } from 'react';
 import { DaneHeader, DaneSourceFooter, StatsGrid } from '@/components/dane';
 import { useHousing, useHousingSummary } from '@/hooks/useHousing';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackDatasetViewed } from '@/lib/analytics';
 
 export function MieszkaniaPage() {
   const { datasets, totalCount, loading: datasetsLoading } = useHousing();
   const { summary, loading: summaryLoading } = useHousingSummary();
+
+  useEffect(() => {
+    trackDatasetViewed({ dataset: 'mieszkania' });
+  }, []);
 
   const loading = datasetsLoading || summaryLoading;
 

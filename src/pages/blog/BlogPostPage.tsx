@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
@@ -9,6 +9,7 @@ import { useBlogPosts, type BlogPostSummary } from '../../hooks/useBlogPosts';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { CcAttribution } from '../../components/common/CcAttribution';
 import { useRouteLanguage } from '../../hooks/useRouteLanguage';
+import { trackBlogPostViewed, trackBlogShareClicked } from '../../lib/analytics';
 
 // ─── TOC ─────────────────────────────────────────────────────────────
 
@@ -71,7 +72,7 @@ function TableOfContents({ items }: { items: TocItem[] }) {
 
 // ─── Share Buttons ───────────────────────────────────────────────────
 
-function ShareButtons({ title, url }: { title: string; url: string }) {
+function ShareButtons({ title, url, slug }: { title: string; url: string; slug?: string }) {
   const { t } = useTranslation('common');
   const [copied, setCopied] = useState(false);
 
@@ -80,6 +81,7 @@ function ShareButtons({ title, url }: { title: string; url: string }) {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(url);
+    if (slug) trackBlogShareClicked({ slug, platform: 'clipboard' });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -91,6 +93,7 @@ function ShareButtons({ title, url }: { title: string; url: string }) {
         href={`https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => slug && trackBlogShareClicked({ slug, platform: 'twitter' })}
         className="h-9 w-9 flex items-center justify-center rounded-lg bg-surface hover:bg-muted border border-divider transition-colors"
         title="X (Twitter)"
       >
@@ -100,6 +103,7 @@ function ShareButtons({ title, url }: { title: string; url: string }) {
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => slug && trackBlogShareClicked({ slug, platform: 'facebook' })}
         className="h-9 w-9 flex items-center justify-center rounded-lg bg-surface hover:bg-muted border border-divider transition-colors"
         title="Facebook"
       >
@@ -109,6 +113,7 @@ function ShareButtons({ title, url }: { title: string; url: string }) {
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => slug && trackBlogShareClicked({ slug, platform: 'linkedin' })}
         className="h-9 w-9 flex items-center justify-center rounded-lg bg-surface hover:bg-muted border border-divider transition-colors"
         title="LinkedIn"
       >
@@ -176,6 +181,10 @@ export function BlogPostPage() {
   const { posts: relatedPosts } = useBlogPosts(4);
 
   const toc = useMemo(() => post ? extractToc(post.content) : [], [post?.content]);
+
+  useEffect(() => {
+    if (post && slug) trackBlogPostViewed({ slug });
+  }, [post, slug]);
 
   const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
 
@@ -321,7 +330,7 @@ export function BlogPostPage() {
 
           {/* Share */}
           <div className="mt-8 pt-6 border-t border-divider">
-            <ShareButtons title={post.title} url={pageUrl} />
+            <ShareButtons title={post.title} url={pageUrl} slug={post.slug} />
           </div>
 
           <CcAttribution />

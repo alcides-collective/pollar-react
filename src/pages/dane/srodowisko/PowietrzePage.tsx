@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { trackDatasetViewed } from '@/lib/analytics';
 import { DaneHeader, DaneSourceFooter, StatsGrid, LiveBadge } from '@/components/dane';
 import { AirQualityMap } from '@/components/dane/maps/AirQualityMap';
 import { useAirQuality, useAirQualitySummary } from '@/hooks/useAirQuality';
@@ -22,6 +23,8 @@ export function PowietrzePage() {
   const { summary } = useAirQualitySummary();
   const { selectedProvince, setSelectedProvince } = useDaneStore();
   const [selectedStation, setSelectedStation] = useState<AirQualityData | null>(null);
+
+  useEffect(() => { trackDatasetViewed({ dataset: 'powietrze' }); }, []);
 
   // Calculate filtered stats
   const filteredStats = useMemo(() => {

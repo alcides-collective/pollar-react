@@ -282,3 +282,251 @@ export function trackMapUsed(params: {
   const uid = auth?.currentUser?.uid;
   if (uid) _recordMapUsed(uid);
 }
+
+// ============ AI Companion Events ============
+
+export function trackAIMessageSent(params: {
+  message_length: number;
+  is_suggestion: boolean;
+  language: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'ai_message_sent', params);
+}
+
+export function trackAISuggestionClicked(params: {
+  suggestion_text: string;
+  position: number;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'ai_suggestion_clicked', params);
+}
+
+export function trackAIConversationStarted(params: {
+  language: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'ai_conversation_started', params);
+}
+
+export function trackAIRateLimitReached(params: {
+  remaining: number;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'ai_rate_limit_reached', params);
+}
+
+export function trackAIConversationReset(): void {
+  if (!analytics) return;
+  logEvent(analytics, 'ai_conversation_reset');
+}
+
+// ============ Share Events ============
+
+export function trackShareInitiated(params: {
+  method: 'native_share' | 'clipboard' | 'twitter' | 'facebook' | 'linkedin';
+  content_type: string;
+  content_id?: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'share_initiated', params);
+}
+
+// ============ Contact Events ============
+
+export function trackContactFormSubmit(params: {
+  subject: string;
+  success: boolean;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'contact_form_submit', params);
+}
+
+export function trackFAQItemExpanded(params: {
+  question_index: number;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'faq_item_expanded', params);
+}
+
+// ============ Newsletter Events ============
+
+export function trackNewsletterSignup(params: {
+  source: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'newsletter_signup', params);
+}
+
+// ============ Giełda (Stock Market) Events ============
+
+export function trackStockViewed(params: {
+  symbol: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'stock_viewed', params);
+}
+
+export function trackChartRangeChanged(params: {
+  symbol: string;
+  range: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'chart_range_changed', params);
+}
+
+export function trackWatchlistToggle(params: {
+  symbol: string;
+  action: 'add' | 'remove';
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'watchlist_toggle', params);
+}
+
+// ============ Sejm (Parliament) Events ============
+
+export function trackMPViewed(params: {
+  mp_id: number;
+  mp_name: string;
+  club: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'mp_viewed', params);
+}
+
+export function trackMPFollowToggle(params: {
+  mp_id: number;
+  mp_name: string;
+  action: 'follow' | 'unfollow';
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'mp_follow_toggle', params);
+}
+
+export function trackVotingViewed(params: {
+  sitting: number;
+  voting_number: number;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'voting_viewed', params);
+}
+
+export function trackCommitteeViewed(params: {
+  code: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'committee_viewed', params);
+}
+
+// ============ Navigation & Discovery Events ============
+
+export function trackCategoryTabClicked(params: {
+  category: string;
+  is_auto_rotate: boolean;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'category_tab_clicked', params);
+}
+
+export function trackSimilarEventClicked(params: {
+  source_event_id: string;
+  target_event_id: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'similar_event_clicked', params);
+}
+
+// ============ Profile & Settings Events ============
+
+export function trackThemeChanged(params: {
+  theme: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'theme_changed', params);
+}
+
+export function trackLanguageChanged(params: {
+  language: string;
+  previous_language: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'language_changed', params);
+}
+
+export function trackFavoriteCategoryToggle(params: {
+  category: string;
+  action: 'add' | 'remove';
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'favorite_category_toggle', params);
+}
+
+export function trackFavoriteCountryToggle(params: {
+  country: string;
+  action: 'add' | 'remove';
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'favorite_country_toggle', params);
+}
+
+// ============ Dane (Data) Events ============
+
+export function trackDatasetViewed(params: {
+  dataset: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'dataset_viewed', params);
+}
+
+// ============ Content Events ============
+
+export function trackFelietonViewed(params: {
+  felieton_id: string;
+  category: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'felieton_viewed', params);
+}
+
+export function trackBlogPostViewed(params: {
+  slug: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'blog_post_viewed', params);
+}
+
+export function trackBlogShareClicked(params: {
+  slug: string;
+  platform: 'twitter' | 'facebook' | 'linkedin' | 'clipboard';
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'blog_share_clicked', params);
+}
+
+export function trackPowiazaniaCompleted(params: {
+  success: boolean;
+  mistakes: number;
+  hint_used: boolean;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'powiazania_completed', params);
+}
+
+// ============ Error Events ============
+
+export function trackPageNotFound(params: {
+  path: string;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'page_not_found', params);
+}
+
+// ============ Cookie Consent Events ============
+
+export function trackCookieConsent(params: {
+  analytics_accepted: boolean;
+  marketing_accepted: boolean;
+}): void {
+  if (!analytics) return;
+  logEvent(analytics, 'cookie_consent_given', params);
+}

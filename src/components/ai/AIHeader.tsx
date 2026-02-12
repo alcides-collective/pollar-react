@@ -1,6 +1,7 @@
 import { ArrowLeft, PanelLeft, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAIMessages, useAIStore, useAISidebarOpen } from '../../stores/aiStore';
+import { trackAIConversationReset } from '../../lib/analytics';
 
 interface AIHeaderProps {
   showSidebarToggle?: boolean;
@@ -14,6 +15,7 @@ export function AIHeader({ showSidebarToggle = true, showBackButton = true }: AI
   const { resetConversation, toggleSidebar } = useAIStore();
 
   const handleNewChat = () => {
+    trackAIConversationReset();
     resetConversation();
   };
 

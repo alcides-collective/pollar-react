@@ -12,7 +12,7 @@ import {
   followMP,
   unfollowMP,
 } from '@/services/userService';
-import { trackBookmarkEvent, trackHiddenCategory } from '@/lib/analytics';
+import { trackBookmarkEvent, trackHiddenCategory, trackFavoriteCategoryToggle, trackFavoriteCountryToggle } from '@/lib/analytics';
 import type { UserProfile } from '@/types/auth';
 
 // ============ Types ============
@@ -206,8 +206,10 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       if (isFavorite) {
         await removeFavoriteCategory(profile.id, category);
+        trackFavoriteCategoryToggle({ category, action: 'remove' });
       } else {
         await addFavoriteCategory(profile.id, category);
+        trackFavoriteCategoryToggle({ category, action: 'add' });
       }
     } catch (error) {
       // Revert on error
@@ -246,8 +248,10 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       if (isFavorite) {
         await removeFavoriteCountry(profile.id, country);
+        trackFavoriteCountryToggle({ country, action: 'remove' });
       } else {
         await addFavoriteCountry(profile.id, country);
+        trackFavoriteCountryToggle({ country, action: 'add' });
       }
     } catch (error) {
       // Revert on error

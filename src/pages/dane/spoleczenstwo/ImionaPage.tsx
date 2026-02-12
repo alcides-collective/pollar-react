@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { trackDatasetViewed } from '@/lib/analytics';
 import { DaneHeader, DaneSourceFooter } from '@/components/dane';
 import { useNames } from '@/hooks/useNames';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,6 +14,8 @@ export function ImionaPage() {
   const language = useLanguageStore((s) => s.language);
   const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   const [year, setYear] = useState<number | undefined>(undefined);
+
+  useEffect(() => { trackDatasetViewed({ dataset: 'imiona' }); }, []);
   const [gender, setGender] = useState<'M' | 'K' | undefined>(undefined);
   const [search, setSearch] = useState('');
 

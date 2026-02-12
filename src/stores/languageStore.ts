@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { trackLanguageChanged } from '@/lib/analytics';
 
 export type Language = 'pl' | 'en' | 'de';
 
@@ -32,10 +33,14 @@ export const useLanguageStore = create<LanguageStore>((set) => ({
   language: getStoredLanguage(),
 
   setLanguage: (lang: Language) => {
+    const previous = getStoredLanguage();
     try {
       localStorage.setItem(STORAGE_KEY, lang);
     } catch {
       // localStorage not available
+    }
+    if (previous !== lang) {
+      trackLanguageChanged({ language: lang, previous_language: previous });
     }
     set({ language: lang });
   },

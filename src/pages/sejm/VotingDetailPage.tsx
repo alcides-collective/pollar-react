@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useVoting } from '../../hooks/useVoting';
 import { useMPs } from '../../hooks/useMPs';
@@ -8,6 +8,7 @@ import { VotingResultBar, VoteIndicator, PartyBadge, SejmApiError } from '../../
 import { useLanguageStore } from '../../stores/languageStore';
 import { TitleWithDrukLinks } from '../../utils/druk-parser';
 import { isQuorumVoting } from '../../types/sejm';
+import { trackVotingViewed } from '../../lib/analytics';
 
 export function VotingDetailPage() {
   const { t } = useTranslation('sejm');
@@ -19,6 +20,10 @@ export function VotingDetailPage() {
   );
   const { mps } = useMPs();
   const [searchVoter, setSearchVoter] = useState('');
+
+  useEffect(() => {
+    if (sitting && number) trackVotingViewed({ sitting: parseInt(sitting), voting_number: parseInt(number) });
+  }, [sitting, number]);
   const [filterClub, setFilterClub] = useState<string | null>(null);
 
   const mpMap = useMemo(() => {

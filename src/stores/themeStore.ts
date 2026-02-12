@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { ThemePreference } from '@/types/auth';
+import { trackThemeChanged } from '@/lib/analytics';
 
 export type ResolvedTheme = 'light' | 'dark';
 
@@ -52,6 +53,7 @@ export const useThemeStore = create<ThemeState & ThemeActions>((set, get) => ({
     } catch {
       /* noop */
     }
+    trackThemeChanged({ theme: pref });
     set({ preference: pref, resolvedTheme: resolveTheme(pref) });
   },
 

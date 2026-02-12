@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DaneHeader, DaneSourceFooter, StatsGrid } from '@/components/dane';
 import { EurostatLineChart } from '@/components/dane/charts';
@@ -6,12 +6,17 @@ import { useEurostatPoland, useEurostatCompare, useEurostatSociety, useEurostatT
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackDatasetViewed } from '@/lib/analytics';
 
 const COMPARE_COUNTRIES = ['PL', 'DE', 'CZ', 'SK', 'HU', 'AT'];
 
 export function EurostatPage() {
   const { t } = useTranslation('dane');
   const [selectedIndicator, setSelectedIndicator] = useState('gdp');
+
+  useEffect(() => {
+    trackDatasetViewed({ dataset: 'eurostat' });
+  }, []);
 
   const COUNTRY_NAMES: Record<string, string> = {
     PL: t('eurostat.countries.PL'),

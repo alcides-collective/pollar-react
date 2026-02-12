@@ -1,10 +1,16 @@
+import { useEffect } from 'react';
 import { DaneHeader, DaneSourceFooter } from '@/components/dane';
 import { useRailway } from '@/hooks/useTransport';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackDatasetViewed } from '@/lib/analytics';
 
 export function KolejPage() {
   const { data, loading, error } = useRailway();
+
+  useEffect(() => {
+    trackDatasetViewed({ dataset: 'kolej' });
+  }, []);
 
   return (
     <div>

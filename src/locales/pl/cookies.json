@@ -17,7 +17,7 @@
     "necessary": {
       "title": "Niezbędne cookies i localStorage",
       "summary": "Zapisują Twoje ustawienia i umożliwiają działanie serwisu.",
-      "description": "Obejmują: preferencje zgód (cookie-consent), język (pollar-language), motyw kolorystyczny (pollar-theme), anonimowy identyfikator odwiedzającego do zliczania wyświetleń (pollar_uid), identyfikator sesji asystenta AI (pollar-visitor-id), listę obserwowanych instrumentów giełdowych (stock-watchlist), filtr wybranych krajów (pollar_countries) oraz stan gry Powiązania (pollar.powiazania). Sentry – monitorowanie błędów (nie używa cookies, dane przetwarzane na podstawie uzasadnionego interesu)."
+      "description": "Obejmują: preferencje zgód (cookie-consent), język (pollar-language), motyw kolorystyczny (pollar-theme), anonimowy identyfikator odwiedzającego (pollar_uid), identyfikator sesji asystenta AI (pollar-visitor-id), historia rozmów z asystentem AI (pollar-ai-store), listę obserwowanych instrumentów giełdowych (stock-watchlist), filtr wybranych krajów (pollar-selected-countries), skalę wykresów giełdowych (pollar-chart-smart-scale), stan gry Powiązania (pollar.powiazania) oraz parametry kampanii UTM (pollar_utm, sessionStorage). Sentry – monitorowanie błędów (nie używa cookies, dane przetwarzane na podstawie uzasadnionego interesu)."
     },
     "analytics": {
       "title": "Analityczne cookies",

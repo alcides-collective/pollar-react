@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { usePowiazaniaStore } from '@/stores/powiazaniaStore';
+import { trackPowiazaniaCompleted } from '@/lib/analytics';
 import {
   PowiazaniaGrid,
   PowiazaniaCategoryRow,
@@ -60,6 +61,16 @@ export function PowiazaniaPage() {
     const initialSolved = usePowiazaniaStore.getState().solvedCategories;
     return [...initialSolved];
   });
+
+  const hasTrackedCompletion = useRef(false);
+
+  useEffect(() => {
+    if ((status === 'won' || status === 'lost') && !hasTrackedCompletion.current) {
+      hasTrackedCompletion.current = true;
+      trackPowiazaniaCompleted({ success: status === 'won', mistakes, hint_used: hintUsed });
+    }
+    if (status === 'playing') hasTrackedCompletion.current = false;
+  }, [status, mistakes, hintUsed]);
 
   // Ref to track if init has been called
   const hasInitialized = useRef(false);

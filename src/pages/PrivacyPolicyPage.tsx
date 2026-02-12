@@ -397,6 +397,11 @@ export function PrivacyPolicyPage() {
                   <CookieRow name="pollar-language" domain="pollar.pl" cookieKey="pollarLanguage" t={t} tech="localStorage" />
                   <CookieRow name="stock-watchlist" domain="pollar.pl" cookieKey="stockWatchlist" t={t} tech="localStorage" />
                   <CookieRow name="pollar.powiazania" domain="pollar.pl" cookieKey="pollarPowiazania" t={t} tech="localStorage" />
+                  <CookieRow name="pollar-theme" domain="pollar.pl" cookieKey="pollarTheme" t={t} tech="localStorage" />
+                  <CookieRow name="pollar-selected-countries" domain="pollar.pl" cookieKey="pollarSelectedCountries" t={t} tech="localStorage" />
+                  <CookieRow name="pollar-chart-smart-scale" domain="pollar.pl" cookieKey="pollarChartSmartScale" t={t} tech="localStorage" />
+                  <CookieRow name="pollar-ai-store" domain="pollar.pl" cookieKey="pollarAiStore" t={t} tech="localStorage" />
+                  <CookieRow name="pollar_utm" domain="pollar.pl" cookieKey="pollarUtm" t={t} tech="sessionStorage" />
                 </tbody>
               </table>
             </div>

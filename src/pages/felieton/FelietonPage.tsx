@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useFelieton } from '../../hooks/useFelieton';
+import { trackFelietonViewed } from '../../lib/analytics';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { FELIETON_CATEGORY_NAMES } from '../../types/felieton';
 import { sanitizeAndProcessHtml, prepareOgDescription } from '../../utils/text';
@@ -88,6 +90,10 @@ export function FelietonPage() {
   const { id } = useParams<{ id: string }>();
   const { felieton, loading, error } = useFelieton(id);
   const lang = useRouteLanguage();
+
+  useEffect(() => {
+    if (felieton && id) trackFelietonViewed({ felieton_id: id, category: felieton.category });
+  }, [felieton, id]);
 
   // SEO meta tags
   const fullTitle = felieton?.title || '';

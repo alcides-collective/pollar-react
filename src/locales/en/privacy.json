@@ -263,6 +263,31 @@
         "description": "Saves the state of the daily game “Powiazania” (progress, answers, errors).",
         "retention": "Until game reset",
         "type": "Functional"
+      },
+      "pollarTheme": {
+        "description": "Stores the selected color theme (light, dark, or system).",
+        "retention": "Indefinite",
+        "type": "Functional"
+      },
+      "pollarSelectedCountries": {
+        "description": "Stores the selected countries filter on the homepage.",
+        "retention": "Indefinite",
+        "type": "Functional"
+      },
+      "pollarChartSmartScale": {
+        "description": "Stores the smart scale setting for stock charts.",
+        "retention": "Indefinite",
+        "type": "Functional"
+      },
+      "pollarAiStore": {
+        "description": "Stores AI assistant conversation history (messages, conversation IDs).",
+        "retention": "Indefinite",
+        "type": "Functional"
+      },
+      "pollarUtm": {
+        "description": "Stores UTM campaign parameters (utm_source, utm_medium, utm_campaign) from the URL on first visit.",
+        "retention": "Browser session",
+        "type": "Essential"
       }
     }
   },

@@ -11,6 +11,7 @@ import { TitleWithDrukLinks } from '../../utils/druk-parser';
 import { getPartyColor, getPartyName } from '../../types/sejm';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { createSlug } from '../../utils/slug';
+import { trackMPViewed } from '../../lib/analytics';
 
 export function MPDetailPage() {
   const { t } = useTranslation('sejm');
@@ -29,6 +30,11 @@ export function MPDetailPage() {
       navigate(`/sejm/poslowie/${id}/${expectedSlug}`, { replace: true });
     }
   }, [mp, id, slug, navigate]);
+
+  // Track MP view
+  useEffect(() => {
+    if (mp) trackMPViewed({ mp_id: mp.id, mp_name: mp.firstLastName, club: mp.club });
+  }, [mp]);
 
   // SEO meta tags
   const partyFullName = mp ? getPartyName(mp.club) : '';

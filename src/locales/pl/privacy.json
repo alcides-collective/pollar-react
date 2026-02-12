@@ -263,6 +263,31 @@
         "description": "Zapisuje stan gry dziennej „Powiązania” (postęp, odpowiedzi, błędy).",
         "retention": "Do resetu gry",
         "type": "Funkcjonalne"
+      },
+      "pollarTheme": {
+        "description": "Przechowuje wybrany motyw kolorystyczny (jasny, ciemny lub systemowy).",
+        "retention": "Bezterminowo",
+        "type": "Funkcjonalne"
+      },
+      "pollarSelectedCountries": {
+        "description": "Przechowuje filtr wybranych krajów na stronie głównej.",
+        "retention": "Bezterminowo",
+        "type": "Funkcjonalne"
+      },
+      "pollarChartSmartScale": {
+        "description": "Przechowuje ustawienie inteligentnej skali wykresów giełdowych.",
+        "retention": "Bezterminowo",
+        "type": "Funkcjonalne"
+      },
+      "pollarAiStore": {
+        "description": "Przechowuje historię rozmów z asystentem AI (wiadomości, identyfikatory konwersacji).",
+        "retention": "Bezterminowo",
+        "type": "Funkcjonalne"
+      },
+      "pollarUtm": {
+        "description": "Zapisuje parametry kampanii UTM (utm_source, utm_medium, utm_campaign) z adresu URL przy pierwszej wizycie.",
+        "retention": "Sesja przeglądarki",
+        "type": "Niezbędne"
       }
     }
   },

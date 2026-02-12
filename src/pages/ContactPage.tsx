@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { API_BASE } from '@/config/api';
+import { trackContactFormSubmit, trackFAQItemExpanded } from '@/lib/analytics';
 
 const SUBJECT_KEYS = ['bug', 'feature', 'question', 'partnership', 'gdpr', 'other'] as const;
 
@@ -51,6 +52,7 @@ function ContactForm() {
         }),
       });
       if (!res.ok) throw new Error('Failed');
+      trackContactFormSubmit({ subject: subject || 'other', success: true });
       toast.success(t('form.success'));
       setName('');
       setEmail('');
@@ -58,6 +60,7 @@ function ContactForm() {
       setMessage('');
       setErrors({});
     } catch {
+      trackContactFormSubmit({ subject: subject || 'other', success: false });
       toast.error(t('form.error'));
     } finally {
       setIsSubmitting(false);
@@ -149,14 +152,17 @@ function ContactForm() {
   );
 }
 
-function FAQItem({ question, answer }: { question: string; answer: string }) {
+function FAQItem({ question, answer, index }: { question: string; answer: string; index: number }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="border-b border-divider last:border-b-0">
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (!isOpen) trackFAQItemExpanded({ question_index: index });
+          setIsOpen(!isOpen);
+        }}
         className="flex w-full items-center justify-between py-4 text-left"
       >
         <span className="text-sm font-medium text-content-heading pr-4">{question}</span>
@@ -205,7 +211,7 @@ export function ContactPage() {
             <div className="bg-background border border-divider rounded-lg px-6">
               {Array.isArray(faqItems) &&
                 faqItems.map((item, i) => (
-                  <FAQItem key={i} question={item.question} answer={item.answer} />
+                  <FAQItem key={i} question={item.question} answer={item.answer} index={i} />
                 ))}
             </div>
           </section>

@@ -1,13 +1,17 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DaneHeader, DaneSourceFooter, StatsGrid } from '@/components/dane';
 import { EnergyMixChart, ProductionChart, ComparisonChart } from '@/components/dane/charts';
 import { useEnergy } from '@/hooks/useEnergy';
+import { trackDatasetViewed } from '@/lib/analytics';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function EnergiaPage() {
   const { t } = useTranslation('dane');
   const { summary, energyMix, balance, comparison, electricityPrice, timeSeries, loading, error } = useEnergy();
+
+  useEffect(() => { trackDatasetViewed({ dataset: 'energia' }); }, []);
 
   if (error) {
     return (

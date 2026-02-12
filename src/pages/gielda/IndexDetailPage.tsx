@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useStockQuote, useStockHistory } from '../../hooks/useGieldaData';
+import { trackStockViewed, trackChartRangeChanged } from '../../lib/analytics';
 import { AreaChart, PriceChange } from '../../components/gielda';
 import { getStockDisplaySymbol } from '../../types/gielda';
 import { Skeleton } from '../../components/ui/skeleton';
@@ -22,6 +23,10 @@ export function IndexDetailPage() {
   const [selectedRange, setSelectedRange] = useState('1mo');
 
   const { stock: index, loading: indexLoading, error: indexError } = useStockQuote(decodedSymbol);
+
+  useEffect(() => {
+    if (decodedSymbol) trackStockViewed({ symbol: decodedSymbol });
+  }, [decodedSymbol]);
   const { history, loading: historyLoading } = useStockHistory(decodedSymbol, selectedRange);
 
   if (indexError) {
@@ -93,7 +98,10 @@ export function IndexDetailPage() {
               {RANGES.map(range => (
                 <button
                   key={range.value}
-                  onClick={() => setSelectedRange(range.value)}
+                  onClick={() => {
+                    setSelectedRange(range.value);
+                    trackChartRangeChanged({ symbol: decodedSymbol, range: range.value });
+                  }}
                   className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                     selectedRange === range.value
                       ? 'bg-black text-white dark:bg-white dark:text-black'

@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useCommittee, useCommitteeSittings } from '../../hooks/useCommittees';
 import { PartyBadge, SejmApiError } from '../../components/sejm';
 import { useLanguageStore } from '../../stores/languageStore';
+import { trackCommitteeViewed } from '../../lib/analytics';
 
 export function CommitteeDetailPage() {
   const { t } = useTranslation('sejm');
@@ -11,6 +13,10 @@ export function CommitteeDetailPage() {
   const { code } = useParams<{ code: string }>();
   const { committee, loading, error } = useCommittee(code || null);
   const { sittings } = useCommitteeSittings(code || null);
+
+  useEffect(() => {
+    if (code) trackCommitteeViewed({ code });
+  }, [code]);
 
   if (error) {
     return <SejmApiError message={error.message} />;

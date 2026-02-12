@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { DaneHeader, DaneSourceFooter, StatsGrid } from '@/components/dane';
 import { CrimeBarChart, DetectionChart, CrimeCategoriesChart } from '@/components/dane/charts';
 import { useCrime } from '@/hooks/useCrime';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackDatasetViewed } from '@/lib/analytics';
 
 const CATEGORY_CONFIG: Record<string, { label: string; color: string; icon: string }> = {
   murder: { label: 'Zabójstwa', color: '#dc2626', icon: 'ri-skull-line' },
@@ -23,6 +25,10 @@ export function PrzestepczoscPage() {
     loading,
     error,
   } = useCrime();
+
+  useEffect(() => {
+    trackDatasetViewed({ dataset: 'przestepczosc' });
+  }, []);
 
   if (error) {
     return (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DaneHeader, DaneSourceFooter } from '@/components/dane';
 import { useSurnames } from '@/hooks/useSurnames';
@@ -6,12 +6,17 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLanguageStore } from '@/stores/languageStore';
+import { trackDatasetViewed } from '@/lib/analytics';
 
 export function NazwiskaPage() {
   const { t } = useTranslation('dane');
   const language = useLanguageStore((s) => s.language);
   const localeMap: Record<string, string> = { pl: 'pl-PL', en: 'en-US', de: 'de-DE' };
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    trackDatasetViewed({ dataset: 'nazwiska' });
+  }, []);
 
   const { ranking, date, loading, error } = useSurnames({ limit: 100 });
 

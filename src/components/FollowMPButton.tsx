@@ -5,6 +5,7 @@ import { useUserStore, useIsFollowingMP } from '@/stores/userStore';
 import { useAuthStore } from '@/stores/authStore';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { trackMPFollowToggle } from '@/lib/analytics';
 
 interface FollowMPButtonProps {
   mpId: number;
@@ -37,6 +38,7 @@ export function FollowMPButton({
     setIsLoading(true);
     try {
       await toggleFollowMP(mpId);
+      trackMPFollowToggle({ mp_id: mpId, mp_name: mpName, action: isFollowing ? 'unfollow' : 'follow' });
       toast.success(
         isFollowing ? t('follow.stopped') : t('follow.started'),
         {

@@ -8,6 +8,7 @@ import {
   preFormatMarkdown,
   tokenizeContent,
 } from '../utils/ai-helpers';
+import { trackAIRateLimitReached } from '../lib/analytics';
 
 // Get or create visitor ID for rate limiting
 function getVisitorId(): string {
@@ -176,6 +177,9 @@ export function useAICompanion(options: UseAICompanionOptions = {}) {
                   }
                   if (parsed.remaining !== undefined) {
                     setRemainingQueries(parsed.remaining);
+                    if (parsed.remaining === 0) {
+                      trackAIRateLimitReached({ remaining: 0 });
+                    }
                   }
                   if (parsed.follow_ups) {
                     setFollowUps(parsed.follow_ups);

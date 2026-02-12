@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { trackCookieConsent } from '@/lib/analytics';
 
 export interface CookieConsent {
   necessary: boolean;
@@ -62,6 +63,7 @@ export const useCookieConsentStore = create<CookieConsentStore>((set) => ({
     };
     saveToStorage(consent);
     updateGoogleConsent(consent);
+    trackCookieConsent({ analytics_accepted: true, marketing_accepted: true });
     set({ consent, hasInteracted: true });
   },
 
@@ -73,12 +75,14 @@ export const useCookieConsentStore = create<CookieConsentStore>((set) => ({
     };
     saveToStorage(consent);
     updateGoogleConsent(consent);
+    trackCookieConsent({ analytics_accepted: false, marketing_accepted: false });
     set({ consent, hasInteracted: true });
   },
 
   setConsent: (consent: CookieConsent) => {
     saveToStorage(consent);
     updateGoogleConsent(consent);
+    trackCookieConsent({ analytics_accepted: consent.analytics, marketing_accepted: consent.marketing });
     set({ consent, hasInteracted: true });
   },
 

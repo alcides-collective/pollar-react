@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { useTranslation } from 'react-i18next';
 import { useStockQuote, useStockHistory } from '../../hooks/useGieldaData';
 import { useWatchlistStore } from '../../stores/gieldaStore';
+import { trackStockViewed, trackChartRangeChanged, trackWatchlistToggle } from '../../lib/analytics';
 import { AreaChart, PriceChange } from '../../components/gielda';
 import {
   getStockDisplaySymbol,
@@ -34,6 +35,10 @@ export function StockDetailPage() {
 
   const { items, toggle } = useWatchlistStore();
   const isInWatchlist = items.some(w => w.symbol === decodedSymbol);
+
+  useEffect(() => {
+    if (decodedSymbol) trackStockViewed({ symbol: decodedSymbol });
+  }, [decodedSymbol]);
 
   if (stockError) {
     return (
@@ -81,7 +86,10 @@ export function StockDetailPage() {
                     {displaySymbol}
                   </h1>
                   <button
-                    onClick={() => toggle(decodedSymbol)}
+                    onClick={() => {
+                      trackWatchlistToggle({ symbol: decodedSymbol, action: isInWatchlist ? 'remove' : 'add' });
+                      toggle(decodedSymbol);
+                    }}
                     className="text-amber-400 hover:scale-110 transition-transform"
                     title={isInWatchlist ? t('stockDetail.removeFromWatchlist') : t('stockDetail.addToWatchlist')}
                   >
@@ -110,7 +118,10 @@ export function StockDetailPage() {
               {RANGES.map(range => (
                 <button
                   key={range.value}
-                  onClick={() => setSelectedRange(range.value)}
+                  onClick={() => {
+                    setSelectedRange(range.value);
+                    trackChartRangeChanged({ symbol: decodedSymbol, range: range.value });
+                  }}
                   className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                     selectedRange === range.value
                       ? 'bg-black text-white dark:bg-white dark:text-black'

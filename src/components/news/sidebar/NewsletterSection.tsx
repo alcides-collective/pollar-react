@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { fadeIn } from '@/lib/animations';
+import { trackNewsletterSignup } from '@/lib/analytics';
 
 export function NewsletterSection() {
   const [email, setEmail] = useState('');
@@ -16,6 +17,7 @@ export function NewsletterSection() {
 
     // TODO: Implement actual newsletter signup
     setTimeout(() => {
+      trackNewsletterSignup({ source: 'sidebar' });
       setStatus('success');
       setEmail('');
     }, 500);

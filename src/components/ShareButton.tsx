@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { trackShareInitiated } from '@/lib/analytics';
 
 interface ShareButtonProps {
   url?: string;
@@ -44,6 +45,7 @@ export function ShareButton({
           text,
           url: shareUrl,
         });
+        trackShareInitiated({ method: 'native_share', content_type: 'event' });
         setIsSharing(false);
         return;
       } catch (err) {
@@ -58,6 +60,7 @@ export function ShareButton({
     // Fallback: copy to clipboard
     try {
       await navigator.clipboard.writeText(shareUrl);
+      trackShareInitiated({ method: 'clipboard', content_type: 'event' });
       toast.success(t('share.linkCopied'));
     } catch {
       toast.error(t('share.failedToCopy'));

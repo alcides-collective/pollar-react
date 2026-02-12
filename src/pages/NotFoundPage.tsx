@@ -1,10 +1,16 @@
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { LocalizedLink } from '@/components/LocalizedLink'
 import { Button } from '@/components/ui/button'
+import { trackPageNotFound } from '@/lib/analytics'
 
 export function NotFoundPage() {
   const { t } = useTranslation('errors')
+
+  useEffect(() => {
+    trackPageNotFound({ path: window.location.pathname })
+  }, [])
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-6">

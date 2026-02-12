@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion, AnimatePresence, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
+import { trackCategoryTabClicked } from '@/lib/analytics';
 import type { Event } from '../../types/events';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
@@ -116,6 +117,8 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
               controlsRef.current?.stop();
               progress.set(0);
               setSelectedTab(index);
+              const category = events[0]?.category || 'unknown';
+              trackCategoryTabClicked({ category, is_auto_rotate: false });
             }}
             className={`relative text-xs md:text-sm px-4 py-3 md:px-6 md:py-4 transition-colors border-b md:border-b-0 border-r border-divider even:border-r-0 md:even:border-r md:last:border-r-0 ${
               selectedTab === index

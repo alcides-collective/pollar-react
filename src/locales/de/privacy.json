@@ -263,6 +263,31 @@
         "description": "Speichert den Spielstand des täglichen Spiels „Powiązania” (Fortschritt, Antworten, Fehler).",
         "retention": "Bis zum Spielreset",
         "type": "Funktional"
+      },
+      "pollarTheme": {
+        "description": "Speichert das gewählte Farbschema (hell, dunkel oder System).",
+        "retention": "Unbegrenzt",
+        "type": "Funktional"
+      },
+      "pollarSelectedCountries": {
+        "description": "Speichert den ausgewählten Länderfilter auf der Startseite.",
+        "retention": "Unbegrenzt",
+        "type": "Funktional"
+      },
+      "pollarChartSmartScale": {
+        "description": "Speichert die Smart-Scale-Einstellung für Börsencharts.",
+        "retention": "Unbegrenzt",
+        "type": "Funktional"
+      },
+      "pollarAiStore": {
+        "description": "Speichert den Gesprächsverlauf des KI-Assistenten (Nachrichten, Konversations-IDs).",
+        "retention": "Unbegrenzt",
+        "type": "Funktional"
+      },
+      "pollarUtm": {
+        "description": "Speichert UTM-Kampagnenparameter (utm_source, utm_medium, utm_campaign) aus der URL beim ersten Besuch.",
+        "retention": "Browsersitzung",
+        "type": "Erforderlich"
       }
     }
   },

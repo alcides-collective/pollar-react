@@ -17,7 +17,7 @@
     "necessary": {
       "title": "Essential cookies and localStorage",
       "summary": "Save your settings and keep the site running.",
-      "description": "Includes: consent preferences (cookie-consent), language (pollar-language), color theme (pollar-theme), anonymous visitor ID (pollar_uid), AI assistant session ID (pollar-visitor-id), stock watchlist (stock-watchlist), countries filter (pollar_countries), and Connections game state (pollar.powiazania). Sentry — error monitoring (no cookies, data processed under legitimate interest)."
+      "description": "Includes: consent preferences (cookie-consent), language (pollar-language), color theme (pollar-theme), anonymous visitor ID (pollar_uid), AI assistant session ID (pollar-visitor-id), AI assistant conversation history (pollar-ai-store), stock watchlist (stock-watchlist), countries filter (pollar-selected-countries), stock chart scale (pollar-chart-smart-scale), Connections game state (pollar.powiazania), and UTM campaign parameters (pollar_utm, sessionStorage). Sentry — error monitoring (no cookies, data processed under legitimate interest)."
     },
     "analytics": {
       "title": "Analytics cookies",

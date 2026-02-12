@@ -5,8 +5,9 @@ import { AIInput } from './AIInput';
 import { AIDebugPanel } from './AIDebugPanel';
 import { useAICompanion } from '../../hooks/useAICompanion';
 import { useWordAnimation } from '../../hooks/useWordAnimation';
-import { useAIError, useAIStore } from '../../stores/aiStore';
+import { useAIError, useAIStore, useAIMessages } from '../../stores/aiStore';
 import { useRouteLanguage } from '../../hooks/useRouteLanguage';
+import { trackAIMessageSent, trackAISuggestionClicked, trackAIConversationStarted } from '../../lib/analytics';
 
 interface AIChatProps {
   variant?: 'page' | 'modal';
@@ -18,6 +19,7 @@ export function AIChat({ variant = 'page', showHeader = true }: AIChatProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const error = useAIError();
   const setError = useAIStore((s) => s.setError);
+  const messages = useAIMessages();
   const language = useRouteLanguage();
 
   // Scroll helper
@@ -49,19 +51,28 @@ export function AIChat({ variant = 'page', showHeader = true }: AIChatProps) {
   // Handle sending message
   const handleSend = useCallback(
     (message: string) => {
+      if (messages.length === 0) {
+        trackAIConversationStarted({ language });
+      }
+      trackAIMessageSent({ message_length: message.length, is_suggestion: false, language });
       sendMessage(message);
       // Scroll to bottom after sending
       setTimeout(scrollToBottom, 50);
     },
-    [sendMessage, scrollToBottom]
+    [sendMessage, scrollToBottom, messages.length, language]
   );
 
   // Handle suggestion click
   const handleSuggestionSelect = useCallback(
-    (suggestion: string) => {
+    (suggestion: string, index?: number) => {
+      if (messages.length === 0) {
+        trackAIConversationStarted({ language });
+      }
+      trackAIMessageSent({ message_length: suggestion.length, is_suggestion: true, language });
+      trackAISuggestionClicked({ suggestion_text: suggestion.slice(0, 100), position: index ?? 0 });
       handleSend(suggestion);
     },
-    [handleSend]
+    [handleSend, messages.length, language]
   );
 
   // Dismiss error on click
