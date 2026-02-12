@@ -160,6 +160,11 @@ export const PAGE_TITLES = {
     en: { title: 'News Sources', description: 'All news sources tracked by Pollar with ownership classification and political orientation.' },
     de: { title: 'Nachrichtenquellen', description: 'Alle von Pollar verfolgten Nachrichtenquellen mit Eigentümerklassifizierung und politischer Ausrichtung.' },
   },
+  '/rss': {
+    pl: { title: 'Kanały RSS', description: 'Śledź wiadomości Pollar w swoim ulubionym czytniku RSS. Lista dostępnych feedów, instrukcja i polecane czytniki.' },
+    en: { title: 'RSS Feeds', description: 'Follow Pollar news in your favorite RSS reader. Available feeds, setup guide and recommended readers.' },
+    de: { title: 'RSS-Feeds', description: 'Folgen Sie Pollar-Nachrichten in Ihrem bevorzugten RSS-Reader. Verfügbare Feeds, Einrichtungsanleitung und empfohlene Reader.' },
+  },
   '/blog': {
     pl: { title: 'Blog', description: 'Blog Pollar — artykuły, analizy i komentarze.' },
     en: { title: 'Blog', description: 'Pollar Blog — articles, analyses and commentary.' },

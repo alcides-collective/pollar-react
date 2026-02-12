@@ -857,6 +857,13 @@ export function Header() {
                     {pathWithoutLang.startsWith('/blog') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LocalizedLink to="/rss" className="w-full flex items-center gap-2">
+                    <i className="ri-rss-line" />
+                    {t('nav.rss')}
+                    {pathWithoutLang === '/rss' && <i className="ri-check-line ml-auto" />}
+                  </LocalizedLink>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
 
               <DropdownMenuSeparator />

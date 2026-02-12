@@ -94,6 +94,7 @@ Scope: /felieton/*
 Scope: /dane/*
 Scope: /sejm/*
 Scope: /feed.xml
+Scope: /blog/feed.xml
 Scope: /llms.txt
 Scope: /llms-full.txt
 
@@ -271,6 +272,9 @@ Machine-readable permissions: [ai.txt](https://pollar.news/ai.txt)
 - [RSS Feed (PL)](https://pollar.news/feed.xml)
 - [RSS Feed (EN)](https://pollar.news/en/feed.xml)
 - [RSS Feed (DE)](https://pollar.news/de/feed.xml)
+- [Blog RSS (PL)](https://pollar.news/blog/feed.xml)
+- [Blog RSS (EN)](https://pollar.news/en/blog/feed.xml)
+- [Blog RSS (DE)](https://pollar.news/de/blog/feed.xml)
 - [Sitemap](https://pollar.news/sitemap.xml)
 - [Google News Sitemap](https://pollar.news/news-sitemap.xml): Last 2 days of events for Google News
 - [llms-full.txt](https://pollar.news/llms-full.txt): Extended version with latest articles and full site content

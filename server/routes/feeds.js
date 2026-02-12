@@ -310,3 +310,62 @@ ${items}
   res.set('Cache-Control', 'public, max-age=1800'); // Cache for 30 minutes
   res.send(rss);
 });
+
+// Blog-only RSS Feed endpoint (supports /blog/feed.xml, /en/blog/feed.xml, /de/blog/feed.xml)
+feedRoutes.get(['/:lang(en|de)/blog/feed.xml', '/blog/feed.xml'], async (req, res) => {
+  const lang = req.params.lang || 'pl';
+  const langPrefix = lang !== 'pl' ? `/${lang}` : '';
+  const baseUrl = 'https://pollar.news';
+
+  let posts = [];
+  try {
+    posts = await fetchBlogPosts(lang, 50);
+  } catch (err) {
+    console.warn('Could not fetch blog posts for blog RSS:', err.message);
+  }
+
+  const now = new Date().toUTCString();
+
+  const items = posts.map(p => {
+    const title = escapeXml(stripHtml(p.title || ''));
+    const description = escapeXml(stripHtml(p.excerpt || ''));
+    const link = `${baseUrl}${langPrefix}/blog/${p.slug}`;
+    const guid = `${baseUrl}/blog/${p.slug}`;
+    const pubDate = p.publishedAt || p.createdAt ? new Date(p.publishedAt || p.createdAt).toUTCString() : now;
+
+    return `    <item>
+      <title>${title}</title>
+      <description>${description}</description>
+      <link>${link}</link>
+      <guid isPermaLink="true">${guid}</guid>
+      <pubDate>${pubDate}</pubDate>
+      <category>Blog</category>
+      <creativeCommons:license>https://creativecommons.org/licenses/by-nc-sa/4.0/</creativeCommons:license>
+    </item>`;
+  }).join('\n');
+
+  const blogDescriptions = {
+    pl: 'Artykuły, analizy i komentarze z bloga Pollar News.',
+    en: 'Articles, analyses and commentary from the Pollar News blog.',
+    de: 'Artikel, Analysen und Kommentare aus dem Pollar News Blog.',
+  };
+
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:creativeCommons="http://backend.userland.com/creativeCommonsRssModule">
+  <channel>
+    <title>Pollar News — Blog</title>
+    <description>${blogDescriptions[lang]}</description>
+    <link>${baseUrl}${langPrefix}/blog</link>
+    <language>${lang}</language>
+    <copyright>CC BY-NC-SA 4.0 - Pollar News (pollar.news)</copyright>
+    <creativeCommons:license>https://creativecommons.org/licenses/by-nc-sa/4.0/</creativeCommons:license>
+    <lastBuildDate>${now}</lastBuildDate>
+    <atom:link href="${baseUrl}${langPrefix}/blog/feed.xml" rel="self" type="application/rss+xml"/>
+${items}
+  </channel>
+</rss>`;
+
+  res.set('Content-Type', 'application/rss+xml');
+  res.set('Cache-Control', 'public, max-age=1800');
+  res.send(rss);
+});

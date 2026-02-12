@@ -179,7 +179,7 @@ export function DanePage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {DANE_CATEGORIES.map((category) => (
             <LocalizedLink key={category.id} to={category.subpages[0]?.path ?? category.path}>
-              <Card className="hover:border-foreground/20 transition-colors cursor-pointer h-full">
+              <Card className="border-divider hover:border-foreground/20 transition-colors cursor-pointer h-full">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-3">
                     <i className={`${category.icon} text-2xl text-content-subtle`} />

@@ -104,6 +104,9 @@ const PogodaPage = lazy(() => import('./pages/pogoda').then(m => ({ default: m.P
 // Sources page
 const SourcesPage = lazy(() => import('./pages/sources').then(m => ({ default: m.SourcesPage })))
 
+// RSS page
+const RssPage = lazy(() => import('./pages/rss').then(m => ({ default: m.RssPage })))
+
 // 404 page
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })))
 
@@ -243,6 +246,7 @@ function getAppRoutes(prefix = '') {
     <Route key={`${prefix}-blog-post`} path={`${prefix}/blog/:slug`} element={<BlogPostPage />} />,
     <Route key={`${prefix}-pogoda`} path={`${prefix}/pogoda`} element={<PogodaPage />} />,
     <Route key={`${prefix}-sources`} path={`${prefix}/sources`} element={<SourcesPage />} />,
+    <Route key={`${prefix}-rss`} path={`${prefix}/rss`} element={<RssPage />} />,
     /* Sejm routes */
     <Route key={`${prefix}-sejm`} path={`${prefix}/sejm`} element={<SejmLayout />}>
       <Route index element={<SejmDashboard />} />

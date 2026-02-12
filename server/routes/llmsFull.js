@@ -175,6 +175,9 @@ Machine-readable permissions: [ai.txt](https://pollar.news/ai.txt)
 - RSS (PL): https://pollar.news/feed.xml
 - RSS (EN): https://pollar.news/en/feed.xml
 - RSS (DE): https://pollar.news/de/feed.xml
+- Blog RSS (PL): https://pollar.news/blog/feed.xml
+- Blog RSS (EN): https://pollar.news/en/blog/feed.xml
+- Blog RSS (DE): https://pollar.news/de/blog/feed.xml
 - Sitemap: https://pollar.news/sitemap.xml
 - Google News Sitemap: https://pollar.news/news-sitemap.xml
 - LLMs.txt: https://pollar.news/llms.txt
