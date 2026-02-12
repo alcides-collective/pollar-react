@@ -21,6 +21,15 @@ export function TerminalPage() {
   const navigate = useLanguageNavigate();
   const language = useRouteLanguage();
 
+  // Load JetBrains Mono font dynamically (only when terminal page is visited)
+  useEffect(() => {
+    if (document.querySelector('link[href*="JetBrains+Mono"]')) return;
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+  }, []);
+
   // Data fetching
   const { events, loading, error } = useEvents({ limit: 500, lang: language, includeArchive: true, articleFields: 'minimal' });
   const { indices } = useMarketData();

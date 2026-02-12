@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { useBrief } from '../hooks/useBrief';
 import { useFelietony } from '../hooks/useFelietony';
 import { useEventGroupsWithArchive } from '../hooks/useEventSelectors';
@@ -11,11 +12,17 @@ import { FelietonySection } from './news/FelietonySection';
 import { DiscoverSection } from './news/DiscoverSection';
 import { OlympicsSection } from './news/OlympicsSection';
 import { CategoryCarousel } from './news/CategoryCarousel';
-import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection, VersionSection, StatsSection } from './news/sidebar';
+import { LatestEvents, NewsletterSection, AboutSection, ContactSection, VersionSection, StatsSection } from './news/sidebar';
 import { AISidebarWidget } from './ai';
 import { LoadingSpinner } from './common/LoadingSpinner';
 import { LazySection } from './common/LazySection';
+import { Skeleton } from './ui/skeleton';
 import { EngineStatusBanner } from './common/EngineStatusBanner';
+
+// Lazy-load MapSection to avoid loading 452KB mapbox-gl on every page
+const LazyMapSection = lazy(() =>
+  import('./news/sidebar/MapSection').then(m => ({ default: m.MapSection }))
+);
 
 export function NewsGrid() {
   const selectedCategory = useSelectedCategory();
@@ -116,7 +123,9 @@ export function NewsGrid() {
           <LatestEvents events={latestEvents} />
           <NewsletterSection />
           <LazySection height="300px" rootMargin="100px">
-            <MapSection />
+            <Suspense fallback={<Skeleton className="w-full" style={{ height: '300px' }} />}>
+              <LazyMapSection />
+            </Suspense>
           </LazySection>
           <AboutSection />
           <ContactSection />

@@ -38,6 +38,7 @@ export default defineConfig({
   },
   build: {
     sourcemap: true,
+    modulePreload: { resolveDependencies: () => [] },
     rollupOptions: {
       output: {
         manualChunks(id) {

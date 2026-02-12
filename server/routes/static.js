@@ -54,8 +54,8 @@ Sitemap: https://pollar.news/sitemap.xml
 Sitemap: https://pollar.news/news-sitemap.xml
 Sitemap: https://pollar.news/en/news-sitemap.xml
 Sitemap: https://pollar.news/de/news-sitemap.xml
-LLMsTxt: https://pollar.news/llms.txt
-AI-txt: https://pollar.news/ai.txt
+# LLMs context: https://pollar.news/llms.txt
+# AI policy: https://pollar.news/ai.txt
 `;
   res.set('Content-Type', 'text/plain');
   res.set('Cache-Control', 'public, max-age=86400'); // Cache for 1 day

@@ -1,8 +1,7 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import {
-  getAuth,
+  initializeAuth,
   browserSessionPersistence,
-  setPersistence,
   type Auth,
 } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
@@ -44,14 +43,11 @@ if (isFirebaseConfigured) {
 }
 
 if (app) {
-  auth = getAuth(app);
+  auth = initializeAuth(app, {
+    persistence: browserSessionPersistence,
+  });
   db = getFirestore(app);
   storage = getStorage(app);
-
-  // Set persistence to session (cleared on browser close, reduces token theft surface)
-  setPersistence(auth, browserSessionPersistence).catch((error) => {
-    console.error('Failed to set auth persistence:', error);
-  });
 
   // Initialize analytics only in browser and production
   if (typeof window !== 'undefined' && import.meta.env.PROD) {
