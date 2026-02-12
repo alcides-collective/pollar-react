@@ -38,6 +38,7 @@ function ToggleSwitch({ checked, onChange, disabled = false }: ToggleSwitchProps
 
 interface CookieSettingRowProps {
   title: string;
+  summary: string;
   description: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
@@ -45,7 +46,7 @@ interface CookieSettingRowProps {
   alwaysOnLabel?: string;
 }
 
-function CookieSettingRow({ title, description, checked, onChange, disabled = false, alwaysOnLabel }: CookieSettingRowProps) {
+function CookieSettingRow({ title, summary, description, checked, onChange, disabled = false, alwaysOnLabel }: CookieSettingRowProps) {
   return (
     <div className="flex items-start justify-between gap-4 py-5 border-b border-divider last:border-b-0">
       <div className="flex-1">
@@ -57,7 +58,8 @@ function CookieSettingRow({ title, description, checked, onChange, disabled = fa
             </span>
           )}
         </div>
-        <p className="mt-1 text-sm text-content">{description}</p>
+        <p className="mt-1 text-sm text-content">{summary}</p>
+        <p className="mt-1 text-xs text-content-faint">{description}</p>
       </div>
       <div className="shrink-0 pt-0.5">
         <ToggleSwitch checked={checked} onChange={onChange} disabled={disabled} />
@@ -107,6 +109,7 @@ export function CookieSettingsPage() {
           <div className="px-6">
             <CookieSettingRow
               title={t('settings.necessary.title')}
+              summary={t('settings.necessary.summary')}
               description={t('settings.necessary.description')}
               checked={true}
               onChange={() => {}}
@@ -118,6 +121,7 @@ export function CookieSettingsPage() {
           <div className="px-6">
             <CookieSettingRow
               title={t('settings.analytics.title')}
+              summary={t('settings.analytics.summary')}
               description={t('settings.analytics.description')}
               checked={currentConsent.analytics}
               onChange={handleAnalyticsChange}
@@ -127,6 +131,7 @@ export function CookieSettingsPage() {
           <div className="px-6">
             <CookieSettingRow
               title={t('settings.marketing.title')}
+              summary={t('settings.marketing.summary')}
               description={t('settings.marketing.description')}
               checked={currentConsent.marketing}
               onChange={handleMarketingChange}

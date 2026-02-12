@@ -16,15 +16,18 @@
     "alwaysEnabled": "Immer aktiviert",
     "necessary": {
       "title": "Notwendige Cookies und localStorage",
-      "description": "Erforderlich für das ordnungsgemäße Funktionieren der Website und Anwendungen. Dazu gehören: Einwilligungspräferenzen (cookie-consent), Sprache (pollar-language), Farbschema (pollar-theme), anonyme Besucher-ID zur Zählung von Seitenaufrufen (pollar_uid), KI-Assistenten-Sitzungs-ID (pollar-visitor-id), Aktien-Watchlist (stock-watchlist), Länderfilter (pollar_countries) und der Spielstand von Powiązania (pollar.powiazania). Zusätzlich verwenden wir Sentry zur Fehlerüberwachung – es erfasst Daten über Anwendungsabstürze, um uns bei deren Behebung zu helfen."
+      "summary": "Speichern deine Einstellungen und halten die Website am Laufen.",
+      "description": "Umfasst: Einwilligungspräferenzen (cookie-consent), Sprache (pollar-language), Farbschema (pollar-theme), anonyme Besucher-ID (pollar_uid), KI-Assistenten-Sitzungs-ID (pollar-visitor-id), Aktien-Watchlist (stock-watchlist), Länderfilter (pollar_countries) und Spielstand von Powiązania (pollar.powiazania). Sentry – Fehlerüberwachung (keine Cookies, Datenverarbeitung auf Grundlage berechtigten Interesses)."
     },
     "analytics": {
       "title": "Analytische Cookies",
-      "description": "Google Analytics (_ga, _ga_*) – hilft uns zu verstehen, wie Nutzer die Website verwenden. Firebase Analytics – verfolgt In-App-Ereignisse und Nutzereigenschaften (für eingeloggte Nutzer). Contentsquare – ein Tool zur Analyse des Nutzerverhaltens, einschließlich Heatmaps und Sitzungsaufzeichnung. Zusätzlich verwenden wir Umami Analytics – ein Tool, das keine Cookies verwendet und ausschließlich anonymisierte statistische Daten erhebt."
+      "summary": "Helfen uns zu verstehen, wie du die Website nutzt.",
+      "description": "Google Analytics (_ga, _ga_*) – Besuchsstatistiken. Firebase Analytics – In-App-Ereignisse (für eingeloggte Nutzer). Contentsquare – Heatmaps und Sitzungsaufzeichnung. Umami Analytics – anonymisierte Statistiken ohne Cookies."
     },
     "marketing": {
       "title": "Marketing-Cookies",
-      "description": "X (Twitter) Ads – Cookies zur Conversion-Verfolgung und Messung der Wirksamkeit von Werbekampagnen (guest_id, guest_id_marketing, guest_id_ads, personalization_id, muc_ads)."
+      "summary": "Messen die Wirksamkeit unserer Werbekampagnen.",
+      "description": "X (Twitter) Ads – Conversion-Tracking für Werbung (guest_id, guest_id_marketing, guest_id_ads, personalization_id, muc_ads)."
     },
     "notice": "Änderungen an den Cookie-Einstellungen werden automatisch gespeichert und treten sofort in Kraft. Um alle Cookies vollständig zu entfernen, lösche deine Browserdaten.",
     "noticeLabel": "Hinweis:"

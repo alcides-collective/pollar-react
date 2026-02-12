@@ -16,15 +16,18 @@
     "alwaysEnabled": "Zawsze włączone",
     "necessary": {
       "title": "Niezbędne cookies i localStorage",
-      "description": "Wymagane do prawidłowego działania strony i aplikacji. Obejmują: preferencje zgód (cookie-consent), język (pollar-language), motyw kolorystyczny (pollar-theme), anonimowy identyfikator odwiedzającego do zliczania wyświetleń (pollar_uid), identyfikator sesji asystenta AI (pollar-visitor-id), listę obserwowanych instrumentów giełdowych (stock-watchlist), filtr wybranych krajów (pollar_countries) oraz stan gry Powiązania (pollar.powiazania). Dodatkowo korzystamy z Sentry do monitorowania błędów – zbiera dane o awariach aplikacji i pomaga nam je naprawiać."
+      "summary": "Zapisują Twoje ustawienia i umożliwiają działanie serwisu.",
+      "description": "Obejmują: preferencje zgód (cookie-consent), język (pollar-language), motyw kolorystyczny (pollar-theme), anonimowy identyfikator odwiedzającego do zliczania wyświetleń (pollar_uid), identyfikator sesji asystenta AI (pollar-visitor-id), listę obserwowanych instrumentów giełdowych (stock-watchlist), filtr wybranych krajów (pollar_countries) oraz stan gry Powiązania (pollar.powiazania). Sentry – monitorowanie błędów (nie używa cookies, dane przetwarzane na podstawie uzasadnionego interesu)."
     },
     "analytics": {
       "title": "Analityczne cookies",
-      "description": "Google Analytics (_ga, _ga_*) – pomaga nam zrozumieć, w jaki sposób użytkownicy korzystają z serwisu. Firebase Analytics – śledzi zdarzenia w aplikacji i właściwości użytkowników (dla zalogowanych). Contentsquare – narzędzie do analizy zachowań użytkowników, w tym heatmapy i nagrywanie sesji. Dodatkowo korzystamy z Umami Analytics – narzędzia, które nie wykorzystuje cookies i zbiera wyłącznie zanonimizowane dane statystyczne."
+      "summary": "Pomagają nam zrozumieć, jak korzystasz z serwisu.",
+      "description": "Google Analytics (_ga, _ga_*) – statystyki odwiedzin. Firebase Analytics – zdarzenia w aplikacji (dla zalogowanych). Contentsquare – heatmapy i nagrywanie sesji. Umami Analytics – zanonimizowane statystyki bez cookies."
     },
     "marketing": {
       "title": "Marketingowe cookies",
-      "description": "X (Twitter) Ads – pliki cookies wykorzystywane do śledzenia konwersji i mierzenia skuteczności kampanii reklamowych (guest_id, guest_id_marketing, guest_id_ads, personalization_id, muc_ads)."
+      "summary": "Mierzą skuteczność naszych kampanii reklamowych.",
+      "description": "X (Twitter) Ads – śledzenie konwersji reklamowych (guest_id, guest_id_marketing, guest_id_ads, personalization_id, muc_ads)."
     },
     "notice": "Zmiany w ustawieniach cookies są zapisywane automatycznie i obowiązują od razu. Aby całkowicie usunąć wszystkie cookies, wyczyść dane przeglądarki.",
     "noticeLabel": "Informacja:"

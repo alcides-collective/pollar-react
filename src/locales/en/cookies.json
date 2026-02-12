@@ -16,15 +16,18 @@
     "alwaysEnabled": "Always enabled",
     "necessary": {
       "title": "Essential cookies and localStorage",
-      "description": "Required for the website and applications to function properly. These include: consent preferences (cookie-consent), language (pollar-language), color theme (pollar-theme), anonymous visitor ID for counting page views (pollar_uid), AI assistant session ID (pollar-visitor-id), stock watchlist (stock-watchlist), selected countries filter (pollar_countries), and the Connections game state (pollar.powiazania). We also use Sentry for error monitoring — it collects data about application crashes to help us fix them."
+      "summary": "Save your settings and keep the site running.",
+      "description": "Includes: consent preferences (cookie-consent), language (pollar-language), color theme (pollar-theme), anonymous visitor ID (pollar_uid), AI assistant session ID (pollar-visitor-id), stock watchlist (stock-watchlist), countries filter (pollar_countries), and Connections game state (pollar.powiazania). Sentry — error monitoring (no cookies, data processed under legitimate interest)."
     },
     "analytics": {
       "title": "Analytics cookies",
-      "description": "Google Analytics (_ga, _ga_*) — helps us understand how users interact with the website. Firebase Analytics — tracks in-app events and user properties (for logged-in users). Contentsquare — a user behavior analysis tool including heatmaps and session recording. We also use Umami Analytics — a tool that does not use cookies and collects only anonymized statistical data."
+      "summary": "Help us understand how you use the site.",
+      "description": "Google Analytics (_ga, _ga_*) — visit statistics. Firebase Analytics — in-app events (for logged-in users). Contentsquare — heatmaps and session recording. Umami Analytics — anonymized statistics without cookies."
     },
     "marketing": {
       "title": "Marketing cookies",
-      "description": "X (Twitter) Ads — cookies used for conversion tracking and measuring the effectiveness of advertising campaigns (guest_id, guest_id_marketing, guest_id_ads, personalization_id, muc_ads)."
+      "summary": "Measure the effectiveness of our ad campaigns.",
+      "description": "X (Twitter) Ads — ad conversion tracking (guest_id, guest_id_marketing, guest_id_ads, personalization_id, muc_ads)."
     },
     "notice": "Changes to cookie settings are saved automatically and take effect immediately. To completely remove all cookies, clear your browser data.",
     "noticeLabel": "Note:"
