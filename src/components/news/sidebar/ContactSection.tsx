@@ -18,26 +18,12 @@ export function ContactSection() {
       <p className="text-sm text-content leading-relaxed mb-3">
         {t("contact.feedbackText")}
       </p>
-      <div className="flex flex-col gap-1">
-        <a
-          href="mailto:jakubdudek@pollar.news"
-          className="text-sm text-content-heading hover:underline"
-        >
-          jakubdudek@pollar.news
-        </a>
-        <a
-          href="mailto:bartoszkasprzycki@pollar.news"
-          className="text-sm text-content-heading hover:underline"
-        >
-          bartoszkasprzycki@pollar.news
-        </a>
-        <a
-          href="mailto:ignacykonopka@pollar.news"
-          className="text-sm text-content-heading hover:underline"
-        >
-          ignacykonopka@pollar.news
-        </a>
-      </div>
+      <a
+        href="mailto:contact@pollar.news"
+        className="text-sm text-content-heading hover:underline"
+      >
+        contact@pollar.news
+      </a>
     </div>
   );
 }
