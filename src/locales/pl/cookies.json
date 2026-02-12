@@ -22,7 +22,7 @@
     "analytics": {
       "title": "Analityczne cookies",
       "summary": "Pomagają nam zrozumieć, jak korzystasz z serwisu.",
-      "description": "Google Analytics (_ga, _ga_*) – statystyki odwiedzin. Firebase Analytics – zdarzenia w aplikacji (dla zalogowanych). Contentsquare – heatmapy i nagrywanie sesji. Umami Analytics – zanonimizowane statystyki bez cookies."
+      "description": "Google Analytics (_ga, _ga_*) – statystyki odwiedzin. Firebase Analytics – zdarzenia w aplikacji (dla zalogowanych). Microsoft Clarity (_clck, _clsk) – heatmapy i nagrywanie sesji. Contentsquare – heatmapy i nagrywanie sesji. Umami Analytics – zanonimizowane statystyki bez cookies."
     },
     "marketing": {
       "title": "Marketingowe cookies",

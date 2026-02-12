@@ -173,6 +173,10 @@
     "fbAds": {
       "title": "Facebook Ads",
       "p1": "Facebook Ads is a solution offered by Meta that enables the creation and management of advertising campaigns on Facebook, Instagram, and other Meta services. It allows us to target advertisements to selected audience groups based on demographics, interests, and behaviors. <fbAdsLink>Learn more</fbAdsLink>."
+    },
+    "clarity": {
+      "title": "Microsoft Clarity",
+      "p1": "We use Microsoft Clarity to analyze how users interact with our Website. Clarity generates heatmaps and session recordings that help us understand user behavior and improve the interface. Data is processed in an anonymized manner. Clarity does not use data to identify specific individuals. <clarityLink>Learn more</clarityLink>."
     }
   },
   "s9": {
@@ -207,6 +211,16 @@
       "gaStar": {
         "description": "Google Analytics sets this cookie to store and count page views.",
         "retention": "1 year, 1 month, 4 days",
+        "type": "Analytics"
+      },
+      "clck": {
+        "description": "Microsoft Clarity sets this cookie to store the Clarity User ID and preferences, unique to this site. It enables linking multiple visits by the same user.",
+        "retention": "1 year",
+        "type": "Analytics"
+      },
+      "clsk": {
+        "description": "Microsoft Clarity sets this cookie to connect multiple page views by a user into a single Clarity session recording.",
+        "retention": "1 day",
         "type": "Analytics"
       },
       "guestIdMarketing": {

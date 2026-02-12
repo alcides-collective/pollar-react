@@ -340,8 +340,13 @@ export function PrivacyPolicyPage() {
             </p>
 
             <h3 className="font-semibold mt-6 mb-3 text-content-heading">{t('s8.fbAds.title')}</h3>
-            <p className="text-content">
+            <p className="text-content mb-4">
               <Trans i18nKey="s8.fbAds.p1" ns="privacy" components={{ fbAdsLink: <a href="https://www.facebook.com/privacy/policy" className="text-red-600 hover:underline" /> }} />
+            </p>
+
+            <h3 className="font-semibold mt-6 mb-3 text-content-heading">{t('s8.clarity.title')}</h3>
+            <p className="text-content">
+              <Trans i18nKey="s8.clarity.p1" ns="privacy" components={{ clarityLink: <a href="https://learn.microsoft.com/en-us/clarity/setup-and-installation/cookie-consent" className="text-red-600 hover:underline" /> }} />
             </p>
           </section>
 
@@ -386,6 +391,8 @@ export function PrivacyPolicyPage() {
                 <tbody className="text-content">
                   <CookieRow name="_ga" domain=".pollar.pl" cookieKey="ga" t={t} tech="Cookie" />
                   <CookieRow name="_ga_*" domain=".pollar.pl" cookieKey="gaStar" t={t} tech="Cookie" />
+                  <CookieRow name="_clck" domain=".pollar.news" cookieKey="clck" t={t} tech="Cookie" />
+                  <CookieRow name="_clsk" domain=".pollar.news" cookieKey="clsk" t={t} tech="Cookie" />
                   <CookieRow name="guest_id_marketing" domain=".twitter.com" cookieKey="guestIdMarketing" t={t} tech="Cookie" />
                   <CookieRow name="guest_id_ads" domain=".twitter.com" cookieKey="guestIdAds" t={t} tech="Cookie" />
                   <CookieRow name="personalization_id" domain=".twitter.com" cookieKey="personalizationId" t={t} tech="Cookie" />

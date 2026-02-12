@@ -22,6 +22,7 @@ import { useLanguage, useSetLanguage, type Language } from './stores/languageSto
 import { useResolvedTheme, useThemeStore } from './stores/themeStore'
 import { useChartScaleStore } from './stores/chartScaleStore'
 import { useContentsquare } from './hooks/useContentsquare'
+import { useClarity } from './hooks/useClarity'
 import { useCountryRedirect } from './hooks/useCountryRedirect'
 import { useSessionTracking } from './hooks/useSessionTracking'
 import { initUserAnalytics, clearUserAnalytics, trackPageView, trackNewsletterConfirmed, trackNewsletterConfirmFailed } from './lib/analytics'
@@ -482,6 +483,7 @@ function AppContent() {
 
   // Load Contentsquare/Hotjar analytics when consent granted
   useContentsquare()
+  useClarity()
 
   // Track session-level engagement for registered users
   useSessionTracking()
