@@ -12,6 +12,17 @@ const PARTY_NAMES = {
 
 export const ogRoutes = Router();
 
+// Strip security headers that break social media image embedding
+// (Helmet applies CSP/X-Frame-Options globally, but images don't need them)
+ogRoutes.use('/api/og', (req, res, next) => {
+  res.removeHeader('Content-Security-Policy');
+  res.removeHeader('X-Frame-Options');
+  res.removeHeader('X-Content-Type-Options');
+  res.removeHeader('Cross-Origin-Opener-Policy');
+  res.removeHeader('Origin-Agent-Cluster');
+  next();
+});
+
 // OG Image generation endpoint (query params)
 ogRoutes.get('/api/og', async (req, res) => {
   await renderOgImage(res, req.query);
