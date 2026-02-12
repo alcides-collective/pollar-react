@@ -69,7 +69,7 @@ export function EventMap({ location }: EventMapProps) {
     if (!location?.city || lang !== 'pl') return null;
 
     return (
-      <div className="h-32 bg-surface flex items-center justify-center">
+      <div className="h-32 bg-surface flex items-center justify-center rounded-lg">
         <div className="text-center">
           <p className="font-mono text-sm text-content">{location.city}</p>
           {location.country && (
@@ -85,7 +85,7 @@ export function EventMap({ location }: EventMapProps) {
       <h3 className="text-xs font-medium uppercase tracking-wider text-content-subtle mb-3">
         {t('location')}
       </h3>
-      <div ref={mapContainer} className="h-48 overflow-hidden border border-divider" />
+      <div ref={mapContainer} className="h-48 overflow-hidden border border-divider rounded-lg" />
       {lang === 'pl' && (
         <p className="text-xs text-content-subtle mt-2">
           {location.city}{location.country ? `, ${location.country}` : ''}

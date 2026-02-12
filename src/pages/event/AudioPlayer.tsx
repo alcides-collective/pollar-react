@@ -207,7 +207,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
   }
 
   return (
-    <div className={`inline-flex items-center ${small ? 'gap-1' : 'gap-1.5'} ${fullWidth ? 'w-full' : ''}`}>
+    <div className={`inline-flex ${small ? 'items-stretch gap-1' : 'items-center gap-1.5'} ${fullWidth ? 'w-full' : ''}`}>
       <button
         ref={seekRef}
         onMouseDown={handleSeekMouseDown}
@@ -242,7 +242,7 @@ export function AudioPlayer({ audioUrl, small = false, fullWidth = false }: Audi
       >
         <button
           className={`inline-flex items-center justify-center rounded-lg border border-divider hover:border-divider transition-colors text-content ${
-            small ? 'size-[26px] text-xs' : 'size-[34px] text-sm'
+            small ? 'h-full aspect-square text-xs' : 'size-[34px] text-sm'
           }`}
           onClick={() => setShowVolumeSlider(!showVolumeSlider)}
         >
