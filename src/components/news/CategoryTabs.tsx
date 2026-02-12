@@ -1,7 +1,7 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocalizedLink } from '@/components/LocalizedLink';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
 import type { Event } from '../../types/events';
 import { getImageSource } from '@/lib/imageSource';
 import { EventImage } from '../common/EventImage';
@@ -13,6 +13,8 @@ import { extractQuote } from '../../utils/text';
 import { useWikipediaImages } from '../../hooks/useWikipediaImages';
 import { FeaturedEventPreview } from './CategoryTabPreview';
 
+const AUTO_ROTATE_INTERVAL = 8; // seconds
+
 interface CategoryTabsProps {
   groups: Array<[string, Event[]]>;
 }
@@ -20,6 +22,13 @@ interface CategoryTabsProps {
 export function CategoryTabs({ groups }: CategoryTabsProps) {
   const { t } = useTranslation('common');
   const [selectedTab, setSelectedTab] = useState(0);
+  const [isAutoRotating, setIsAutoRotating] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const controlsRef = useRef<ReturnType<typeof animate> | null>(null);
+  const progress = useMotionValue(0);
+  const progressWidth = useTransform(progress, [0, 1], ['0%', '100%']);
+  const isInView = useInView(containerRef, { amount: 0.3 });
   const selectedGroup = groups[selectedTab];
 
   // Preload Wikipedia images for quote authors across ALL tabs
@@ -46,15 +55,68 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
     }
   }, [wikipediaImages]);
 
+  // Desktop detection
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  // Auto-rotation progress animation
+  const startProgress = useCallback((fromValue = 0) => {
+    controlsRef.current?.stop();
+    progress.set(fromValue);
+    const remainingDuration = (1 - fromValue) * AUTO_ROTATE_INTERVAL;
+    controlsRef.current = animate(progress, 1, {
+      duration: remainingDuration,
+      ease: 'linear',
+      onComplete: () => {
+        setSelectedTab((prev) => (prev + 1) % groups.length);
+      },
+    });
+  }, [groups.length, progress]);
+
+  useEffect(() => {
+    if (!isAutoRotating || !isDesktop || !isInView) {
+      controlsRef.current?.stop();
+      return;
+    }
+    startProgress(0);
+    return () => controlsRef.current?.stop();
+  }, [selectedTab, isAutoRotating, isDesktop, isInView, startProgress]);
+
+  // Hover: smooth deceleration to stop
+  const handleMouseEnter = useCallback(() => {
+    if (!isAutoRotating) return;
+    controlsRef.current?.stop();
+    const current = progress.get();
+    controlsRef.current = animate(progress, Math.min(current + 0.03, 1), {
+      duration: 0.6,
+      ease: 'easeOut',
+    });
+  }, [isAutoRotating, progress]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (!isAutoRotating) return;
+    startProgress(progress.get());
+  }, [isAutoRotating, progress, startProgress]);
+
   if (groups.length === 0) return null;
 
   return (
-    <div>
+    <div ref={containerRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className="grid grid-cols-2 md:flex md:items-center md:border-b border-divider">
         {groups.map(([_, events], index) => (
           <button
             key={index}
-            onClick={() => setSelectedTab(index)}
+            onClick={() => {
+              setIsAutoRotating(false);
+              controlsRef.current?.stop();
+              progress.set(0);
+              setSelectedTab(index);
+            }}
             className={`relative text-xs md:text-sm px-4 py-3 md:px-6 md:py-4 transition-colors border-b md:border-b-0 border-r border-divider even:border-r-0 md:even:border-r md:last:border-r-0 ${
               selectedTab === index
                 ? 'text-content-heading font-bold bg-surface'
@@ -62,11 +124,17 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
             }`}
           >
             {events[0]?.metadata?.ultraShortHeadline || t(`categories.${events[0]?.category}`, { defaultValue: events[0]?.category })}
-            {selectedTab === index && (
+            {selectedTab === index && !isAutoRotating && (
               <motion.div
                 layoutId="tabIndicator"
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary hidden md:block"
                 transition={{ duration: 0.2 }}
+              />
+            )}
+            {selectedTab === index && isAutoRotating && (
+              <motion.div
+                className="absolute bottom-0 left-0 h-0.5 bg-primary hidden md:block"
+                style={{ width: progressWidth }}
               />
             )}
           </button>
