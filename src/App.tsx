@@ -26,6 +26,7 @@ import { useCountryRedirect } from './hooks/useCountryRedirect'
 import { useSessionTracking } from './hooks/useSessionTracking'
 import { initUserAnalytics, clearUserAnalytics, trackPageView, trackNewsletterConfirmed, trackNewsletterConfirmFailed } from './lib/analytics'
 import { captureUtmParams } from './lib/utm'
+import { API_BASE } from './config/api'
 import { useTranslation } from 'react-i18next'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
 import { parseCountrySlugsParam, ALL_COUNTRY_SEGMENTS } from './utils/countrySlug'
@@ -404,23 +405,35 @@ function AppContent() {
     return () => mq.removeEventListener('change', handler)
   }, [onSystemThemeChange])
 
-  // Newsletter confirmation toast
+  // Newsletter confirmation — handle ?confirm_token= from email link
   const { t: tNewsletter } = useTranslation('newsletter')
   const navigate = useNavigate()
   useEffect(() => {
     const params = new URLSearchParams(location.search)
-    const confirmed = params.get('confirmed')
-    if (confirmed === 'true') {
-      toast.success(tNewsletter('confirmToast.success'))
-      trackNewsletterConfirmed()
-      params.delete('confirmed')
-      navigate({ pathname: location.pathname, search: params.toString() }, { replace: true })
-    } else if (confirmed === 'error') {
-      toast.error(tNewsletter('confirmToast.error'))
-      trackNewsletterConfirmFailed()
-      params.delete('confirmed')
-      navigate({ pathname: location.pathname, search: params.toString() }, { replace: true })
-    }
+    const confirmToken = params.get('confirm_token')
+    if (!confirmToken) return
+
+    params.delete('confirm_token')
+    navigate({ pathname: location.pathname, search: params.toString() }, { replace: true })
+
+    fetch(`${API_BASE}/newsletter/confirm`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: confirmToken }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          toast.success(tNewsletter('confirmToast.success'))
+          trackNewsletterConfirmed()
+        } else {
+          toast.error(tNewsletter('confirmToast.error'))
+          trackNewsletterConfirmFailed()
+        }
+      })
+      .catch(() => {
+        toast.error(tNewsletter('confirmToast.error'))
+        trackNewsletterConfirmFailed()
+      })
   }, [location.search, tNewsletter, navigate, location.pathname])
 
   // Track whether user was ever logged in — so we only reset on actual logout,

@@ -4,7 +4,6 @@
   "buildCommand": "vite build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://pollar.up.railway.app/api/:path*" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
