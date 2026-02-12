@@ -1,0 +1,14 @@
+{
+  "congratulations": "Congratulations!",
+  "gameOver": "Game Over",
+  "playAgain": "Play again",
+  "newPuzzleDaily": "New puzzle every day at 6:00 AM",
+  "copied": "Copied!",
+  "share": "Share",
+  "shareTitle": "Connections {{date}}",
+  "hint": "Hint",
+  "check": "Check",
+  "oneAway": "Almost! One word away from solving.",
+  "loading": "Loading...",
+  "category": "Category:"
+}

@@ -1,0 +1,14 @@
+{
+  "congratulations": "Gratulacje!",
+  "gameOver": "Koniec gry",
+  "playAgain": "Zagraj ponownie",
+  "newPuzzleDaily": "Nowa zagadka codziennie o 6:00",
+  "copied": "Skopiowano!",
+  "share": "Udostępnij",
+  "shareTitle": "Powiązania {{date}}",
+  "hint": "Podpowiedź",
+  "check": "Sprawdź",
+  "oneAway": "Prawie! Jedno słowo od rozwiązania.",
+  "loading": "Ładowanie...",
+  "category": "Kategoria:"
+}

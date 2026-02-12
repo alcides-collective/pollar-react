@@ -1,0 +1,14 @@
+{
+  "congratulations": "Glückwunsch!",
+  "gameOver": "Spiel vorbei",
+  "playAgain": "Nochmal spielen",
+  "newPuzzleDaily": "Neues Rätsel täglich um 6:00 Uhr",
+  "copied": "Kopiert!",
+  "share": "Teilen",
+  "shareTitle": "Verbindungen {{date}}",
+  "hint": "Hinweis",
+  "check": "Prüfen",
+  "oneAway": "Fast! Ein Wort von der Lösung entfernt.",
+  "loading": "Laden...",
+  "category": "Kategorie:"
+}

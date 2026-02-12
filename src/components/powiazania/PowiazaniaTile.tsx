@@ -25,9 +25,9 @@ export function PowiazaniaTile({
     <button
       onClick={onClick}
       className={cn(
-        'aspect-square p-2',
+        'p-1 overflow-hidden',
         'flex items-center justify-center text-center',
-        'text-[11px] sm:text-xs uppercase tracking-[0.05em]',
+        'text-[11px] sm:text-xs uppercase tracking-[0.05em] leading-tight',
         'border transition-all duration-150',
         word.isSelected
           ? 'bg-black text-white border-transparent dark:bg-white dark:text-black'

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { usePowiazaniaStore } from '@/stores/powiazaniaStore';
@@ -12,6 +13,7 @@ import {
 import '@/components/powiazania/powiazania.css';
 
 export function PowiazaniaPage() {
+  const { t } = useTranslation('powiazania');
   // Use individual selectors to avoid infinite loops
   const puzzle = usePowiazaniaStore((state) => state.puzzle);
   const words = usePowiazaniaStore((state) => state.words);
@@ -154,7 +156,7 @@ export function PowiazaniaPage() {
 
       return;
     } else if (result.isOneAway) {
-      toast('Prawie! Jedno słowo od rozwiązania.', {
+      toast(t('oneAway'), {
         position: 'top-center',
         duration: 2000,
         className: 'text-orange-500',
@@ -187,7 +189,7 @@ export function PowiazaniaPage() {
       >
         <div className="flex flex-col items-center justify-center py-12">
           <div className="animate-pulse text-black/40 dark:text-white/40 text-sm tracking-[0.05em]">
-            Ładowanie...
+            {t('loading')}
           </div>
         </div>
       </div>
@@ -200,7 +202,7 @@ export function PowiazaniaPage() {
       style={
         {
           '--pow-tile-gap': '0.5rem',
-          '--pow-tile-size': 'calc((min(100vw, 32rem) - 2rem - 3 * 0.5rem) / 4)',
+          '--pow-tile-size': 'min(calc((min(100vw, 32rem) - 2rem - 1.5rem) / 4), calc((100vh - 120px - 11rem) / 4))',
         } as React.CSSProperties
       }
     >
@@ -251,7 +253,7 @@ export function PowiazaniaPage() {
         {/* Hint display */}
         {hintUsed && hintCategoryIndex !== null && (
           <div className="text-center py-4 text-sm text-black/60 dark:text-white/60">
-            Kategoria:{' '}
+            {t('category')}{' '}
             <span className="font-semibold">
               {puzzle?.categories[hintCategoryIndex].name}
             </span>

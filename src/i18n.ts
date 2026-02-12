@@ -25,6 +25,7 @@ import plNewsletter from './locales/pl/newsletter.json';
 import plPrivacy from './locales/pl/privacy.json';
 import plContact from './locales/pl/contact.json';
 import plTerminal from './locales/pl/terminal.json';
+import plPowiazania from './locales/pl/powiazania.json';
 
 // English translations
 import enCommon from './locales/en/common.json';
@@ -48,6 +49,7 @@ import enNewsletter from './locales/en/newsletter.json';
 import enPrivacy from './locales/en/privacy.json';
 import enContact from './locales/en/contact.json';
 import enTerminal from './locales/en/terminal.json';
+import enPowiazania from './locales/en/powiazania.json';
 
 // German translations
 import deCommon from './locales/de/common.json';
@@ -71,6 +73,7 @@ import deNewsletter from './locales/de/newsletter.json';
 import dePrivacy from './locales/de/privacy.json';
 import deContact from './locales/de/contact.json';
 import deTerminal from './locales/de/terminal.json';
+import dePowiazania from './locales/de/powiazania.json';
 
 const resources = {
   pl: {
@@ -95,6 +98,7 @@ const resources = {
     privacy: plPrivacy,
     contact: plContact,
     terminal: plTerminal,
+    powiazania: plPowiazania,
   },
   en: {
     common: enCommon,
@@ -118,6 +122,7 @@ const resources = {
     privacy: enPrivacy,
     contact: enContact,
     terminal: enTerminal,
+    powiazania: enPowiazania,
   },
   de: {
     common: deCommon,
@@ -141,6 +146,7 @@ const resources = {
     privacy: dePrivacy,
     contact: deContact,
     terminal: deTerminal,
+    powiazania: dePowiazania,
   },
 };
 

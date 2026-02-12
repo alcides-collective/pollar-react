@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { PowiazaniaPuzzle, PowiazaniaGuess } from '@/types/powiazania';
 
 interface PowiazaniaShareProps {
@@ -14,12 +15,13 @@ const EMOJI_MAP: Record<number, string> = {
 };
 
 export function PowiazaniaShare({ puzzle, guesses }: PowiazaniaShareProps) {
+  const { t } = useTranslation('powiazania');
   const [copied, setCopied] = useState(false);
 
   function generateShareText(): string {
     if (!puzzle) return '';
 
-    const lines: string[] = [`Powiązania ${puzzle.date}`, ''];
+    const lines: string[] = [t('shareTitle', { date: puzzle.date }), ''];
 
     guesses.forEach((guess) => {
       if (guess.isCorrect && guess.categoryIndex !== null) {
@@ -72,7 +74,7 @@ export function PowiazaniaShare({ puzzle, guesses }: PowiazaniaShareProps) {
       className="w-full px-4 py-2 text-[11px] tracking-[0.08em] uppercase border border-black/10 hover:bg-black hover:text-white transition-colors dark:border-white/10 dark:text-white dark:hover:bg-white dark:hover:text-black"
       onClick={handleShare}
     >
-      {copied ? 'Skopiowano!' : 'Udostępnij'}
+      {copied ? t('copied') : t('share')}
     </button>
   );
 }

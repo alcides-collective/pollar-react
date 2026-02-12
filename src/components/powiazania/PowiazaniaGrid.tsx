@@ -36,7 +36,7 @@ export function PowiazaniaGrid({
   }
 
   return (
-    <div className="grid grid-cols-4 gap-2 mb-4">
+    <div className="grid grid-cols-4 gap-2 mb-4" style={{ gridAutoRows: 'var(--pow-tile-size)' }}>
       {words.map((word) => (
         <PowiazaniaTile
           key={word.id}

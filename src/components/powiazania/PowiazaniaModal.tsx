@@ -1,4 +1,5 @@
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import type { GameStatus, PowiazaniaPuzzle, PowiazaniaGuess } from '@/types/powiazania';
 import { PowiazaniaShare } from './PowiazaniaShare';
 
@@ -15,6 +16,7 @@ export function PowiazaniaModal({
   guesses,
   onPlayAgain,
 }: PowiazaniaModalProps) {
+  const { t } = useTranslation('powiazania');
   // In React 18+, createPortal works during SSR, so no need for mounted state
   if (typeof document === 'undefined') return null;
 
@@ -29,7 +31,7 @@ export function PowiazaniaModal({
         style={{ fontFamily: "'HK Grotesk', sans-serif" }}
       >
         <h2 className="text-xl mb-2">
-          {status === 'won' ? 'Gratulacje!' : 'Koniec gry'}
+          {status === 'won' ? t('congratulations') : t('gameOver')}
         </h2>
 
         {puzzle && (
@@ -57,12 +59,12 @@ export function PowiazaniaModal({
             className="flex-1 px-6 py-2 text-[11px] tracking-[0.08em] uppercase bg-black text-white hover:opacity-80 transition-opacity w-full dark:bg-white dark:text-black"
             onClick={onPlayAgain}
           >
-            Zagraj ponownie
+            {t('playAgain')}
           </button>
         </div>
 
         <p className="mt-3 text-[10px] text-black/50 dark:text-white/50">
-          Nowa zagadka codziennie o 6:00
+          {t('newPuzzleDaily')}
         </p>
       </div>
     </div>

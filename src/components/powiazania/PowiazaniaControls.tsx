@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { GameStatus } from '@/types/powiazania';
 
@@ -16,6 +17,7 @@ export function PowiazaniaControls({
   onSubmit,
   onHint,
 }: PowiazaniaControlsProps) {
+  const { t } = useTranslation('powiazania');
   return (
     <div className="flex justify-center gap-2 mt-4 w-full">
       <button
@@ -28,7 +30,7 @@ export function PowiazaniaControls({
         onClick={onHint}
         disabled={hintUsed || gameStatus !== 'playing'}
       >
-        Podpowiedź
+        {t('hint')}
       </button>
 
       <button
@@ -41,7 +43,7 @@ export function PowiazaniaControls({
         onClick={onSubmit}
         disabled={!canSubmit}
       >
-        Sprawdź
+        {t('check')}
       </button>
     </div>
   );
