@@ -49,8 +49,8 @@ export function PowiazaniaShare({ puzzle, guesses }: PowiazaniaShareProps) {
       await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
+    } catch {
+      // Clipboard API may fail without a fresh user gesture (e.g. after share dialog)
     }
   }
 
@@ -61,8 +61,10 @@ export function PowiazaniaShare({ puzzle, guesses }: PowiazaniaShareProps) {
       try {
         await navigator.share({ text });
         return;
-      } catch {
-        // User cancelled or share failed, fall back to clipboard
+      } catch (err) {
+        // User cancelled share — don't fall back to clipboard since the
+        // user gesture context has expired and clipboard will also fail
+        if (err instanceof DOMException && err.name === 'AbortError') return;
       }
     }
 
