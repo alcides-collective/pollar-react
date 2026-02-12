@@ -6,7 +6,11 @@ import { CONNECTION_CONFIGS } from '@/types/graph';
 
 const MODE_KEYS: VisualizationMode[] = ['force', 'radial', 'hierarchical', 'timeline'];
 
-export function ControlsPanel() {
+interface ControlsPanelProps {
+  maxTrendingScore: number;
+}
+
+export function ControlsPanel({ maxTrendingScore }: ControlsPanelProps) {
   const { t } = useTranslation('graf');
   const mode = useGrafStore((s) => s.mode);
   const setMode = useGrafStore((s) => s.setMode);
@@ -89,12 +93,17 @@ export function ControlsPanel() {
           <input
             type="range"
             min="0"
-            max="100"
+            max={maxTrendingScore}
             value={minTrendingScore}
             onChange={(e) => setMinTrendingScore(Number(e.target.value))}
             className="graf-slider"
           />
           <span className="graf-slider-value">{minTrendingScore}</span>
+          {minTrendingScore < maxTrendingScore * 0.25 && (
+            <span className="graf-slider-warning">
+              <i className="ri-alert-line" /> Wiele wydarzeń może obniżać wydajność
+            </span>
+          )}
         </div>
       </div>
 

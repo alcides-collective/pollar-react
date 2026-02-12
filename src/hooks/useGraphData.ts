@@ -158,6 +158,50 @@ export function useGraphData() {
     [graphData.nodes]
   );
 
+  const getNodeConnections = useCallback(
+    (nodeId: string) => {
+      const nodeLinks = graphData.links.filter((link) => {
+        const sourceId =
+          typeof link.source === 'string'
+            ? link.source
+            : (link.source as GraphNode).id;
+        const targetId =
+          typeof link.target === 'string'
+            ? link.target
+            : (link.target as GraphNode).id;
+        return sourceId === nodeId || targetId === nodeId;
+      });
+
+      const byType: Record<
+        string,
+        { count: number; totalStrength: number; items: Map<string, number> }
+      > = {};
+
+      for (const link of nodeLinks) {
+        if (!byType[link.type]) {
+          byType[link.type] = { count: 0, totalStrength: 0, items: new Map() };
+        }
+        const entry = byType[link.type];
+        entry.count++;
+        entry.totalStrength += link.strength;
+        for (const item of link.sharedItems) {
+          entry.items.set(item, (entry.items.get(item) || 0) + 1);
+        }
+      }
+
+      return Object.entries(byType).map(([type, data]) => ({
+        type: type as ConnectionType,
+        count: data.count,
+        totalStrength: data.totalStrength,
+        maxStrength: CONNECTION_CONFIGS[type as ConnectionType].strength * 3,
+        items: [...data.items.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .map(([name, count]) => ({ name, count })),
+      }));
+    },
+    [graphData.links]
+  );
+
   return {
     graphData,
     loading,
@@ -166,5 +210,6 @@ export function useGraphData() {
     linkCount: graphData.links.length,
     getConnectedNodeIds,
     getNodeById,
+    getNodeConnections,
   };
 }

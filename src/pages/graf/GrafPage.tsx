@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useLanguageNavigate } from '@/hooks/useLanguageNavigate';
 import { useGrafStore } from '@/stores/grafStore';
@@ -6,6 +6,7 @@ import { useGraphData } from '@/hooks/useGraphData';
 import { GraphCanvas } from './components/GraphCanvas';
 import { ControlsPanel } from './components/ControlsPanel';
 import { EventDetailsPanel } from './components/EventDetailsPanel';
+import { HoverInfoPanel } from './components/HoverInfoPanel';
 import { LegendPanel } from './components/LegendPanel';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import './graf.css';
@@ -14,18 +15,52 @@ const MOBILE_BREAKPOINT = 768;
 
 export function GrafPage() {
   const navigate = useLanguageNavigate();
-  const { graphData, loading, nodeCount, linkCount, getConnectedNodeIds, getNodeById } =
-    useGraphData();
+  const {
+    graphData,
+    loading,
+    nodeCount,
+    linkCount,
+    getConnectedNodeIds,
+    getNodeById,
+    getNodeConnections,
+  } = useGraphData();
 
   const selectedNodeId = useGrafStore((s) => s.selectedNodeId);
+  const hoveredNodeId = useGrafStore((s) => s.hoveredNodeId);
   const showControls = useGrafStore((s) => s.showControls);
   const showLegend = useGrafStore((s) => s.showLegend);
   const hoverNode = useGrafStore((s) => s.hoverNode);
   const selectNode = useGrafStore((s) => s.selectNode);
   const setShowControls = useGrafStore((s) => s.setShowControls);
   const setShowLegend = useGrafStore((s) => s.setShowLegend);
+  const setMinTrendingScore = useGrafStore((s) => s.setMinTrendingScore);
 
   const selectedNode = selectedNodeId ? getNodeById(selectedNodeId) : undefined;
+  const hoveredNode = hoveredNodeId ? getNodeById(hoveredNodeId) : undefined;
+
+  const hoverConnections = useMemo(
+    () => (hoveredNodeId ? getNodeConnections(hoveredNodeId) : []),
+    [hoveredNodeId, getNodeConnections]
+  );
+
+  const hoverNeighborCount = useMemo(
+    () => (hoveredNodeId ? getConnectedNodeIds(hoveredNodeId).length : 0),
+    [hoveredNodeId, getConnectedNodeIds]
+  );
+
+  const maxTrendingScore = useMemo(
+    () => Math.max(1, ...graphData.nodes.map((n) => n.trendingScore)),
+    [graphData.nodes]
+  );
+
+  // Set initial trending score to middle of scale once data loads
+  const didSetInitialScore = useRef(false);
+  useEffect(() => {
+    if (!didSetInitialScore.current && maxTrendingScore > 1) {
+      setMinTrendingScore(Math.round(maxTrendingScore / 2));
+      didSetInitialScore.current = true;
+    }
+  }, [maxTrendingScore, setMinTrendingScore]);
 
   // Mobile: close both panels on mount, Desktop: keep open
   useEffect(() => {
@@ -157,7 +192,7 @@ export function GrafPage() {
       </div>
 
       <AnimatePresence>
-        {showControls && <ControlsPanel />}
+        {showControls && <ControlsPanel maxTrendingScore={maxTrendingScore} />}
       </AnimatePresence>
 
       <AnimatePresence>
@@ -170,6 +205,16 @@ export function GrafPage() {
             node={selectedNode}
             onClose={() => selectNode(null)}
             onNavigate={() => navigate(`/event/${selectedNode.id}`)}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {hoveredNode && !selectedNode && (
+          <HoverInfoPanel
+            node={hoveredNode}
+            neighborCount={hoverNeighborCount}
+            connections={hoverConnections}
           />
         )}
       </AnimatePresence>

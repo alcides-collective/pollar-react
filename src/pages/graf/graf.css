@@ -291,6 +291,19 @@
   font-variant-numeric: tabular-nums;
 }
 
+.graf-slider-warning {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #f59e0b;
+  margin-top: 2px;
+}
+
+.graf-slider-warning i {
+  font-size: 13px;
+}
+
 .graf-reset-button {
   width: 100%;
   margin-top: 8px;
@@ -668,6 +681,146 @@
 
   .graf-hint {
     display: none;
+  }
+}
+
+/* Hover Info Panel — bottom center */
+.graf-hover-panel {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: rgba(24, 24, 27, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  padding: 12px 16px;
+  z-index: 15;
+  pointer-events: none;
+  min-width: 260px;
+  max-width: 400px;
+}
+
+.graf-hover-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #27272a;
+}
+
+.graf-hover-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.graf-hover-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fafafa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.graf-hover-meta {
+  margin-left: auto;
+  font-size: 11px;
+  color: #71717a;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.graf-hover-connections {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.graf-hover-conn-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.graf-hover-conn-header i {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.graf-hover-conn-label {
+  color: #a1a1aa;
+  white-space: nowrap;
+}
+
+.graf-hover-conn-count {
+  color: #52525b;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.graf-hover-strength-bar {
+  flex: 1;
+  height: 3px;
+  background: #27272a;
+  border-radius: 2px;
+  min-width: 40px;
+  overflow: hidden;
+}
+
+.graf-hover-strength-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.2s ease;
+}
+
+.graf-hover-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+  padding-left: 19px;
+}
+
+.graf-hover-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  background: #18181b;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #a1a1aa;
+}
+
+.graf-hover-item-count {
+  font-size: 10px;
+  color: #52525b;
+  font-variant-numeric: tabular-nums;
+}
+
+.graf-hover-item-more {
+  font-size: 11px;
+  color: #52525b;
+  padding: 2px 4px;
+}
+
+.graf-hover-empty {
+  font-size: 12px;
+  color: #52525b;
+}
+
+@media (max-width: 768px) {
+  .graf-hover-panel {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    min-width: 0;
+    max-width: none;
   }
 }
 
