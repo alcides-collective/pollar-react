@@ -1,10 +1,10 @@
 import { API_BASE } from '@/config/api';
 
-export async function subscribeToNewsletter(email: string): Promise<void> {
+export async function subscribeToNewsletter(email: string, lang: string = 'pl'): Promise<void> {
   const response = await fetch(`${API_BASE}/newsletter/subscribe`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({ email, lang }),
   });
 
   if (!response.ok) {

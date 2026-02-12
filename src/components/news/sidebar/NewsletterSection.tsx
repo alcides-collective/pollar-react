@@ -6,9 +6,11 @@ import { Input } from '@/components/ui/input';
 import { fadeIn } from '@/lib/animations';
 import { trackNewsletterSignup } from '@/lib/analytics';
 import { subscribeToNewsletter } from '@/services/newsletterService';
+import { useLanguage } from '@/stores/languageStore';
 
 export function NewsletterSection() {
   const { t } = useTranslation('newsletter');
+  const language = useLanguage();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
@@ -19,7 +21,7 @@ export function NewsletterSection() {
     setStatus('loading');
 
     try {
-      await subscribeToNewsletter(email);
+      await subscribeToNewsletter(email, language);
       trackNewsletterSignup({ source: 'sidebar' });
       setStatus('success');
       setEmail('');
