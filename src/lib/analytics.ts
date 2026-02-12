@@ -358,6 +358,16 @@ export function trackNewsletterSignup(params: {
   logEvent(analytics, 'newsletter_signup', params);
 }
 
+export function trackNewsletterConfirmed(): void {
+  if (!analytics) return;
+  logEvent(analytics, 'newsletter_confirmed');
+}
+
+export function trackNewsletterConfirmFailed(): void {
+  if (!analytics) return;
+  logEvent(analytics, 'newsletter_confirm_failed');
+}
+
 // ============ Giełda (Stock Market) Events ============
 
 export function trackStockViewed(params: {

@@ -24,7 +24,7 @@ import { useChartScaleStore } from './stores/chartScaleStore'
 import { useContentsquare } from './hooks/useContentsquare'
 import { useCountryRedirect } from './hooks/useCountryRedirect'
 import { useSessionTracking } from './hooks/useSessionTracking'
-import { initUserAnalytics, clearUserAnalytics, trackPageView } from './lib/analytics'
+import { initUserAnalytics, clearUserAnalytics, trackPageView, trackNewsletterConfirmed, trackNewsletterConfirmFailed } from './lib/analytics'
 import { captureUtmParams } from './lib/utm'
 import { useTranslation } from 'react-i18next'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
@@ -412,10 +412,12 @@ function AppContent() {
     const confirmed = params.get('confirmed')
     if (confirmed === 'true') {
       toast.success(tNewsletter('confirmToast.success'))
+      trackNewsletterConfirmed()
       params.delete('confirmed')
       navigate({ pathname: location.pathname, search: params.toString() }, { replace: true })
     } else if (confirmed === 'error') {
       toast.error(tNewsletter('confirmToast.error'))
+      trackNewsletterConfirmFailed()
       params.delete('confirmed')
       navigate({ pathname: location.pathname, search: params.toString() }, { replace: true })
     }
