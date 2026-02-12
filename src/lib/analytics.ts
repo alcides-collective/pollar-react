@@ -11,11 +11,29 @@ import {
 
 type AuthMethod = 'email' | 'google' | 'apple';
 
+// ============ Admin Filter ============
+
+const ADMIN_UIDS: ReadonlySet<string> = new Set([
+  's5O4nQYjk6XueZ15HfnC7yNoiqg1',
+  'U52GJqLU2VYPb99nBxCagaauSdb2',
+  'oeBOvJmekeaZlgkukURhwKDu7zh2',
+]);
+
+function isAdmin(): boolean {
+  return Boolean(auth?.currentUser?.uid && ADMIN_UIDS.has(auth.currentUser.uid));
+}
+
 // ============ Event Source Types ============
 
 export type EventSource = 'feed' | 'brief' | 'map' | 'search' | 'notification' | 'similar' | 'archive' | 'direct';
 
 // ============ User Identity ============
+
+/** Returns the analytics instance only if the current user is not an admin. */
+function getAnalyticsIfNotAdmin(): typeof analytics {
+  if (isAdmin()) return null;
+  return analytics;
+}
 
 /**
  * Set Firebase Analytics user identity after login.
@@ -26,7 +44,7 @@ export function initUserAnalytics(
   profile: UserProfile | null,
   language: string
 ): void {
-  if (!analytics) return;
+  if (!analytics || ADMIN_UIDS.has(user.uid)) return;
 
   setUserId(analytics, user.uid);
 
@@ -58,48 +76,48 @@ export function clearUserAnalytics(): void {
  * Track user sign up event
  */
 export function trackSignUp(method: AuthMethod) {
-  if (!analytics) return;
-  logEvent(analytics, 'sign_up', { method });
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'sign_up', { method });
 }
 
 /**
  * Track user login event
  */
 export function trackLogin(method: AuthMethod) {
-  if (!analytics) return;
-  logEvent(analytics, 'login', { method });
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'login', { method });
 }
 
 /**
  * Track user logout event
  */
 export function trackLogout() {
-  if (!analytics) return;
-  logEvent(analytics, 'logout');
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'logout');
 }
 
 /**
  * Track bookmark event (add/remove)
  */
 export function trackBookmarkEvent(eventId: string, action: 'add' | 'remove') {
-  if (!analytics) return;
-  logEvent(analytics, 'bookmark_event', { event_id: eventId, action });
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'bookmark_event', { event_id: eventId, action });
 }
 
 /**
  * Track hidden category toggle
  */
 export function trackHiddenCategory(category: string, action: 'hide' | 'show') {
-  if (!analytics) return;
-  logEvent(analytics, 'hidden_category', { category, action });
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'hidden_category', { category, action });
 }
 
 /**
  * Track avatar upload
  */
 export function trackAvatarUpload(success: boolean) {
-  if (!analytics) return;
-  logEvent(analytics, 'avatar_upload', { success });
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'avatar_upload', { success });
 }
 
 /**
@@ -109,6 +127,7 @@ export function trackAvatarUpload(success: boolean) {
  * so sending via both caused ~2× page_view inflation.
  */
 export function trackPageView(pageName: string, pageParams?: Record<string, string>) {
+  if (isAdmin()) return;
   // gtag.js (GA4 direct) — works even before consent (queued by consent mode)
   if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('event', 'page_view', {
@@ -123,8 +142,8 @@ export function trackPageView(pageName: string, pageParams?: Record<string, stri
  * Track event detail view
  */
 export function trackEventView(eventId: string, category: string) {
-  if (!analytics) return;
-  logEvent(analytics, 'view_event', {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'view_event', {
     event_id: eventId,
     category,
   });
@@ -134,8 +153,8 @@ export function trackEventView(eventId: string, category: string) {
  * Track search
  */
 export function trackSearch(query: string, resultsCount: number) {
-  if (!analytics) return;
-  logEvent(analytics, 'search', {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'search', {
     search_term: query,
     results_count: resultsCount,
   });
@@ -176,8 +195,8 @@ export function trackEventOpened(params: {
   category: string;
   source: EventSource;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'event_opened', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'event_opened', params);
   const uid = auth?.currentUser?.uid;
   if (uid) _recordEventOpened(uid);
 }
@@ -190,8 +209,8 @@ export function trackBriefViewed(params: {
   time_spent_seconds: number;
   sections_count: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'brief_viewed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'brief_viewed', params);
   const uid = auth?.currentUser?.uid;
   if (uid) _recordBriefViewed(uid);
 }
@@ -205,8 +224,8 @@ export function trackSessionSummary(params: {
   brief_viewed: boolean;
   session_duration_seconds: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'session_summary', {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'session_summary', {
     events_viewed: params.events_viewed,
     sources_clicked: params.sources_clicked,
     brief_viewed: String(params.brief_viewed),
@@ -224,8 +243,8 @@ export function trackSourceClicked(params: {
   source_name: string;
   position: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'source_clicked', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'source_clicked', params);
   const uid = auth?.currentUser?.uid;
   if (uid) _recordSourceClicked(uid);
 }
@@ -239,8 +258,8 @@ export function trackScrollMilestone(params: {
   time_to_milestone_seconds: number;
   content_id?: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'scroll_milestone', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'scroll_milestone', params);
 }
 
 /**
@@ -250,8 +269,8 @@ export function trackSearchPerformed(params: {
   query: string;
   results_count: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'search_performed', {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'search_performed', {
     search_term: params.query,
     results_count: params.results_count,
   });
@@ -265,8 +284,8 @@ export function trackSearchResultClicked(params: {
   result_id: string;
   position: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'search_result_clicked', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'search_result_clicked', params);
 }
 
 /**
@@ -277,8 +296,8 @@ export function trackMapUsed(params: {
   event_id?: string;
   cluster_size?: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'map_used', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'map_used', params);
   const uid = auth?.currentUser?.uid;
   if (uid) _recordMapUsed(uid);
 }
@@ -290,35 +309,35 @@ export function trackAIMessageSent(params: {
   is_suggestion: boolean;
   language: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'ai_message_sent', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'ai_message_sent', params);
 }
 
 export function trackAISuggestionClicked(params: {
   suggestion_text: string;
   position: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'ai_suggestion_clicked', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'ai_suggestion_clicked', params);
 }
 
 export function trackAIConversationStarted(params: {
   language: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'ai_conversation_started', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'ai_conversation_started', params);
 }
 
 export function trackAIRateLimitReached(params: {
   remaining: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'ai_rate_limit_reached', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'ai_rate_limit_reached', params);
 }
 
 export function trackAIConversationReset(): void {
-  if (!analytics) return;
-  logEvent(analytics, 'ai_conversation_reset');
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'ai_conversation_reset');
 }
 
 // ============ Share Events ============
@@ -328,8 +347,8 @@ export function trackShareInitiated(params: {
   content_type: string;
   content_id?: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'share_initiated', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'share_initiated', params);
 }
 
 // ============ Contact Events ============
@@ -338,15 +357,15 @@ export function trackContactFormSubmit(params: {
   subject: string;
   success: boolean;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'contact_form_submit', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'contact_form_submit', params);
 }
 
 export function trackFAQItemExpanded(params: {
   question_index: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'faq_item_expanded', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'faq_item_expanded', params);
 }
 
 // ============ Newsletter Events ============
@@ -354,18 +373,18 @@ export function trackFAQItemExpanded(params: {
 export function trackNewsletterSignup(params: {
   source: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'newsletter_signup', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'newsletter_signup', params);
 }
 
 export function trackNewsletterConfirmed(): void {
-  if (!analytics) return;
-  logEvent(analytics, 'newsletter_confirmed');
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'newsletter_confirmed');
 }
 
 export function trackNewsletterConfirmFailed(): void {
-  if (!analytics) return;
-  logEvent(analytics, 'newsletter_confirm_failed');
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'newsletter_confirm_failed');
 }
 
 // ============ Giełda (Stock Market) Events ============
@@ -373,24 +392,24 @@ export function trackNewsletterConfirmFailed(): void {
 export function trackStockViewed(params: {
   symbol: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'stock_viewed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'stock_viewed', params);
 }
 
 export function trackChartRangeChanged(params: {
   symbol: string;
   range: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'chart_range_changed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'chart_range_changed', params);
 }
 
 export function trackWatchlistToggle(params: {
   symbol: string;
   action: 'add' | 'remove';
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'watchlist_toggle', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'watchlist_toggle', params);
 }
 
 // ============ Sejm (Parliament) Events ============
@@ -400,8 +419,8 @@ export function trackMPViewed(params: {
   mp_name: string;
   club: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'mp_viewed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'mp_viewed', params);
 }
 
 export function trackMPFollowToggle(params: {
@@ -409,23 +428,23 @@ export function trackMPFollowToggle(params: {
   mp_name: string;
   action: 'follow' | 'unfollow';
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'mp_follow_toggle', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'mp_follow_toggle', params);
 }
 
 export function trackVotingViewed(params: {
   sitting: number;
   voting_number: number;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'voting_viewed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'voting_viewed', params);
 }
 
 export function trackCommitteeViewed(params: {
   code: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'committee_viewed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'committee_viewed', params);
 }
 
 // ============ Navigation & Discovery Events ============
@@ -434,16 +453,16 @@ export function trackCategoryTabClicked(params: {
   category: string;
   is_auto_rotate: boolean;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'category_tab_clicked', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'category_tab_clicked', params);
 }
 
 export function trackSimilarEventClicked(params: {
   source_event_id: string;
   target_event_id: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'similar_event_clicked', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'similar_event_clicked', params);
 }
 
 // ============ Profile & Settings Events ============
@@ -451,32 +470,32 @@ export function trackSimilarEventClicked(params: {
 export function trackThemeChanged(params: {
   theme: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'theme_changed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'theme_changed', params);
 }
 
 export function trackLanguageChanged(params: {
   language: string;
   previous_language: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'language_changed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'language_changed', params);
 }
 
 export function trackFavoriteCategoryToggle(params: {
   category: string;
   action: 'add' | 'remove';
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'favorite_category_toggle', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'favorite_category_toggle', params);
 }
 
 export function trackFavoriteCountryToggle(params: {
   country: string;
   action: 'add' | 'remove';
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'favorite_country_toggle', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'favorite_country_toggle', params);
 }
 
 // ============ Dane (Data) Events ============
@@ -484,8 +503,8 @@ export function trackFavoriteCountryToggle(params: {
 export function trackDatasetViewed(params: {
   dataset: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'dataset_viewed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'dataset_viewed', params);
 }
 
 // ============ Content Events ============
@@ -494,23 +513,23 @@ export function trackFelietonViewed(params: {
   felieton_id: string;
   category: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'felieton_viewed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'felieton_viewed', params);
 }
 
 export function trackBlogPostViewed(params: {
   slug: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'blog_post_viewed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'blog_post_viewed', params);
 }
 
 export function trackBlogShareClicked(params: {
   slug: string;
   platform: 'twitter' | 'facebook' | 'linkedin' | 'clipboard';
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'blog_share_clicked', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'blog_share_clicked', params);
 }
 
 export function trackPowiazaniaCompleted(params: {
@@ -518,8 +537,8 @@ export function trackPowiazaniaCompleted(params: {
   mistakes: number;
   hint_used: boolean;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'powiazania_completed', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'powiazania_completed', params);
 }
 
 // ============ Error Events ============
@@ -527,8 +546,8 @@ export function trackPowiazaniaCompleted(params: {
 export function trackPageNotFound(params: {
   path: string;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'page_not_found', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'page_not_found', params);
 }
 
 // ============ Cookie Consent Events ============
@@ -537,6 +556,6 @@ export function trackCookieConsent(params: {
   analytics_accepted: boolean;
   marketing_accepted: boolean;
 }): void {
-  if (!analytics) return;
-  logEvent(analytics, 'cookie_consent_given', params);
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'cookie_consent_given', params);
 }
