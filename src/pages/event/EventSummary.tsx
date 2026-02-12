@@ -42,7 +42,8 @@ function parseContentWithCharts(summary: string, lang: 'pl' | 'en' | 'de' = 'pl'
 
   // Combined pattern for all chart types
   // wykres-liniowy and wykres-słupkowy (handles typos: stópkowy, tytu, jednost, etc.)
-  const chartPattern = /<wykres-(liniowy|s[łt][uó]pkowy)\s+(?:tytu[łlć]?u?\s*=\s*["']([^"']+)["']\s+jednostk[ai]?\s*=\s*["']([^"']+)["']|jednostk[ai]?\s*=\s*["']([^"']+)["']\s+tytu[łlć]?u?\s*=\s*["']([^"']+)["'])>([\s\S]*?)<\/wykres-(?:liniowy|s[łt][uó]pkowy)>/gi;
+  // Use separate double/single quote alternatives to allow apostrophes inside double-quoted values
+  const chartPattern = /<wykres-(liniowy|s[łt][uó]pkowy)\s+(?:tytu[łlć]?u?\s*=\s*(?:"([^"]+)"|'([^']+)')\s+jednostk[ai]?\s*=\s*(?:"([^"]+)"|'([^']+)')|jednostk[ai]?\s*=\s*(?:"([^"]+)"|'([^']+)')\s+tytu[łlć]?u?\s*=\s*(?:"([^"]+)"|'([^']+)'))>([\s\S]*?)<\/wykres-(?:liniowy|s[łt][uó]pkowy)>/gi;
 
   let lastIndex = 0;
   let match;
@@ -66,10 +67,11 @@ function parseContentWithCharts(summary: string, lang: 'pl' | 'en' | 'de' = 'pl'
     const chartType = match[1].toLowerCase();
     const isBarChart = chartType.startsWith('s'); // słupkowy, stópkowy, etc.
 
-    // Parse chart data
-    const title = match[2] || match[5];
-    const unit = match[3] || match[4];
-    const dataStr = match[6];
+    // Parse chart data (groups: 2/3=title double/single quote title-first, 4/5=unit double/single quote title-first,
+    // 6/7=unit double/single quote unit-first, 8/9=title double/single quote unit-first, 10=data)
+    const title = match[2] || match[3] || match[8] || match[9];
+    const unit = match[4] || match[5] || match[6] || match[7];
+    const dataStr = match[10];
 
     // Use parseSimpleData from chartUtils for consistent parsing
     const { labels, values } = parseSimpleData(dataStr);

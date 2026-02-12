@@ -986,11 +986,16 @@ export function sanitizeAndProcessHtml(text: string, lang: Language = 'pl'): str
         }
       })
     // Remove <wykres-słupkowy> tags - they are handled separately as React components in EventSummary
-    .replace(/<wykres-s[łt][uó]pkowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk[ai]?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
-    .replace(/<wykres-s[łt][uó]pkowy\s+jednostk[ai]?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
+    // Use separate patterns for double and single quotes to allow apostrophes/quotes inside attribute values
+    .replace(/<wykres-s[łt][uó]pkowy\s+tytu[łlć]?u?\s*=\s*"[^"]*"\s+jednostk[ai]?\s*=\s*"[^"]*">[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
+    .replace(/<wykres-s[łt][uó]pkowy\s+tytu[łlć]?u?\s*=\s*'[^']*'\s+jednostk[ai]?\s*=\s*'[^']*'>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
+    .replace(/<wykres-s[łt][uó]pkowy\s+jednostk[ai]?\s*=\s*"[^"]*"\s+tytu[łlć]?u?\s*=\s*"[^"]*">[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
+    .replace(/<wykres-s[łt][uó]pkowy\s+jednostk[ai]?\s*=\s*'[^']*'\s+tytu[łlć]?u?\s*=\s*'[^']*'>[\s\S]*?<\/wykres-s[łt][uó]pkowy>/gi, '')
     // Remove <wykres-liniowy> tags - they are handled separately as React components in EventSummary
-    .replace(/<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']\s+jednostk[ai]?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
-    .replace(/<wykres-liniowy\s+jednostk[ai]?\s*=\s*["'][^"']+["']\s+tytu[łlć]?u?\s*=\s*["'][^"']+["']>[\s\S]*?<\/wykres-liniowy>/gi, '')
+    .replace(/<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*"[^"]*"\s+jednostk[ai]?\s*=\s*"[^"]*">[\s\S]*?<\/wykres-liniowy>/gi, '')
+    .replace(/<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*'[^']*'\s+jednostk[ai]?\s*=\s*'[^']*'>[\s\S]*?<\/wykres-liniowy>/gi, '')
+    .replace(/<wykres-liniowy\s+jednostk[ai]?\s*=\s*"[^"]*"\s+tytu[łlć]?u?\s*=\s*"[^"]*">[\s\S]*?<\/wykres-liniowy>/gi, '')
+    .replace(/<wykres-liniowy\s+jednostk[ai]?\s*=\s*'[^']*'\s+tytu[łlć]?u?\s*=\s*'[^']*'>[\s\S]*?<\/wykres-liniowy>/gi, '')
     // Convert <wykres-kołowy> to stacked bar representation (double quotes)
     .replace(/<wykres-kołowy\s+tytu[łlć]?u?\s*=\s*"([^"]+)"(?:\s+jednostk[ai]?\s*=\s*"[^"]*")?>([\s\S]*?)<\/wykres-kołowy>/gi,
       (_, title, dataStr) => {
