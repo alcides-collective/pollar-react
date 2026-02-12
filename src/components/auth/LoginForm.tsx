@@ -79,7 +79,7 @@ export function LoginForm() {
           <button
             type="button"
             onClick={() => setView('register')}
-            className="font-medium text-content hover:text-white hover:underline transition-colors"
+            className="font-medium text-white hover:underline transition-colors"
           >
             {t('login.register')}
           </button>

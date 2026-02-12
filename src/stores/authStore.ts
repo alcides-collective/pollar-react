@@ -19,7 +19,7 @@ import {
 } from 'firebase/auth';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { auth, db, isFirebaseConfigured } from '@/config/firebase';
-import { createOrUpdateUserProfile, touchUserLastActive } from '@/services/userService';
+import { createOrUpdateUserProfile, touchUserLastActive, checkProfileExists } from '@/services/userService';
 import { touchAnalyticsLastActive } from '@/services/userAnalyticsService';
 import { getAuthErrorMessage } from '@/lib/auth-errors';
 import { trackLogin, trackSignUp, trackLogout } from '@/lib/analytics';
@@ -191,6 +191,17 @@ export const useAuthStore = create<AuthStore>((set) => ({
       provider.addScope('email');
       provider.addScope('profile');
       const credential = await signInWithPopup(auth, provider);
+
+      // New user via LoginForm (no consents) → redirect to register
+      if (!consents) {
+        const exists = await checkProfileExists(credential.user.uid);
+        if (!exists) {
+          await firebaseSignOut(auth);
+          set({ authModalView: 'register', isLoading: false });
+          return;
+        }
+      }
+
       await createOrUpdateUserProfile(credential.user, 'google', consents);
       trackLogin('google');
       set({ user: transformUser(credential.user), isAuthModalOpen: false });
@@ -217,6 +228,17 @@ export const useAuthStore = create<AuthStore>((set) => ({
       provider.addScope('email');
       provider.addScope('name');
       const credential = await signInWithPopup(auth, provider);
+
+      // New user via LoginForm (no consents) → redirect to register
+      if (!consents) {
+        const exists = await checkProfileExists(credential.user.uid);
+        if (!exists) {
+          await firebaseSignOut(auth);
+          set({ authModalView: 'register', isLoading: false });
+          return;
+        }
+      }
+
       await createOrUpdateUserProfile(credential.user, 'apple', consents);
       trackLogin('apple');
       set({ user: transformUser(credential.user), isAuthModalOpen: false });

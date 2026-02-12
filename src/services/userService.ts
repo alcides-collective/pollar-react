@@ -26,6 +26,16 @@ import { getStoredUtm } from '@/lib/utm';
 const USERS_COLLECTION = 'users';
 
 /**
+ * Checks if a user profile already exists in Firestore
+ */
+export async function checkProfileExists(uid: string): Promise<boolean> {
+  if (!isFirebaseConfigured || !db) return false;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  const userDoc = await getDoc(userRef);
+  return userDoc.exists();
+}
+
+/**
  * Creates or updates a user profile in Firestore
  * Called after successful authentication
  */

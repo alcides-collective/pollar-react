@@ -145,7 +145,7 @@ export function RegisterForm() {
                   <LocalizedLink
                     to="/regulamin"
                     target="_blank"
-                    className="text-content underline hover:text-white"
+                    className="text-white underline hover:text-white/80"
                   />
                 ),
               }}
@@ -177,7 +177,7 @@ export function RegisterForm() {
                   <LocalizedLink
                     to="/polityka-prywatnosci"
                     target="_blank"
-                    className="text-content underline hover:text-white"
+                    className="text-white underline hover:text-white/80"
                   />
                 ),
               }}
@@ -287,7 +287,7 @@ export function RegisterForm() {
           <button
             type="button"
             onClick={() => setView('login')}
-            className="font-medium text-content hover:text-white hover:underline transition-colors"
+            className="font-medium text-white hover:underline transition-colors"
           >
             {t('register.login')}
           </button>

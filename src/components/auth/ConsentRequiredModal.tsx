@@ -107,7 +107,7 @@ export function ConsentRequiredModal() {
                     <LocalizedLink
                       to="/regulamin"
                       target="_blank"
-                      className="text-content underline hover:text-white"
+                      className="text-white underline hover:text-white/80"
                     />
                   ),
                 }}
@@ -139,7 +139,7 @@ export function ConsentRequiredModal() {
                     <LocalizedLink
                       to="/polityka-prywatnosci"
                       target="_blank"
-                      className="text-content underline hover:text-white"
+                      className="text-white underline hover:text-white/80"
                     />
                   ),
                 }}
