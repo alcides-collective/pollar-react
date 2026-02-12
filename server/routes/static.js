@@ -143,9 +143,9 @@ Pollar News is operated by **Pollar P.S.A.**, a company registered in Kraków, P
 
 ## Team
 
-- **Jakub Dudek** (Developer, Kraków) — builds the entire technical infrastructure, from frontend to backend
-- **Bartosz Kasprzycki** (Product & Marketing, Berlin) — ensures intuitive UX and delivers value without information overload
-- **Ignacy Nowina Konopka** (B2B & Business, Warszawa) — drives business development and strategic partnerships
+- **Jakub Dudek** (Developer, Kraków) — builds the entire technical infrastructure, from frontend to backend — jakubdudek@pollar.news
+- **Bartosz Kasprzycki** (Product & Marketing, Berlin) — ensures intuitive UX and delivers value without information overload — bartoszkasprzycki@pollar.news
+- **Ignacy Nowina Konopka** (B2B & Business, Warszawa) — drives business development and strategic partnerships — ignacykonopka@pollar.news
 
 ## Sections
 

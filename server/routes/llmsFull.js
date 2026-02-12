@@ -87,9 +87,9 @@ Pollar News is an AI-powered news platform that aggregates, summarizes, and cont
 - **Respect for the reader** — every moment should leave readers more informed, not more anxious
 
 ### Team
-- **Jakub Dudek** (Developer, Kraków) — builds the entire technical infrastructure
-- **Bartosz Kasprzycki** (Product & Marketing, Berlin) — ensures intuitive UX and delivers value without information overload
-- **Ignacy Nowina Konopka** (B2B & Business, Warszawa) — drives business development and strategic partnerships
+- **Jakub Dudek** (Developer, Kraków) — builds the entire technical infrastructure — jakubdudek@pollar.news
+- **Bartosz Kasprzycki** (Product & Marketing, Berlin) — ensures intuitive UX and delivers value without information overload — bartoszkasprzycki@pollar.news
+- **Ignacy Nowina Konopka** (B2B & Business, Warszawa) — drives business development and strategic partnerships — ignacykonopka@pollar.news
 
 ### Core Features
 - **News Aggregation**: Collects articles from dozens of Polish and international sources, grouped by event
