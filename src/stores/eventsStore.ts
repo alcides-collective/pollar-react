@@ -48,6 +48,7 @@ function mapArchiveEvent(raw: any): Event {
       imageAttribution: raw.metadata?.imageAttribution ?? null,
       isLowQualityContent: raw.metadata?.isLowQualityContent ?? false,
       viewCount: raw.metadata?.viewCount ?? 0,
+      genealogy: raw.metadata?.genealogy,
     },
     articles: raw.articles,
   };

@@ -44,6 +44,7 @@ function mapArchiveEvent(raw: any): Event {
       imageAttribution: raw.metadata?.imageAttribution ?? null,
       isLowQualityContent: raw.metadata?.isLowQualityContent ?? false,
       viewCount: raw.metadata?.viewCount ?? 0,
+      genealogy: raw.metadata?.genealogy,
     },
     articles: raw.articles,
   };
@@ -75,7 +76,13 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
       setSuccessorEventIds(null);
 
       try {
-        const response = await fetch(`${API_BASE}/events/${eventId}?lang=${lang}`);
+        // Fire both main and archive API in parallel to avoid waterfall on 404
+        const mainPromise = fetch(`${API_BASE}/events/${eventId}?lang=${lang}`);
+        const archivePromise = fetch(
+          `${ARCHIVE_API_BASE}/archive/${eventId}?lang=${lang}`
+        ).catch(() => null); // archive failure is non-fatal
+
+        const response = await mainPromise;
 
         if (response.ok) {
           const data = await response.json();
@@ -107,13 +114,11 @@ export function useEvent(eventId: string | undefined, langOverride?: Language) {
           throw new Error('Wydarzenie zostało zastąpione');
         }
 
-        // On 404 — try archive API as fallback
+        // On 404 — use already in-flight archive response
         if (response.status === 404) {
-          const archiveResponse = await fetch(
-            `${ARCHIVE_API_BASE}/archive/${eventId}?lang=${lang}`
-          );
+          const archiveResponse = await archivePromise;
 
-          if (archiveResponse.ok) {
+          if (archiveResponse?.ok) {
             const archiveData = await archiveResponse.json();
             if (!cancelled) {
               // Check if archived event has successors (redirect instead of showing stale content)

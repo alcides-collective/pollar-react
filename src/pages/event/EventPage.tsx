@@ -11,6 +11,7 @@ import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { useReadHistoryStore } from '../../stores/readHistoryStore';
 import { useViewTracking } from '../../hooks/useViewTracking';
 import { useWikipediaImages } from '../../hooks/useWikipediaImages';
+import { EventGenealogyBanner } from './EventGenealogyBanner';
 import { prepareOgDescription } from '../../utils/text';
 import { createSlug } from '../../utils/slug';
 import { trackEventOpened, inferEventSource } from '../../lib/analytics';
@@ -290,8 +291,13 @@ export function EventPage() {
           <motion.div variants={staggerItem}>
             <EventKeyPoints keyPoints={event.metadata?.keyPoints || []} />
           </motion.div>
+          {event.metadata?.genealogy && event.metadata.genealogy.bornFrom !== 'new' && (
+            <motion.div variants={staggerItem}>
+              <EventGenealogyBanner genealogy={event.metadata.genealogy} />
+            </motion.div>
+          )}
           <motion.div variants={staggerItem}>
-            <EventSummary summary={event.summary} wikipediaImages={wikipediaImages} />
+            <EventSummary summary={event.summary} wikipediaImages={wikipediaImages} hideBorder={!!(event.metadata?.genealogy && event.metadata.genealogy.bornFrom !== 'new')} />
           </motion.div>
           <motion.div variants={staggerItem}>
             <EventNavigation previousEvent={previousEvent} nextEvent={nextEvent} />

@@ -20,6 +20,7 @@ function escapeHtml(str: string): string {
 interface EventSummaryProps {
   summary: string;
   wikipediaImages?: Record<string, string>;
+  hideBorder?: boolean;
 }
 
 interface ContentSegment {
@@ -147,7 +148,7 @@ function injectQuotePhotos(html: string, wikipediaImages: Record<string, string>
   );
 }
 
-export function EventSummary({ summary, wikipediaImages = {} }: EventSummaryProps) {
+export function EventSummary({ summary, wikipediaImages = {}, hideBorder }: EventSummaryProps) {
   const lang = useRouteLanguage();
   const segments = useMemo(() => parseContentWithCharts(summary, lang), [summary, lang]);
 
@@ -163,7 +164,7 @@ export function EventSummary({ summary, wikipediaImages = {} }: EventSummaryProp
   const { t } = useTranslation('event');
 
   return (
-    <section className="event-summary px-6 py-6 border-t border-divider">
+    <section className={`event-summary px-6 py-6${hideBorder ? '' : ' border-t border-divider'}`}>
       <h2 className="text-xs font-medium uppercase tracking-wider text-content-subtle mb-4">
         {t('summary')}
       </h2>

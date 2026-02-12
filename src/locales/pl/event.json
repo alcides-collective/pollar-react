@@ -8,7 +8,8 @@
     "generatedBy": "Wygenerowany przez",
     "emitting": "emitując",
     "published": "Opublikowano",
-    "updated": "zaktualizowano"
+    "updated": "zaktualizowano",
+    "archive": "Archiwum"
   },
   "summary": "Podsumowanie",
   "location": "Lokalizacja",
@@ -24,6 +25,14 @@
     "previous": "Poprzednie",
     "next": "Następne",
     "none": "Brak"
+  },
+  "genealogy": {
+    "splitTitle": "Wydarzenie wydzielone",
+    "splitDescription": "To wydarzenie zostało automatycznie wyodrębnione z większego tematu, aby zapewnić dokładniejsze relacjonowanie.",
+    "mergeTitle": "Wydarzenie scalone",
+    "mergeDescription": "To wydarzenie zostało scalone z mniejszych tematów w jedną, pełniejszą relację.",
+    "viewParent": "Zobacz wydarzenie źródłowe",
+    "tooltip": "W Pollar wydarzenia mają swoją genealogię \u2014 ewoluują, rosną, a gdy temat staje się zbyt szeroki, system automatycznie dzieli go na mniejsze, precyzyjniejsze relacje. Dzięki temu każde wydarzenie jest czytelne i skupione na jednym wątku."
   },
   "untranslated": {
     "title": "Ten artykuł nie jest jeszcze przetłumaczony",

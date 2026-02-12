@@ -5,6 +5,7 @@ import { BookmarkButton } from '../../components/BookmarkButton';
 import { ShareButton } from '../../components/ShareButton';
 import { getModelDisplayName, getModelPillClasses, getModelDescription, estimateCO2, formatCO2, getCO2Equivalents } from '../../utils/co2';
 import { useRouteLanguage } from '../../hooks/useRouteLanguage';
+import { LocalizedLink } from '../../components/LocalizedLink';
 
 interface EventHeaderProps {
   event: Event;
@@ -58,7 +59,8 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
   const timeStr = isRecent
     ? ` ${lang === 'de' ? 'um' : lang === 'en' ? 'at' : 'o'} ${new Intl.DateTimeFormat(dateLocale, { hour: '2-digit', minute: '2-digit' }).format(createdAt)}`
     : '';
-  const publishedDate = showUpdated || ageMs >= 7 * 24 * 60 * 60 * 1000
+  const isArchived = event.freshnessLevel === 'OLD';
+  const publishedDate = isArchived || showUpdated || ageMs >= 7 * 24 * 60 * 60 * 1000
     ? fullDate + timeStr
     : formatRelative(createdAt);
   const co2Grams = estimateCO2(event);
@@ -68,22 +70,34 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
 
   return (
     <header className="px-6 pt-8 pb-6">
-      {/* AI generation info */}
+      {/* AI generation info / Archive badge */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-4 text-xs text-content-subtle">
-        {modelId && (
-          <span className="order-1">
-            {t('header.generatedBy')}{' '}
-            <span
-              className={`group/model relative inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ring-1 ring-inset cursor-help ${getModelPillClasses(modelId)}`}
-            >
-              {getModelDisplayName(modelId)}
-              {modelDescription.text && (
-                <span className="absolute left-0 bottom-full mb-2 px-3 py-2.5 bg-zinc-900/70 backdrop-blur-xl backdrop-saturate-150 text-zinc-100 text-xs rounded-xl border border-white/10 ring-1 ring-white/5 shadow-xl shadow-black/30 z-[60] w-72 font-normal leading-relaxed opacity-0 invisible group-hover/model:opacity-100 group-hover/model:visible transition-all duration-200">
-                  {modelDescription.text}
+        {isArchived ? (
+          <LocalizedLink
+            to="/archiwum"
+            className="order-1 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-zinc-100 text-zinc-600 ring-1 ring-inset ring-zinc-200/60 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700/60 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+          >
+            <i className="ri-archive-line text-xs" />
+            {t('header.archive')}
+          </LocalizedLink>
+        ) : (
+          <>
+            {modelId && (
+              <span className="order-1">
+                {t('header.generatedBy')}{' '}
+                <span
+                  className={`group/model relative inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ring-1 ring-inset cursor-help ${getModelPillClasses(modelId)}`}
+                >
+                  {getModelDisplayName(modelId)}
+                  {modelDescription.text && (
+                    <span className="absolute left-0 bottom-full mb-2 px-3 py-2.5 bg-zinc-900/70 backdrop-blur-xl backdrop-saturate-150 text-zinc-100 text-xs rounded-xl border border-white/10 ring-1 ring-white/5 shadow-xl shadow-black/30 z-[60] w-72 font-normal leading-relaxed opacity-0 invisible group-hover/model:opacity-100 group-hover/model:visible transition-all duration-200">
+                      {modelDescription.text}
+                    </span>
+                  )}
                 </span>
-              )}
-            </span>
-          </span>
+              </span>
+            )}
+          </>
         )}
         {displayViewCount > 0 && (
           <span className="flex items-center gap-1 ml-auto order-2 md:order-3">
@@ -91,7 +105,7 @@ export function EventHeader({ event, viewCount }: EventHeaderProps) {
             {displayViewCount.toLocaleString()}
           </span>
         )}
-        {modelId && (
+        {!isArchived && modelId && (
           <span className="order-3 w-full md:order-2 md:w-auto">
             {t('header.emitting')}{' '}
             <span className="group/co2 relative cursor-help border-b border-dotted border-content-faint">

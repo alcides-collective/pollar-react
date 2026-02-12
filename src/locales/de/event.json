@@ -8,7 +8,8 @@
     "generatedBy": "Generiert von",
     "emitting": "emittiert",
     "published": "Veröffentlicht",
-    "updated": "aktualisiert"
+    "updated": "aktualisiert",
+    "archive": "Archiv"
   },
   "summary": "Zusammenfassung",
   "location": "Standort",
@@ -22,6 +23,14 @@
     "previous": "Vorherige",
     "next": "Nächste",
     "none": "Keine"
+  },
+  "genealogy": {
+    "splitTitle": "Abgespaltenes Ereignis",
+    "splitDescription": "Dieses Ereignis wurde automatisch von einem größeren Thema abgetrennt, um eine genauere Berichterstattung zu gewährleisten.",
+    "mergeTitle": "Zusammengeführtes Ereignis",
+    "mergeDescription": "Dieses Ereignis wurde aus kleineren Themen zu einem umfassenderen Bericht zusammengeführt.",
+    "viewParent": "Quellereignis anzeigen",
+    "tooltip": "In Pollar haben Ereignisse ihre eigene Genealogie \u2014 sie entwickeln sich, wachsen, und wenn ein Thema zu breit wird, teilt das System es automatisch in kleinere, pr\u00e4zisere Berichte auf. So bleibt jedes Ereignis \u00fcbersichtlich und fokussiert."
   },
   "untranslated": {
     "title": "Dieser Artikel ist noch nicht auf Deutsch verfügbar",

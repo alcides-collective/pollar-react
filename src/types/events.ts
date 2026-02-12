@@ -30,6 +30,17 @@ export interface Article {
   publishDate: string | { _seconds: number; _nanoseconds: number };
 }
 
+export interface EventGenealogy {
+  bornAt: string;
+  bornFrom: 'split' | 'merge' | 'new';
+  parentIds?: string[];
+  splitFrom?: string;
+  mergedFrom?: string[];
+  generationNumber?: number;
+  lastTransitionAt?: string;
+  lastTransitionType?: string;
+}
+
 export interface EventMetadata {
   category: string;
   trending: boolean;
@@ -56,6 +67,7 @@ export interface EventMetadata {
     keywords: string[];
     hashtags: string[];
   };
+  genealogy?: EventGenealogy;
 }
 
 export interface Event {
