@@ -196,7 +196,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
       }
 
       return res.send(generateSeoHtml({
-        pageTitle: `${shortTitle} | Pollar`,
+        pageTitle: `${shortTitle} · Pollar News`,
         ogTitle,
         headline: fullTitle,
         description,
@@ -228,7 +228,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
       const date = brief.date ? new Date(brief.date).toLocaleDateString('pl-PL', {
         day: 'numeric', month: 'long', year: 'numeric'
       }) : '';
-      briefTitle = date ? `Daily Brief – ${date}` : 'Daily Brief';
+      briefTitle = 'Daily Brief';
       imageTitle = brief.headline || briefTitle;
       description = truncate(stripHtml(brief.lead || brief.executiveSummary || ''), 160);
       ogImageDescription = truncate(stripHtml(brief.lead || brief.executiveSummary || ''), 300);
@@ -262,7 +262,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
     }
 
     return res.send(generateSeoHtml({
-      pageTitle: `${briefTitle} | Pollar`,
+      pageTitle: `${briefTitle} · Pollar News`,
       ogTitle,
       headline: imageTitle,
       description,
@@ -364,7 +364,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
     const felietonCapsule = capsuleParts.join('');
 
     return res.send(generateSeoHtml({
-      pageTitle: `${felietonTitle} | Pollar`,
+      pageTitle: `${felietonTitle} · Pollar News`,
       ogTitle,
       headline: felietonTitle,
       description,
@@ -431,7 +431,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
       }
 
       return res.send(generateSeoHtml({
-        pageTitle: `${blogTitle} | Pollar`,
+        pageTitle: `${blogTitle} · Pollar News`,
         ogTitle: `Pollar News: ${ogTitle}`,
         headline: blogTitle,
         description,
@@ -489,7 +489,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
     } catch { /* skip if unavailable */ }
 
     return res.send(generateSeoHtml({
-      pageTitle: `${blogTitle} | Pollar`,
+      pageTitle: `${blogTitle} · Pollar News`,
       ogTitle: `Pollar News: ${blogTitle}`,
       headline: blogTitle,
       description: blogDescription,
@@ -524,7 +524,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
       }
 
       const ogTitle = `Pollar News: ${isSingle ? countryNames[0] : title}`;
-      const pageTitle = `${title} | Pollar`;
+      const pageTitle = `${title} · Pollar News`;
       const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(isSingle ? countryNames[0] : title)}&description=${encodeURIComponent(truncate(description, 200))}&lang=${lang}`;
 
       const schema = {
@@ -572,7 +572,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
         description = `${categoryDesc} ${countryParts[lang] || countryParts.pl}${countryNames.join(', ')}.`;
       }
       const ogTitle = `Pollar News: ${title}`;
-      const pageTitle = `${title} | Pollar`;
+      const pageTitle = `${title} · Pollar News`;
       const ogDesc = truncate(description, 120);
       const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(ogDesc)}&lang=${lang}&category=${encodeURIComponent(polishCategory)}`;
 
@@ -608,7 +608,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
       const categoryTitle = getCategoryTitle(polishCategory, lang);
       const categoryDescription = getCategoryDescription(polishCategory, lang);
       const ogTitle = `Pollar News: ${categoryTitle}`;
-      const pageTitle = `${categoryTitle} | Pollar`;
+      const pageTitle = `${categoryTitle} · Pollar News`;
       const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(categoryTitle)}&description=${encodeURIComponent(categoryDescription)}&lang=${lang}&category=${encodeURIComponent(polishCategory)}`;
 
       const webPageSchema = {
@@ -754,7 +754,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
       </ul></nav>`);
 
       return res.send(generateSeoHtml({
-        pageTitle: `${mp.firstLastName} — Poseł ${mp.club} | Pollar`,
+        pageTitle: `${mp.firstLastName} — Poseł ${mp.club} · Pollar News`,
         ogTitle,
         headline: mp.firstLastName,
         description,
@@ -775,7 +775,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
   if (pageInfo) {
     const isHomepage = pathWithoutLang === '/';
     const ogTitle = isHomepage ? pageInfo.title : `Pollar News: ${pageInfo.title}`;
-    const pageTitle = isHomepage ? `${pageInfo.title}. ${pageInfo.tagline || 'Wiesz więcej'}.` : `${pageInfo.title} | Pollar`;
+    const pageTitle = isHomepage ? `${pageInfo.title}. ${pageInfo.tagline || 'Wiesz więcej'}.` : `${pageInfo.title} · Pollar News`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}&description=${encodeURIComponent(pageInfo.description)}&lang=${lang}`;
 
     // Use Organization schema for homepage, WebPage + BreadcrumbList + FAQPage for other static pages
@@ -919,7 +919,7 @@ export function crawler404Handler(req, res, next) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>${title} | Pollar</title>
+    <title>${title} · Pollar News</title>
     <meta name="description" content="${escapeHtml(description)}" />
     <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href="${baseUrl}${langPrefix}" />

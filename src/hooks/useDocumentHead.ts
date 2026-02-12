@@ -67,7 +67,7 @@ export function useDocumentHead(options: DocumentHeadOptions) {
 
     // Update document title
     if (title) {
-      document.title = `${title} | Pollar`;
+      document.title = `${title} · Pollar News`;
     }
 
     // Helper to update or create meta tag

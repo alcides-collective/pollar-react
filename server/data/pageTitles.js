@@ -1,9 +1,9 @@
 // Static page titles mapping (multilingual: pl/en/de)
 export const PAGE_TITLES = {
   '/': {
-    pl: { title: 'Pollar — Agregator newsów z AI', tagline: 'Wiadomości bez clickbaitów', description: 'Polski agregator wiadomości napędzany AI. Pollar zbiera artykuły z dziesiątek redakcji, grupuje w wydarzenia i generuje streszczenia. Sejm, giełda GPW, dane publiczne.' },
-    en: { title: 'Pollar — AI-Powered News Aggregator', tagline: 'News without clickbait', description: 'Polish AI news aggregator. Pollar collects articles from dozens of newsrooms, groups them into events and generates summaries. Parliament, stock market, public data.' },
-    de: { title: 'Pollar — KI-gestützter Nachrichten-Aggregator', tagline: 'Nachrichten ohne Clickbait', description: 'Polnischer KI-Nachrichten-Aggregator. Pollar sammelt Artikel aus Dutzenden Redaktionen, gruppiert sie zu Ereignissen und erstellt Zusammenfassungen. Parlament, Börse, öffentliche Daten.' },
+    pl: { title: 'Pollar — Agregator newsów z AI', tagline: 'Wiadomości bez clickbaitów.', description: 'Polski agregator wiadomości napędzany AI. Pollar zbiera artykuły z dziesiątek redakcji, grupuje w wydarzenia i generuje streszczenia. Sejm, giełda GPW, dane publiczne.' },
+    en: { title: 'Pollar — AI-Powered News Aggregator', tagline: 'News without clickbait.', description: 'Polish AI news aggregator. Pollar collects articles from dozens of newsrooms, groups them into events and generates summaries. Parliament, stock market, public data.' },
+    de: { title: 'Pollar — KI-gestützter Nachrichten-Aggregator', tagline: 'Nachrichten ohne Clickbait.', description: 'Polnischer KI-Nachrichten-Aggregator. Pollar sammelt Artikel aus Dutzenden Redaktionen, gruppiert sie zu Ereignissen und erstellt Zusammenfassungen. Parlament, Börse, öffentliche Daten.' },
   },
   '/brief': null, // handled separately (dynamic)
   '/powiazania': {
