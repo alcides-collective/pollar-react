@@ -1,9 +1,16 @@
 import helmet from 'helmet';
 import compression from 'compression';
+import crypto from 'crypto';
 
 export function setupSecurity(app) {
   // Trust proxy for correct protocol detection behind Railway/load balancer
   app.set('trust proxy', true);
+
+  // Generate CSP nonce per request
+  app.use((req, res, next) => {
+    res.locals.cspNonce = crypto.randomBytes(16).toString('base64');
+    next();
+  });
 
   // Security headers with helmet
   app.use(helmet({
@@ -12,7 +19,8 @@ export function setupSecurity(app) {
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
-          "'unsafe-inline'",
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
+          "'strict-dynamic'",
           "blob:",
           "https://api.mapbox.com",
           "https://events.mapbox.com",

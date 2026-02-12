@@ -10,7 +10,8 @@ if (process.env.SENTRY_DSN) {
 }
 
 import express from 'express';
-import { join } from 'path';
+import { join, resolve } from 'path';
+import { readFileSync } from 'fs';
 import { PORT, PROJECT_ROOT } from './server/config.js';
 import { crawlerStats } from './server/utils/crawler.js';
 import { setupSecurity } from './server/middleware/security.js';
@@ -22,6 +23,10 @@ import { feedRoutes } from './server/routes/feeds.js';
 import { crawlerStatsRoutes } from './server/routes/crawlerStats.js';
 
 const app = express();
+
+// Read index.html template once at startup for nonce injection
+const indexHtmlPath = resolve(PROJECT_ROOT, 'dist', 'index.html');
+const indexHtmlTemplate = readFileSync(indexHtmlPath, 'utf-8');
 
 // Security, redirects, language detection, compression
 setupSecurity(app);
@@ -59,9 +64,14 @@ app.use((req, res, next) => {
 // Crawler-specific 404 handler
 app.use(crawler404Handler);
 
-// SPA fallback
+// SPA fallback — inject CSP nonce into inline scripts
 app.get('*', (req, res) => {
-  res.sendFile(join(PROJECT_ROOT, 'dist', 'index.html'));
+  const nonce = res.locals.cspNonce;
+  // Add nonce to bare <script> tags (inline only, not <script src=...> or <script type="module">)
+  const html = indexHtmlTemplate.replace(/<script>(?=\s*[^<])/g, `<script nonce="${nonce}">`);
+  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.send(html);
 });
 
 // Sentry error handler (must be before other error handlers)
