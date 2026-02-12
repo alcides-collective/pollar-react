@@ -55,6 +55,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
 
   const timeGreeting = getTimeBasedGreeting();
   const briefVideo = getTimeBasedVideo();
+  const briefPoster = briefVideo.replace('.webm', '-poster.webp');
   const dateStr = new Date().toLocaleDateString(localeMap[language] || 'pl-PL', {
     weekday: 'long',
     day: 'numeric',
@@ -79,6 +80,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
             <div className="relative overflow-hidden w-full aspect-video mt-4 transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-xl">
               <video
                 ref={videoRef}
+                poster={briefPoster}
                 loop
                 muted
                 playsInline
@@ -118,6 +120,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
               <div className="relative overflow-hidden w-full aspect-video mt-4 transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-xl">
                 <video
                   ref={videoRef2}
+                  poster={briefPoster}
                   loop
                   muted
                   playsInline
