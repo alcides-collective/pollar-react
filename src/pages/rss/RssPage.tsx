@@ -246,7 +246,7 @@ export function RssPage() {
                       </div>
                       {reader.free && (
                         <span className="text-[10px] px-1.5 py-0.5 bg-green-500/10 text-green-500 rounded font-medium">
-                          Free
+                          {t('rss.free')}
                         </span>
                       )}
                     </a>

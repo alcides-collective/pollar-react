@@ -426,7 +426,8 @@
     "autodiscoveryDesc": "Pollar ma tag <link rel=\"alternate\"> w nagłówku HTML, dzięki czemu rozszerzenia przeglądarkowe (np. Subscribe to Feed w Safari) automatycznie wykrywają nasz feed RSS.",
     "license": "Licencja",
     "licenseDesc": "Treści w feedach RSS Pollar są udostępniane na licencji Creative Commons BY-NC-SA 4.0. Możesz je swobodnie czytać i udostępniać z podaniem źródła, ale nie do celów komercyjnych.",
-    "openInReader": "Otwórz w czytniku RSS"
+    "openInReader": "Otwórz w czytniku RSS",
+    "free": "Darmowy"
   },
   "olympics": {
     "title": "Igrzyska Olimpijskie 2026",

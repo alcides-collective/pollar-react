@@ -385,6 +385,16 @@ function AppContent() {
     }
   }, [resolvedTheme])
 
+  // Update RSS autodiscovery links in <head> based on language
+  useEffect(() => {
+    const langPrefix = language !== 'pl' ? `/${language}` : ''
+    const base = 'https://pollar.news'
+    const mainLink = document.querySelector('link[title="Pollar News RSS"]') as HTMLLinkElement
+    const blogLink = document.querySelector('link[title="Pollar News Blog RSS"]') as HTMLLinkElement
+    if (mainLink) mainLink.href = `${base}${langPrefix}/feed.xml`
+    if (blogLink) blogLink.href = `${base}${langPrefix}/blog/feed.xml`
+  }, [language])
+
   // Listen for system theme changes
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)')

@@ -426,7 +426,8 @@
     "autodiscoveryDesc": "Pollar includes a <link rel=\"alternate\"> tag in the HTML head, so browser extensions (e.g. Subscribe to Feed in Safari) automatically detect our RSS feed.",
     "license": "License",
     "licenseDesc": "Content in Pollar RSS feeds is shared under the Creative Commons BY-NC-SA 4.0 license. You may freely read and share it with attribution, but not for commercial purposes.",
-    "openInReader": "Open in RSS reader"
+    "openInReader": "Open in RSS reader",
+    "free": "Free"
   },
   "olympics": {
     "title": "Olympics 2026",
