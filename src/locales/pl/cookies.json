@@ -17,12 +17,12 @@
     "necessary": {
       "title": "Niezbędne cookies i localStorage",
       "summary": "Zapisują Twoje ustawienia i umożliwiają działanie serwisu.",
-      "description": "Obejmują: preferencje zgód (cookie-consent), język (pollar-language), motyw kolorystyczny (pollar-theme), anonimowy identyfikator odwiedzającego (pollar_uid), identyfikator sesji asystenta AI (pollar-visitor-id), historia rozmów z asystentem AI (pollar-ai-store), listę obserwowanych instrumentów giełdowych (stock-watchlist), filtr wybranych krajów (pollar-selected-countries), skalę wykresów giełdowych (pollar-chart-smart-scale), stan gry Powiązania (pollar.powiazania) oraz parametry kampanii UTM (pollar_utm, sessionStorage). Sentry – monitorowanie błędów (nie używa cookies, dane przetwarzane na podstawie uzasadnionego interesu)."
+      "description": "Obejmują: preferencje zgód (cookie-consent), język (pollar-language), motyw kolorystyczny (pollar-theme), anonimowy identyfikator odwiedzającego (pollar_uid), identyfikator sesji asystenta AI (pollar-visitor-id), historia rozmów z asystentem AI (pollar-ai-store), listę obserwowanych instrumentów giełdowych (stock-watchlist), filtr wybranych krajów (pollar-selected-countries), skalę wykresów giełdowych (pollar-chart-smart-scale), stan gry Powiązania (pollar.powiazania) oraz parametry kampanii UTM (pollar_utm, sessionStorage). Umami Analytics – zanonimizowane statystyki bez cookies (nie wymaga zgody). Sentry – monitorowanie błędów (nie używa cookies, dane przetwarzane na podstawie uzasadnionego interesu)."
     },
     "analytics": {
       "title": "Analityczne cookies",
       "summary": "Pomagają nam zrozumieć, jak korzystasz z serwisu.",
-      "description": "Google Analytics (_ga, _ga_*) – statystyki odwiedzin. Firebase Analytics – zdarzenia w aplikacji (dla zalogowanych). Microsoft Clarity (_clck, _clsk) – heatmapy i nagrywanie sesji. Contentsquare – heatmapy i nagrywanie sesji. Umami Analytics – zanonimizowane statystyki bez cookies."
+      "description": "Google Analytics (_ga, _ga_*) – statystyki odwiedzin. Firebase Analytics – zdarzenia w aplikacji (dla zalogowanych). Microsoft Clarity (_clck, _clsk) – heatmapy i nagrywanie sesji. Contentsquare – heatmapy i nagrywanie sesji."
     },
     "marketing": {
       "title": "Marketingowe cookies",

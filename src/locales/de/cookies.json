@@ -17,12 +17,12 @@
     "necessary": {
       "title": "Notwendige Cookies und localStorage",
       "summary": "Speichern deine Einstellungen und halten die Website am Laufen.",
-      "description": "Umfasst: Einwilligungspräferenzen (cookie-consent), Sprache (pollar-language), Farbschema (pollar-theme), anonyme Besucher-ID (pollar_uid), KI-Assistenten-Sitzungs-ID (pollar-visitor-id), Gesprächsverlauf des KI-Assistenten (pollar-ai-store), Aktien-Watchlist (stock-watchlist), Länderfilter (pollar-selected-countries), Börsenchart-Skalierung (pollar-chart-smart-scale), Spielstand von Powiązania (pollar.powiazania) und UTM-Kampagnenparameter (pollar_utm, sessionStorage). Sentry – Fehlerüberwachung (keine Cookies, Datenverarbeitung auf Grundlage berechtigten Interesses)."
+      "description": "Umfasst: Einwilligungspräferenzen (cookie-consent), Sprache (pollar-language), Farbschema (pollar-theme), anonyme Besucher-ID (pollar_uid), KI-Assistenten-Sitzungs-ID (pollar-visitor-id), Gesprächsverlauf des KI-Assistenten (pollar-ai-store), Aktien-Watchlist (stock-watchlist), Länderfilter (pollar-selected-countries), Börsenchart-Skalierung (pollar-chart-smart-scale), Spielstand von Powiązania (pollar.powiazania) und UTM-Kampagnenparameter (pollar_utm, sessionStorage). Umami Analytics – anonymisierte Statistiken ohne Cookies (keine Einwilligung erforderlich). Sentry – Fehlerüberwachung (keine Cookies, Datenverarbeitung auf Grundlage berechtigten Interesses)."
     },
     "analytics": {
       "title": "Analytische Cookies",
       "summary": "Helfen uns zu verstehen, wie du die Website nutzt.",
-      "description": "Google Analytics (_ga, _ga_*) – Besuchsstatistiken. Firebase Analytics – In-App-Ereignisse (für eingeloggte Nutzer). Microsoft Clarity (_clck, _clsk) – Heatmaps und Sitzungsaufzeichnung. Contentsquare – Heatmaps und Sitzungsaufzeichnung. Umami Analytics – anonymisierte Statistiken ohne Cookies."
+      "description": "Google Analytics (_ga, _ga_*) – Besuchsstatistiken. Firebase Analytics – In-App-Ereignisse (für eingeloggte Nutzer). Microsoft Clarity (_clck, _clsk) – Heatmaps und Sitzungsaufzeichnung. Contentsquare – Heatmaps und Sitzungsaufzeichnung."
     },
     "marketing": {
       "title": "Marketing-Cookies",

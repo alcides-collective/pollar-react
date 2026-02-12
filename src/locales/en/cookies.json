@@ -17,12 +17,12 @@
     "necessary": {
       "title": "Essential cookies and localStorage",
       "summary": "Save your settings and keep the site running.",
-      "description": "Includes: consent preferences (cookie-consent), language (pollar-language), color theme (pollar-theme), anonymous visitor ID (pollar_uid), AI assistant session ID (pollar-visitor-id), AI assistant conversation history (pollar-ai-store), stock watchlist (stock-watchlist), countries filter (pollar-selected-countries), stock chart scale (pollar-chart-smart-scale), Connections game state (pollar.powiazania), and UTM campaign parameters (pollar_utm, sessionStorage). Sentry — error monitoring (no cookies, data processed under legitimate interest)."
+      "description": "Includes: consent preferences (cookie-consent), language (pollar-language), color theme (pollar-theme), anonymous visitor ID (pollar_uid), AI assistant session ID (pollar-visitor-id), AI assistant conversation history (pollar-ai-store), stock watchlist (stock-watchlist), countries filter (pollar-selected-countries), stock chart scale (pollar-chart-smart-scale), Connections game state (pollar.powiazania), and UTM campaign parameters (pollar_utm, sessionStorage). Umami Analytics — anonymized statistics without cookies (no consent required). Sentry — error monitoring (no cookies, data processed under legitimate interest)."
     },
     "analytics": {
       "title": "Analytics cookies",
       "summary": "Help us understand how you use the site.",
-      "description": "Google Analytics (_ga, _ga_*) — visit statistics. Firebase Analytics — in-app events (for logged-in users). Microsoft Clarity (_clck, _clsk) — heatmaps and session recording. Contentsquare — heatmaps and session recording. Umami Analytics — anonymized statistics without cookies."
+      "description": "Google Analytics (_ga, _ga_*) — visit statistics. Firebase Analytics — in-app events (for logged-in users). Microsoft Clarity (_clck, _clsk) — heatmaps and session recording. Contentsquare — heatmaps and session recording."
     },
     "marketing": {
       "title": "Marketing cookies",
