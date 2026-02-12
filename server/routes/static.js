@@ -30,14 +30,17 @@ staticRoutes.get('/robots.txt', (req, res) => {
 #
 # (c) Pollar News (pollar.news)
 
-# Social media crawlers need full access (especially /api/og images)
+# Link preview bots need full access (especially /api/og images)
 User-agent: Twitterbot
-Allow: /
-
 User-agent: facebookexternalhit
-Allow: /
-
+User-agent: Facebot
 User-agent: LinkedInBot
+User-agent: WhatsApp
+User-agent: TelegramBot
+User-agent: Slackbot
+User-agent: Discordbot
+User-agent: Applebot
+User-agent: Iframely
 Allow: /
 
 # All crawlers welcome (including AI: GPTBot, ClaudeBot, PerplexityBot, etc.)
