@@ -255,8 +255,13 @@ export function preventWidows(text: string): string {
   if (!text || typeof text !== 'string') return text ?? '';
 
   return text.replace(
-    /(?<=\s|^)([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9]{1,2})\s/g,
-    `$1${NBSP}`,
+    /([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9]{1,2})\s/g,
+    (match, word, offset) => {
+      if (offset === 0 || /\s/.test(text[offset - 1])) {
+        return `${word}${NBSP}`;
+      }
+      return match;
+    },
   );
 }
 
