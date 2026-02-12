@@ -1,8 +1,8 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import {
-  initializeAuth,
   getAuth,
   browserSessionPersistence,
+  setPersistence,
   type Auth,
 } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
@@ -44,22 +44,8 @@ if (isFirebaseConfigured) {
 }
 
 if (app) {
-  // Use initializeAuth only for fresh app, getAuth for existing (avoids auth/already-initialized)
-  if (getApps().length <= 1) {
-    try {
-      auth = initializeAuth(app, {
-        persistence: browserSessionPersistence,
-      });
-      console.log('[Firebase Debug] initializeAuth success');
-    } catch (e) {
-      console.warn('[Firebase Debug] initializeAuth failed, falling back to getAuth:', e);
-      auth = getAuth(app);
-    }
-  } else {
-    console.log('[Firebase Debug] Multiple apps detected, using getAuth');
-    auth = getAuth(app);
-  }
-  console.log('[Firebase Debug] auth ready:', !!auth, 'app.name:', app.name);
+  auth = getAuth(app);
+  setPersistence(auth, browserSessionPersistence).catch(() => {});
   db = getFirestore(app);
   storage = getStorage(app);
 
