@@ -64,6 +64,7 @@ export function generateSeoHtml(opts) {
     <meta property="og:url" content="${targetUrl}" />
     ${articleTags}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@pollarnews" />
     <meta name="twitter:title" content="${escapeHtml(ogTitle)}" />
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${ogImage}" />
