@@ -53,8 +53,30 @@ export function SectionWrapper({
   const finalPriority = propPriority === 'auto' ? detectedPriority : propPriority;
   const { contextValue, isReady } = useSectionImages(sectionId, finalPriority);
 
+  // Add minimum delay before showing to prevent flash (only for non-high-priority)
+  useEffect(() => {
+    if (finalPriority === 'high') {
+      setShouldShow(true);
+      return;
+    }
+    if (isReady) {
+      const timer = setTimeout(() => setShouldShow(true), minDisplayDelay);
+      return () => clearTimeout(timer);
+    }
+  }, [isReady, minDisplayDelay, finalPriority]);
+
+  // Fallback timeout - show section after maxWaitTime even if images haven't loaded
+  useEffect(() => {
+    if (finalPriority === 'high' || shouldShow) return;
+
+    const fallbackTimer = setTimeout(() => {
+      setShouldShow(true);
+    }, maxWaitTime);
+
+    return () => clearTimeout(fallbackTimer);
+  }, [maxWaitTime, shouldShow, finalPriority]);
+
   // High-priority sections: render immediately, no animation delay
-  // This prevents blocking LCP paint and eliminates CLS from y:20 animation shift
   if (finalPriority === 'high') {
     return (
       <SectionImageContext.Provider value={contextValue}>
@@ -64,25 +86,6 @@ export function SectionWrapper({
       </SectionImageContext.Provider>
     );
   }
-
-  // Add minimum delay before showing to prevent flash
-  useEffect(() => {
-    if (isReady) {
-      const timer = setTimeout(() => setShouldShow(true), minDisplayDelay);
-      return () => clearTimeout(timer);
-    }
-  }, [isReady, minDisplayDelay]);
-
-  // Fallback timeout - show section after maxWaitTime even if images haven't loaded
-  useEffect(() => {
-    if (shouldShow) return; // Already showing, no need for fallback
-
-    const fallbackTimer = setTimeout(() => {
-      setShouldShow(true);
-    }, maxWaitTime);
-
-    return () => clearTimeout(fallbackTimer);
-  }, [maxWaitTime, shouldShow]);
 
   return (
     <SectionImageContext.Provider value={contextValue}>
