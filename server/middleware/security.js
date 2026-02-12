@@ -1,26 +1,22 @@
 import helmet from 'helmet';
 import compression from 'compression';
-import crypto from 'crypto';
 
 export function setupSecurity(app) {
   // Trust proxy for correct protocol detection behind Railway/load balancer
   app.set('trust proxy', true);
 
-  // Generate CSP nonce per request
-  app.use((req, res, next) => {
-    res.locals.cspNonce = crypto.randomBytes(16).toString('base64');
-    next();
-  });
-
   // Security headers with helmet
+  // NOTE: Using host-based allowlisting + unsafe-inline (not nonce-based) because
+  // nonce-based CSP is incompatible with CDN/edge caching (Cloudflare).
+  // Each request would need a unique nonce in both the header AND HTML, but cached
+  // HTML has a stale nonce that won't match the header's nonce.
   app.use(helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
-          (req, res) => `'nonce-${res.locals.cspNonce}'`,
-          "'strict-dynamic'",
+          "'unsafe-inline'",
           "blob:",
           "https://api.mapbox.com",
           "https://events.mapbox.com",
