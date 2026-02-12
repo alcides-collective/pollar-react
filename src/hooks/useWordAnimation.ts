@@ -1,10 +1,10 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useAIStore, useAIAnimatingMessageId, useAIVisibleWordCount } from '../stores/aiStore';
-import { easeOutQuad } from '../utils/ai-helpers';
+import { cubicBezierEase } from '../utils/ai-helpers';
 
-// Animation timing: starts fast (15ms), slows to (80ms) using ease-out curve
-const WORD_DELAY_MIN = 15;
-const WORD_DELAY_MAX = 80;
+// Animation timing: very fast at start (12ms), gradually slows to (70ms) via cubic bezier
+const WORD_DELAY_MIN = 12;
+const WORD_DELAY_MAX = 70;
 
 interface UseWordAnimationOptions {
   onScrollToBottom?: () => void;
@@ -55,8 +55,8 @@ export function useWordAnimation(options: UseWordAnimationOptions = {}) {
 
           // Calculate progress (0 to 1)
           const progress = currentWord / totalWords;
-          // Apply ease-out: fast at start, slow at end
-          const eased = easeOutQuad(progress);
+          // Cubic bezier: stays fast most of the way, slows at the end
+          const eased = cubicBezierEase(progress);
           const delay = WORD_DELAY_MIN + (WORD_DELAY_MAX - WORD_DELAY_MIN) * eased;
 
           // Scroll during animation only if user is at bottom

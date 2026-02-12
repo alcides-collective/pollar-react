@@ -165,10 +165,40 @@ export function getTypingLabelKey(debugSteps: DebugStep[]): TypingLabelKey {
 }
 
 /**
- * Ease-out quadratic function for word animation timing
+ * Cubic bezier easing for word animation delay.
+ * cubic-bezier(0.55, 0.0, 0.9, 0.35) — stays fast most of the way,
+ * slows down only towards the end.
+ *
+ * Profile (delay with min=12, max=70):
+ *   20% through → ~13ms   (very fast)
+ *   50% through → ~19ms   (still fast)
+ *   80% through → ~37ms   (slowing down)
+ *   95% through → ~59ms   (slow)
+ *  100% through → 70ms    (max)
  */
-export function easeOutQuad(t: number): number {
-  return 1 - (1 - t) * (1 - t);
+export function cubicBezierEase(t: number): number {
+  const x1 = 0.55, y1 = 0.0, x2 = 0.9, y2 = 0.35;
+
+  // Polynomial coefficients for x(u) = au³ + bu² + cu
+  const ax = 1 - 3 * x2 + 3 * x1;
+  const bx = 3 * x2 - 6 * x1;
+  const cx = 3 * x1;
+
+  // Newton-Raphson: find parameter u where x(u) = t
+  let u = t;
+  for (let i = 0; i < 8; i++) {
+    const x = ((ax * u + bx) * u + cx) * u - t;
+    if (Math.abs(x) < 1e-6) break;
+    const dx = (3 * ax * u + 2 * bx) * u + cx;
+    if (Math.abs(dx) < 1e-6) break;
+    u -= x / dx;
+  }
+
+  // Evaluate y(u)
+  const ay = 1 - 3 * y2 + 3 * y1;
+  const by = 3 * y2 - 6 * y1;
+  const cy = 3 * y1;
+  return ((ay * u + by) * u + cy) * u;
 }
 
 /**
