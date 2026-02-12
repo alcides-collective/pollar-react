@@ -302,6 +302,11 @@ feedRoutes.get(['/:lang(en|de)/feed.xml', '/feed.xml'], async (req, res) => {
     <creativeCommons:license>https://creativecommons.org/licenses/by-nc-sa/4.0/</creativeCommons:license>
     <lastBuildDate>${now}</lastBuildDate>
     <atom:link href="${baseUrl}${langPrefix}/feed.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>${baseUrl}/favicon-96x96.png</url>
+      <title>Pollar News</title>
+      <link>${baseUrl}${langPrefix}</link>
+    </image>
 ${items}
   </channel>
 </rss>`;
@@ -361,6 +366,11 @@ feedRoutes.get(['/:lang(en|de)/blog/feed.xml', '/blog/feed.xml'], async (req, re
     <creativeCommons:license>https://creativecommons.org/licenses/by-nc-sa/4.0/</creativeCommons:license>
     <lastBuildDate>${now}</lastBuildDate>
     <atom:link href="${baseUrl}${langPrefix}/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>${baseUrl}/favicon-96x96.png</url>
+      <title>Pollar News — Blog</title>
+      <link>${baseUrl}${langPrefix}/blog</link>
+    </image>
 ${items}
   </channel>
 </rss>`;

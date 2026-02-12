@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { useLanguage } from '../../stores/languageStore';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const BASE_URL = 'https://pollar.news';
 
@@ -225,39 +224,35 @@ export function RssPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <Card className="border-divider py-4 gap-3">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm flex items-center gap-2">
-                    <i className="ri-apps-line text-content-subtle" />
-                    {t('rss.recommendedReaders')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-2">
-                    {READERS.map((reader) => (
-                      <a
-                        key={reader.name}
-                        href={reader.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between p-2 -mx-2 rounded-lg hover:bg-muted/50 transition-colors group"
-                      >
-                        <div>
-                          <span className="text-sm font-medium text-content group-hover:text-orange-500 transition-colors">
-                            {reader.name}
-                          </span>
-                          <span className="text-xs text-content-subtle ml-2">{reader.platform}</span>
-                        </div>
-                        {reader.free && (
-                          <span className="text-[10px] px-1.5 py-0.5 bg-green-500/10 text-green-500 rounded font-medium">
-                            Free
-                          </span>
-                        )}
-                      </a>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="rounded-xl border border-divider bg-card p-4">
+                <h3 className="text-sm font-semibold text-content flex items-center gap-2 mb-3">
+                  <i className="ri-apps-line text-content-subtle" />
+                  {t('rss.recommendedReaders')}
+                </h3>
+                <div className="space-y-1">
+                  {READERS.map((reader) => (
+                    <a
+                      key={reader.name}
+                      href={reader.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-2 -mx-2 rounded-lg hover:bg-muted/50 transition-colors group"
+                    >
+                      <div>
+                        <span className="text-sm font-medium text-content group-hover:text-orange-500 transition-colors">
+                          {reader.name}
+                        </span>
+                        <span className="text-xs text-content-subtle ml-2">{reader.platform}</span>
+                      </div>
+                      {reader.free && (
+                        <span className="text-[10px] px-1.5 py-0.5 bg-green-500/10 text-green-500 rounded font-medium">
+                          Free
+                        </span>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </motion.div>
 
             {/* feed: protocol */}
@@ -266,19 +261,15 @@ export function RssPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.15 }}
             >
-              <Card className="border-divider py-4 gap-3">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm flex items-center gap-2">
-                    <i className="ri-link text-content-subtle" />
-                    {t('rss.feedProtocol')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <p className="text-xs text-content-subtle leading-relaxed">
-                    {t('rss.feedProtocolDesc')}
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="rounded-xl border border-divider bg-card p-4">
+                <h3 className="text-sm font-semibold text-content flex items-center gap-2 mb-2">
+                  <i className="ri-link text-content-subtle" />
+                  {t('rss.feedProtocol')}
+                </h3>
+                <p className="text-xs text-content-subtle leading-relaxed">
+                  {t('rss.feedProtocolDesc')}
+                </p>
+              </div>
             </motion.div>
 
             {/* Autodiscovery */}
@@ -287,19 +278,15 @@ export function RssPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.2 }}
             >
-              <Card className="border-divider py-4 gap-3">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm flex items-center gap-2">
-                    <i className="ri-search-eye-line text-content-subtle" />
-                    {t('rss.autodiscovery')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <p className="text-xs text-content-subtle leading-relaxed">
-                    {t('rss.autodiscoveryDesc')}
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="rounded-xl border border-divider bg-card p-4">
+                <h3 className="text-sm font-semibold text-content flex items-center gap-2 mb-2">
+                  <i className="ri-search-eye-line text-content-subtle" />
+                  {t('rss.autodiscovery')}
+                </h3>
+                <p className="text-xs text-content-subtle leading-relaxed">
+                  {t('rss.autodiscoveryDesc')}
+                </p>
+              </div>
             </motion.div>
           </div>
         </div>
