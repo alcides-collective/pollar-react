@@ -104,17 +104,11 @@ export function trackAvatarUpload(success: boolean) {
 
 /**
  * Track page view (custom).
- * Sends to both Firebase Analytics and gtag.js so GA4 properly tracks SPA navigations.
+ * Sends only via gtag.js to avoid double-counting in GA4.
+ * Firebase SDK logEvent was removed — both channels share the same measurementId,
+ * so sending via both caused ~2× page_view inflation.
  */
 export function trackPageView(pageName: string, pageParams?: Record<string, string>) {
-  // Firebase Analytics
-  if (analytics) {
-    logEvent(analytics, 'page_view', {
-      page_title: pageName,
-      ...pageParams,
-    });
-  }
-
   // gtag.js (GA4 direct) — works even before consent (queued by consent mode)
   if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('event', 'page_view', {

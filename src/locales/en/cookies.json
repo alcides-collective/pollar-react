@@ -16,11 +16,11 @@
     "alwaysEnabled": "Always enabled",
     "necessary": {
       "title": "Essential cookies and localStorage",
-      "description": "Required for the website and applications to function properly. These include remembering consent preferences (cookie-consent), language (pollar-language), anonymous visitor ID for counting page views (pollar_uid), AI assistant session ID (pollar-visitor-id), stock watchlist (stock-watchlist), and the Connections game state (pollar.powiazania)."
+      "description": "Required for the website and applications to function properly. These include: consent preferences (cookie-consent), language (pollar-language), color theme (pollar-theme), anonymous visitor ID for counting page views (pollar_uid), AI assistant session ID (pollar-visitor-id), stock watchlist (stock-watchlist), selected countries filter (pollar_countries), and the Connections game state (pollar.powiazania). We also use Sentry for error monitoring — it collects data about application crashes to help us fix them."
     },
     "analytics": {
       "title": "Analytics cookies",
-      "description": "Google Analytics (_ga, _ga_*). Help us understand how users interact with the website, allowing us to improve it. We also use Umami Analytics — a tool that does not use cookies and collects only anonymized statistical data."
+      "description": "Google Analytics (_ga, _ga_*) — helps us understand how users interact with the website. Firebase Analytics — tracks in-app events and user properties (for logged-in users). Contentsquare — a user behavior analysis tool including heatmaps and session recording. We also use Umami Analytics — a tool that does not use cookies and collects only anonymized statistical data."
     },
     "marketing": {
       "title": "Marketing cookies",

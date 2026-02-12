@@ -16,11 +16,11 @@
     "alwaysEnabled": "Immer aktiviert",
     "necessary": {
       "title": "Notwendige Cookies und localStorage",
-      "description": "Erforderlich für das ordnungsgemäße Funktionieren der Website und Anwendungen. Dazu gehören das Speichern von Einwilligungspräferenzen (cookie-consent), Sprache (pollar-language), anonyme Besucher-ID zur Zählung von Seitenaufrufen (pollar_uid), KI-Assistenten-Sitzungs-ID (pollar-visitor-id), Aktien-Watchlist (stock-watchlist) und der Spielstand von Powiązania (pollar.powiazania)."
+      "description": "Erforderlich für das ordnungsgemäße Funktionieren der Website und Anwendungen. Dazu gehören: Einwilligungspräferenzen (cookie-consent), Sprache (pollar-language), Farbschema (pollar-theme), anonyme Besucher-ID zur Zählung von Seitenaufrufen (pollar_uid), KI-Assistenten-Sitzungs-ID (pollar-visitor-id), Aktien-Watchlist (stock-watchlist), Länderfilter (pollar_countries) und der Spielstand von Powiązania (pollar.powiazania). Zusätzlich verwenden wir Sentry zur Fehlerüberwachung – es erfasst Daten über Anwendungsabstürze, um uns bei deren Behebung zu helfen."
     },
     "analytics": {
       "title": "Analytische Cookies",
-      "description": "Google Analytics (_ga, _ga_*). Helfen uns zu verstehen, wie Nutzer die Website verwenden, damit wir sie verbessern können. Zusätzlich verwenden wir Umami Analytics – ein Tool, das keine Cookies verwendet und ausschließlich anonymisierte statistische Daten erhebt."
+      "description": "Google Analytics (_ga, _ga_*) – hilft uns zu verstehen, wie Nutzer die Website verwenden. Firebase Analytics – verfolgt In-App-Ereignisse und Nutzereigenschaften (für eingeloggte Nutzer). Contentsquare – ein Tool zur Analyse des Nutzerverhaltens, einschließlich Heatmaps und Sitzungsaufzeichnung. Zusätzlich verwenden wir Umami Analytics – ein Tool, das keine Cookies verwendet und ausschließlich anonymisierte statistische Daten erhebt."
     },
     "marketing": {
       "title": "Marketing-Cookies",

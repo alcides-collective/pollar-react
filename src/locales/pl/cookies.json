@@ -16,11 +16,11 @@
     "alwaysEnabled": "Zawsze włączone",
     "necessary": {
       "title": "Niezbędne cookies i localStorage",
-      "description": "Wymagane do prawidłowego działania strony i aplikacji. Obejmują zapamiętywanie preferencji zgód (cookie-consent), języka (pollar-language), anonimowy identyfikator odwiedzającego do zliczania wyświetleń (pollar_uid), identyfikator sesji asystenta AI (pollar-visitor-id), listę obserwowanych instrumentów giełdowych (stock-watchlist) oraz stan gry Powiązania (pollar.powiazania)."
+      "description": "Wymagane do prawidłowego działania strony i aplikacji. Obejmują: preferencje zgód (cookie-consent), język (pollar-language), motyw kolorystyczny (pollar-theme), anonimowy identyfikator odwiedzającego do zliczania wyświetleń (pollar_uid), identyfikator sesji asystenta AI (pollar-visitor-id), listę obserwowanych instrumentów giełdowych (stock-watchlist), filtr wybranych krajów (pollar_countries) oraz stan gry Powiązania (pollar.powiazania). Dodatkowo korzystamy z Sentry do monitorowania błędów – zbiera dane o awariach aplikacji i pomaga nam je naprawiać."
     },
     "analytics": {
       "title": "Analityczne cookies",
-      "description": "Google Analytics (_ga, _ga_*). Pomagają nam zrozumieć, w jaki sposób użytkownicy korzystają z serwisu, co pozwala nam go ulepszać. Dodatkowo korzystamy z Umami Analytics – narzędzia, które nie wykorzystuje cookies i zbiera wyłącznie zanonimizowane dane statystyczne."
+      "description": "Google Analytics (_ga, _ga_*) – pomaga nam zrozumieć, w jaki sposób użytkownicy korzystają z serwisu. Firebase Analytics – śledzi zdarzenia w aplikacji i właściwości użytkowników (dla zalogowanych). Contentsquare – narzędzie do analizy zachowań użytkowników, w tym heatmapy i nagrywanie sesji. Dodatkowo korzystamy z Umami Analytics – narzędzia, które nie wykorzystuje cookies i zbiera wyłącznie zanonimizowane dane statystyczne."
     },
     "marketing": {
       "title": "Marketingowe cookies",

@@ -195,12 +195,12 @@ export function EventSidebar({ event, wikipediaImages }: EventSidebarProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => {
+                    trackSourceClicked({
+                      event_id: event.id,
+                      source_name: article.source,
+                      position: index,
+                    });
                     if (user) {
-                      trackSourceClicked({
-                        event_id: event.id,
-                        source_name: article.source,
-                        position: index,
-                      });
                       incrementSourcesClicked();
                     }
                   }}
