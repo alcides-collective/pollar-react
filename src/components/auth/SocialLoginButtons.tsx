@@ -43,7 +43,7 @@ export function SocialLoginButtons({ disabled, onGoogle, onApple }: SocialLoginB
       <Button
         type="button"
         variant="outline"
-        className="w-full h-10 gap-3 bg-white dark:bg-white text-[#1F1F1F] dark:text-[#1F1F1F] hover:text-[#1F1F1F] dark:hover:text-[#1F1F1F] border-[#747775] hover:border-[#747775] font-medium transition-all duration-150 hover:opacity-90 hover:shadow-md active:scale-[0.98]"
+        className="w-full h-10 gap-3 bg-white dark:bg-white hover:bg-white dark:hover:bg-white/90 text-[#1F1F1F] dark:text-[#1F1F1F] hover:text-[#1F1F1F] dark:hover:text-[#1F1F1F] border-[#747775] hover:border-[#747775] font-medium transition-all duration-150 hover:shadow-md active:scale-[0.98]"
         onClick={handleGoogle}
         disabled={isDisabled}
       >
