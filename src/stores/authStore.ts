@@ -203,7 +203,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
       }
 
       await createOrUpdateUserProfile(credential.user, 'google', consents);
-      trackLogin('google');
+      if (consents) {
+        trackSignUp('google');
+      } else {
+        trackLogin('google');
+      }
       set({ user: transformUser(credential.user), isAuthModalOpen: false });
     } catch (error) {
       const message = getAuthErrorMessage(error);
@@ -240,7 +244,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
       }
 
       await createOrUpdateUserProfile(credential.user, 'apple', consents);
-      trackLogin('apple');
+      if (consents) {
+        trackSignUp('apple');
+      } else {
+        trackLogin('apple');
+      }
       set({ user: transformUser(credential.user), isAuthModalOpen: false });
     } catch (error) {
       const message = getAuthErrorMessage(error);
