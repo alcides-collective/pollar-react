@@ -17,5 +17,18 @@
   },
   "yourCategories": "Your categories",
   "otherCategories": "Other categories",
-  "tableOfContents": "Table of contents"
+  "tableOfContents": "Table of contents",
+  "confirmToast": {
+    "success": "Subscription confirmed! You'll receive our newsletter.",
+    "error": "Failed to confirm subscription. Please try again."
+  },
+  "sidebar": {
+    "title": "Newsletter",
+    "description": "Get a weekly overview of the most important events.",
+    "placeholder": "Your email",
+    "submit": "Subscribe",
+    "success": "Check your inbox — we've sent a confirmation link.",
+    "error": "Something went wrong. Please try again.",
+    "retry": "Try again"
+  }
 }

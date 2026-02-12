@@ -17,5 +17,18 @@
   },
   "yourCategories": "Ihre Kategorien",
   "otherCategories": "Weitere Kategorien",
-  "tableOfContents": "Inhaltsverzeichnis"
+  "tableOfContents": "Inhaltsverzeichnis",
+  "confirmToast": {
+    "success": "Abonnement bestätigt! Sie erhalten unseren Newsletter.",
+    "error": "Bestätigung fehlgeschlagen. Bitte versuchen Sie es erneut."
+  },
+  "sidebar": {
+    "title": "Newsletter",
+    "description": "Erhalten Sie jede Woche einen Überblick über die wichtigsten Ereignisse.",
+    "placeholder": "Ihre E-Mail",
+    "submit": "Abonnieren",
+    "success": "Überprüfen Sie Ihren Posteingang — wir haben einen Bestätigungslink gesendet.",
+    "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "retry": "Erneut versuchen"
+  }
 }

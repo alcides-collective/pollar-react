@@ -11,7 +11,7 @@ import { FelietonySection } from './news/FelietonySection';
 import { DiscoverSection } from './news/DiscoverSection';
 import { OlympicsSection } from './news/OlympicsSection';
 import { CategoryCarousel } from './news/CategoryCarousel';
-import { LatestEvents, /* NewsletterSection, */ MapSection, AboutSection, ContactSection, VersionSection, StatsSection } from './news/sidebar';
+import { LatestEvents, NewsletterSection, MapSection, AboutSection, ContactSection, VersionSection, StatsSection } from './news/sidebar';
 import { AISidebarWidget } from './ai';
 import { LoadingSpinner } from './common/LoadingSpinner';
 import { LazySection } from './common/LazySection';
@@ -114,7 +114,7 @@ export function NewsGrid() {
         <aside className="hidden lg:block divide-y divide-divider [&>*:last-child]:border-b [&>*:last-child]:border-divider">
           <AISidebarWidget />
           <LatestEvents events={latestEvents} />
-          {/* <NewsletterSection /> */}
+          <NewsletterSection />
           <LazySection height="300px" rootMargin="100px">
             <MapSection />
           </LazySection>

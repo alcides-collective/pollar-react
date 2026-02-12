@@ -17,5 +17,18 @@
   },
   "yourCategories": "Twoje kategorie",
   "otherCategories": "Pozostałe kategorie",
-  "tableOfContents": "Spis treści"
+  "tableOfContents": "Spis treści",
+  "confirmToast": {
+    "success": "Subskrypcja potwierdzona! Będziesz otrzymywać nasz newsletter.",
+    "error": "Nie udało się potwierdzić subskrypcji. Spróbuj ponownie."
+  },
+  "sidebar": {
+    "title": "Newsletter",
+    "description": "Otrzymuj co tydzień przegląd najważniejszych wydarzeń.",
+    "placeholder": "Twój email",
+    "submit": "Zapisz",
+    "success": "Sprawdź skrzynkę — wysłaliśmy link potwierdzający.",
+    "error": "Coś poszło nie tak. Spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
+  }
 }

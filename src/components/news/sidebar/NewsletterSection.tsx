@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { fadeIn } from '@/lib/animations';
 import { trackNewsletterSignup } from '@/lib/analytics';
+import { subscribeToNewsletter } from '@/services/newsletterService';
 
 export function NewsletterSection() {
+  const { t } = useTranslation('newsletter');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
@@ -15,19 +18,22 @@ export function NewsletterSection() {
 
     setStatus('loading');
 
-    // TODO: Implement actual newsletter signup
-    setTimeout(() => {
+    try {
+      await subscribeToNewsletter(email);
       trackNewsletterSignup({ source: 'sidebar' });
       setStatus('success');
       setEmail('');
-    }, 500);
+    } catch (error) {
+      console.error('Newsletter subscription failed:', error);
+      setStatus('error');
+    }
   };
 
   return (
     <div className="p-6">
-      <h3 className="text-content-heading font-semibold mb-2">Newsletter</h3>
+      <h3 className="text-content-heading font-semibold mb-2">{t('sidebar.title')}</h3>
       <p className="text-sm text-content mb-4">
-        Otrzymuj codzienny przegląd najważniejszych wydarzeń.
+        {t('sidebar.description')}
       </p>
 
       <AnimatePresence mode="wait">
@@ -40,8 +46,23 @@ export function NewsletterSection() {
             exit={fadeIn.exit}
             transition={fadeIn.transition}
           >
-            Dziękujemy za zapisanie się!
+            {t('sidebar.success')}
           </motion.p>
+        ) : status === 'error' ? (
+          <motion.div
+            key="error"
+            initial={fadeIn.initial}
+            animate={fadeIn.animate}
+            exit={fadeIn.exit}
+            transition={fadeIn.transition}
+          >
+            <p className="text-sm text-red-600 mb-2">
+              {t('sidebar.error')}
+            </p>
+            <Button size="sm" variant="outline" onClick={() => setStatus('idle')}>
+              {t('sidebar.retry')}
+            </Button>
+          </motion.div>
         ) : (
           <motion.form
             key="form"
@@ -56,7 +77,7 @@ export function NewsletterSection() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Twój email"
+              placeholder={t('sidebar.placeholder')}
               className="flex-1 text-sm text-content-heading placeholder:text-content-faint bg-background border-divider"
               required
             />
@@ -64,7 +85,7 @@ export function NewsletterSection() {
               type="submit"
               disabled={status === 'loading'}
             >
-              {status === 'loading' ? '...' : 'Zapisz'}
+              {status === 'loading' ? '...' : t('sidebar.submit')}
             </Button>
           </motion.form>
         )}

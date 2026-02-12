@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate, useParams, Navi
 import { SWRConfig } from 'swr'
 import { motion } from 'framer-motion'
 import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react'
-import { Toaster } from 'sonner'
+import { Toaster, toast } from 'sonner'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Header } from './components/Header'
 import { AuthModal, EmailVerificationBanner, ConsentRequiredModal } from './components/auth'
@@ -26,6 +26,7 @@ import { useCountryRedirect } from './hooks/useCountryRedirect'
 import { useSessionTracking } from './hooks/useSessionTracking'
 import { initUserAnalytics, clearUserAnalytics, trackPageView } from './lib/analytics'
 import { captureUtmParams } from './lib/utm'
+import { useTranslation } from 'react-i18next'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
 import { parseCountrySlugsParam, ALL_COUNTRY_SEGMENTS } from './utils/countrySlug'
 import { useUIStore } from './stores/uiStore'
@@ -402,6 +403,23 @@ function AppContent() {
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
   }, [onSystemThemeChange])
+
+  // Newsletter confirmation toast
+  const { t: tNewsletter } = useTranslation('newsletter')
+  const navigate = useNavigate()
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const confirmed = params.get('confirmed')
+    if (confirmed === 'true') {
+      toast.success(tNewsletter('confirmToast.success'))
+      params.delete('confirmed')
+      navigate({ pathname: location.pathname, search: params.toString() }, { replace: true })
+    } else if (confirmed === 'error') {
+      toast.error(tNewsletter('confirmToast.error'))
+      params.delete('confirmed')
+      navigate({ pathname: location.pathname, search: params.toString() }, { replace: true })
+    }
+  }, [location.search, tNewsletter, navigate, location.pathname])
 
   // Track whether user was ever logged in — so we only reset on actual logout,
   // not on cold start where user is null from the beginning.
