@@ -52,6 +52,7 @@ const LANGUAGES: { code: Language; label: string }[] = [
 
 // Language selector component
 function LanguageSelector() {
+  const { t } = useTranslation('common');
   const language = useRouteLanguage();
   const location = useLocation();
   const navigate = useNavigate();
@@ -66,7 +67,10 @@ function LanguageSelector() {
   };
 
   return (
+    <TooltipProvider>
     <DropdownMenu>
+      <Tooltip>
+      <TooltipTrigger asChild>
       <DropdownMenuTrigger className="h-9 flex items-center gap-1.5 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors outline-none">
         <i className="ri-global-line text-base" />
         <span className="hidden sm:inline">{currentLang.code.toUpperCase()}</span>
@@ -74,6 +78,9 @@ function LanguageSelector() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </DropdownMenuTrigger>
+      </TooltipTrigger>
+      <TooltipContent side="bottom">{t('nav.languageTooltip')}</TooltipContent>
+      </Tooltip>
       <DropdownMenuContent align="end" className="w-36">
         {LANGUAGES.map((lang) => (
           <DropdownMenuItem
@@ -89,6 +96,7 @@ function LanguageSelector() {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
+    </TooltipProvider>
   );
 }
 
@@ -153,7 +161,10 @@ function CountryFilter() {
   const count = selectedCountries.length;
 
   return (
+    <TooltipProvider>
     <DropdownMenu>
+      <Tooltip>
+      <TooltipTrigger asChild>
       <DropdownMenuTrigger className={`h-9 flex items-center gap-1.5 text-sm rounded-lg border transition-colors outline-none ${
         count > 0
           ? 'text-white bg-zinc-700 border-zinc-600'
@@ -167,6 +178,9 @@ function CountryFilter() {
           </span>
         )}
       </DropdownMenuTrigger>
+      </TooltipTrigger>
+      <TooltipContent side="bottom">{t('nav.countriesTooltip')}</TooltipContent>
+      </Tooltip>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuLabel>{t('nav.countries')}</DropdownMenuLabel>
         <p className="px-2 pb-2 text-[11px] text-zinc-500 leading-tight">{t('nav.countriesHint')}</p>
@@ -203,6 +217,7 @@ function CountryFilter() {
         )}
       </DropdownMenuContent>
     </DropdownMenu>
+    </TooltipProvider>
   );
 }
 
@@ -696,12 +711,19 @@ export function Header() {
             </LocalizedLink>
           </div>
           <div className="flex items-center gap-3">
-            <LocalizedLink
-              to="/polityka-prywatnosci"
-              className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
-            >
-              {t('nav.privacy')}
-            </LocalizedLink>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <LocalizedLink
+                    to="/polityka-prywatnosci"
+                    className="h-9 flex items-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
+                  >
+                    {t('nav.privacy')}
+                  </LocalizedLink>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{t('nav.privacyTooltip')}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <div className="hidden sm:block"><AlertsBell /></div>
             {isAuthenticated && <div className="hidden sm:block"><ThemeToggle variant="header" /></div>}
             <div className="hidden sm:block"><LanguageSelector /></div>
@@ -715,15 +737,22 @@ export function Header() {
             >
               Pollar Pro
             </button> */}
-            <button
-              onClick={openSearch}
-              className="h-9 w-9 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors"
-              aria-label={t('nav.search')}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={openSearch}
+                    className="h-9 w-9 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors"
+                    aria-label={t('nav.search')}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{t('nav.searchTooltip')}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
 

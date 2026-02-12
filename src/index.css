@@ -168,7 +168,7 @@ body {
 }
 
 .quote-box.has-photo {
-  @apply flex gap-4 items-stretch;
+  @apply flex gap-4 items-start;
 }
 
 .quote-author-photo {
@@ -176,7 +176,7 @@ body {
 }
 
 .quote-author-photo img {
-  @apply w-full h-full object-cover !m-0 !rounded-none !border-0;
+  @apply w-full h-auto !m-0 !rounded-none !border-0;
 }
 
 .quote-content {

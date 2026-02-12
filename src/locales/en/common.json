@@ -27,7 +27,11 @@
     "countriesHint": "Filter news by country",
     "clearCountries": "Clear",
     "blog": "Blog",
-    "weather": "Weather"
+    "weather": "Weather",
+    "searchTooltip": "Search events and articles",
+    "languageTooltip": "Change language",
+    "countriesTooltip": "Filter news by country",
+    "privacyTooltip": "Privacy policy and GDPR"
   },
   "categories": {
     "Świat": "World",
@@ -118,11 +122,11 @@
   },
   "loginPrompt": {
     "title": "Log in to access:",
-    "feature1": "Track MPs and their votes",
-    "feature2": "Notifications about new events",
-    "feature3": "Save articles",
-    "feature4": "Personalize categories",
-    "feature5": "Switch between light and dark mode"
+    "feature1": "Track MPs and get voting alerts",
+    "feature2": "Notifications for favorite categories and countries",
+    "feature3": "Save events for later",
+    "feature4": "Personalized \"For You\" feed",
+    "feature5": "Newsletter and reading history"
   },
   "footer": {
     "description": "AI-powered Polish news aggregator. Track events, analyze Parliament data and explore public statistics.",

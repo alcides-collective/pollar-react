@@ -27,7 +27,11 @@
     "countriesHint": "Filtruj wiadomości wg kraju",
     "clearCountries": "Wyczyść",
     "blog": "Blog",
-    "weather": "Pogoda"
+    "weather": "Pogoda",
+    "searchTooltip": "Szukaj wydarzeń i artykułów",
+    "languageTooltip": "Zmień język",
+    "countriesTooltip": "Filtruj wiadomości wg kraju",
+    "privacyTooltip": "Polityka prywatności i RODO"
   },
   "categories": {
     "Świat": "Świat",
@@ -118,11 +122,11 @@
   },
   "loginPrompt": {
     "title": "Zaloguj się, aby uzyskać dostęp do:",
-    "feature1": "Śledzenia posłów i ich głosowań",
-    "feature2": "Powiadomień o nowych wydarzeniach",
-    "feature3": "Zapisywania artykułów",
-    "feature4": "Personalizacji kategorii",
-    "feature5": "Zmiany motywu jasnego i ciemnego"
+    "feature1": "Śledzenia posłów i alertów o głosowaniach",
+    "feature2": "Powiadomień z ulubionych kategorii i krajów",
+    "feature3": "Zapisywania wydarzeń na później",
+    "feature4": "Spersonalizowanego feedu \"Dla Ciebie\"",
+    "feature5": "Newslettera i historii czytania"
   },
   "footer": {
     "description": "Agregator newsów napędzany AI. Śledź wydarzenia, analizuj dane Sejmu i eksploruj statystyki publiczne.",

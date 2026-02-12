@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,6 +9,9 @@ import { AnimateHeight } from '../common/AnimateHeight';
 import { SectionWrapper } from '../common/SectionWrapper';
 import { AnimatedUnderline } from '../common/AnimatedUnderline';
 import { eventPath } from '../../utils/slug';
+import { extractQuote } from '../../utils/text';
+import { useWikipediaImages } from '../../hooks/useWikipediaImages';
+import { FeaturedEventPreview } from './CategoryTabPreview';
 
 interface CategoryTabsProps {
   groups: Array<[string, Event[]]>;
@@ -18,6 +21,30 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
   const { t } = useTranslation('common');
   const [selectedTab, setSelectedTab] = useState(0);
   const selectedGroup = groups[selectedTab];
+
+  // Preload Wikipedia images for quote authors across ALL tabs
+  const allQuoteAuthors = useMemo(() => {
+    const people: Event['metadata']['mentionedPeople'] = [];
+    for (const [, events] of groups) {
+      const featured = events[0];
+      if (!featured?.summary || !featured.metadata?.mentionedPeople) continue;
+      const quote = extractQuote(featured.summary);
+      if (!quote) continue;
+      const match = featured.metadata.mentionedPeople.find((p) => p.name === quote.autor);
+      if (match) people.push(match);
+    }
+    return people;
+  }, [groups]);
+
+  const wikipediaImages = useWikipediaImages(allQuoteAuthors);
+
+  // Preload actual image files once URLs are known
+  useEffect(() => {
+    for (const url of Object.values(wikipediaImages)) {
+      const img = new Image();
+      img.src = url;
+    }
+  }, [wikipediaImages]);
 
   if (groups.length === 0) return null;
 
@@ -102,6 +129,9 @@ export function CategoryTabs({ groups }: CategoryTabsProps) {
                     </h4>
                   </LocalizedLink>
                 ))}
+                {selectedGroup[1][0] && (
+                  <FeaturedEventPreview event={selectedGroup[1][0]} wikipediaImages={wikipediaImages} />
+                )}
                 </div>
               </div>
               </SectionWrapper>

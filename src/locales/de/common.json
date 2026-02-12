@@ -27,7 +27,11 @@
     "countriesHint": "Nachrichten nach Land filtern",
     "clearCountries": "Löschen",
     "blog": "Blog",
-    "weather": "Wetter"
+    "weather": "Wetter",
+    "searchTooltip": "Ereignisse und Artikel suchen",
+    "languageTooltip": "Sprache ändern",
+    "countriesTooltip": "Nachrichten nach Land filtern",
+    "privacyTooltip": "Datenschutz und DSGVO"
   },
   "categories": {
     "Świat": "Welt",
@@ -118,11 +122,11 @@
   },
   "loginPrompt": {
     "title": "Melde dich an, um Zugang zu erhalten:",
-    "feature1": "Abgeordnete und ihre Abstimmungen verfolgen",
-    "feature2": "Benachrichtigungen über neue Ereignisse",
-    "feature3": "Artikel speichern",
-    "feature4": "Kategorien personalisieren",
-    "feature5": "Zwischen hellem und dunklem Modus wechseln"
+    "feature1": "Abgeordnete verfolgen und Abstimmungsbenachrichtigungen",
+    "feature2": "Benachrichtigungen für Lieblingskategorien und -länder",
+    "feature3": "Ereignisse für später speichern",
+    "feature4": "Personalisierter \"Für dich\"-Feed",
+    "feature5": "Newsletter und Lesehistorie"
   },
   "footer": {
     "description": "KI-gestützter polnischer Nachrichten-Aggregator. Verfolge Ereignisse, analysiere Parlamentsdaten und erkunde öffentliche Statistiken.",

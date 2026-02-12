@@ -61,6 +61,19 @@ export interface ExtractedTimeline {
   events: TimelineEvent[];
 }
 
+export interface ExtractedQuote {
+  autor: string;
+  miejsce?: string;
+  text: string;
+}
+
+export interface ExtractedChart {
+  type: 'line' | 'bar';
+  title: string;
+  unit: string;
+  items: { label: string; value: number }[];
+}
+
 export interface ExtractedLineChart {
   id: string;
   title: string;
@@ -156,6 +169,101 @@ export function extractTimeline(summary: string | undefined): ExtractedTimeline 
   } catch {
     return null;
   }
+}
+
+/**
+ * Extract first quote (cytat) from summary for display in CategoryTabs preview
+ */
+export function extractQuote(summary: string | undefined): ExtractedQuote | null {
+  if (!summary) return null;
+
+  const s = normalizeEnglishTags(summary);
+
+  // Collect all possible matches with their positions to find the earliest one
+  const candidates: { index: number; autor: string; miejsce?: string; text: string }[] = [];
+
+  // autor + miejsce (double quotes)
+  let m = s.match(/<cytat\s+autor\s*=\s*"([^"]+)"\s+miejsce\s*=\s*"([^"]+)">([\s\S]*?)<\/cytat>/i);
+  if (m && m.index != null) candidates.push({ index: m.index, autor: m[1], miejsce: m[2], text: m[3].trim() });
+
+  // autor + miejsce (single quotes)
+  m = s.match(/<cytat\s+autor\s*=\s*'([^']+)'\s+miejsce\s*=\s*'([^']+)'>([\s\S]*?)<\/cytat>/i);
+  if (m && m.index != null) candidates.push({ index: m.index, autor: m[1], miejsce: m[2], text: m[3].trim() });
+
+  // miejsce + autor (double quotes)
+  m = s.match(/<cytat\s+miejsce\s*=\s*"([^"]+)"\s+autor\s*=\s*"([^"]+)">([\s\S]*?)<\/cytat>/i);
+  if (m && m.index != null) candidates.push({ index: m.index, autor: m[2], miejsce: m[1], text: m[3].trim() });
+
+  // miejsce + autor (single quotes)
+  m = s.match(/<cytat\s+miejsce\s*=\s*'([^']+)'\s+autor\s*=\s*'([^']+)'>([\s\S]*?)<\/cytat>/i);
+  if (m && m.index != null) candidates.push({ index: m.index, autor: m[2], miejsce: m[1], text: m[3].trim() });
+
+  // autor only (double quotes)
+  m = s.match(/<cytat\s+autor\s*=\s*"([^"]+)">([\s\S]*?)<\/cytat>/i);
+  if (m && m.index != null) candidates.push({ index: m.index, autor: m[1], text: m[2].trim() });
+
+  // autor only (single quotes)
+  m = s.match(/<cytat\s+autor\s*=\s*'([^']+)'>([\s\S]*?)<\/cytat>/i);
+  if (m && m.index != null) candidates.push({ index: m.index, autor: m[1], text: m[2].trim() });
+
+  if (candidates.length === 0) return null;
+
+  // Take the earliest match
+  candidates.sort((a, b) => a.index - b.index);
+  const best = candidates[0];
+
+  return {
+    autor: preventWidows(best.autor),
+    miejsce: best.miejsce ? preventWidows(best.miejsce) : undefined,
+    text: preventWidows(best.text),
+  };
+}
+
+/**
+ * Extract first chart (line or bar) from summary for CategoryTabs fallback
+ */
+export function extractFirstChart(summary: string | undefined): ExtractedChart | null {
+  if (!summary) return null;
+
+  const s = normalizeEnglishTags(summary);
+
+  const patterns: Array<{ regex: RegExp; type: 'line' | 'bar'; order: 'title-unit' | 'unit-title' }> = [
+    // Line chart: tytuł + jednostka
+    { regex: /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*"([^"]+)"\s+jednostk[ai]?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-liniowy>/i, type: 'line', order: 'title-unit' },
+    { regex: /<wykres-liniowy\s+tytu[łlć]?u?\s*=\s*'([^']+)'\s+jednostk[ai]?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-liniowy>/i, type: 'line', order: 'title-unit' },
+    // Line chart: jednostka + tytuł
+    { regex: /<wykres-liniowy\s+jednostk[ai]?\s*=\s*"([^"]+)"\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-liniowy>/i, type: 'line', order: 'unit-title' },
+    { regex: /<wykres-liniowy\s+jednostk[ai]?\s*=\s*'([^']+)'\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-liniowy>/i, type: 'line', order: 'unit-title' },
+    // Bar chart: tytuł + jednostka
+    { regex: /<wykres-s[łt][uó]pkowy\s+tytu[łlć]?u?\s*=\s*"([^"]+)"\s+jednostk[ai]?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-s[łt][uó]pkowy>/i, type: 'bar', order: 'title-unit' },
+    { regex: /<wykres-s[łt][uó]pkowy\s+tytu[łlć]?u?\s*=\s*'([^']+)'\s+jednostk[ai]?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-s[łt][uó]pkowy>/i, type: 'bar', order: 'title-unit' },
+    // Bar chart: jednostka + tytuł
+    { regex: /<wykres-s[łt][uó]pkowy\s+jednostk[ai]?\s*=\s*"([^"]+)"\s+tytu[łlć]?u?\s*=\s*"([^"]+)">([\s\S]*?)<\/wykres-s[łt][uó]pkowy>/i, type: 'bar', order: 'unit-title' },
+    { regex: /<wykres-s[łt][uó]pkowy\s+jednostk[ai]?\s*=\s*'([^']+)'\s+tytu[łlć]?u?\s*=\s*'([^']+)'>([\s\S]*?)<\/wykres-s[łt][uó]pkowy>/i, type: 'bar', order: 'unit-title' },
+  ];
+
+  let earliest: { index: number; type: 'line' | 'bar'; title: string; unit: string; items: { label: string; value: number }[] } | null = null;
+
+  for (const { regex, type, order } of patterns) {
+    const m = s.match(regex);
+    if (m && m.index != null) {
+      const title = order === 'title-unit' ? m[1] : m[2];
+      const unit = order === 'title-unit' ? m[2] : m[1];
+      const items = parseChartData(m[3]);
+      if (items.length > 0 && (earliest === null || m.index < earliest.index)) {
+        earliest = { index: m.index, type, title, unit, items };
+      }
+    }
+  }
+
+  if (!earliest) return null;
+
+  return {
+    type: earliest.type,
+    title: earliest.title,
+    unit: earliest.unit,
+    items: earliest.items,
+  };
 }
 
 /**
