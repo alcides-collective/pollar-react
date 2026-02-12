@@ -1,10 +1,17 @@
-import { useMemo } from 'react';
+import { lazy, Suspense, useMemo } from 'react';
 import { LocalizedLink } from '@/components/LocalizedLink';
 import { extractQuote, extractFirstChart } from '@/utils/text';
 import { eventPath } from '@/utils/slug';
-import { SummaryLineChart, type LineChartData } from '@/components/charts/SummaryLineChart';
-import { SummaryBarChart, type BarChartData } from '@/components/charts/SummaryBarChart';
+import type { LineChartData } from '@/components/charts/SummaryLineChart';
+import type { BarChartData } from '@/components/charts/SummaryBarChart';
 import type { Event } from '@/types/events';
+
+const SummaryLineChart = lazy(() =>
+  import('@/components/charts/SummaryLineChart').then(m => ({ default: m.SummaryLineChart }))
+);
+const SummaryBarChart = lazy(() =>
+  import('@/components/charts/SummaryBarChart').then(m => ({ default: m.SummaryBarChart }))
+);
 
 interface FeaturedEventPreviewProps {
   event: Event;
@@ -68,11 +75,13 @@ export function FeaturedEventPreview({ event, wikipediaImages = {} }: FeaturedEv
       >
         {/* Connector line extending left toward the featured event */}
         <div className="absolute h-px bg-divider" style={{ top: '66%', left: 0, width: '1.5rem' }} />
-        {firstChart.type === 'line' ? (
-          <SummaryLineChart data={chartData as LineChartData} />
-        ) : (
-          <SummaryBarChart data={chartData as BarChartData} />
-        )}
+        <Suspense fallback={null}>
+          {firstChart.type === 'line' ? (
+            <SummaryLineChart data={chartData as LineChartData} />
+          ) : (
+            <SummaryBarChart data={chartData as BarChartData} />
+          )}
+        </Suspense>
       </LocalizedLink>
     );
   }

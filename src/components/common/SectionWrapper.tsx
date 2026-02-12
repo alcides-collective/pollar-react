@@ -53,6 +53,18 @@ export function SectionWrapper({
   const finalPriority = propPriority === 'auto' ? detectedPriority : propPriority;
   const { contextValue, isReady } = useSectionImages(sectionId, finalPriority);
 
+  // High-priority sections: render immediately, no animation delay
+  // This prevents blocking LCP paint and eliminates CLS from y:20 animation shift
+  if (finalPriority === 'high') {
+    return (
+      <SectionImageContext.Provider value={contextValue}>
+        <div ref={containerRef} className={className}>
+          {children}
+        </div>
+      </SectionImageContext.Provider>
+    );
+  }
+
   // Add minimum delay before showing to prevent flash
   useEffect(() => {
     if (isReady) {

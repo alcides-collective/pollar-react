@@ -85,6 +85,7 @@ export function EventImage({ event, className, style, hoverScale = 1.02, grainOp
         alt=""
         className="w-full h-full object-cover"
         loading={priority === 'high' ? 'eager' : 'lazy'}
+        fetchPriority={priority === 'high' ? 'high' : undefined}
         onLoad={onLoad}
         onError={isUsingPlaceholder ? undefined : handleError}
         width={width}

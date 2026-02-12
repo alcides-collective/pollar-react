@@ -71,17 +71,21 @@ export function MarketTicker() {
 
   if (loading && indices.length === 0) {
     return (
-      <div className="bg-surface border-b border-divider px-4 py-2 flex items-center gap-2">
+      <div className="bg-surface border-b border-divider px-4 py-2 flex items-center gap-2 min-h-[40px]">
         <LocalizedLink to="/gielda" className="text-sm text-content-subtle hover:text-content-heading transition-colors shrink-0">
           Notowania
         </LocalizedLink>
-        <div className="text-sm text-content-faint">Ładowanie...</div>
+        <div className="flex items-center gap-3 flex-1">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="h-6 w-24 bg-content-faint/10 rounded animate-pulse" />
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-surface border-b border-divider px-4 py-2 flex items-center gap-2">
+    <div className="bg-surface border-b border-divider px-4 py-2 flex items-center gap-2 min-h-[40px]">
       <LocalizedLink to="/gielda" className="text-sm text-content-subtle hover:text-content-heading transition-colors shrink-0">
         Notowania
       </LocalizedLink>
