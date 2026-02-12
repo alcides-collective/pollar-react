@@ -64,11 +64,11 @@ app.use((req, res, next) => {
 // Crawler-specific 404 handler
 app.use(crawler404Handler);
 
-// SPA fallback — inject CSP nonce into inline scripts
+// SPA fallback — inject CSP nonce into ALL script tags
 app.get('*', (req, res) => {
   const nonce = res.locals.cspNonce;
-  // Add nonce to bare <script> tags (inline only, not <script src=...> or <script type="module">)
-  const html = indexHtmlTemplate.replace(/<script>(?=\s*[^<])/g, `<script nonce="${nonce}">`);
+  // Add nonce to every <script> tag (inline, module, async — all need nonce with strict-dynamic)
+  const html = indexHtmlTemplate.replace(/<script(?=[\s>])/g, `<script nonce="${nonce}"`);
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 'no-cache');
   res.send(html);
