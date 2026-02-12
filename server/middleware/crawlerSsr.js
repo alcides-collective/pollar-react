@@ -775,7 +775,7 @@ export async function crawlerSsrMiddleware(req, res, next) {
   if (pageInfo) {
     const isHomepage = pathWithoutLang === '/';
     const ogTitle = isHomepage ? pageInfo.title : `Pollar News: ${pageInfo.title}`;
-    const pageTitle = isHomepage ? `${pageInfo.title} | ${pageInfo.tagline || 'Wiesz więcej'}` : `${pageInfo.title} | Pollar`;
+    const pageTitle = isHomepage ? `${pageInfo.title}. ${pageInfo.tagline || 'Wiesz więcej'}.` : `${pageInfo.title} | Pollar`;
     const ogImage = `${baseUrl}/api/og?title=${encodeURIComponent(pageInfo.title)}&description=${encodeURIComponent(pageInfo.description)}&lang=${lang}`;
 
     // Use Organization schema for homepage, WebPage + BreadcrumbList + FAQPage for other static pages
