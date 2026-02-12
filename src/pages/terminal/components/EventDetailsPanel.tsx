@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Event, KeyPoint, Article } from '../../../types/events';
 
 interface EventDetailsPanelProps {
@@ -58,26 +59,6 @@ function groupArticlesBySource(articles: Article[]): { source: string; count: nu
   }));
 }
 
-// Category translation (simplified)
-function translateCategory(category: string): string {
-  const translations: Record<string, string> = {
-    'News': 'AKTUALNOSCI',
-    'Politics': 'POLITYKA',
-    'Business': 'BIZNES',
-    'Economy': 'EKONOMIA',
-    'Technology': 'TECHNOLOGIA',
-    'Science': 'NAUKA',
-    'Health': 'ZDROWIE',
-    'Sports': 'SPORT',
-    'Entertainment': 'ROZRYWKA',
-    'World': 'SWIAT',
-    'Poland': 'POLSKA',
-    'Culture': 'KULTURA',
-    'Society': 'SPOLECZENSTWO',
-  };
-  return translations[category] || category.toUpperCase();
-}
-
 export function EventDetailsPanel({
   event,
   keyPointIndex,
@@ -87,10 +68,12 @@ export function EventDetailsPanel({
   selectedIndex,
   focused
 }: EventDetailsPanelProps) {
+  const { t } = useTranslation('terminal');
+
   return (
     <div className={`panel details-panel ${focused ? 'focused' : ''}`}>
       <div className="panel-header">
-        <span className="panel-title">SZCZEGOLY WYDARZENIA</span>
+        <span className="panel-title">{t('details.title').toUpperCase()}</span>
         <span className="panel-index">[{String(selectedIndex + 1).padStart(2, '0')}]</span>
       </div>
 
@@ -104,10 +87,10 @@ export function EventDetailsPanel({
             {/* Panel 1: Event (Title + Lead) */}
             <div className="detail-panel panel-event">
               <div className="panel-header">
-                <span className="panel-title">WYDARZENIE</span>
+                <span className="panel-title">{t('details.event').toUpperCase()}</span>
                 <span className="panel-meta">
                   <span className="details-category">
-                    {translateCategory(event.category || 'News')}
+                    {t(`categories.${event.category || 'News'}`, { defaultValue: event.category || 'News' }).toUpperCase()}
                   </span>
                 </span>
               </div>
@@ -124,7 +107,7 @@ export function EventDetailsPanel({
             {/* Panel 2: Key Points */}
             <div className="detail-panel panel-keypoints">
               <div className="panel-header">
-                <span className="panel-title">KLUCZOWE PUNKTY</span>
+                <span className="panel-title">{t('details.keyPoints').toUpperCase()}</span>
                 {keyPoints.length > 0 && (
                   <span className="keypoint-counter">
                     [{keyPointIndex + 1}/{keyPoints.length}]
@@ -150,7 +133,7 @@ export function EventDetailsPanel({
             {/* Panel 3: Sources */}
             <div className="detail-panel panel-sources">
               <div className="panel-header">
-                <span className="panel-title">ZRODLA</span>
+                <span className="panel-title">{t('details.sources').toUpperCase()}</span>
                 <span className="panel-count">
                   {event.articles?.length || event.sources?.length || 0}
                 </span>
@@ -185,24 +168,24 @@ export function EventDetailsPanel({
             {/* Panel 4: Statistics */}
             <div className="detail-panel panel-stats">
               <div className="panel-header">
-                <span className="panel-title">STATYSTYKI</span>
+                <span className="panel-title">{t('details.statistics').toUpperCase()}</span>
               </div>
               <div className="panel-body">
                 <div className="stats-grid">
                   <div className="stat-item">
-                    <span className="stat-label">Artykuly</span>
+                    <span className="stat-label">{t('details.articles')}</span>
                     <span className="stat-value">
                       {event.articleCount || event.articles?.length || 0}
                     </span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Zrodla</span>
+                    <span className="stat-label">{t('details.sourcesLabel')}</span>
                     <span className="stat-value">
                       {event.sourceCount || event.metadata?.sourceCount || event.sources?.length || 0}
                     </span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Wyswietlenia</span>
+                    <span className="stat-label">{t('details.views')}</span>
                     <span className="stat-value">
                       {event.viewCount || 0}
                     </span>
@@ -215,7 +198,7 @@ export function EventDetailsPanel({
                   </div>
                   {event.metadata?.mentionedPeople?.length ? (
                     <div className="stat-item">
-                      <span className="stat-label">Osoby</span>
+                      <span className="stat-label">{t('details.people')}</span>
                       <span className="stat-value">
                         {event.metadata.mentionedPeople.length}
                       </span>
@@ -223,7 +206,7 @@ export function EventDetailsPanel({
                   ) : null}
                   {event.metadata?.mentionedCountries?.length ? (
                     <div className="stat-item">
-                      <span className="stat-label">Kraje</span>
+                      <span className="stat-label">{t('details.countries')}</span>
                       <span className="stat-value">
                         {event.metadata.mentionedCountries.length}
                       </span>

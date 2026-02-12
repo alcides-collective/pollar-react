@@ -1,0 +1,55 @@
+{
+  "header": {
+    "back": "Wróć",
+    "mode": "TERMINAL (ALPHA)",
+    "exit": "ESC - Wyjście"
+  },
+  "status": {
+    "loading": "Ładowanie...",
+    "connected": "Połączono",
+    "disconnected": "Rozłączono",
+    "lastUpdate": "Ostatnia akt.",
+    "events": "Wydarzenia"
+  },
+  "details": {
+    "title": "Szczegóły wydarzenia",
+    "event": "Wydarzenie",
+    "keyPoints": "Kluczowe punkty",
+    "sources": "Źródła",
+    "statistics": "Statystyki",
+    "articles": "Artykuły",
+    "sourcesLabel": "Źródła",
+    "views": "Wyświetlenia",
+    "people": "Osoby",
+    "countries": "Kraje"
+  },
+  "list": {
+    "category": "Kat",
+    "city": "Miasto",
+    "titleHeader": "Tytuł",
+    "recentlyUpdated": "Zaktualizowany w ciągu 10 min"
+  },
+  "sidebar": {
+    "quotes": "Notowania",
+    "categories": "Kategorie",
+    "map": "Mapa"
+  },
+  "map": {
+    "noLocation": "Brak lokalizacji"
+  },
+  "categories": {
+    "News": "Aktualności",
+    "Politics": "Polityka",
+    "Business": "Biznes",
+    "Economy": "Ekonomia",
+    "Technology": "Technologia",
+    "Science": "Nauka",
+    "Health": "Zdrowie",
+    "Sports": "Sport",
+    "Entertainment": "Rozrywka",
+    "World": "Świat",
+    "Poland": "Polska",
+    "Culture": "Kultura",
+    "Society": "Społeczeństwo"
+  }
+}

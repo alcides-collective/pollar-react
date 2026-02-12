@@ -24,6 +24,7 @@ import plInfo from './locales/pl/info.json';
 import plNewsletter from './locales/pl/newsletter.json';
 import plPrivacy from './locales/pl/privacy.json';
 import plContact from './locales/pl/contact.json';
+import plTerminal from './locales/pl/terminal.json';
 
 // English translations
 import enCommon from './locales/en/common.json';
@@ -46,6 +47,7 @@ import enInfo from './locales/en/info.json';
 import enNewsletter from './locales/en/newsletter.json';
 import enPrivacy from './locales/en/privacy.json';
 import enContact from './locales/en/contact.json';
+import enTerminal from './locales/en/terminal.json';
 
 // German translations
 import deCommon from './locales/de/common.json';
@@ -68,6 +70,7 @@ import deInfo from './locales/de/info.json';
 import deNewsletter from './locales/de/newsletter.json';
 import dePrivacy from './locales/de/privacy.json';
 import deContact from './locales/de/contact.json';
+import deTerminal from './locales/de/terminal.json';
 
 const resources = {
   pl: {
@@ -91,6 +94,7 @@ const resources = {
     newsletter: plNewsletter,
     privacy: plPrivacy,
     contact: plContact,
+    terminal: plTerminal,
   },
   en: {
     common: enCommon,
@@ -113,6 +117,7 @@ const resources = {
     newsletter: enNewsletter,
     privacy: enPrivacy,
     contact: enContact,
+    terminal: enTerminal,
   },
   de: {
     common: deCommon,
@@ -135,6 +140,7 @@ const resources = {
     newsletter: deNewsletter,
     privacy: dePrivacy,
     contact: deContact,
+    terminal: deTerminal,
   },
 };
 

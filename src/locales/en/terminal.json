@@ -1,0 +1,55 @@
+{
+  "header": {
+    "back": "Back",
+    "mode": "TERMINAL (ALPHA)",
+    "exit": "ESC - Exit"
+  },
+  "status": {
+    "loading": "Loading...",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "lastUpdate": "Last update",
+    "events": "Events"
+  },
+  "details": {
+    "title": "Event details",
+    "event": "Event",
+    "keyPoints": "Key points",
+    "sources": "Sources",
+    "statistics": "Statistics",
+    "articles": "Articles",
+    "sourcesLabel": "Sources",
+    "views": "Views",
+    "people": "People",
+    "countries": "Countries"
+  },
+  "list": {
+    "category": "Cat",
+    "city": "City",
+    "titleHeader": "Title",
+    "recentlyUpdated": "Updated within 10 min"
+  },
+  "sidebar": {
+    "quotes": "Quotes",
+    "categories": "Categories",
+    "map": "Map"
+  },
+  "map": {
+    "noLocation": "No location"
+  },
+  "categories": {
+    "News": "News",
+    "Politics": "Politics",
+    "Business": "Business",
+    "Economy": "Economy",
+    "Technology": "Technology",
+    "Science": "Science",
+    "Health": "Health",
+    "Sports": "Sports",
+    "Entertainment": "Entertainment",
+    "World": "World",
+    "Poland": "Poland",
+    "Culture": "Culture",
+    "Society": "Society"
+  }
+}

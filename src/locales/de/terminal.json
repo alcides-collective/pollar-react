@@ -1,0 +1,55 @@
+{
+  "header": {
+    "back": "Zurück",
+    "mode": "TERMINAL (ALPHA)",
+    "exit": "ESC - Beenden"
+  },
+  "status": {
+    "loading": "Laden...",
+    "connected": "Verbunden",
+    "disconnected": "Getrennt",
+    "lastUpdate": "Letzte Akt.",
+    "events": "Ereignisse"
+  },
+  "details": {
+    "title": "Ereignisdetails",
+    "event": "Ereignis",
+    "keyPoints": "Kernpunkte",
+    "sources": "Quellen",
+    "statistics": "Statistiken",
+    "articles": "Artikel",
+    "sourcesLabel": "Quellen",
+    "views": "Aufrufe",
+    "people": "Personen",
+    "countries": "Länder"
+  },
+  "list": {
+    "category": "Kat",
+    "city": "Stadt",
+    "titleHeader": "Titel",
+    "recentlyUpdated": "Innerhalb von 10 Min. aktualisiert"
+  },
+  "sidebar": {
+    "quotes": "Kurse",
+    "categories": "Kategorien",
+    "map": "Karte"
+  },
+  "map": {
+    "noLocation": "Kein Standort"
+  },
+  "categories": {
+    "News": "Nachrichten",
+    "Politics": "Politik",
+    "Business": "Wirtschaft",
+    "Economy": "Ökonomie",
+    "Technology": "Technologie",
+    "Science": "Wissenschaft",
+    "Health": "Gesundheit",
+    "Sports": "Sport",
+    "Entertainment": "Unterhaltung",
+    "World": "Welt",
+    "Poland": "Polen",
+    "Culture": "Kultur",
+    "Society": "Gesellschaft"
+  }
+}

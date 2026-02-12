@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Event, EventLocation } from '../../../types/events';
@@ -10,6 +11,7 @@ interface TerminalMapProps {
 }
 
 export function TerminalMap({ event }: TerminalMapProps) {
+  const { t } = useTranslation('terminal');
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markerRef = useRef<mapboxgl.Marker | null>(null);
@@ -102,7 +104,7 @@ export function TerminalMap({ event }: TerminalMapProps) {
           {cities ? (
             <span className="map-city">{cities}</span>
           ) : (
-            <span className="map-no-data">BRAK LOKALIZACJI</span>
+            <span className="map-no-data">{t('map.noLocation').toUpperCase()}</span>
           )}
         </div>
       )}

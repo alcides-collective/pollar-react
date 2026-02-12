@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Event } from '../../../types/events';
 
 interface TrendingListProps {
@@ -14,26 +15,6 @@ function decodeHtml(html: string): string {
   const txt = document.createElement('textarea');
   txt.innerHTML = html;
   return txt.value;
-}
-
-// Category translation (simplified)
-function translateCategory(category: string): string {
-  const translations: Record<string, string> = {
-    'News': 'AKTUALNOSCI',
-    'Politics': 'POLITYKA',
-    'Business': 'BIZNES',
-    'Economy': 'EKONOMIA',
-    'Technology': 'TECHNOLOGIA',
-    'Science': 'NAUKA',
-    'Health': 'ZDROWIE',
-    'Sports': 'SPORT',
-    'Entertainment': 'ROZRYWKA',
-    'World': 'SWIAT',
-    'Poland': 'POLSKA',
-    'Culture': 'KULTURA',
-    'Society': 'SPOLECZENSTWO',
-  };
-  return translations[category] || category.toUpperCase();
 }
 
 // Format relative time
@@ -82,6 +63,7 @@ export function TrendingList({
   onNavigate,
   focused
 }: TrendingListProps) {
+  const { t } = useTranslation('terminal');
   const maxScore = Math.max(...events.map(e => e.trendingScore || 0), 1);
   const recentlySummarizedCount = events.filter(e => isRecentlySummarized(e.lastSummarizationComplete)).length;
 
@@ -97,10 +79,10 @@ export function TrendingList({
         <div className="event-row header-row">
           <span className="event-marker"></span>
           <span className="event-index">#</span>
-          <span className="event-category">KAT</span>
-          <span className="event-city">MIASTO</span>
+          <span className="event-category">{t('list.category').toUpperCase()}</span>
+          <span className="event-city">{t('list.city').toUpperCase()}</span>
           <span className="event-title">
-            TYTUL ({recentlySummarizedCount}/{events.length}) - {events.length > 0 ? Math.round(recentlySummarizedCount / events.length * 100) : 0}%
+            {t('list.titleHeader').toUpperCase()} ({recentlySummarizedCount}/{events.length}) - {events.length > 0 ? Math.round(recentlySummarizedCount / events.length * 100) : 0}%
           </span>
           <span className="event-score">SCORE</span>
           <span className="event-time">UPD</span>
@@ -116,6 +98,7 @@ export function TrendingList({
           const updateTime = formatRelativeTime(event.lastContentUpdate);
           const sumTime = formatRelativeTime(event.lastSummarizationComplete);
           const isRecent = isRecentlySummarized(event.lastSummarizationComplete);
+          const category = event.category || 'News';
 
           return (
             <button
@@ -126,10 +109,10 @@ export function TrendingList({
             >
               <span className="event-marker">{selectedIndex === i ? '>' : ' '}</span>
               <span className="event-index">{String(i + 1).padStart(2, '0')}</span>
-              <span className="event-category">{translateCategory(event.category || 'News')}</span>
+              <span className="event-category">{t(`categories.${category}`, { defaultValue: category }).toUpperCase()}</span>
               <span className="event-city">{eventCity || '-'}</span>
               <span className={`event-title ${!eventCity ? 'no-city' : ''}`}>
-                {isRecent && <span className="recent-dot" title="Zaktualizowany w ciagu 10 min" />}
+                {isRecent && <span className="recent-dot" title={t('list.recentlyUpdated')} />}
                 {decodeHtml(event.title)}
               </span>
               <span className="event-score">
