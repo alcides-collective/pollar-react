@@ -13,7 +13,6 @@ export function setupSecurity(app) {
         scriptSrc: [
           "'self'",
           "'unsafe-inline'",
-          "'unsafe-eval'",
           "blob:",
           "https://api.mapbox.com",
           "https://events.mapbox.com",

@@ -57,23 +57,31 @@ export function getAuthErrorMessage(error: unknown): string {
 }
 
 /**
- * Simple email validation (matches iOS implementation)
+ * Email validation with basic RFC format check
  */
 export function isValidEmail(email: string): boolean {
   const trimmed = email.trim();
-  return trimmed.includes('@') && trimmed.includes('.');
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
 }
 
 /**
- * Password validation - minimum 6 characters (Firebase requirement)
+ * Password validation - minimum 8 characters with complexity (OWASP recommendation)
+ * Requires at least one uppercase, one lowercase, and one digit
  */
 export function isValidPassword(password: string): boolean {
-  return password.length >= 6;
+  if (password.length < 8) return false;
+  if (!/[A-Z]/.test(password)) return false;
+  if (!/[a-z]/.test(password)) return false;
+  if (!/[0-9]/.test(password)) return false;
+  return true;
 }
 
 /**
- * Name validation - minimum 2 non-whitespace characters
+ * Name validation - minimum 2 non-whitespace characters, max 50, no HTML
  */
 export function isValidName(name: string): boolean {
-  return name.trim().length >= 2;
+  const trimmed = name.trim();
+  if (trimmed.length < 2 || trimmed.length > 50) return false;
+  if (/<[^>]*>/.test(trimmed)) return false;
+  return true;
 }

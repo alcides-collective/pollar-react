@@ -22,12 +22,12 @@ export const AIMessage = memo(function AIMessage({
     [message.content]
   );
 
-  // Handle internal link clicks
+  // Handle internal link clicks — validate path is a safe internal route
   const handleClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.tagName === 'A') {
       const href = target.getAttribute('href');
-      if (href?.startsWith('/')) {
+      if (href?.startsWith('/') && !href.startsWith('//') && !/[<>"']/.test(href)) {
         e.preventDefault();
         navigate(href);
       }

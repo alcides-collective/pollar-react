@@ -1,7 +1,7 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import {
   getAuth,
-  browserLocalPersistence,
+  browserSessionPersistence,
   setPersistence,
   type Auth,
 } from 'firebase/auth';
@@ -48,8 +48,8 @@ if (app) {
   db = getFirestore(app);
   storage = getStorage(app);
 
-  // Set persistence to local (survives browser restart)
-  setPersistence(auth, browserLocalPersistence).catch((error) => {
+  // Set persistence to session (cleared on browser close, reduces token theft surface)
+  setPersistence(auth, browserSessionPersistence).catch((error) => {
     console.error('Failed to set auth persistence:', error);
   });
 

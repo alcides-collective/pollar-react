@@ -124,7 +124,7 @@ export const useAIStore = create<AIStore>()(
       animatingMessageId: null,
       visibleWordCount: 0,
       generationStartTime: null,
-      remainingQueries: import.meta.env.DEV ? 9999 : 20,
+      remainingQueries: 20,
       debugSteps: [],
       currentStatus: null,
       followUps: [],
@@ -315,9 +315,8 @@ export const useAIStore = create<AIStore>()(
         return null;
       },
 
-      // Rate Limit Actions - ignore in dev mode
+      // Rate Limit Actions
       setRemainingQueries: (remaining) => {
-        if (import.meta.env.DEV) return;
         set({ remainingQueries: remaining });
       },
 
