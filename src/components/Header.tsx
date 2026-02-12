@@ -195,7 +195,7 @@ function CountryFilter() {
               }}
               className={`flex items-center gap-2 cursor-pointer ${isSelected ? 'bg-zinc-800 text-white' : ''}`}
             >
-              <span className={`fi fi-${COUNTRY_FLAG_CODES[country]} rounded-sm`} />
+              <span className={`fi fi-${COUNTRY_FLAG_CODES[country]} rounded-[2px]`} />
               <span className="flex-1">{t(`countries.${country}`, country)}</span>
               {isSelected && <i className="ri-check-line" />}
             </DropdownMenuItem>
