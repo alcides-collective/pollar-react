@@ -710,7 +710,7 @@ export function Header() {
               />
             </LocalizedLink>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -724,9 +724,9 @@ export function Header() {
                 <TooltipContent side="bottom">{t('nav.privacyTooltip')}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <div className="hidden sm:block"><AlertsBell /></div>
-            {isAuthenticated && <div className="hidden sm:block"><ThemeToggle variant="header" /></div>}
-            <div className="hidden sm:block"><LanguageSelector /></div>
+            <div className="hidden sm:contents"><AlertsBell /></div>
+            {isAuthenticated && <div className="hidden sm:contents"><ThemeToggle variant="header" /></div>}
+            <div className="hidden sm:contents"><LanguageSelector /></div>
             <CountryFilter />
             <MobileSettingsMenu />
             <MobileUserMenu />
