@@ -11,16 +11,21 @@ interface EventDetailsPanelProps {
   focused: boolean;
 }
 
-// Decode HTML entities and strip tags
+// Decode HTML entities and strip tags (without DOM innerHTML)
 function decodeHtml(html: string, stripTags = false): string {
   if (!html) return '';
   let result = html;
   if (stripTags) {
     result = result.replace(/<[^>]*>/g, '');
   }
-  const txt = document.createElement('textarea');
-  txt.innerHTML = result;
-  return txt.value;
+  return result
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
 }
 
 // Get display source - extract domain from URL if source is "Unknown"

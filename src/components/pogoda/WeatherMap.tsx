@@ -7,6 +7,17 @@ import { useIsDarkMode } from '@/stores/themeStore';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamFrdWJkdWRlayIsImEiOiJjbWRyMWx1Z3EwOTR6MmtzYjJvYzJncmZhIn0.5Fn6PxkRaqVkEwJLhP-8_Q';
 
+/** Escape HTML special characters to prevent XSS */
+function escapeHtml(str: string): string {
+	if (!str) return '';
+	return str
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
+
 export interface WeatherMapHandle {
 	focusCity: (cityName: string) => void;
 }
@@ -35,14 +46,14 @@ export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 				.setLngLat([coords.lon, coords.lat])
 				.setHTML(`
 					<div style="font-family: inherit; padding: 4px 0; color: #18181b;">
-						<div style="font-weight: 600; font-size: 14px; margin-bottom: 6px;">${cityName}</div>
+						<div style="font-weight: 600; font-size: 14px; margin-bottom: 6px;">${escapeHtml(cityName)}</div>
 						<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-							<i class="${wmo.icon}" style="font-size: 24px; color: #18181b;"></i>
+							<i class="${escapeHtml(wmo.icon)}" style="font-size: 24px; color: #18181b;"></i>
 							<span style="font-size: 22px; font-weight: 700; color: ${tempColor};">
 								${formatTemperature(weather.temperature)}
 							</span>
 						</div>
-						<div style="font-size: 12px; color: #71717a;">${wmo.label}</div>
+						<div style="font-size: 12px; color: #71717a;">${escapeHtml(wmo.label)}</div>
 					</div>
 				`)
 				.addTo(map.current);
@@ -139,7 +150,7 @@ export const WeatherMap = forwardRef<WeatherMapHandle, WeatherMapProps>(
 					white-space: nowrap;
 					transition: transform 0.15s ease;
 				`;
-				inner.innerHTML = `<i class="${wmo.icon}" style="font-size: 14px;"></i><span>${temp}</span>`;
+				inner.innerHTML = `<i class="${escapeHtml(wmo.icon)}" style="font-size: 14px;"></i><span>${escapeHtml(temp)}</span>`;
 				inner.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.1)'; });
 				inner.addEventListener('mouseleave', () => { inner.style.transform = 'scale(1)'; });
 				el.appendChild(inner);

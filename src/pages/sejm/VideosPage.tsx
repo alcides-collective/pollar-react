@@ -42,12 +42,23 @@ export function VideosPage() {
     });
   };
 
-  const getYouTubeEmbedUrl = (url: string) => {
+  const getYouTubeEmbedUrl = (url: string): string | null => {
     const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);
     if (match) {
       return `https://www.youtube.com/embed/${match[1]}`;
     }
-    return url;
+    // Only allow https URLs for iframe src
+    if (url.startsWith('https://')) return url;
+    return null;
+  };
+
+  const isSafeIframeUrl = (url: string): boolean => {
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
   };
 
   if (error) {
@@ -189,19 +200,28 @@ export function VideosPage() {
               </button>
             </div>
             <div className="aspect-video bg-black">
-              {selectedVideo.playerLinkIFrame ? (
+              {selectedVideo.playerLinkIFrame && isSafeIframeUrl(selectedVideo.playerLinkIFrame) ? (
                 <iframe
                   src={selectedVideo.playerLinkIFrame}
                   className="w-full h-full"
                   allowFullScreen
+                  sandbox="allow-scripts allow-same-origin"
                 />
-              ) : selectedVideo.videoLink ? (
+              ) : selectedVideo.videoLink ? (() => {
+                const embedUrl = getYouTubeEmbedUrl(selectedVideo.videoLink);
+                return embedUrl ? (
                 <iframe
-                  src={getYouTubeEmbedUrl(selectedVideo.videoLink)}
+                  src={embedUrl}
                   className="w-full h-full"
                   allowFullScreen
+                  sandbox="allow-scripts allow-same-origin"
                 />
-              ) : (
+                ) : (
+                <div className="w-full h-full flex items-center justify-center text-white">
+                  <p>{t('videosPage.noVideo')}</p>
+                </div>
+                );
+              })() : (
                 <div className="w-full h-full flex items-center justify-center text-white">
                   <p>{t('videosPage.noVideo')}</p>
                 </div>

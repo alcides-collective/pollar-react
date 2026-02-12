@@ -6,6 +6,17 @@ import { SummaryLineChart, type LineChartData } from '../../components/charts/Su
 import { SummaryBarChart, type BarChartData } from '../../components/charts/SummaryBarChart';
 import { parseSimpleData } from '../../utils/chartUtils';
 
+/** Escape HTML special characters to prevent XSS */
+function escapeHtml(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 interface EventSummaryProps {
   summary: string;
   wikipediaImages?: Record<string, string>;
@@ -128,7 +139,10 @@ function injectQuotePhotos(html: string, wikipediaImages: Record<string, string>
       const imageUrl = wikipediaImages[author];
       if (!imageUrl) return fullMatch;
 
-      return `<blockquote class="quote-box has-photo" data-author="${author}"><div class="quote-author-photo"><img src="${imageUrl}" alt="${author}" loading="lazy" /></div><div class="quote-content">${innerContent}</div></blockquote>`;
+      // Validate imageUrl is a safe URL (https only)
+      const lower = imageUrl.trim().toLowerCase();
+      if (!lower.startsWith('https://')) return fullMatch;
+      return `<blockquote class="quote-box has-photo" data-author="${escapeHtml(author)}"><div class="quote-author-photo"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(author)}" loading="lazy" /></div><div class="quote-content">${innerContent}</div></blockquote>`;
     }
   );
 }

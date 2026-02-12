@@ -2,6 +2,17 @@
 
 import type { DebugStep, TypingLabelKey } from '../types/ai';
 
+/** Escape HTML special characters to prevent XSS */
+function escapeHtml(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /**
  * Tokenize content into words, preserving markdown links and line breaks as single units
  */
@@ -79,13 +90,20 @@ export function formatMarkdown(text: string): string {
     /\[([^\]]+)\]\s*\(\s*([^)\s]+)\s*\)([.,;:!?—–-]*)/g,
     (_match, linkText, url, punctuation) => {
       const trimmedUrl = url.trim();
-      const punct = punctuation || '';
-      if (trimmedUrl.startsWith('/event/')) {
-        return `<a href="${trimmedUrl}" class="source-link">${linkText}</a>${punct}`;
-      } else if (trimmedUrl.startsWith('http')) {
-        return `<a href="${trimmedUrl}" target="_blank" rel="noopener" class="source-link">${linkText}</a>${punct}`;
+      const punct = escapeHtml(punctuation || '');
+      const safeLinkText = escapeHtml(linkText);
+      // Block dangerous protocols
+      const lower = trimmedUrl.toLowerCase();
+      if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('vbscript:')) {
+        return safeLinkText + punct;
       }
-      return `<a href="${trimmedUrl}" class="source-link">${linkText}</a>${punct}`;
+      const safeUrl = escapeHtml(trimmedUrl);
+      if (trimmedUrl.startsWith('/event/')) {
+        return `<a href="${safeUrl}" class="source-link">${safeLinkText}</a>${punct}`;
+      } else if (trimmedUrl.startsWith('http')) {
+        return `<a href="${safeUrl}" target="_blank" rel="noopener" class="source-link">${safeLinkText}</a>${punct}`;
+      }
+      return `<a href="${safeUrl}" class="source-link">${safeLinkText}</a>${punct}`;
     }
   );
 
