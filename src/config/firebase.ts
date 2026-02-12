@@ -1,6 +1,7 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import {
   initializeAuth,
+  getAuth,
   browserSessionPersistence,
   type Auth,
 } from 'firebase/auth';
@@ -43,9 +44,18 @@ if (isFirebaseConfigured) {
 }
 
 if (app) {
-  auth = initializeAuth(app, {
-    persistence: browserSessionPersistence,
-  });
+  // Use initializeAuth only for fresh app, getAuth for existing (avoids auth/already-initialized)
+  if (getApps().length <= 1) {
+    try {
+      auth = initializeAuth(app, {
+        persistence: browserSessionPersistence,
+      });
+    } catch {
+      auth = getAuth(app);
+    }
+  } else {
+    auth = getAuth(app);
+  }
   db = getFirestore(app);
   storage = getStorage(app);
 
