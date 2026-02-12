@@ -182,19 +182,25 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   signInWithGoogle: async (consents) => {
     if (!isFirebaseConfigured || !auth) {
+      console.error('[Auth Debug] Firebase not configured', { isFirebaseConfigured, auth: !!auth });
       set({ error: 'Firebase nie jest skonfigurowany' });
       return;
     }
+    console.log('[Auth Debug] Starting Google sign-in, auth instance:', !!auth, 'auth.app.name:', auth.app?.name);
     set({ isLoading: true, error: null });
     try {
       const provider = new GoogleAuthProvider();
       provider.addScope('email');
       provider.addScope('profile');
+      console.log('[Auth Debug] Calling signInWithPopup...');
       const credential = await signInWithPopup(auth, provider);
+      console.log('[Auth Debug] signInWithPopup success, uid:', credential.user.uid);
 
       // New user via LoginForm (no consents) → redirect to register
       if (!consents) {
+        console.log('[Auth Debug] No consents, checking profile exists...');
         const exists = await checkProfileExists(credential.user.uid);
+        console.log('[Auth Debug] Profile exists:', exists);
         if (!exists) {
           await firebaseSignOut(auth);
           set({ authModalView: 'register', isLoading: false });
@@ -202,14 +208,17 @@ export const useAuthStore = create<AuthStore>((set) => ({
         }
       }
 
+      console.log('[Auth Debug] Creating/updating user profile...');
       await createOrUpdateUserProfile(credential.user, 'google', consents);
       if (consents) {
         trackSignUp('google');
       } else {
         trackLogin('google');
       }
+      console.log('[Auth Debug] Google sign-in complete');
       set({ user: transformUser(credential.user), isAuthModalOpen: false });
-    } catch (error) {
+    } catch (error: any) {
+      console.error('[Auth Debug] Google sign-in error:', error?.code, error?.message, error);
       const message = getAuthErrorMessage(error);
       // Don't show error for user-cancelled popup
       if (message !== 'Logowanie zostalo anulowane') {

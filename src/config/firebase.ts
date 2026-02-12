@@ -50,12 +50,16 @@ if (app) {
       auth = initializeAuth(app, {
         persistence: browserSessionPersistence,
       });
-    } catch {
+      console.log('[Firebase Debug] initializeAuth success');
+    } catch (e) {
+      console.warn('[Firebase Debug] initializeAuth failed, falling back to getAuth:', e);
       auth = getAuth(app);
     }
   } else {
+    console.log('[Firebase Debug] Multiple apps detected, using getAuth');
     auth = getAuth(app);
   }
+  console.log('[Firebase Debug] auth ready:', !!auth, 'app.name:', app.name);
   db = getFirestore(app);
   storage = getStorage(app);
 
