@@ -541,6 +541,30 @@ export function trackPowiazaniaCompleted(params: {
   logEvent(a, 'powiazania_completed', params);
 }
 
+// ============ RSS Events ============
+
+export function trackRssFeedCopied(params: {
+  feed_type: 'main' | 'blog';
+}): void {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'rss_feed_copied', params);
+}
+
+export function trackRssOpenInReader(params: {
+  feed_type: 'main' | 'blog';
+}): void {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'rss_open_in_reader', params);
+}
+
+export function trackRssReaderClicked(params: {
+  reader_name: string;
+  platform: string;
+}): void {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'rss_reader_clicked', params);
+}
+
 // ============ Error Events ============
 
 export function trackPageNotFound(params: {

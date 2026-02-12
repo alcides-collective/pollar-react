@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
 import { useLanguage } from '../../stores/languageStore';
+import { trackRssFeedCopied, trackRssOpenInReader, trackRssReaderClicked } from '../../lib/analytics';
 
 const BASE_URL = 'https://pollar.news';
 
@@ -16,11 +17,12 @@ const READERS = [
   { name: 'Feeder', platform: 'Android', url: 'https://play.google.com/store/apps/details?id=com.nononsenseapps.feeder.play', free: true },
 ];
 
-function FeedRow({ label, description, feedUrl, feedProtocolUrl }: {
+function FeedRow({ label, description, feedUrl, feedProtocolUrl, feedType }: {
   label: string;
   description: string;
   feedUrl: string;
   feedProtocolUrl: string;
+  feedType: 'main' | 'blog';
 }) {
   const { t } = useTranslation('common');
   const [copied, setCopied] = useState(false);
@@ -30,6 +32,7 @@ function FeedRow({ label, description, feedUrl, feedProtocolUrl }: {
       await navigator.clipboard.writeText(feedUrl);
       setCopied(true);
       toast.success(t('rss.copied'));
+      trackRssFeedCopied({ feed_type: feedType });
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Fallback for older browsers
@@ -41,6 +44,7 @@ function FeedRow({ label, description, feedUrl, feedProtocolUrl }: {
       document.body.removeChild(input);
       setCopied(true);
       toast.success(t('rss.copied'));
+      trackRssFeedCopied({ feed_type: feedType });
       setTimeout(() => setCopied(false), 2000);
     }
   };
@@ -80,6 +84,7 @@ function FeedRow({ label, description, feedUrl, feedProtocolUrl }: {
         </button>
         <a
           href={feedProtocolUrl}
+          onClick={() => trackRssOpenInReader({ feed_type: feedType })}
           className="shrink-0 h-8 px-3 text-xs font-medium rounded-lg border border-orange-500/30 bg-orange-500/10 text-orange-500 hover:bg-orange-500/20 transition-all flex items-center gap-1"
           title={t('rss.openInReader')}
         >
@@ -181,12 +186,14 @@ export function RssPage() {
                 description={t('rss.mainFeedDesc')}
                 feedUrl={mainFeedUrl}
                 feedProtocolUrl={mainFeedProtocol}
+                feedType="main"
               />
               <FeedRow
                 label={t('rss.blogFeed')}
                 description={t('rss.blogFeedDesc')}
                 feedUrl={blogFeedUrl}
                 feedProtocolUrl={blogFeedProtocol}
+                feedType="blog"
               />
             </div>
           </motion.section>
@@ -236,6 +243,7 @@ export function RssPage() {
                       href={reader.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackRssReaderClicked({ reader_name: reader.name, platform: reader.platform })}
                       className="flex items-center justify-between p-2 -mx-2 rounded-lg hover:bg-muted/50 transition-colors group"
                     >
                       <div>
