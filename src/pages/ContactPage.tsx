@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { API_BASE } from '@/config/api';
-import { trackContactFormSubmit, trackFAQItemExpanded } from '@/lib/analytics';
+import { trackContactFormSubmit, trackFAQItemExpanded, trackSocialProfileClicked } from '@/lib/analytics';
 
 const SUBJECT_KEYS = ['bug', 'feature', 'question', 'partnership', 'gdpr', 'other'] as const;
 
@@ -247,6 +247,7 @@ export function ContactPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border border-divider bg-background px-4 py-2.5 text-sm text-content hover:border-divider hover:text-content-heading transition-colors"
+                onClick={() => trackSocialProfileClicked({ platform: 'x', location: 'contact' })}
               >
                 <i className="ri-twitter-x-line text-base" />
                 @pollarnews
@@ -256,6 +257,7 @@ export function ContactPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border border-divider bg-background px-4 py-2.5 text-sm text-content hover:border-divider hover:text-content-heading transition-colors"
+                onClick={() => trackSocialProfileClicked({ platform: 'linkedin', location: 'contact' })}
               >
                 <i className="ri-linkedin-line text-base" />
                 LinkedIn
@@ -265,6 +267,7 @@ export function ContactPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border border-divider bg-background px-4 py-2.5 text-sm text-content hover:border-divider hover:text-content-heading transition-colors"
+                onClick={() => trackSocialProfileClicked({ platform: 'instagram', location: 'contact' })}
               >
                 <i className="ri-instagram-line text-base" />
                 @pollar.news

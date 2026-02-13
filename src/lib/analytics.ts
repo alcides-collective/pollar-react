@@ -574,6 +574,16 @@ export function trackPageNotFound(params: {
   logEvent(a, 'page_not_found', params);
 }
 
+// ============ Social Profile Clicks ============
+
+export function trackSocialProfileClicked(params: {
+  platform: string;
+  location: string;
+}): void {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'social_profile_clicked', params);
+}
+
 // ============ Cookie Consent Events ============
 
 export function trackCookieConsent(params: {

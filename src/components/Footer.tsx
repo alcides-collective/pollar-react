@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { LocalizedLink } from './LocalizedLink';
+import { trackSocialProfileClicked } from '@/lib/analytics';
 
 
 const socialLinks = [
@@ -172,6 +173,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="w-9 h-9 flex items-center justify-center rounded-full bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white transition-all"
                 aria-label={link.label}
+                onClick={() => trackSocialProfileClicked({ platform: link.label.toLowerCase(), location: 'footer' })}
               >
                 <i className={`${link.icon} text-lg`} />
               </a>
