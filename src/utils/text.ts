@@ -159,12 +159,16 @@ export function extractTimeline(summary: string | undefined): ExtractedTimeline 
     if (!Array.isArray(events)) return null;
     return {
       title: preventWidows(match[1]),
-      events: events.map((e: { data?: string; tytul?: string; opis?: string }) => ({
-        ...e,
-        data: e.data ? preventWidows(e.data) : e.data,
-        tytul: e.tytul ? preventWidows(e.tytul) : e.tytul,
-        opis: e.opis ? preventWidows(e.opis) : e.opis,
-      })),
+      events: events.map((e: { data?: string; date?: string; tytul?: string; title?: string; opis?: string; description?: string }) => {
+        const data = e.data || e.date;
+        const tytul = e.tytul || e.title;
+        const opis = e.opis || e.description;
+        return {
+          data: data ? preventWidows(data) : undefined,
+          tytul: tytul ? preventWidows(tytul) : undefined,
+          opis: opis ? preventWidows(opis) : undefined,
+        };
+      }),
     };
   } catch {
     return null;
@@ -615,13 +619,13 @@ export function sanitizeAndProcessHtml(text: string, lang: Language = 'pl'): str
         try {
           const events = JSON.parse(jsonData.trim());
           if (!Array.isArray(events)) return '';
-          const eventsHtml = events.map((e: {data?: string, tytul?: string, opis?: string}, i: number) =>
+          const eventsHtml = events.map((e: {data?: string, date?: string, tytul?: string, title?: string, opis?: string, description?: string}, i: number) =>
             `<div class="timeline-event${i === events.length - 1 ? ' timeline-event-last' : ''}">` +
             `<div class="timeline-dot"></div>` +
             `<div class="timeline-content">` +
-            `<div class="timeline-date">${escapeHtml(e.data || '')}</div>` +
-            `<div class="timeline-event-title">${escapeHtml(e.tytul || '')}</div>` +
-            `<div class="timeline-event-desc">${escapeHtml(e.opis || '')}</div>` +
+            `<div class="timeline-date">${escapeHtml(e.data || e.date || '')}</div>` +
+            `<div class="timeline-event-title">${escapeHtml(e.tytul || e.title || '')}</div>` +
+            `<div class="timeline-event-desc">${escapeHtml(e.opis || e.description || '')}</div>` +
             `</div></div>`
           ).join('');
           return `\n\n<div class="timeline-box"><div class="timeline-title">${escapeHtml(title)}</div><div class="timeline-events"><div class="timeline-line"></div>${eventsHtml}</div></div>\n\n`;
@@ -635,13 +639,13 @@ export function sanitizeAndProcessHtml(text: string, lang: Language = 'pl'): str
         try {
           const events = JSON.parse(jsonData.trim());
           if (!Array.isArray(events)) return '';
-          const eventsHtml = events.map((e: {data?: string, tytul?: string, opis?: string}, i: number) =>
+          const eventsHtml = events.map((e: {data?: string, date?: string, tytul?: string, title?: string, opis?: string, description?: string}, i: number) =>
             `<div class="timeline-event${i === events.length - 1 ? ' timeline-event-last' : ''}">` +
             `<div class="timeline-dot"></div>` +
             `<div class="timeline-content">` +
-            `<div class="timeline-date">${escapeHtml(e.data || '')}</div>` +
-            `<div class="timeline-event-title">${escapeHtml(e.tytul || '')}</div>` +
-            `<div class="timeline-event-desc">${escapeHtml(e.opis || '')}</div>` +
+            `<div class="timeline-date">${escapeHtml(e.data || e.date || '')}</div>` +
+            `<div class="timeline-event-title">${escapeHtml(e.tytul || e.title || '')}</div>` +
+            `<div class="timeline-event-desc">${escapeHtml(e.opis || e.description || '')}</div>` +
             `</div></div>`
           ).join('');
           return `\n\n<div class="timeline-box"><div class="timeline-title">${escapeHtml(title)}</div><div class="timeline-events"><div class="timeline-line"></div>${eventsHtml}</div></div>\n\n`;
