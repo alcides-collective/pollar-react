@@ -1,12 +1,46 @@
 import { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useCookieConsentStore } from '@/stores/cookieConsentStore';
+import { useLanguage, useWasAutoDetected, useLanguageStore, type Language } from '@/stores/languageStore';
 import { LocalizedLink } from './LocalizedLink';
+
+const LANGUAGES: { code: Language; label: string }[] = [
+  { code: 'pl', label: 'Polski' },
+  { code: 'en', label: 'English' },
+  { code: 'de', label: 'Deutsch' },
+];
 
 export function CookiePopup() {
   const { t } = useTranslation('cookies');
   const { hasInteracted, acceptAll, rejectOptional, loadFromStorage } = useCookieConsentStore();
+  const language = useLanguage();
+  const wasAutoDetected = useWasAutoDetected();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLanguageChange = (newLang: Language) => {
+    useLanguageStore.getState().setLanguage(newLang);
+    const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
+    const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
+    navigate(newPrefix + currentPath + location.search);
+  };
+
+  // When dismissing popup, save auto-detected language as explicit preference
+  const handleAcceptAll = () => {
+    if (wasAutoDetected) {
+      try { localStorage.setItem('pollar-language', language); } catch {}
+    }
+    acceptAll();
+  };
+
+  const handleRejectOptional = () => {
+    if (wasAutoDetected) {
+      try { localStorage.setItem('pollar-language', language); } catch {}
+    }
+    rejectOptional();
+  };
 
   useEffect(() => {
     loadFromStorage();
@@ -22,7 +56,7 @@ export function CookiePopup() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={acceptAll}
+        onClick={handleAcceptAll}
         aria-hidden="true"
       />
 
@@ -61,6 +95,31 @@ export function CookiePopup() {
                 </div>
               </div>
 
+              {/* Language auto-detection notice */}
+              {wasAutoDetected && language !== 'pl' && (
+                <div className="flex items-center justify-between gap-3 bg-zinc-900 rounded-md p-3 mb-4">
+                  <div className="flex items-center gap-2 text-content-faint text-xs">
+                    <i className="ri-global-line text-base shrink-0" />
+                    <span>{t('popup.languageNotice')}</span>
+                  </div>
+                  <div className="flex gap-1 shrink-0">
+                    {LANGUAGES.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => handleLanguageChange(lang.code)}
+                        className={`px-2 py-0.5 text-xs rounded transition-colors ${
+                          language === lang.code
+                            ? 'bg-zinc-700 text-white font-medium'
+                            : 'text-content-faint hover:bg-zinc-800 hover:text-content-subtle'
+                        }`}
+                      >
+                        {lang.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Description */}
               <p className="text-content-faint text-sm leading-relaxed mb-4">
                 {t('popup.description')}
@@ -96,13 +155,13 @@ export function CookiePopup() {
               {/* Buttons - equal visual weight for GDPR compliance */}
               <div className="flex flex-col sm:flex-row gap-2">
                 <button
-                  onClick={rejectOptional}
+                  onClick={handleRejectOptional}
                   className="flex-1 px-4 py-2.5 text-sm font-medium text-content-faint bg-zinc-900 hover:bg-zinc-800 rounded transition-colors"
                 >
                   {t('popup.essentialOnly')}
                 </button>
                 <button
-                  onClick={acceptAll}
+                  onClick={handleAcceptAll}
                   className="flex-1 px-4 py-2.5 text-sm font-medium text-content-heading bg-surface hover:bg-background rounded transition-colors"
                 >
                   {t('popup.acceptAll')}

@@ -7,7 +7,8 @@
     "marketing": "Marketingowe",
     "essentialOnly": "Tylko niezbędne",
     "acceptAll": "Akceptuj wszystkie",
-    "footer": "Klikając poza banerem lub przewijając stronę, akceptujesz wszystkie cookies"
+    "footer": "Klikając poza banerem lub przewijając stronę, akceptujesz wszystkie cookies",
+    "languageNotice": "Ustawiliśmy język na podstawie Twojej przeglądarki"
   },
   "settings": {
     "title": "Ustawienia cookies",

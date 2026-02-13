@@ -18,7 +18,7 @@ import { ScrollToTop } from './components/ScrollToTop'
 import { PageLoader } from './components/common/PageLoader'
 import { useEventStream } from './hooks/useEventStream'
 import { useAllSectionsReady } from './stores/imageLoadingStore'
-import { useLanguage, useSetLanguage, type Language } from './stores/languageStore'
+import { useLanguage, useSetLanguage, useGeoDetectionPending, type Language } from './stores/languageStore'
 import { useResolvedTheme, useThemeStore } from './stores/themeStore'
 import { useChartScaleStore } from './stores/chartScaleStore'
 import { useContentsquare } from './hooks/useContentsquare'
@@ -204,12 +204,25 @@ function LanguageRouteHandler() {
   const navigate = useNavigate()
   const setLanguage = useSetLanguage()
   const storeLanguage = useLanguage()
+  const geoDetectionPending = useGeoDetectionPending()
 
   useEffect(() => {
     const match = location.pathname.match(/^\/(en|de)(\/|$)/)
     const urlLang: Language = match ? (match[1] as Language) : 'pl'
 
-    if (urlLang !== storeLanguage) {
+    // Auto-detect redirect: first visit to default (no-prefix) URL with detected non-Polish language
+    // Wait for geo detection to finish before redirecting
+    const hasStoredLang = (() => {
+      try { return !!localStorage.getItem('pollar-language') }
+      catch { return false }
+    })()
+    if (!hasStoredLang && urlLang === 'pl' && storeLanguage !== 'pl' && !geoDetectionPending) {
+      const newPrefix = `/${storeLanguage}`
+      navigate(newPrefix + location.pathname + location.search, { replace: true })
+      return
+    }
+
+    if (urlLang !== storeLanguage && !geoDetectionPending) {
       setLanguage(urlLang)
     }
 
@@ -218,7 +231,7 @@ function LanguageRouteHandler() {
       const newPath = location.pathname.replace(/^\/pl/, '') || '/'
       navigate(newPath, { replace: true })
     }
-  }, [location.pathname, storeLanguage, setLanguage, navigate])
+  }, [location.pathname, storeLanguage, setLanguage, navigate, geoDetectionPending])
 
   return null
 }
