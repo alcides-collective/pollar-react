@@ -34,8 +34,11 @@ export interface EventGenealogy {
   bornAt: string;
   bornFrom: 'split' | 'merge' | 'new';
   parentIds?: string[];
+  childIds?: string[];
   splitFrom?: string;
+  splitInto?: string[];
   mergedFrom?: string[];
+  mergedInto?: string;
   generationNumber?: number;
   lastTransitionAt?: string;
   lastTransitionType?: string;

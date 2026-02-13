@@ -32,6 +32,11 @@
     "mergeTitle": "Wydarzenie scalone",
     "mergeDescription": "To wydarzenie zostało scalone z mniejszych tematów w jedną, pełniejszą relację.",
     "viewParent": "Zobacz wydarzenie źródłowe",
+    "viewChild": "Zobacz wydzielony temat",
+    "splitParentTitle": "Temat został rozdzielony",
+    "splitParentDescription_one": "Z tego wydarzenia wyodrębniono {{count}} bardziej szczegółowy temat.",
+    "splitParentDescription_few": "Z tego wydarzenia wyodrębniono {{count}} bardziej szczegółowe tematy.",
+    "splitParentDescription_many": "Z tego wydarzenia wyodrębniono {{count}} bardziej szczegółowych tematów.",
     "tooltip": "W Pollar wydarzenia mają swoją genealogię \u2014 ewoluują, rosną, a gdy temat staje się zbyt szeroki, system automatycznie dzieli go na mniejsze, precyzyjniejsze relacje. Dzięki temu każde wydarzenie jest czytelne i skupione na jednym wątku."
   },
   "untranslated": {

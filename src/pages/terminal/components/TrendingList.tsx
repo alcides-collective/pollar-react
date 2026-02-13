@@ -61,6 +61,24 @@ function normalize(value: number, max: number): number {
   return (value / max) * 10;
 }
 
+// Get genealogy indicator for terminal display
+function getGenealogyIndicator(event: Event): { symbol: string; color: string; title: string } | null {
+  const g = event.metadata?.genealogy;
+  if (!g) return null;
+
+  const hasSplitInto = g.splitInto && g.splitInto.length > 0;
+  const hasSplitFrom = !!g.splitFrom;
+  const hasMergedFrom = g.mergedFrom && g.mergedFrom.length > 0;
+
+  if (hasSplitInto && hasSplitFrom) return { symbol: '⇅', color: 'cyan', title: `Split from parent, then split into ${g.splitInto!.length} children` };
+  if (hasSplitInto) return { symbol: '↓', color: 'yellow', title: `Split into ${g.splitInto!.length} sub-topics` };
+  if (hasSplitFrom && hasMergedFrom) return { symbol: '⇄', color: 'magenta', title: `Split from parent + merged ${g.mergedFrom!.length} events` };
+  if (hasSplitFrom) return { symbol: '↑', color: 'green', title: `Split from parent event` };
+  if (hasMergedFrom) return { symbol: '⊕', color: 'blue', title: `Merged ${g.mergedFrom!.length} events` };
+
+  return null;
+}
+
 export function TrendingList({
   events,
   selectedIndex,
@@ -94,6 +112,7 @@ export function TrendingList({
           <span className="event-time">SUM</span>
           <span className="event-count">#ART</span>
           <span className="event-count">#SRC</span>
+          <span className="event-genealogy">GEN</span>
         </div>
 
         {/* Event rows */}
@@ -132,6 +151,13 @@ export function TrendingList({
               <span className="event-count">{event.articleCount || 0}</span>
               <span className={`event-count ${event.sourceCount === 3 ? 'source-three' : ''}`}>
                 {event.sourceCount || 0}
+              </span>
+              <span className="event-genealogy">
+                {(() => {
+                  const gen = getGenealogyIndicator(event);
+                  if (!gen) return <span className="dim">·</span>;
+                  return <span className={`gen-${gen.color}`} title={gen.title}>{gen.symbol}</span>;
+                })()}
               </span>
             </button>
           );

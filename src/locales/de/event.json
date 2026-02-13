@@ -30,6 +30,9 @@
     "mergeTitle": "Zusammengeführtes Ereignis",
     "mergeDescription": "Dieses Ereignis wurde aus kleineren Themen zu einem umfassenderen Bericht zusammengeführt.",
     "viewParent": "Quellereignis anzeigen",
+    "viewChild": "Abgespaltenes Thema anzeigen",
+    "splitParentTitle": "Thema wurde aufgeteilt",
+    "splitParentDescription": "Dieses Ereignis wurde in {{count}} spezifischere Themen aufgeteilt.",
     "tooltip": "In Pollar haben Ereignisse ihre eigene Genealogie \u2014 sie entwickeln sich, wachsen, und wenn ein Thema zu breit wird, teilt das System es automatisch in kleinere, pr\u00e4zisere Berichte auf. So bleibt jedes Ereignis \u00fcbersichtlich und fokussiert."
   },
   "untranslated": {

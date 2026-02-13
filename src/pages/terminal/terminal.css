@@ -319,7 +319,7 @@
 
 .event-row {
   display: grid;
-  grid-template-columns: 16px 30px 90px 90px 1fr 50px 42px 42px 35px 35px;
+  grid-template-columns: 16px 30px 90px 90px 1fr 50px 42px 42px 35px 35px 28px;
   gap: 10px;
   padding: 6px 12px;
   border: none;
@@ -440,6 +440,28 @@
   font-variant-numeric: tabular-nums;
   line-height: 1;
   min-width: 28px;
+}
+
+.event-genealogy {
+  color: #555;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.event-genealogy .dim {
+  color: #333;
+}
+
+.event-genealogy .gen-green { color: #22c55e; }
+.event-genealogy .gen-yellow { color: #eab308; }
+.event-genealogy .gen-blue { color: #3b82f6; }
+.event-genealogy .gen-cyan { color: #06b6d4; }
+.event-genealogy .gen-magenta { color: #d946ef; }
+
+.header-row .event-genealogy {
+  color: #555;
+  font-weight: 500;
 }
 
 .recent-dot {
@@ -773,7 +795,8 @@
   .event-category,
   .event-city,
   .event-time,
-  .event-count {
+  .event-count,
+  .event-genealogy {
     display: none;
   }
 

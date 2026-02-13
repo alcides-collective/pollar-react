@@ -291,13 +291,13 @@ export function EventPage() {
           <motion.div variants={staggerItem}>
             <EventKeyPoints keyPoints={event.metadata?.keyPoints || []} />
           </motion.div>
-          {event.metadata?.genealogy && event.metadata.genealogy.bornFrom !== 'new' && (
+          {event.metadata?.genealogy && (event.metadata.genealogy.bornFrom !== 'new' || event.metadata.genealogy.splitInto?.length || event.metadata.genealogy.childIds?.length) && (
             <motion.div variants={staggerItem}>
               <EventGenealogyBanner genealogy={event.metadata.genealogy} />
             </motion.div>
           )}
           <motion.div variants={staggerItem}>
-            <EventSummary summary={event.summary} wikipediaImages={wikipediaImages} hideBorder={!!(event.metadata?.genealogy && event.metadata.genealogy.bornFrom !== 'new')} />
+            <EventSummary summary={event.summary} wikipediaImages={wikipediaImages} hideBorder={!!(event.metadata?.genealogy && (event.metadata.genealogy.bornFrom !== 'new' || event.metadata.genealogy.splitInto?.length || event.metadata.genealogy.childIds?.length))} />
           </motion.div>
           <motion.div variants={staggerItem}>
             <EventNavigation previousEvent={previousEvent} nextEvent={nextEvent} />

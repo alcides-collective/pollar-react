@@ -30,6 +30,9 @@
     "mergeTitle": "Merged event",
     "mergeDescription": "This event was merged from smaller topics into a single, more comprehensive report.",
     "viewParent": "View source event",
+    "viewChild": "View split topic",
+    "splitParentTitle": "Topic was split",
+    "splitParentDescription": "This event was split into {{count}} more specific topics for better coverage.",
     "tooltip": "In Pollar, events have their own genealogy \u2014 they evolve, grow, and when a topic becomes too broad, the system automatically splits it into smaller, more focused reports. This keeps every event readable and on-topic."
   },
   "untranslated": {
