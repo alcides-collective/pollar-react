@@ -28,6 +28,8 @@ export function setupSecurity(app) {
           "https://static.ads-twitter.com",
           "https://t.contentsquare.net",
           "https://*.contentsquare.net",
+          "https://www.clarity.ms",
+          "https://*.clarity.ms",
         ],
         styleSrc: ["'self'", "'unsafe-inline'", "https://api.mapbox.com", "https://fonts.googleapis.com"],
         imgSrc: [
@@ -83,6 +85,7 @@ export function setupSecurity(app) {
           "https://t.co",
           "https://t.contentsquare.net",
           "https://*.contentsquare.net",
+          "https://*.clarity.ms",
           "wss://*.firebaseio.com",
         ],
         frameSrc: [
