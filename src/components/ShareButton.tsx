@@ -35,7 +35,7 @@ export function ShareButton({
 
   const handleShare = async () => {
     setIsSharing(true);
-    const shareUrl = url || window.location.href;
+    const shareUrl = (url || window.location.origin + window.location.pathname) + '?utm_source=share&utm_medium=referral';
 
     // Try Web Share API first (mobile)
     if (navigator.share) {
