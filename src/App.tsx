@@ -217,6 +217,8 @@ function LanguageRouteHandler() {
       catch { return false }
     })()
     if (!hasStoredLang && urlLang === 'pl' && storeLanguage !== 'pl' && !geoDetectionPending) {
+      // Persist so user can switch language afterward without re-detection
+      try { localStorage.setItem('pollar-language', storeLanguage) } catch {}
       const newPrefix = `/${storeLanguage}`
       navigate(newPrefix + location.pathname + location.search, { replace: true })
       return

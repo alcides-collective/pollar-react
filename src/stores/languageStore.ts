@@ -40,10 +40,11 @@ function browserHasSupportedLanguage(): boolean {
   }
 }
 
-// Evaluated once at module load — true when no explicit preference exists
+// Evaluated once at module load — truly first visit only if no language AND no cookie consent
+// Returning users have cookie-consent but may lack pollar-language (Polish was the old default)
 const _isFirstVisit = (() => {
   try {
-    return !localStorage.getItem(STORAGE_KEY);
+    return !localStorage.getItem(STORAGE_KEY) && !localStorage.getItem('cookie-consent');
   } catch {
     return true;
   }
@@ -69,7 +70,8 @@ function getStoredLanguage(): Language {
   } catch {
     // localStorage not available
   }
-  return detectBrowserLanguage();
+  // Auto-detect only for truly new users; returning users get Polish (the original default)
+  return _isFirstVisit ? detectBrowserLanguage() : 'pl';
 }
 
 export const useLanguageStore = create<LanguageStore>((set) => ({
