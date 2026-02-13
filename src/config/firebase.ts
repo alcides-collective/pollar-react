@@ -1,7 +1,7 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import {
   getAuth,
-  browserSessionPersistence,
+  browserLocalPersistence,
   setPersistence,
   type Auth,
 } from 'firebase/auth';
@@ -45,7 +45,7 @@ if (isFirebaseConfigured) {
 
 if (app) {
   auth = getAuth(app);
-  setPersistence(auth, browserSessionPersistence).catch(() => {});
+  setPersistence(auth, browserLocalPersistence).catch(() => {});
   db = getFirestore(app);
   storage = getStorage(app);
 
