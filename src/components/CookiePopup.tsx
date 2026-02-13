@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useCookieConsentStore } from '@/stores/cookieConsentStore';
 import { useLanguage, useWasAutoDetected, useLanguageStore, type Language } from '@/stores/languageStore';
@@ -96,29 +96,38 @@ export function CookiePopup() {
               </div>
 
               {/* Language auto-detection notice */}
-              {wasAutoDetected && language !== 'pl' && (
-                <div className="flex items-center justify-between gap-3 bg-zinc-900 rounded-md p-3 mb-4">
-                  <div className="flex items-center gap-2 text-content-faint text-xs">
-                    <i className="ri-global-line text-base shrink-0" />
-                    <span>{t('popup.languageNotice')}</span>
-                  </div>
-                  <div className="flex gap-1 shrink-0">
-                    {LANGUAGES.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => handleLanguageChange(lang.code)}
-                        className={`px-2 py-0.5 text-xs rounded transition-colors ${
-                          language === lang.code
-                            ? 'bg-zinc-700 text-white font-medium'
-                            : 'text-content-faint hover:bg-zinc-800 hover:text-content-subtle'
-                        }`}
-                      >
-                        {lang.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <AnimatePresence>
+                {wasAutoDetected && language !== 'pl' && (
+                  <motion.div
+                    initial={{ opacity: 1, height: 'auto', marginBottom: 16 }}
+                    exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="flex items-center justify-between gap-3 bg-zinc-900 rounded-md p-3">
+                      <div className="flex items-center gap-2 text-content-faint text-xs">
+                        <i className="ri-global-line text-base shrink-0" />
+                        <span>{t('popup.languageNotice')}</span>
+                      </div>
+                      <div className="flex gap-1 shrink-0">
+                        {LANGUAGES.map((lang) => (
+                          <button
+                            key={lang.code}
+                            onClick={() => handleLanguageChange(lang.code)}
+                            className={`px-2 py-0.5 text-xs rounded transition-colors ${
+                              language === lang.code
+                                ? 'bg-zinc-700 text-white font-medium'
+                                : 'text-content-faint hover:bg-zinc-800 hover:text-content-subtle'
+                            }`}
+                          >
+                            {lang.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Description */}
               <p className="text-content-faint text-sm leading-relaxed mb-4">
