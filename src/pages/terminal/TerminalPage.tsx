@@ -34,9 +34,11 @@ export function TerminalPage() {
   const { events, loading, error } = useEvents({ limit: 500, lang: language, includeArchive: true, articleFields: 'minimal' });
   const { indices } = useMarketData();
 
-  // Sort events by trending score
+  // Sort events by trending score (exclude Uncategorized)
   const trendingEvents = useMemo(() => {
-    return [...events].sort((a, b) => (b.trendingScore || 0) - (a.trendingScore || 0));
+    return events
+      .filter(e => e.category !== 'Uncategorized')
+      .sort((a, b) => (b.trendingScore || 0) - (a.trendingScore || 0));
   }, [events]);
 
   // UI State

@@ -73,7 +73,7 @@ export function useGraphData() {
 
   const graphData = useMemo<GraphData>(() => {
     let filteredEvents = events.filter(
-      (e) => (e.trendingScore || 0) >= minTrendingScore
+      (e) => e.category !== 'Uncategorized' && (e.trendingScore || 0) >= minTrendingScore
     );
 
     if (selectedCategories.length > 0) {

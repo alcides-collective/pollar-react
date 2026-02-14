@@ -1,6 +1,6 @@
 import { useRef, useCallback, useEffect, useReducer, useState } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
-import { forceX, forceY } from 'd3-force-3d';
+import { forceX, forceY, forceCollide } from 'd3-force-3d';
 import { animate } from 'framer-motion';
 import { useGrafStore } from '@/stores/grafStore';
 import type { GraphData, GraphNode, GraphLink } from '@/types/graph';
@@ -68,12 +68,15 @@ export function GraphCanvas({
       case 'force': {
         // Scale charge with link density — sparse graphs get weaker repulsion
         const linkRatio = data.links.length / Math.max(data.nodes.length, 1);
-        const charge = -Math.min(800, 200 + linkRatio * 150);
+        const charge = -Math.min(1200, 300 + linkRatio * 200);
         fg.d3Force('charge')?.strength(charge);
-        fg.d3Force('link')?.distance((link: GraphLink) => 200 / (link.strength || 1));
+        fg.d3Force('link')?.distance((link: GraphLink) => 250 / (link.strength || 1));
+
+        // Collision force — prevent nodes from overlapping based on their size
+        fg.d3Force('collide', forceCollide((node: GraphNode) => node.val + 8).strength(0.8));
 
         // Centering forces — keep disconnected nodes from flying away
-        const centerStrength = linkRatio < 1 ? 0.15 : 0.05;
+        const centerStrength = linkRatio < 1 ? 0.08 : 0.03;
         fg.d3Force('centerX', forceX(0).strength(centerStrength));
         fg.d3Force('centerY', forceY(0).strength(centerStrength));
 
