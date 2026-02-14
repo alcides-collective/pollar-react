@@ -50,10 +50,10 @@ function computeEventGroups(
   favoriteCategories: string[] = [],
   favoriteCountries: string[] = [],
 ): Omit<EventGroups, 'loading' | 'error'> {
-  // Filter by category
+  // Filter out uncategorized events and filter by selected category
   let filteredEvents = selectedCategory
     ? events.filter(e => e.category === selectedCategory)
-    : events;
+    : events.filter(e => e.category !== 'Uncategorized');
 
   // Filter by countries (multi-select)
   if (selectedCountries.length > 0) {
