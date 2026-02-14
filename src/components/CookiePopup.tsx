@@ -6,6 +6,8 @@ import { useCookieConsentStore } from '@/stores/cookieConsentStore';
 import { useLanguage, useLanguageStore, type Language } from '@/stores/languageStore';
 import { useOnboardingStore } from '@/stores/onboardingStore';
 import { trackOnboardingSkipped } from '@/lib/analytics';
+import { useAuthStore } from '@/stores/authStore';
+import { updateUserLanguagePreference } from '@/services/userService';
 import { LocalizedLink } from './LocalizedLink';
 
 const LANGUAGES: { code: Language; label: string }[] = [
@@ -33,6 +35,11 @@ export function CookiePopup() {
     const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
     const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
     navigate(newPrefix + currentPath + location.search);
+    // Persist to Firestore for cross-device sync
+    const user = useAuthStore.getState().user;
+    if (user) {
+      updateUserLanguagePreference(user.uid, newLang).catch(() => {});
+    }
   };
 
   // Save language choice as explicit preference when dismissing popup

@@ -16,6 +16,8 @@ interface LanguageActions {
   setLanguage: (lang: Language) => void;
   loadFromStorage: () => void;
   initFromUrl: () => void;
+  /** Sync from Firestore profile after login */
+  syncFromProfile: (lang: Language | undefined) => void;
 }
 
 type LanguageStore = LanguageState & LanguageActions;
@@ -109,6 +111,16 @@ export const useLanguageStore = create<LanguageStore>((set) => ({
         // localStorage not available
       }
     }
+  },
+
+  syncFromProfile: (lang: Language | undefined) => {
+    if (!lang || !SUPPORTED_LANGUAGES.includes(lang)) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, lang);
+    } catch {
+      // localStorage not available
+    }
+    set({ language: lang, wasAutoDetected: false });
   },
 }));
 

@@ -7,7 +7,7 @@ import { useAuthStore, useUser, useIsAuthenticated } from '../stores/authStore';
 import { useLanguage, type Language } from '../stores/languageStore';
 import { LocalizedLink } from './LocalizedLink';
 // import { useProStore } from '../stores/proStore';
-import { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { useMemo, useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   DropdownMenu,
@@ -42,6 +42,7 @@ import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, COUNTRY_SEGMENT, buildCountrySlugsPar
 import { useRouteLanguage } from '../hooks/useRouteLanguage';
 import { useSelectedCountries } from '../stores/uiStore';
 import logoImg from '../assets/logo-white.png';
+import { registerDiscoverMenu, isTourActive } from '@/components/onboarding/discoverMenuBridge';
 
 // Language config
 const LANGUAGES: { code: Language; label: string }[] = [
@@ -596,6 +597,17 @@ export function Header() {
   const headerRef = useRef<HTMLElement>(null);
   const lastScrollY = useRef(0);
 
+  // Controlled Discover dropdown — allows GuidedTour to open/close programmatically
+  const [discoverOpen, setDiscoverOpen] = useState(false);
+  const setDiscoverOpenStable = useCallback((v: boolean) => setDiscoverOpen(v), []);
+  useEffect(() => {
+    registerDiscoverMenu({
+      open: () => setDiscoverOpenStable(true),
+      close: () => setDiscoverOpenStable(false),
+    });
+    return () => registerDiscoverMenu(null);
+  }, [setDiscoverOpenStable]);
+
   // Measure header height
   useLayoutEffect(() => {
     const updateHeight = () => {
@@ -818,7 +830,7 @@ export function Header() {
           </div>
           </div>
           <div className="bg-black dark:bg-zinc-900 pl-2 shrink-0 relative z-10">
-            <DropdownMenu>
+            <DropdownMenu open={discoverOpen} onOpenChange={(open) => { if (isTourActive() && !open) return; setDiscoverOpen(open); }}>
               <DropdownMenuTrigger data-tour="discover-menu" className="text-sm text-zinc-400 hover:text-white flex items-center gap-1 transition-colors outline-none pb-3">
               <span className="hidden sm:inline">{t('nav.discover')}</span>
               {/* Mobile: hamburger icon */}
@@ -835,14 +847,14 @@ export function Header() {
               <DropdownMenuGroup>
                 <DropdownMenuLabel>{t('nav.sections.essentials')}</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
-                  <LocalizedLink to="/brief" className="w-full flex items-center gap-2">
+                  <LocalizedLink to="/brief" data-tour="dropdown-brief" className="w-full flex items-center gap-2">
                     <i className="ri-newspaper-line" />
                     {t('nav.dailyBrief')}
                     {pathWithoutLang.startsWith('/brief') && <i className="ri-check-line ml-auto" />}
                   </LocalizedLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <LocalizedLink to="/asystent" className="w-full flex items-center gap-2">
+                  <LocalizedLink to="/asystent" data-tour="dropdown-ai" className="w-full flex items-center gap-2">
                     <i className="ri-robot-2-line" />
                     {t('nav.aiAssistant')}
                     {pathWithoutLang.startsWith('/asystent') && <i className="ri-check-line ml-auto" />}

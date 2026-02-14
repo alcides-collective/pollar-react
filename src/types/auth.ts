@@ -84,6 +84,8 @@ export type ThemePreference = 'light' | 'dark' | 'system';
 /** Extensible user preferences object */
 export interface UserPreferences {
   theme: ThemePreference;
+  /** Preferred UI language */
+  language?: 'pl' | 'en' | 'de';
   /** Chart axis mode: true = smart/zoomed, false = start from 0 */
   smartScale?: boolean;
   /** Currently selected countries for news filtering (Polish keys) */

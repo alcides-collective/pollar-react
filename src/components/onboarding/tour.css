@@ -215,3 +215,19 @@
 .pollar-tour .driver-popover-close-btn:focus {
   color: #f4f4f5;
 }
+
+
+/* ══ DISCOVER DROPDOWN DURING TOUR ══════════════════════════════════════ */
+
+/* Raise Radix dropdown portal above Driver.js overlay (z-index 10000) so
+   the full menu is visible when a specific item inside is highlighted.
+   The popover (z-index 1000000000) still floats above everything. */
+body.driver-active [data-radix-popper-content-wrapper] {
+  z-index: 10001 !important;
+}
+
+/* Subtle emerald highlight on the targeted dropdown item */
+body.driver-active [data-radix-popper-content-wrapper] .driver-active-element[data-slot="dropdown-menu-item"] {
+  background: rgba(52, 211, 153, 0.15) !important;
+  box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.3);
+}

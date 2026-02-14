@@ -12,6 +12,11 @@ import {
   trackOnboardingCompleted,
   trackOnboardingSkipped,
 } from '@/lib/analytics';
+import {
+  openDiscoverMenu,
+  closeDiscoverMenu,
+  setTourActive,
+} from './discoverMenuBridge';
 
 const FULLSCREEN_ROUTES = ['/mapa', '/terminal', '/asystent', '/info', '/graf'];
 
@@ -56,6 +61,9 @@ function ensureHeaderVisible(): Promise<void> {
   });
 }
 
+/** Step with extra metadata for dropdown handling */
+type TourStep = DriveStep & { _name: string; _usesDropdown?: boolean };
+
 export function GuidedTour() {
   const { t } = useTranslation('onboarding');
   const shouldStart = useShouldShowTour();
@@ -84,8 +92,9 @@ export function GuidedTour() {
       const isMobile = window.innerWidth < 768;
 
       // Build steps dynamically — core 3 always present,
-      // brief & AI target actual on-page elements when visible
-      const steps: (DriveStep & { _name: string })[] = [
+      // brief & AI target actual on-page elements when visible,
+      // otherwise open the Discover dropdown and highlight the item inside
+      const steps: TourStep[] = [
         {
           _name: 'category-tabs',
           element: '[data-tour="category-tabs"]',
@@ -120,7 +129,7 @@ export function GuidedTour() {
         },
       ];
 
-      // Step 4: Daily Brief — point to actual section if visible on page
+      // Step 4: Daily Brief — on-page section or dropdown item
       if (isElementVisible('[data-tour="daily-brief"]')) {
         steps.push({
           _name: 'daily-brief',
@@ -133,10 +142,10 @@ export function GuidedTour() {
           },
         });
       } else {
-        // Fallback: point to discover menu (brief is accessible from there)
         steps.push({
           _name: 'daily-brief',
-          element: '[data-tour="discover-menu"]',
+          _usesDropdown: true,
+          element: '[data-tour="dropdown-brief"]',
           popover: {
             title: t('tour.steps.brief.title'),
             description: t('tour.steps.brief.description'),
@@ -146,7 +155,7 @@ export function GuidedTour() {
         });
       }
 
-      // Step 5: AI Companion — point to sidebar widget if visible (desktop only)
+      // Step 5: AI Companion — sidebar widget or dropdown item
       if (isElementVisible('[data-tour="ai-sidebar"]')) {
         steps.push({
           _name: 'ai-companion',
@@ -159,10 +168,10 @@ export function GuidedTour() {
           },
         });
       } else {
-        // Fallback on mobile: point to discover menu
         steps.push({
           _name: 'ai-companion',
-          element: '[data-tour="discover-menu"]',
+          _usesDropdown: true,
+          element: '[data-tour="dropdown-ai"]',
           popover: {
             title: t('tour.steps.aiCompanion.title'),
             description: t('tour.steps.aiCompanion.description'),
@@ -187,11 +196,76 @@ export function GuidedTour() {
         });
       }
 
+      // ── Dropdown transition handlers ──────────────────────────────
+      // When navigating between steps, open/close the Discover dropdown
+      // so items inside it (Brief, AI) are visible in the DOM for Driver.js.
+      // Uses let so closures can reference driverObj before assignment.
+      let driverObj: ReturnType<typeof driver>;
+
+      for (let i = 0; i < steps.length; i++) {
+        const step = steps[i];
+        const popover = step.popover!;
+        const prev = steps[i - 1];
+        const next = steps[i + 1];
+        const curDropdown = step._usesDropdown;
+        const prevDropdown = prev?._usesDropdown;
+        const nextDropdown = next?._usesDropdown;
+
+        // Forward: entering dropdown from non-dropdown step
+        if (nextDropdown && !curDropdown) {
+          popover.onNextClick = () => {
+            ensureHeaderVisible().then(() => {
+              if (destroyedRef.current) return;
+              openDiscoverMenu();
+              // Wait for Radix portal to render dropdown content
+              setTimeout(() => {
+                if (destroyedRef.current) return;
+                driverObj.moveNext();
+              }, 300);
+            });
+          };
+        }
+        // Forward: leaving dropdown to non-dropdown step
+        else if (curDropdown && !nextDropdown && next) {
+          popover.onNextClick = () => {
+            closeDiscoverMenu();
+            setTimeout(() => {
+              if (destroyedRef.current) return;
+              driverObj.moveNext();
+            }, 200);
+          };
+        }
+
+        // Backward: entering dropdown from non-dropdown step
+        if (prevDropdown && !curDropdown) {
+          popover.onPrevClick = () => {
+            ensureHeaderVisible().then(() => {
+              if (destroyedRef.current) return;
+              openDiscoverMenu();
+              setTimeout(() => {
+                if (destroyedRef.current) return;
+                driverObj.movePrevious();
+              }, 300);
+            });
+          };
+        }
+        // Backward: leaving dropdown to non-dropdown step
+        else if (curDropdown && !prevDropdown && prev) {
+          popover.onPrevClick = () => {
+            closeDiscoverMenu();
+            setTimeout(() => {
+              if (destroyedRef.current) return;
+              driverObj.movePrevious();
+            }, 200);
+          };
+        }
+      }
+
       // Extract step names for analytics
       const stepNames = steps.map((s) => s._name);
       let stepCount = 0;
 
-      const driverObj = driver({
+      driverObj = driver({
         showProgress: true,
         animate: true,
         popoverClass: 'pollar-tour',
@@ -237,6 +311,8 @@ export function GuidedTour() {
           destroyedRef.current = true;
           driverRef.current = null;
           activeRef.current = false;
+          setTourActive(false);
+          closeDiscoverMenu();
           if (stepCount > 0) {
             store.completeTour();
             const startedAt = useOnboardingStore.getState().tourStartedAt;
@@ -252,6 +328,7 @@ export function GuidedTour() {
       });
 
       driverRef.current = driverObj;
+      setTourActive(true);
       driverObj.drive();
       trackOnboardingStarted({ language: document.documentElement.lang || 'pl' });
     }, 600);
@@ -265,6 +342,8 @@ export function GuidedTour() {
         driverRef.current.destroy();
         driverRef.current = null;
       }
+      setTourActive(false);
+      closeDiscoverMenu();
       // Reset so the tour can re-attempt on the next eligible page
       // (e.g. user navigated during the 600ms delay before driver started)
       activeRef.current = false;

@@ -6,6 +6,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useLanguage, type Language } from '../stores/languageStore';
+import { useAuthStore } from '../stores/authStore';
+import { updateUserLanguagePreference } from '../services/userService';
 
 const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'pl', label: 'Polski' },
@@ -27,6 +29,11 @@ export function FloatingLanguageSelector() {
     const newPath = newPrefix + currentPath + location.search;
     // Only navigate - let LanguageRouteHandler sync the store from URL
     navigate(newPath);
+    // Persist to Firestore for cross-device sync
+    const user = useAuthStore.getState().user;
+    if (user) {
+      updateUserLanguagePreference(user.uid, newLang).catch(() => {});
+    }
   };
 
   return (

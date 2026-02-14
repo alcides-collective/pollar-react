@@ -273,6 +273,20 @@ export async function updateUserThemePreference(
 }
 
 /**
+ * Updates user's language preference in Firestore
+ */
+export async function updateUserLanguagePreference(
+  uid: string,
+  language: 'pl' | 'en' | 'de'
+): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, {
+    'preferences.language': language,
+  });
+}
+
+/**
  * Updates user's chart smart scale preference in Firestore
  */
 export async function updateUserSmartScalePreference(

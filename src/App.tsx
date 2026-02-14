@@ -18,7 +18,7 @@ import { ScrollToTop } from './components/ScrollToTop'
 import { PageLoader } from './components/common/PageLoader'
 import { useEventStream } from './hooks/useEventStream'
 import { useAllSectionsReady } from './stores/imageLoadingStore'
-import { useLanguage, useSetLanguage, useGeoDetectionPending, type Language } from './stores/languageStore'
+import { useLanguage, useSetLanguage, useGeoDetectionPending, useLanguageStore, type Language } from './stores/languageStore'
 import { useResolvedTheme, useThemeStore } from './stores/themeStore'
 import { useChartScaleStore } from './stores/chartScaleStore'
 import { useContentsquare } from './hooks/useContentsquare'
@@ -34,6 +34,7 @@ import { parseCountrySlugsParam, ALL_COUNTRY_SEGMENTS } from './utils/countrySlu
 import { useUIStore } from './stores/uiStore'
 import { useOnboardingStore } from './stores/onboardingStore'
 import { GuidedTour } from './components/onboarding/GuidedTour'
+import { updateUserLanguagePreference } from './services/userService'
 
 // Lazy load all page components for code splitting
 const EventPage = lazy(() => import('./pages/event').then(m => ({ default: m.EventPage })))
@@ -466,6 +467,22 @@ function AppContent() {
         const profile = useUserStore.getState().profile
         if (profile?.preferences?.theme) {
           useThemeStore.getState().syncFromProfile(profile.preferences.theme)
+        }
+        if (profile?.preferences?.language) {
+          const profileLang = profile.preferences.language
+          const currentLang = useLanguageStore.getState().language
+          if (profileLang !== currentLang) {
+            useLanguageStore.getState().syncFromProfile(profileLang)
+            // Navigate to match the synced language so LanguageRouteHandler stays in sync
+            const currentPath = window.location.pathname.replace(/^\/(en|de)/, '') || '/'
+            const search = window.location.search
+            const newPrefix = profileLang !== 'pl' ? `/${profileLang}` : ''
+            navigate(newPrefix + currentPath + search, { replace: true })
+          }
+        } else if (user) {
+          // Backfill: existing user has no language in Firestore — persist current localStorage language
+          const currentLang = useLanguageStore.getState().language
+          updateUserLanguagePreference(user.uid, currentLang).catch(() => {})
         }
         if (profile?.preferences?.smartScale !== undefined) {
           useChartScaleStore.getState().syncFromProfile(profile.preferences.smartScale)
