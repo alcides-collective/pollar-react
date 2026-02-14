@@ -3,6 +3,8 @@
 declare module 'd3-force-3d' {
   export function forceX(x?: number): { strength(s: number): ReturnType<typeof forceX> };
   export function forceY(y?: number): { strength(s: number): ReturnType<typeof forceY> };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  export function forceCollide(radius?: number | ((node: any) => number)): { strength(s: number): ReturnType<typeof forceCollide> };
 }
 
 // Google Analytics gtag type
