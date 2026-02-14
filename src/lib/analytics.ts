@@ -593,3 +593,40 @@ export function trackCookieConsent(params: {
   const a = getAnalyticsIfNotAdmin(); if (!a) return;
   logEvent(a, 'cookie_consent_given', params);
 }
+
+// ============ Onboarding Events ============
+
+export function trackOnboardingStarted(params: {
+  language: string;
+}): void {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'onboarding_started', params);
+}
+
+export function trackOnboardingStep(params: {
+  step_name: string;
+  step_number: number;
+}): void {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'onboarding_step', params);
+}
+
+export function trackOnboardingSkipped(): void {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'onboarding_skipped');
+}
+
+export function trackOnboardingCompleted(params: {
+  time_spent: number;
+  total_steps: number;
+}): void {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'onboarding_completed', params);
+}
+
+export function trackChecklistItemCompleted(params: {
+  item_name: string;
+}): void {
+  const a = getAnalyticsIfNotAdmin(); if (!a) return;
+  logEvent(a, 'checklist_item_completed', params);
+}

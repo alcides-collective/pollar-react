@@ -1,0 +1,70 @@
+{
+  "welcome": {
+    "title": "Witamy w Pollar",
+    "subtitle": "Twoje centrum newsów z Polski i świata",
+    "features": {
+      "ai": "Asystent AI podsumowuje newsy i odpowiada na pytania",
+      "categories": "Personalizuj feed — wybierz kategorie, kraje i filtry",
+      "data": "Sejm, giełda, dane publiczne, mapa wydarzeń i więcej"
+    }
+  },
+  "cookie": {
+    "acceptWithTour": "Akceptuj i poznaj Pollar",
+    "acceptWithoutTour": "Akceptuj",
+    "essentialOnly": "Tylko niezbędne"
+  },
+  "tour": {
+    "steps": {
+      "categories": {
+        "title": "Filtruj wiadomości",
+        "description": "Kliknij kategorie, żeby zobaczyć interesujące Cię tematy"
+      },
+      "search": {
+        "title": "Szukaj wydarzeń",
+        "description": "Znajdź każde wydarzenie w szybkiej wyszukiwarce"
+      },
+      "discover": {
+        "title": "Odkrywaj więcej",
+        "description": "Sejm, dane publiczne, giełda, mapa i wiele więcej",
+        "descriptionMobile": "Otwórz menu, żeby poznać wszystkie funkcje Pollar"
+      },
+      "brief": {
+        "title": "Codzienny brief",
+        "description": "Podsumowanie najważniejszych wydarzeń dnia generowane przez AI"
+      },
+      "aiCompanion": {
+        "title": "Asystent AI",
+        "description": "Zapytaj AI o najnowsze wiadomości — porozmawiaj jak z kolegą"
+      },
+      "login": {
+        "title": "Zaloguj się",
+        "description": "Śledź posłów, zapisuj wydarzenia, personalizuj feed i otrzymuj alerty o głosowaniach"
+      }
+    },
+    "next": "Dalej",
+    "prev": "Wstecz",
+    "finish": "Gotowe!",
+    "skip": "Pomiń",
+    "of": "z"
+  },
+  "checklist": {
+    "title": "Poznaj Pollar",
+    "progress": "{{completed}} z {{total}}",
+    "items": {
+      "ai_companion": "Wypróbuj AI Companion",
+      "follow_mp": "Śledź posła",
+      "read_brief": "Przeczytaj brief",
+      "favorite_categories": "Wybierz ulubione kategorie",
+      "newsletter": "Zapisz się do newslettera"
+    },
+    "links": {
+      "ai_companion": "Otwórz asystenta",
+      "follow_mp": "Przeglądaj posłów",
+      "read_brief": "Otwórz brief",
+      "favorite_categories": "Wybierz poniżej",
+      "newsletter": "Włącz poniżej"
+    },
+    "completed": "Świetnie! Znasz już wszystkie funkcje Pollar.",
+    "dismiss": "Zamknij"
+  }
+}

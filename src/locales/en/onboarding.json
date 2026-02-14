@@ -1,0 +1,70 @@
+{
+  "welcome": {
+    "title": "Welcome to Pollar",
+    "subtitle": "Your news hub for Poland and the world",
+    "features": {
+      "ai": "AI assistant summarizes news and answers your questions",
+      "categories": "Personalize your feed — pick categories, countries & filters",
+      "data": "Parliament, stock market, public data, event map & more"
+    }
+  },
+  "cookie": {
+    "acceptWithTour": "Accept & explore Pollar",
+    "acceptWithoutTour": "Accept",
+    "essentialOnly": "Essential only"
+  },
+  "tour": {
+    "steps": {
+      "categories": {
+        "title": "Filter the news",
+        "description": "Click categories to see topics that interest you"
+      },
+      "search": {
+        "title": "Search events",
+        "description": "Find any event with the quick search"
+      },
+      "discover": {
+        "title": "Discover more",
+        "description": "Parliament, public data, stock market, map & much more",
+        "descriptionMobile": "Open the menu to explore all Pollar features"
+      },
+      "brief": {
+        "title": "Daily brief",
+        "description": "AI-generated summary of the most important events of the day"
+      },
+      "aiCompanion": {
+        "title": "AI Assistant",
+        "description": "Ask AI about the latest news — chat like with a friend"
+      },
+      "login": {
+        "title": "Log in",
+        "description": "Track MPs, save events, personalize your feed and get voting alerts"
+      }
+    },
+    "next": "Next",
+    "prev": "Back",
+    "finish": "Done!",
+    "skip": "Skip",
+    "of": "of"
+  },
+  "checklist": {
+    "title": "Get to know Pollar",
+    "progress": "{{completed}} of {{total}}",
+    "items": {
+      "ai_companion": "Try the AI Companion",
+      "follow_mp": "Follow an MP",
+      "read_brief": "Read the daily brief",
+      "favorite_categories": "Pick favorite categories",
+      "newsletter": "Subscribe to newsletter"
+    },
+    "links": {
+      "ai_companion": "Open assistant",
+      "follow_mp": "Browse MPs",
+      "read_brief": "Open brief",
+      "favorite_categories": "Choose below",
+      "newsletter": "Enable below"
+    },
+    "completed": "Awesome! You've explored all Pollar features.",
+    "dismiss": "Dismiss"
+  }
+}

@@ -9,6 +9,7 @@ import { useRouteLanguage } from '../../hooks/useRouteLanguage';
 import { useUser } from '../../stores/authStore';
 import { trackBriefViewed } from '../../lib/analytics';
 import { markBriefViewed } from '../../hooks/useSessionTracking';
+import { useOnboardingStore } from '../../stores/onboardingStore';
 import { useScrollTracking } from '../../hooks/useScrollTracking';
 import { CcAttribution } from '../../components/common/CcAttribution';
 import {
@@ -34,6 +35,11 @@ export function BriefPage() {
   const briefLoadTimeRef = useRef(0);
   const maxScrollDepthRef = useRef(0);
   const hasFiredBriefRef = useRef(false);
+
+  // Mark onboarding checklist item as completed
+  useEffect(() => {
+    if (user) useOnboardingStore.getState().markChecklistItem('read_brief');
+  }, [user]);
 
   // Reset tracking state when brief loads
   useEffect(() => {

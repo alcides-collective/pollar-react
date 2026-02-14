@@ -1,0 +1,70 @@
+{
+  "welcome": {
+    "title": "Willkommen bei Pollar",
+    "subtitle": "Ihr Nachrichtenzentrum für Polen und die Welt",
+    "features": {
+      "ai": "KI-Assistent fasst Nachrichten zusammen und beantwortet Fragen",
+      "categories": "Feed personalisieren — Kategorien, Länder & Filter wählen",
+      "data": "Parlament, Börse, öffentliche Daten, Ereigniskarte und mehr"
+    }
+  },
+  "cookie": {
+    "acceptWithTour": "Akzeptieren & Pollar entdecken",
+    "acceptWithoutTour": "Akzeptieren",
+    "essentialOnly": "Nur erforderliche"
+  },
+  "tour": {
+    "steps": {
+      "categories": {
+        "title": "Nachrichten filtern",
+        "description": "Klicken Sie auf Kategorien, um Themen zu sehen, die Sie interessieren"
+      },
+      "search": {
+        "title": "Ereignisse suchen",
+        "description": "Finden Sie jedes Ereignis mit der Schnellsuche"
+      },
+      "discover": {
+        "title": "Mehr entdecken",
+        "description": "Parlament, öffentliche Daten, Börse, Karte und vieles mehr",
+        "descriptionMobile": "Öffnen Sie das Menü, um alle Pollar-Funktionen zu entdecken"
+      },
+      "brief": {
+        "title": "Tägliche Zusammenfassung",
+        "description": "KI-generierte Zusammenfassung der wichtigsten Ereignisse des Tages"
+      },
+      "aiCompanion": {
+        "title": "KI-Assistent",
+        "description": "Fragen Sie die KI nach den neuesten Nachrichten — chatten Sie wie mit einem Freund"
+      },
+      "login": {
+        "title": "Anmelden",
+        "description": "Abgeordnete verfolgen, Ereignisse speichern, Feed personalisieren und Abstimmungsbenachrichtigungen erhalten"
+      }
+    },
+    "next": "Weiter",
+    "prev": "Zurück",
+    "finish": "Fertig!",
+    "skip": "Überspringen",
+    "of": "von"
+  },
+  "checklist": {
+    "title": "Pollar kennenlernen",
+    "progress": "{{completed}} von {{total}}",
+    "items": {
+      "ai_companion": "KI-Companion ausprobieren",
+      "follow_mp": "Einem Abgeordneten folgen",
+      "read_brief": "Tägliche Zusammenfassung lesen",
+      "favorite_categories": "Lieblingskategorien wählen",
+      "newsletter": "Newsletter abonnieren"
+    },
+    "links": {
+      "ai_companion": "Assistent öffnen",
+      "follow_mp": "Abgeordnete durchsuchen",
+      "read_brief": "Brief öffnen",
+      "favorite_categories": "Unten auswählen",
+      "newsletter": "Unten aktivieren"
+    },
+    "completed": "Super! Sie kennen jetzt alle Pollar-Funktionen.",
+    "dismiss": "Schließen"
+  }
+}

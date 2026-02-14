@@ -32,6 +32,8 @@ import { useTranslation } from 'react-i18next'
 import { getCategoryFromSlug, isValidCategorySlug } from './utils/categorySlug'
 import { parseCountrySlugsParam, ALL_COUNTRY_SEGMENTS } from './utils/countrySlug'
 import { useUIStore } from './stores/uiStore'
+import { useOnboardingStore } from './stores/onboardingStore'
+import { GuidedTour } from './components/onboarding/GuidedTour'
 
 // Lazy load all page components for code splitting
 const EventPage = lazy(() => import('./pages/event').then(m => ({ default: m.EventPage })))
@@ -471,6 +473,9 @@ function AppContent() {
         if (profile?.preferences?.selectedCountries) {
           useUIStore.getState().syncCountriesFromProfile(profile.preferences.selectedCountries)
         }
+        if (profile?.onboarding) {
+          useOnboardingStore.getState().syncFromProfile(profile.onboarding)
+        }
         // Initialize analytics user identity for registered user tracking
         initUserAnalytics(user, profile, language)
       })
@@ -562,10 +567,12 @@ function App() {
           <ConsentRequiredModal />
           <ProModal />
           <CookiePopup />
+          <GuidedTour />
           <Toaster
             position="bottom-right"
             richColors
             closeButton
+            style={{ fontFamily: "'HK Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}
             toastOptions={{
               classNames: {
                 toast: 'grid grid-cols-[1fr_auto] items-start gap-2',

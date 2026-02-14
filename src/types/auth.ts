@@ -65,6 +65,17 @@ export interface UserProfile {
   consentTermsVersion?: string | null;
   /** User preferences (extensible) */
   preferences?: UserPreferences;
+  /** Onboarding progress (tour + checklist) */
+  onboarding?: OnboardingData;
+}
+
+/** Onboarding progress stored in Firestore */
+export interface OnboardingData {
+  tourCompleted?: boolean;
+  tourSkipped?: boolean;
+  stepsViewed?: string[];
+  checklistItems?: Record<string, boolean>;
+  checklistDismissed?: boolean;
 }
 
 /** User's theme preference */

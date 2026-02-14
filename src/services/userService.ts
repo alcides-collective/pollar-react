@@ -300,6 +300,20 @@ export async function updateUserSelectedCountries(
   });
 }
 
+// ============ Onboarding ============
+
+/**
+ * Updates user's onboarding progress in Firestore
+ */
+export async function updateUserOnboarding(
+  uid: string,
+  onboarding: Record<string, unknown>
+): Promise<void> {
+  if (!isFirebaseConfigured || !db) return;
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  await updateDoc(userRef, { onboarding });
+}
+
 // ============ Saved Events (Bookmarks) ============
 
 /**

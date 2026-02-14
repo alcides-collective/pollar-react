@@ -353,6 +353,7 @@ function MobileUserMenu() {
       <div className="sm:hidden">
         <button
           onClick={() => openAuthModal('login')}
+          data-tour="login-button"
           className="h-9 w-9 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors"
         >
           <i className="ri-user-line text-lg" />
@@ -544,6 +545,7 @@ function AuthButton() {
         <TooltipTrigger asChild>
           <button
             onClick={() => openAuthModal('login')}
+            data-tour="login-button"
             className="h-9 flex items-center justify-center text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg px-2 sm:px-3 border border-zinc-700/50 hover:border-zinc-600 transition-colors"
           >
             <i className="ri-user-line text-lg sm:hidden" />
@@ -742,6 +744,7 @@ export function Header() {
                 <TooltipTrigger asChild>
                   <button
                     onClick={openSearch}
+                    data-tour="search-button"
                     className="h-9 w-9 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg border border-zinc-700/50 hover:border-zinc-600 transition-colors"
                     aria-label={t('nav.search')}
                   >
@@ -759,11 +762,12 @@ export function Header() {
         {/* Navigation */}
         <nav className="flex items-center justify-between pt-3">
           <div
-            className="flex-1 min-w-0 flex items-center gap-6 lg:gap-8 overflow-x-auto scrollbar-hide -mx-6 px-6 pr-16 [mask-image:linear-gradient(to_right,black_0,black_calc(100%-6rem),transparent_100%)]"
+            className="flex-1 min-w-0 flex items-center overflow-x-auto scrollbar-hide -mx-6 px-6 pr-16 [mask-image:linear-gradient(to_right,black_0,black_calc(100%-6rem),transparent_100%)]"
             role="region"
             aria-label="Kategorie"
             tabIndex={0}
           >
+          <div className="flex items-center gap-6 lg:gap-8" data-tour="category-tabs">
             <button
               onClick={() => handleCategoryClick(null)}
               className={`relative text-sm whitespace-nowrap transition-colors pb-3 ${
@@ -812,9 +816,10 @@ export function Header() {
               </button>
             ))}
           </div>
+          </div>
           <div className="bg-black dark:bg-zinc-900 pl-2 shrink-0 relative z-10">
             <DropdownMenu>
-              <DropdownMenuTrigger className="text-sm text-zinc-400 hover:text-white flex items-center gap-1 transition-colors outline-none pb-3">
+              <DropdownMenuTrigger data-tour="discover-menu" className="text-sm text-zinc-400 hover:text-white flex items-center gap-1 transition-colors outline-none pb-3">
               <span className="hidden sm:inline">{t('nav.discover')}</span>
               {/* Mobile: hamburger icon */}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">

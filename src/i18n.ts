@@ -26,6 +26,7 @@ import plPrivacy from './locales/pl/privacy.json';
 import plContact from './locales/pl/contact.json';
 import plTerminal from './locales/pl/terminal.json';
 import plPowiazania from './locales/pl/powiazania.json';
+import plOnboarding from './locales/pl/onboarding.json';
 
 // English translations
 import enCommon from './locales/en/common.json';
@@ -50,6 +51,7 @@ import enPrivacy from './locales/en/privacy.json';
 import enContact from './locales/en/contact.json';
 import enTerminal from './locales/en/terminal.json';
 import enPowiazania from './locales/en/powiazania.json';
+import enOnboarding from './locales/en/onboarding.json';
 
 // German translations
 import deCommon from './locales/de/common.json';
@@ -74,6 +76,7 @@ import dePrivacy from './locales/de/privacy.json';
 import deContact from './locales/de/contact.json';
 import deTerminal from './locales/de/terminal.json';
 import dePowiazania from './locales/de/powiazania.json';
+import deOnboarding from './locales/de/onboarding.json';
 
 const resources = {
   pl: {
@@ -99,6 +102,7 @@ const resources = {
     contact: plContact,
     terminal: plTerminal,
     powiazania: plPowiazania,
+    onboarding: plOnboarding,
   },
   en: {
     common: enCommon,
@@ -123,6 +127,7 @@ const resources = {
     contact: enContact,
     terminal: enTerminal,
     powiazania: enPowiazania,
+    onboarding: enOnboarding,
   },
   de: {
     common: deCommon,
@@ -147,6 +152,7 @@ const resources = {
     contact: deContact,
     terminal: deTerminal,
     powiazania: dePowiazania,
+    onboarding: deOnboarding,
   },
 };
 

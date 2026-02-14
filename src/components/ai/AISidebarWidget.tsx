@@ -68,7 +68,7 @@ export function AISidebarWidget() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4" data-tour="ai-sidebar">
       <button
         onClick={handleClick}
         className="w-full flex items-center gap-3 px-4 py-3

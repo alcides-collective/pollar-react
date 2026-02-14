@@ -59,11 +59,16 @@
       });
     </script>
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-539PMC523Y"></script>
+    <!-- Google Analytics 4 (skip on localhost) -->
     <script>
-      gtag('js', new Date());
-      gtag('config', 'G-539PMC523Y', { send_page_view: false });
+      if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-539PMC523Y';
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-539PMC523Y', { send_page_view: false });
+      }
     </script>
 
     <!-- X (Twitter) conversion tracking (deferred to reduce FCP/TBT) -->

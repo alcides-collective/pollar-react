@@ -27,6 +27,7 @@ import { isPrivateRelayEmail } from '@/types/auth';
 import { updateMarketingConsent, updateUserSmartScalePreference } from '@/services/userService';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useSmartScale, useToggleSmartScale } from '@/stores/chartScaleStore';
+import { OnboardingChecklist } from '@/components/onboarding/OnboardingChecklist';
 import { COUNTRY_KEYS, COUNTRY_FLAG_CODES, getCountryDisplay, normalizeCountry } from '@/utils/countrySlug';
 
 // Static category list (same as Header)
@@ -373,6 +374,9 @@ function ProfileContent() {
         {/* Right Panel - Settings (Sticky) */}
         <div className="lg:col-span-1">
           <div className="sticky top-24 space-y-6">
+            {/* Onboarding Checklist */}
+            <OnboardingChecklist />
+
             {/* Profile Header */}
             <section className="bg-surface-alt border border-divider rounded-lg p-4">
               <AvatarUpload

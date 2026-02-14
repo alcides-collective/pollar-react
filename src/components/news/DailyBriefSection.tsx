@@ -69,7 +69,7 @@ export function DailyBriefSection({ brief }: DailyBriefSectionProps) {
       sectionId={`daily-brief-${brief.date}`}
       priority="high"
     >
-      <LocalizedLink to="/brief" className="group group/underline block">
+      <LocalizedLink to="/brief" className="group group/underline block" data-tour="daily-brief">
         <div className="bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/40 dark:hover:bg-sky-900/40 transition-colors cursor-pointer p-6" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {/* Mobile layout */}
           <div className="md:hidden">
