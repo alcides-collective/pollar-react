@@ -28,7 +28,7 @@ import { SearchModal } from '@/components/search';
 import { AlertsBell } from '@/components/AlertsBell';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useThemePreference, useSetThemePreference } from '@/stores/themeStore';
-import { updateUserThemePreference, updateUserSelectedCountries } from '@/services/userService';
+import { updateUserThemePreference, updateUserSelectedCountries, updateUserLanguagePreference } from '@/services/userService';
 import {
   useAlertsStore,
   useTotalUnreadCount,
@@ -57,9 +57,13 @@ function LanguageSelector() {
   const language = useRouteLanguage();
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useUser();
   const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
 
   const handleLanguageChange = (newLang: Language) => {
+    if (user) {
+      updateUserLanguagePreference(user.uid, newLang).catch(console.error);
+    }
     const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
     const translatedPath = translatePath(currentPath, language, newLang);
     const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
@@ -241,6 +245,9 @@ function MobileSettingsMenu() {
   const user = useUser();
 
   const handleLanguageChange = (newLang: Language) => {
+    if (user) {
+      updateUserLanguagePreference(user.uid, newLang).catch(console.error);
+    }
     const currentPath = location.pathname.replace(/^\/(en|de)/, '') || '/';
     const translatedPath = translatePath(currentPath, language, newLang);
     const newPrefix = newLang !== 'pl' ? `/${newLang}` : '';
